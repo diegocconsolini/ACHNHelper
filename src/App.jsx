@@ -3,6 +3,25 @@ import React, { useState, lazy, Suspense } from 'react';
 const FishTracker = lazy(() => import('./artifacts/FishTracker.jsx'));
 const BugTracker = lazy(() => import('./artifacts/BugTracker.jsx'));
 const SeaCreatureTracker = lazy(() => import('./artifacts/SeaCreatureTracker.jsx'));
+const MuseumTracker = lazy(() => import('./artifacts/MuseumTracker.jsx'));
+const GoldenToolTracker = lazy(() => import('./artifacts/GoldenToolTracker.jsx'));
+const NookMilesTracker = lazy(() => import('./artifacts/NookMilesTracker.jsx'));
+const TurnipTracker = lazy(() => import('./artifacts/TurnipTracker.jsx'));
+const BellCalculator = lazy(() => import('./artifacts/BellCalculator.jsx'));
+const NooksCrannyLog = lazy(() => import('./artifacts/NooksCrannyLog.jsx'));
+const FiveStarChecker = lazy(() => import('./artifacts/FiveStarChecker.jsx'));
+const DailyRoutine = lazy(() => import('./artifacts/DailyRoutine.jsx'));
+const FlowerCalculator = lazy(() => import('./artifacts/FlowerCalculator.jsx'));
+const GardenPlanner = lazy(() => import('./artifacts/GardenPlanner.jsx'));
+const IslandFlowerMap = lazy(() => import('./artifacts/IslandFlowerMap.jsx'));
+const GulliverTracker = lazy(() => import('./artifacts/GulliverTracker.jsx'));
+const ArtDetector = lazy(() => import('./artifacts/ArtDetector.jsx'));
+const KKCatalogue = lazy(() => import('./artifacts/KKCatalogue.jsx'));
+const VillagerGiftGuide = lazy(() => import('./artifacts/VillagerGiftGuide.jsx'));
+const SeasonalEventCalendar = lazy(() => import('./artifacts/SeasonalEventCalendar.jsx'));
+const DIYRecipeTracker = lazy(() => import('./artifacts/DIYRecipeTracker.jsx'));
+const CelesteMeteorTracker = lazy(() => import('./artifacts/CelesteMeteorTracker.jsx'));
+const DreamAddressBook = lazy(() => import('./artifacts/DreamAddressBook.jsx'));
 
 const MENU = [
   {
@@ -16,35 +35,45 @@ const MENU = [
   {
     category: '🏛️ Museum & Progress',
     items: [
-      { id: 'museum', label: 'Museum Tracker', emoji: '🏛️', component: null },
-      { id: 'golden', label: 'Golden Tools', emoji: '✨', component: null },
-      { id: 'nookmiles', label: 'Nook Miles', emoji: '🎖️', component: null },
+      { id: 'museum', label: 'Museum Tracker', emoji: '🏛️', component: 'MuseumTracker' },
+      { id: 'golden', label: 'Golden Tools', emoji: '✨', component: 'GoldenToolTracker' },
+      { id: 'nookmiles', label: 'Nook Miles', emoji: '🎖️', component: 'NookMilesTracker' },
     ],
   },
   {
     category: '💰 Economy & Planning',
     items: [
-      { id: 'turnip', label: 'Turnip Tracker', emoji: '📈', component: null },
-      { id: 'bell', label: 'Bell Calculator', emoji: '💰', component: null },
-      { id: 'nooks', label: "Nook's Cranny Log", emoji: '🏪', component: null },
-      { id: 'fivestar', label: '5-Star Checker', emoji: '⭐', component: null },
-      { id: 'daily', label: 'Daily Routine', emoji: '📋', component: null },
+      { id: 'turnip', label: 'Turnip Tracker', emoji: '📈', component: 'TurnipTracker' },
+      { id: 'bell', label: 'Bell Calculator', emoji: '💰', component: 'BellCalculator' },
+      { id: 'nooks', label: "Nook's Cranny Log", emoji: '🏪', component: 'NooksCrannyLog' },
+      { id: 'fivestar', label: '5-Star Checker', emoji: '⭐', component: 'FiveStarChecker' },
+      { id: 'daily', label: 'Daily Routine', emoji: '📋', component: 'DailyRoutine' },
     ],
   },
   {
     category: '🌸 Gardening',
     items: [
-      { id: 'flower', label: 'Flower Calculator', emoji: '🌹', component: null },
-      { id: 'garden', label: 'Garden Planner', emoji: '🌻', component: null },
-      { id: 'flowermap', label: 'Island Flower Map', emoji: '🗺️', component: null },
+      { id: 'flower', label: 'Flower Calculator', emoji: '🌹', component: 'FlowerCalculator' },
+      { id: 'garden', label: 'Garden Planner', emoji: '🌻', component: 'GardenPlanner' },
+      { id: 'flowermap', label: 'Island Flower Map', emoji: '🗺️', component: 'IslandFlowerMap' },
     ],
   },
   {
     category: '🎨 Special & Art',
     items: [
-      { id: 'gulliver', label: 'Gulliver Tracker', emoji: '🐦', component: null },
-      { id: 'art', label: 'Art Detector', emoji: '🎨', component: null },
-      { id: 'kk', label: 'K.K. Catalogue', emoji: '🎵', component: null },
+      { id: 'gulliver', label: 'Gulliver Tracker', emoji: '🐦', component: 'GulliverTracker' },
+      { id: 'art', label: 'Art Detector', emoji: '🎨', component: 'ArtDetector' },
+      { id: 'kk', label: 'K.K. Catalogue', emoji: '🎵', component: 'KKCatalogue' },
+    ],
+  },
+  {
+    category: '🏠 Island Life',
+    items: [
+      { id: 'villager', label: 'Villager Gift Guide', emoji: '🎁', component: 'VillagerGiftGuide' },
+      { id: 'events', label: 'Event Calendar', emoji: '📅', component: 'SeasonalEventCalendar' },
+      { id: 'diy', label: 'DIY Recipe Tracker', emoji: '🔨', component: 'DIYRecipeTracker' },
+      { id: 'celeste', label: 'Celeste & Meteors', emoji: '🌠', component: 'CelesteMeteorTracker' },
+      { id: 'dreams', label: 'Dream Address Book', emoji: '☁️', component: 'DreamAddressBook' },
     ],
   },
 ];
@@ -53,6 +82,25 @@ const COMPONENTS = {
   FishTracker,
   BugTracker,
   SeaCreatureTracker,
+  MuseumTracker,
+  GoldenToolTracker,
+  NookMilesTracker,
+  TurnipTracker,
+  BellCalculator,
+  NooksCrannyLog,
+  FiveStarChecker,
+  DailyRoutine,
+  FlowerCalculator,
+  GardenPlanner,
+  IslandFlowerMap,
+  GulliverTracker,
+  ArtDetector,
+  KKCatalogue,
+  VillagerGiftGuide,
+  SeasonalEventCalendar,
+  DIYRecipeTracker,
+  CelesteMeteorTracker,
+  DreamAddressBook,
 };
 
 function App() {
@@ -112,7 +160,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v1.0 — 3/22 tools
+            v1.0 — 22/22 tools
           </span>
         </div>
       </div>
