@@ -246,8 +246,7 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
     },
     panel: {
-      maxWidth: '900px',
-      margin: '0 auto',
+      width: '100%',
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       borderRadius: '8px',
       border: '1px solid rgba(94, 200, 80, 0.2)',

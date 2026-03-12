@@ -124,8 +124,7 @@ const ArtDetector = () => {
 
   const styles = {
     container: {
-      maxWidth: '900px',
-      margin: '0 auto',
+      width: '100%',
       padding: '20px',
       backgroundColor: '#0a1a10',
       minHeight: '100vh',

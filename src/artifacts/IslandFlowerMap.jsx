@@ -265,8 +265,7 @@ const IslandFlowerMap = () => {
       fontFamily: '"DM Sans", sans-serif',
       padding: '24px',
       minHeight: '100vh',
-      maxWidth: '1200px',
-      margin: '0 auto'
+      width: '100%'
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
