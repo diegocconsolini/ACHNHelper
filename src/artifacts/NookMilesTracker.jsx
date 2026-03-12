@@ -18,7 +18,7 @@ const NOOK_MILES_DATA = [
   { id: 115, name: "DIY Workshop", category: "DIY", tiers: [{ target: 10, reward: 300 },{ target: 50, reward: 500 },{ target: 100, reward: 1000 },{ target: 200, reward: 2000 },{ target: 300, reward: 3000 }], isRepeatable: false },
   { id: 116, name: "A Matter of Customization", category: "DIY", tiers: [{ target: 10, reward: 300 },{ target: 50, reward: 500 },{ target: 100, reward: 1000 },{ target: 200, reward: 2000 },{ target: 300, reward: 3000 }], isRepeatable: true },
   { id: 117, name: "Complete Furniture Catalog", category: "Houseware", tiers: [{ target: 50, reward: 300 },{ target: 100, reward: 500 },{ target: 200, reward: 1000 },{ target: 300, reward: 2000 }], isRepeatable: false },
-  { id: 118, name: "Wall to Wall Catalouge", category: "Houseware", tiers: [{ target: 10, reward: 300 },{ target: 25, reward: 500 },{ target: 50, reward: 1000 },{ target: 100, reward: 2000 }], isRepeatable: false },
+  { id: 118, name: "Wall-to-Wall Catalogue", category: "Houseware", tiers: [{ target: 10, reward: 300 },{ target: 25, reward: 500 },{ target: 50, reward: 1000 },{ target: 100, reward: 2000 }], isRepeatable: false },
   { id: 119, name: "Fashion Connoisseur", category: "Fashion", tiers: [{ target: 50, reward: 300 },{ target: 100, reward: 500 },{ target: 200, reward: 1000 },{ target: 300, reward: 2000 }], isRepeatable: false },
   { id: 120, name: "Shoe In", category: "Fashion", tiers: [{ target: 10, reward: 300 },{ target: 25, reward: 500 },{ target: 50, reward: 1000 },{ target: 100, reward: 2000 }], isRepeatable: false },
   { id: 121, name: "Headwear Head Start", category: "Fashion", tiers: [{ target: 10, reward: 300 },{ target: 25, reward: 500 },{ target: 50, reward: 1000 },{ target: 100, reward: 2000 }], isRepeatable: false },
@@ -196,8 +196,7 @@ export default function NookMilesTracker() {
     });
   };
 
-  const calculateStats = () => {
-    const filtered = getFilteredAchievements();
+  const calculateStats = (filtered) => {
     let totalMiles = 0;
     let completedCount = 0;
     const categoryStats = {};
@@ -231,7 +230,8 @@ export default function NookMilesTracker() {
     return { totalMiles, completedCount, categoryStats, totalAchievements: filtered.length };
   };
 
-  const stats = calculateStats();
+  const filteredAchievements = getFilteredAchievements();
+  const stats = calculateStats(filteredAchievements);
 
   if (isLoading) {
     return <div style={styles.container}>Loading...</div>;
@@ -240,7 +240,7 @@ export default function NookMilesTracker() {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
 
       <div style={styles.header}>
@@ -291,7 +291,7 @@ export default function NookMilesTracker() {
       </div>
 
       <div style={styles.achievementsGrid}>
-        {getFilteredAchievements().map(ach => {
+        {filteredAchievements.map(ach => {
           const currentTier = achievements[ach.id] || 0;
           const milesEarned = Array.from({ length: currentTier }, (_, i) => ach.tiers[i]?.reward || 0).reduce((a, b) => a + b, 0);
 
@@ -337,7 +337,7 @@ export default function NookMilesTracker() {
 
 const styles = {
   container: {
-    width: '900px',
+    width: '100%',
     margin: '0 auto',
     padding: '20px',
     backgroundColor: '#0a1a10',

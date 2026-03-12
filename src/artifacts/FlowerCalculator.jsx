@@ -7,6 +7,7 @@ const FlowerCalculator = () => {
   const [offspring, setOffspring] = useState([]);
   const [activeTab, setActiveTab] = useState('calculator');
   const [blueRoseProgress, setBlueRoseProgress] = useState(0);
+  const [hoveredId, setHoveredId] = useState(null);
 
   useEffect(() => {
     const loadProgress = async () => {
@@ -242,7 +243,7 @@ const FlowerCalculator = () => {
       color: '#e8f5e9',
       minHeight: '100vh',
       padding: '20px',
-      width: '900px',
+      width: '100%',
       margin: '0 auto'
     },
     header: {
@@ -434,7 +435,7 @@ const FlowerCalculator = () => {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
 
       <div style={styles.header}>🌹 Flower Breeding Calculator 🌹</div>
@@ -554,8 +555,10 @@ const FlowerCalculator = () => {
                   key={color.name}
                   style={{
                     ...styles.colorBox,
-                    ...styles.cardHover
+                    ...(hoveredId === color.name ? styles.cardHover : {})
                   }}
+                  onMouseEnter={() => setHoveredId(color.name)}
+                  onMouseLeave={() => setHoveredId(null)}
                 >
                   <div style={{ ...styles.colorSwatch, backgroundColor: color.hex }} />
                   <div style={{ fontSize: '13px', fontWeight: '600' }}>{color.name}</div>

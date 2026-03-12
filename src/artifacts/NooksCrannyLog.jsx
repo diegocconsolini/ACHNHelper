@@ -111,7 +111,7 @@ const NooksCrannyLog = () => {
     let streak = 1;
     for (let i = 0; i < sortedDates.length - 1; i++) {
       const diff = (sortedDates[i] - sortedDates[i + 1]) / (1000 * 60 * 60 * 24);
-      if (diff === 1) {
+      if (Math.round(diff) === 1) {
         streak++;
       } else {
         break;
@@ -139,7 +139,7 @@ const NooksCrannyLog = () => {
     color: '#ffffff',
     minHeight: '100vh',
     padding: '20px',
-    width: '900px',
+    width: '100%',
     margin: '0 auto'
   };
 
@@ -230,11 +230,14 @@ const NooksCrannyLog = () => {
     marginTop: '5px'
   };
 
+  const entriesByWeek = groupEntriesByWeek();
+  const hotItemStats = getHotItemStats();
+
   return (
     <div style={containerStyle}>
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;700&family=DM+Mono:wght@400&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
           * { box-sizing: border-box; }
           input:focus, textarea:focus, select:focus { outline: none; box-shadow: 0 0 0 2px #5ec850; }
         `}
@@ -381,10 +384,10 @@ const NooksCrannyLog = () => {
         <div>
           <div style={{ marginBottom: '20px' }}>
             <h3 style={{ color: '#d4b030', marginBottom: '15px' }}>📅 Log History (Grouped by Week)</h3>
-            {Object.keys(groupEntriesByWeek()).length === 0 ? (
+            {Object.keys(entriesByWeek).length === 0 ? (
               <div style={cardStyle}>No entries yet. Start logging! 📋</div>
             ) : (
-              Object.entries(groupEntriesByWeek()).map(([weekKey, weekEntries]) => (
+              Object.entries(entriesByWeek).map(([weekKey, weekEntries]) => (
                 <div key={weekKey}>
                   <h4 style={{ color: '#5ec850', marginTop: '20px', marginBottom: '10px' }}>
                     Week of {new Date(weekKey).toLocaleDateString()}
@@ -475,11 +478,11 @@ const NooksCrannyLog = () => {
 
           <div style={cardStyle}>
             <h4 style={{ color: '#d4b030', marginBottom: '15px' }}>⭐ Most Common Hot Items</h4>
-            {getHotItemStats().length === 0 ? (
+            {hotItemStats.length === 0 ? (
               <div style={{ color: '#999999' }}>No hot items logged yet.</div>
             ) : (
               <div>
-                {getHotItemStats().slice(0, 10).map(([item, count], idx) => (
+                {hotItemStats.slice(0, 10).map(([item, count], idx) => (
                   <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid rgba(94,200,80,0.1)', alignItems: 'center' }}>
                     <span>{item}</span>
                     <span style={{ backgroundColor: 'rgba(212,176,48,0.2)', padding: '4px 12px', borderRadius: '20px', color: '#d4b030', fontSize: '12px', fontWeight: 'bold' }}>

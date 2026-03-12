@@ -67,8 +67,8 @@ const MuseumTracker = () => {
     { id: 34, name: 'Megalo Skull', species: 'Megalosaurus', part: 'Skull' },
     { id: 35, name: 'Megalo Tail', species: 'Megalosaurus', part: 'Tail' },
     { id: 36, name: 'Myllokunmingia', species: 'Myllokunmingia', part: 'Full' },
-    { id: 37, name: 'Ophthalmo Skull', species: 'Opthalmosaurus', part: 'Skull' },
-    { id: 38, name: 'Ophthalmo Torso', species: 'Opthalmosaurus', part: 'Torso' },
+    { id: 37, name: 'Ophthalmo Skull', species: 'Ophthalmosaurus', part: 'Skull' },
+    { id: 38, name: 'Ophthalmo Torso', species: 'Ophthalmosaurus', part: 'Torso' },
     { id: 39, name: 'Parasaur Chest', species: 'Parasaurolophus', part: 'Chest' },
     { id: 40, name: 'Parasaur Skull', species: 'Parasaurolophus', part: 'Skull' },
     { id: 41, name: 'Parasaur Tail', species: 'Parasaurolophus', part: 'Tail' },
@@ -82,7 +82,6 @@ const MuseumTracker = () => {
     { id: 49, name: 'Ptera Left Wing', species: 'Pteranodon', part: 'Left Wing' },
     { id: 50, name: 'Ptera Right Wing', species: 'Pteranodon', part: 'Right Wing' },
     { id: 51, name: 'Ptera Skull', species: 'Pteranodon', part: 'Skull' },
-    { id: 52, name: 'Right Megalo Side', species: 'Megalosaurus', part: 'Right Side' },
     { id: 53, name: 'Saber Tooth Skull', species: 'Saber Tooth', part: 'Skull' },
     { id: 54, name: 'Saber Tooth Torso', species: 'Saber Tooth', part: 'Torso' },
     { id: 55, name: 'Seismo Chest', species: 'Seismosaurus', part: 'Chest' },
@@ -119,7 +118,6 @@ const MuseumTracker = () => {
     { id: 10, name: 'Eerie Painting', type: 'Painting', alwaysReal: true },
     { id: 11, name: 'Exquisite Statue', type: 'Statue', alwaysReal: false },
     { id: 12, name: 'Flowery Painting', type: 'Painting', alwaysReal: true },
-    { id: 13, name: 'Forgery Painting', type: 'Painting', alwaysReal: false },
     { id: 14, name: 'Gallant Statue', type: 'Statue', alwaysReal: true },
     { id: 15, name: 'Gave Painting', type: 'Painting', alwaysReal: true },
     { id: 16, name: 'Glowing Painting', type: 'Painting', alwaysReal: true },
@@ -128,7 +126,6 @@ const MuseumTracker = () => {
     { id: 19, name: 'Hauntingly Beautiful Statue', type: 'Statue', alwaysReal: false },
     { id: 20, name: 'Jolly Painting', type: 'Painting', alwaysReal: true },
     { id: 21, name: 'Landmarks Painting', type: 'Painting', alwaysReal: true },
-    { id: 22, name: 'Leaf Pile Painting', type: 'Painting', alwaysReal: false },
     { id: 23, name: 'Mysterious Painting', type: 'Painting', alwaysReal: true },
     { id: 24, name: 'Motherly Statue', type: 'Statue', alwaysReal: true },
     { id: 25, name: 'Moving Painting', type: 'Painting', alwaysReal: false },
@@ -217,7 +214,7 @@ const MuseumTracker = () => {
 
   const styles = {
     container: {
-      width: '900px',
+      width: '100%',
       margin: '0 auto',
       backgroundColor: '#0a1a10',
       color: '#e0e0e0',
@@ -567,7 +564,7 @@ const MuseumTracker = () => {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
       `}</style>
 
@@ -614,9 +611,9 @@ const MuseumTracker = () => {
         ))}
       </div>
 
-      {activeTab === 'fish' && renderSection('fish', filterItems(FISH), 'Fish', '🐟')}
-      {activeTab === 'bugs' && renderSection('bugs', filterItems(BUGS), 'Bugs', '🪲')}
-      {activeTab === 'sea' && renderSection('sea', filterItems(SEA_CREATURES), 'Sea Creatures', '🐚')}
+      {activeTab === 'fish' && renderSection('fish', FISH, 'Fish', '🐟')}
+      {activeTab === 'bugs' && renderSection('bugs', BUGS, 'Bugs', '🪲')}
+      {activeTab === 'sea' && renderSection('sea', SEA_CREATURES, 'Sea Creatures', '🐚')}
       {activeTab === 'fossils' && renderSection('fossils', FOSSILS, 'Fossils', '🦴')}
       {activeTab === 'art' && renderSection('art', ART, 'Art', '🎨')}
 

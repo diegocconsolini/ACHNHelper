@@ -52,21 +52,27 @@ export default function BellCalculator() {
     setItems(newItems);
     try {
       await window.storage.set('acnh-bell-calc-items', JSON.stringify(newItems));
-    } catch (e) {}
+    } catch (e) {
+      console.error('Error saving:', e);
+    }
   };
 
   const saveLoans = async (newLoans) => {
     setLoans(newLoans);
     try {
       await window.storage.set('acnh-bell-calc-loans', JSON.stringify(newLoans));
-    } catch (e) {}
+    } catch (e) {
+      console.error('Error saving:', e);
+    }
   };
 
   const saveDailyIncome = async (newIncome) => {
     setDailyIncome(newIncome);
     try {
       await window.storage.set('acnh-bell-calc-income', JSON.stringify(newIncome));
-    } catch (e) {}
+    } catch (e) {
+      console.error('Error saving:', e);
+    }
   };
 
   const addItem = (name, price, qty = 1) => {
@@ -114,9 +120,9 @@ export default function BellCalculator() {
 
   const styles = {
     container: {
-      width: '900px',
+      width: '100%',
       backgroundColor: '#0a1a10',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       padding: '20px',
       borderRadius: '12px',
@@ -140,7 +146,7 @@ export default function BellCalculator() {
     tab: (active) => ({
       padding: '10px 16px',
       backgroundColor: 'transparent',
-      color: active ? '#5ec850' : '#888',
+      color: active ? '#5ec850' : '#5a7a50',
       border: 'none',
       cursor: 'pointer',
       fontSize: '14px',
@@ -157,7 +163,7 @@ export default function BellCalculator() {
     },
     input: {
       backgroundColor: 'rgba(12, 28, 14, 0.5)',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       border: '1px solid rgba(94, 200, 80, 0.3)',
       padding: '8px 12px',
       borderRadius: '6px',
@@ -212,7 +218,7 @@ export default function BellCalculator() {
     },
     label: {
       fontSize: '12px',
-      color: '#999',
+      color: '#5a7a50',
       marginTop: '10px',
       marginBottom: '4px',
       display: 'block',
@@ -228,7 +234,7 @@ export default function BellCalculator() {
   return (
     <div style={styles.container}>
       <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}
+        {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}
       </style>
 
       <div style={styles.header}>
@@ -299,7 +305,7 @@ export default function BellCalculator() {
           </div>
 
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ fontSize: '12px', color: '#999' }}>Quick Add:</span>
+            <span style={{ fontSize: '12px', color: '#5a7a50'}}>Quick Add:</span>
             <div style={styles.row}>
               <button
                 style={styles.buttonSmall}
@@ -369,7 +375,7 @@ export default function BellCalculator() {
           </div>
 
           <div style={styles.card}>
-            <span style={{ fontSize: '12px', color: '#999' }}>Check off completed loans:</span>
+            <span style={{ fontSize: '12px', color: '#5a7a50'}}>Check off completed loans:</span>
             {Object.entries(loanData).map(([key, data]) => (
               <div key={key} style={{ ...styles.row, marginTop: '10px' }}>
                 <input
@@ -406,7 +412,7 @@ export default function BellCalculator() {
       {activeTab === 'income' && (
         <div>
           <div style={styles.card}>
-            <span style={{ fontSize: '12px', color: '#999' }}>Daily income sources (bells):</span>
+            <span style={{ fontSize: '12px', color: '#5a7a50'}}>Daily income sources (bells):</span>
             {Object.entries(incomeCategories).map(([key, data]) => (
               <div key={key} style={{ marginTop: '12px' }}>
                 <label style={{ ...styles.label, marginTop: '0' }}>

@@ -85,7 +85,7 @@ const FISH_DATA = [
 
 const LOCATION_EMOJI = {
   "River": "🏞️",
-  "Pond": "🌊",
+  "Pond": "🏞️",
   "Sea": "🌊",
   "Pier": "⚓",
   "River (Clifftop)": "⛰️",
@@ -187,8 +187,8 @@ const FishTracker = () => {
   };
 
   const filteredFish = filterFish();
-  const caughtCount = Object.keys(caughtFish).length;
-  const donatedCount = Object.keys(donatedFish).length;
+  const caughtCount = Object.values(caughtFish).filter(Boolean).length;
+  const donatedCount = Object.values(donatedFish).filter(Boolean).length;
   const completionPercent = Math.round((caughtCount / FISH_DATA.length) * 100);
 
   const toggleCaught = (id) => {
@@ -210,7 +210,7 @@ const FishTracker = () => {
   }
 
   const containerStyle = {
-    width: "900px",
+    width: "100%",
     margin: "0 auto",
     backgroundColor: "#0a1a10",
     color: "#e0e0e0",
@@ -403,7 +403,7 @@ const FishTracker = () => {
   return (
     <div style={containerStyle}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
 
         input:focus, select:focus {
           outline: none;

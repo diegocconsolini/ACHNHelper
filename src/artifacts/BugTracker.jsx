@@ -41,7 +41,7 @@ const BUG_DATA = [
   { id: 38, name: "Pondskater", location: "Water", sellPrice: 330, northMonths: [5,6,7,8,9], southMonths: [11,12,1,2,3], startHour: 0, endHour: 24, allDay: true, specialCondition: "On water surface", farmingTip: "Skating on water surface" },
   { id: 39, name: "Diving Beetle", location: "Water", sellPrice: 800, northMonths: [5,6,7,8,9], southMonths: [11,12,1,2,3], startHour: 8, endHour: 19, allDay: false, specialCondition: "In water", farmingTip: "Swimming in ponds and rivers" },
   { id: 40, name: "Giant Water Bug", location: "Water", sellPrice: 2000, northMonths: [4,5,6,7,8,9], southMonths: [10,11,12,1,2,3], startHour: 19, endHour: 8, allDay: false, specialCondition: "In water", farmingTip: "Rare in water at night" },
-  { id: 41, name: "Stinkbug", location: "Flowers", sellPrice: 400, northMonths: [3,4,9,10,11,12], southMonths: [3,4,9,10,11,12], startHour: 0, endHour: 24, allDay: true, specialCondition: null, farmingTip: "Found on flowers and trees" },
+  { id: 41, name: "Stinkbug", location: "Flowers", sellPrice: 400, northMonths: [3,4,9,10,11,12], southMonths: [9,10,3,4,5,6], startHour: 0, endHour: 24, allDay: true, specialCondition: null, farmingTip: "Found on flowers and trees" },
   { id: 42, name: "Man-faced Stink Bug", location: "Flowers", sellPrice: 1000, northMonths: [3,4,5,6,7,8,9,10,11,12], southMonths: [3,4,9,10,11,12], startHour: 19, endHour: 8, allDay: false, specialCondition: null, farmingTip: "Nighttime bug on flowers" },
   { id: 43, name: "Ladybug", location: "Flowers", sellPrice: 200, northMonths: [1,2,3,4,12], southMonths: [6,7,8,9,10], startHour: 8, endHour: 17, allDay: false, specialCondition: null, farmingTip: "Found on flowers and trees" },
   { id: 44, name: "Tiger Beetle", location: "Ground", sellPrice: 1500, northMonths: [1,2,3,4,5,6,7,8,9,10,11,12], southMonths: [1,2,3,4,5,6,7,8,9,10,11,12], startHour: 0, endHour: 24, allDay: true, specialCondition: null, farmingTip: "Fast-moving on the ground" },
@@ -194,7 +194,7 @@ export default function BugTracker() {
   return (
     <div style={{ ...styles.container }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
 
       {/* Header */}
@@ -381,10 +381,10 @@ export default function BugTracker() {
 
 const styles = {
   container: {
-    width: '900px',
+    width: '100%',
     margin: '0 auto',
     backgroundColor: '#0a1a10',
-    color: '#e8f5e9',
+    color: '#c8e6c0',
     fontFamily: "'DM Sans', sans-serif",
     padding: '20px',
     borderRadius: '12px',
@@ -418,7 +418,7 @@ const styles = {
   },
   progressLabel: {
     fontSize: '12px',
-    color: '#a8d5a8',
+    color: '#5a7a50',
     fontWeight: 500,
     marginBottom: '6px',
   },
@@ -462,7 +462,7 @@ const styles = {
   },
   hemButtonInactive: {
     backgroundColor: 'rgba(12, 28, 14, 0.95)',
-    color: '#a8d5a8',
+    color: '#5a7a50',
     border: `1px solid rgba(94, 200, 80, 0.3)`,
   },
   searchContainer: {
@@ -474,7 +474,7 @@ const styles = {
     backgroundColor: 'rgba(12, 28, 14, 0.95)',
     border: `1px solid rgba(94, 200, 80, 0.3)`,
     borderRadius: '6px',
-    color: '#e8f5e9',
+    color: '#c8e6c0',
     fontSize: '14px',
     fontFamily: "'DM Sans', sans-serif",
     boxSizing: 'border-box',
@@ -484,7 +484,7 @@ const styles = {
   },
   filterLabel: {
     fontSize: '12px',
-    color: '#a8d5a8',
+    color: '#5a7a50',
     fontWeight: 500,
     marginBottom: '8px',
     textTransform: 'uppercase',
@@ -517,7 +517,7 @@ const styles = {
   },
   filterButtonInactive: {
     backgroundColor: 'rgba(12, 28, 14, 0.95)',
-    color: '#a8d5a8',
+    color: '#5a7a50',
     border: `1px solid rgba(94, 200, 80, 0.3)`,
   },
   bugGrid: {
@@ -557,7 +557,7 @@ const styles = {
   },
   bugLocation: {
     fontSize: '12px',
-    color: '#a8d5a8',
+    color: '#5a7a50',
   },
   bugPrice: {
     fontSize: '12px',
@@ -597,7 +597,7 @@ const styles = {
   },
   farmingTip: {
     fontSize: '11px',
-    color: '#a8d5a8',
+    color: '#5a7a50',
     fontStyle: 'italic',
     marginBottom: '8px',
     lineHeight: '1.3',
@@ -612,7 +612,7 @@ const styles = {
     alignItems: 'center',
     gap: '6px',
     fontSize: '12px',
-    color: '#a8d5a8',
+    color: '#5a7a50',
     cursor: 'pointer',
     userSelect: 'none',
   },
@@ -636,7 +636,7 @@ const styles = {
   },
   statLabel: {
     fontSize: '11px',
-    color: '#a8d5a8',
+    color: '#5a7a50',
     textTransform: 'uppercase',
     letterSpacing: '1px',
     marginBottom: '6px',

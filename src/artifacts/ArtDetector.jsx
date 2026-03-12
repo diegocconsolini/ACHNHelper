@@ -130,7 +130,7 @@ const ArtDetector = () => {
       backgroundColor: '#0a1a10',
       minHeight: '100vh',
       fontFamily: '"DM Sans", sans-serif',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
     },
     header: {
       textAlign: 'center',
@@ -147,7 +147,7 @@ const ArtDetector = () => {
     },
     subtitle: {
       fontSize: '14px',
-      color: '#b0b0b0',
+      color: '#5a7a50',
       margin: '0',
     },
     tabsContainer: {
@@ -160,7 +160,7 @@ const ArtDetector = () => {
       padding: '12px 24px',
       border: 'none',
       backgroundColor: 'transparent',
-      color: '#b0b0b0',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontSize: '14px',
       fontWeight: '500',
@@ -194,7 +194,7 @@ const ArtDetector = () => {
     },
     statLabel: {
       fontSize: '12px',
-      color: '#a0a0a0',
+      color: '#5a7a50',
       margin: '0',
     },
     controlsContainer: {
@@ -208,7 +208,7 @@ const ArtDetector = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       border: '1px solid rgba(94, 200, 80, 0.3)',
       borderRadius: '6px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
       transition: 'border-color 0.3s ease',
@@ -219,7 +219,7 @@ const ArtDetector = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       border: '1px solid rgba(94, 200, 80, 0.3)',
       borderRadius: '6px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
       cursor: 'pointer',
@@ -253,19 +253,19 @@ const ArtDetector = () => {
     },
     artType: {
       fontSize: '12px',
-      color: '#a0a0a0',
+      color: '#5a7a50',
       margin: '0 0 4px 0',
       fontFamily: '"DM Mono", monospace',
     },
     artRealName: {
       fontSize: '13px',
-      color: '#d4d4d4',
+      color: '#c8e6c0',
       margin: '8px 0 4px 0',
       fontStyle: 'italic',
     },
     artArtist: {
       fontSize: '12px',
-      color: '#a0a0a0',
+      color: '#5a7a50',
       margin: '0 0 12px 0',
     },
     badgeContainer: {
@@ -299,7 +299,7 @@ const ArtDetector = () => {
       padding: '10px 12px',
       marginTop: '12px',
       fontSize: '12px',
-      color: '#d4d4d4',
+      color: '#c8e6c0',
       lineHeight: '1.5',
     },
     checkboxContainer: {
@@ -318,7 +318,7 @@ const ArtDetector = () => {
     },
     checkboxLabel: {
       fontSize: '13px',
-      color: '#b0b0b0',
+      color: '#5a7a50',
       cursor: 'pointer',
       userSelect: 'none',
     },
@@ -340,7 +340,7 @@ const ArtDetector = () => {
     },
     progressLabel: {
       fontSize: '12px',
-      color: '#a0a0a0',
+      color: '#5a7a50',
       fontFamily: '"DM Mono", monospace',
     },
     reddModeContainer: {
@@ -359,7 +359,7 @@ const ArtDetector = () => {
     },
     reddInfo: {
       fontSize: '13px',
-      color: '#b0b0b0',
+      color: '#5a7a50',
       marginBottom: '16px',
     },
     reddSelectionGrid: {
@@ -387,7 +387,7 @@ const ArtDetector = () => {
     emptyState: {
       textAlign: 'center',
       padding: '40px 20px',
-      color: '#a0a0a0',
+      color: '#5a7a50',
     },
     emptyStateIcon: {
       fontSize: '48px',
@@ -399,7 +399,7 @@ const ArtDetector = () => {
     return (
       <div style={styles.container}>
         <style>
-          {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');`}
+          {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}
         </style>
         <div style={{ textAlign: 'center', padding: '40px' }}>
           <p style={{ color: '#5ec850' }}>Loading art collection...</p>
@@ -411,7 +411,7 @@ const ArtDetector = () => {
   return (
     <div style={styles.container}>
       <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
           input:focus, select:focus { outline: none; border-color: #5ec850 !important; box-shadow: 0 0 8px rgba(94, 200, 80, 0.2); }
         `}
       </style>
@@ -540,12 +540,12 @@ const ArtDetector = () => {
           </div>
 
           <div style={{ marginBottom: '16px' }}>
-            <p style={{ fontSize: '13px', color: '#a0a0a0', margin: '0 0 8px 0' }}>
+            <p style={{ fontSize: '13px', color: '#5a7a50', margin: '0 0 8px 0' }}>
               Paintings: {donatedPaintings}/30 | Statues: {donatedStatues}/13
             </p>
           </div>
 
-          {filteredArt.length === 0 ? (
+          {ART_DATA.length === 0 ? (
             <div style={styles.emptyState}>
               <div style={styles.emptyStateIcon}>📚</div>
               <p>No art pieces to show</p>
@@ -593,7 +593,7 @@ const ArtDetector = () => {
             <p style={styles.reddInfo}>
               Select up to 4 art pieces that Redd is selling today. We'll help you spot the fakes!
             </p>
-            <p style={{ fontSize: '12px', color: '#a0a0a0', margin: '0' }}>
+            <p style={{ fontSize: '12px', color: '#5a7a50', margin: '0' }}>
               Selected: {reddSelection.length}/4
             </p>
           </div>
@@ -645,7 +645,7 @@ const ArtDetector = () => {
                     {isSelected ? (
                       <span style={{ fontSize: '12px', color: '#5ec850', fontWeight: '600' }}>✓ Selected</span>
                     ) : (
-                      <span style={{ fontSize: '12px', color: '#a0a0a0' }}>Click to select</span>
+                      <span style={{ fontSize: '12px', color: '#5a7a50' }}>Click to select</span>
                     )}
                   </div>
                 </div>
@@ -660,10 +660,10 @@ const ArtDetector = () => {
                 const art = ART_DATA.find(a => a.id === id);
                 return (
                   <div key={id} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(74, 172, 240, 0.2)' }}>
-                    <p style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: '600', color: '#e0e0e0' }}>
+                    <p style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: '600', color: '#c8e6c0' }}>
                       {art.type === 'painting' ? '🖼️' : '🗿'} {art.name}
                     </p>
-                    <p style={{ margin: '0', fontSize: '12px', color: '#b0b0b0' }}>
+                    <p style={{ margin: '0', fontSize: '12px', color: '#5a7a50' }}>
                       {art.alwaysReal ? '✅ Safe - Always genuine' : `⚠️ Risk - Check for: ${art.fakeTell}`}
                     </p>
                   </div>

@@ -35,14 +35,6 @@ const VillagerGiftGuide = () => {
     12: [{ name: 'Fang', date: 18 }, { name: 'Freya', date: 14 }, { name: 'Blanche', date: 21 }, { name: 'Kyle', date: 6 }]
   };
 
-  const giftPoints = {
-    furniture: 3,
-    favoriteStyle: 2,
-    floraFaunaTools: 2,
-    wrapped: 1,
-    garbage: -2
-  };
-
   const universalGifts = [
     { name: 'Iron Wall Lamp', bells: 2500, reason: 'No style conflict, moderately valued' },
     { name: 'Fruit (any crafted)', bells: 'Varies', reason: 'All villagers love fruit items' },
@@ -108,19 +100,6 @@ const VillagerGiftGuide = () => {
     saveData(updated, giftLog, dreamieWishlist);
   };
 
-  const addGiftLog = (villagerName, gift, points) => {
-    const log = {
-      id: Date.now(),
-      villagerName,
-      gift,
-      points,
-      date: new Date().toLocaleDateString()
-    };
-    const updated = [...giftLog, log];
-    setGiftLog(updated);
-    saveData(myVillagers, updated, dreamieWishlist);
-  };
-
   const updateDreamies = (text) => {
     setDreamieWishlist(text);
     saveData(myVillagers, giftLog, text);
@@ -128,7 +107,7 @@ const VillagerGiftGuide = () => {
 
   const baseStyles = {
     container: {
-      width: '900px',
+      width: '100%',
       background: '#0a1a10',
       borderRadius: '12px',
       border: '1px solid rgba(94, 200, 80, 0.2)',
@@ -327,7 +306,6 @@ const VillagerGiftGuide = () => {
     const p = personalities[selectedPersonality];
     return (
       <div>
-        <style>{'@import url(\'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap\');'}</style>
         <h2 style={{ ...baseStyles.section, fontSize: '18px', fontFamily: '"Playfair Display", serif', color: '#d4b030' }}>
           Select Personality Type
         </h2>
@@ -546,6 +524,7 @@ const VillagerGiftGuide = () => {
 
   return (
     <div style={baseStyles.container}>
+      <style>{'@import url(\'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap\');'}</style>
       <h1 style={baseStyles.header}>🎁 Villager Gift Guide</h1>
 
       <div style={baseStyles.tabs}>

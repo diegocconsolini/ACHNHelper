@@ -90,7 +90,7 @@ const GoldenToolTracker = () => {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
 
       {/* Header */}
@@ -397,7 +397,7 @@ const ToolCard = ({ emoji, name, requirement, isUnlocked, progressPercent, child
 
 const styles = {
   container: {
-    width: '900px',
+    width: '100%',
     backgroundColor: '#0a1a10',
     color: '#ffffff',
     fontFamily: "'DM Sans', sans-serif",
@@ -536,16 +536,8 @@ const styles = {
     transition: 'all 0.2s ease',
     fontFamily: "'DM Mono', monospace",
   },
-  minusButton: {
-    ':hover': {
-      backgroundColor: 'rgba(94, 200, 80, 0.3)',
-    },
-  },
-  plusButton: {
-    ':hover': {
-      backgroundColor: 'rgba(94, 200, 80, 0.3)',
-    },
-  },
+  minusButton: {},
+  plusButton: {},
   numberInput: {
     width: '80px',
     padding: '8px',

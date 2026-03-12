@@ -43,7 +43,7 @@ const DIYRecipeTracker = () => {
     'Seasonal - Cherry Blossom': {
       count: 14,
       emoji: '🌸',
-      recipes: ['Cherry Blossom Pond Stone', 'Cherry Blossom Clock', 'Cherry Blossom Bonsai', 'Cherry Blossom Branches', 'Cherry Blossom Umbrella', 'Outdoor Picnic Set', 'Sakura Wood Flooring', 'Sakura Wood Wall', 'Cherry Blossom Wand', 'Cherry Blossom Petal Pile', 'Blossom Viewing Lantern', 'Cherry Blossom Bonsai', 'Sakura Leaf Pile', 'Jingle Bells']
+      recipes: ['Cherry Blossom Pond Stone', 'Cherry Blossom Clock', 'Cherry Blossom Bonsai', 'Cherry Blossom Branches', 'Cherry Blossom Umbrella', 'Outdoor Picnic Set', 'Sakura Wood Flooring', 'Sakura Wood Wall', 'Cherry Blossom Wand', 'Cherry Blossom Petal Pile', 'Blossom Viewing Lantern', 'Sakura Leaf Pile', 'Jingle Bells']
     },
     'Seasonal - Young Spring Bamboo': {
       count: 6,
@@ -234,7 +234,13 @@ const DIYRecipeTracker = () => {
       percent
     }));
     // Persist to storage
-    window.storage.set('diyTracker', JSON.stringify({ learned: Array.from(learnedRecipes) }));
+    (async () => {
+      try {
+        await window.storage.set('diyTracker', JSON.stringify({ learned: Array.from(learnedRecipes) }));
+      } catch (e) {
+        console.error('Error saving recipes:', e);
+      }
+    })();
   }, [learnedRecipes]);
 
   const toggleRecipeLearned = (recipe) => {
@@ -290,7 +296,7 @@ const DIYRecipeTracker = () => {
 
   const styles = {
     container: {
-      width: '900px',
+      width: '100%',
       margin: '0 auto',
       padding: '20px',
       backgroundColor: '#0a1a10',
@@ -577,7 +583,7 @@ const DIYRecipeTracker = () => {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
         input:focus { outline: none; border-color: #5ec850 !important; }
       `}</style>

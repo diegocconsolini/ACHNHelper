@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const THEME_TAGS = ['Cottagecore', 'Japanese', 'Urban', 'Fairytale', 'Spooky', 'Natural', 'Modern', 'Tropical', 'Medieval', 'Space', 'Farm', 'Cluttercore', 'Minimalist', 'Custom'];
+
 const DreamAddressBook = () => {
   const [entries, setEntries] = useState([]);
   const [activeTab, setActiveTab] = useState('book');
@@ -9,8 +11,6 @@ const DreamAddressBook = () => {
   const [filterTag, setFilterTag] = useState('');
   const [sortBy, setSortBy] = useState('date');
   const [message, setMessage] = useState('');
-
-  const THEME_TAGS = ['Cottagecore', 'Japanese', 'Urban', 'Fairytale', 'Spooky', 'Natural', 'Modern', 'Tropical', 'Medieval', 'Space', 'Farm', 'Cluttercore', 'Minimalist', 'Custom'];
 
   const EXAMPLE_DATA = [
     { id: '1', islandName: 'Jambette Isle', dreamAddress: 'DA-1234-5678-9012', ownerName: 'Example', rating: 5, tags: ['Cottagecore'], notes: 'Beautiful pastoral island with charming buildings', dateVisited: new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0], mustRevisit: true },
@@ -68,9 +68,14 @@ const DreamAddressBook = () => {
   };
 
   const copyToClipboard = (address) => {
-    navigator.clipboard.writeText(address);
-    setMessage('📋 Copied to clipboard');
-    setTimeout(() => setMessage(''), 2000);
+    navigator.clipboard.writeText(address).then(() => {
+      setMessage('📋 Copied to clipboard');
+      setTimeout(() => setMessage(''), 2000);
+    }).catch((e) => {
+      console.error('Error copying to clipboard:', e);
+      setMessage('⚠️ Copy failed');
+      setTimeout(() => setMessage(''), 2000);
+    });
   };
 
   const getFilteredEntries = () => {
@@ -375,7 +380,7 @@ const DreamAddressBook = () => {
   return (
     <div style={styles.container}>
       <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
           *::-webkit-scrollbar { width: 8px; } *::-webkit-scrollbar-track { background: rgba(94,200,80,0.05); } *::-webkit-scrollbar-thumb { background: rgba(94,200,80,0.3); border-radius: 4px; }
         `}
       </style>
@@ -564,9 +569,7 @@ const DreamAddressBook = () => {
 };
 
 const AddEntryForm = ({ onSubmit, styles }) => {
-  const THEME_TAGS = ['Cottagecore', 'Japanese', 'Urban', 'Fairytale', 'Spooky', 'Natural', 'Modern', 'Tropical', 'Medieval', 'Space', 'Farm', 'Cluttercore', 'Minimalist', 'Custom'];
-
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     islandName: '',
     dreamAddress: '',
     ownerName: '',

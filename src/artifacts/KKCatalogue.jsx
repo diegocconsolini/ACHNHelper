@@ -104,9 +104,9 @@ const SONGS = [
 const GENRES = ["All", "Rock", "Pop", "Jazz", "Classical", "Electronic", "World", "Country", "Soul/R&B", "Ballad"];
 const MOODS = ["Energetic", "Bold", "Upbeat", "Happy", "Chill", "Peaceful", "Mellow", "Romantic", "Sad", "Elegant", "Spiritual", "Exotic", "Quirky"];
 const HIDDEN_SONGS = [
-  { id: 3, name: "Animal City", unlock: "Complete the Island Tours" },
+  { id: 3, name: "Animal City", unlock: "Complete the main storyline (credits roll)" },
   { id: 8, name: "Drivin'", unlock: "Earn 300+ Nook Miles" },
-  { id: 9, name: "Farewell", unlock: "Complete Happy Home Paradise DLC" },
+  { id: 9, name: "Farewell", unlock: "Request by name during K.K. concert" },
 ];
 
 export default function KKCatalogue() {
@@ -117,6 +117,7 @@ export default function KKCatalogue() {
   const [collectedSongs, setCollectedSongs] = useState(new Set());
   const [rooms, setRooms] = useState([]);
   const [newRoomName, setNewRoomName] = useState('');
+  const [hoveredSongId, setHoveredSongId] = useState(null);
 
   useEffect(() => {
     loadCollectedSongs();
@@ -603,12 +604,11 @@ export default function KKCatalogue() {
   };
 
   return (
-    <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
-      * { box-sizing: border-box; }
-    `}</style>
-  ) || (
     <div style={styles.container}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+        * { box-sizing: border-box; }
+      `}</style>
       <div style={styles.panel}>
         <h1 style={styles.header}>🎵 K.K. Catalogue</h1>
         <p style={styles.subheader}>Complete your K.K. Slider song collection</p>
@@ -688,7 +688,7 @@ export default function KKCatalogue() {
             <div style={styles.songGrid}>
               {filteredSongs.map(song => {
                 const isCollected = collectedSongs.has(song.id);
-                const [isHovered, setIsHovered] = useState(false);
+                const isHovered = hoveredSongId === song.id;
                 return (
                   <div
                     key={song.id}
@@ -696,8 +696,8 @@ export default function KKCatalogue() {
                       ...styles.songCard,
                       ...(isHovered ? styles.songCardHover : {}),
                     }}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                    onMouseEnter={() => setHoveredSongId(song.id)}
+                    onMouseLeave={() => setHoveredSongId(null)}
                   >
                     <div style={styles.songEmoji}>🎵</div>
                     <div style={styles.songName}>{song.name}</div>

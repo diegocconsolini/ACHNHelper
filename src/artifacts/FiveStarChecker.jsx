@@ -39,7 +39,7 @@ const FiveStarChecker = () => {
     try {
       await window.storage.set(STORAGE_KEY, JSON.stringify(newData));
     } catch (e) {
-      console.log('Data saved locally');
+      console.error('Error saving data:', e);
     }
   };
 
@@ -165,7 +165,7 @@ const FiveStarChecker = () => {
 
   return (
     <div style={{
-      width: '900px',
+      width: '100%',
       margin: '0 auto',
       padding: '20px',
       backgroundColor: '#0a1a10',
@@ -174,7 +174,7 @@ const FiveStarChecker = () => {
       minHeight: '100vh',
     }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
 
       {/* Header */}
@@ -182,7 +182,7 @@ const FiveStarChecker = () => {
         textAlign: 'center',
         marginBottom: '30px',
         paddingBottom: '20px',
-        borderBottom: `2px solid ${('#5ec850')}`,
+        borderBottom: '2px solid #5ec850',
       }}>
         <h1 style={{
           fontFamily: '"Playfair Display", serif',
@@ -202,7 +202,7 @@ const FiveStarChecker = () => {
         padding: '20px',
         backgroundColor: 'rgba(12,28,14,0.95)',
         borderRadius: '8px',
-        borderLeft: `4px solid ${('#d4b030')}`,
+        borderLeft: '4px solid #d4b030',
       }}>
         <div style={{
           fontSize: '72px',
@@ -224,7 +224,7 @@ const FiveStarChecker = () => {
       <div style={{
         padding: '15px',
         backgroundColor: 'rgba(74,172,240,0.1)',
-        borderLeft: `4px solid ${('#4aacf0')}`,
+        borderLeft: '4px solid #4aacf0',
         marginBottom: '25px',
         borderRadius: '4px',
         fontSize: '14px',
@@ -238,7 +238,7 @@ const FiveStarChecker = () => {
         <div style={{
           padding: '15px',
           backgroundColor: 'rgba(212,176,48,0.1)',
-          borderLeft: `4px solid ${('#d4b030')}`,
+          borderLeft: '4px solid #d4b030',
           marginBottom: '25px',
           borderRadius: '4px',
         }}>

@@ -1,5 +1,133 @@
 import React, { useState, useEffect } from 'react';
 
+const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed, moveProject, deleteProject }) => (
+  <div style={{
+    background: 'rgba(12,28,14,0.95)',
+    border: `2px solid ${getStatusColor(project.status)}`,
+    borderRadius: '8px',
+    padding: '12px',
+    marginBottom: '12px',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer',
+    position: 'relative'
+  }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#5ec850', marginBottom: '4px' }}>
+          {project.species} 🌸
+        </div>
+        <div style={{ fontSize: '13px', color: '#d4b030', marginBottom: '6px' }}>
+          Target: {project.color}
+        </div>
+        <div style={{ fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
+          Parents: {project.parents || 'TBD'}
+        </div>
+        <div style={{ fontSize: '11px', color: '#7e8d8f', marginBottom: '6px', fontFamily: '"DM Mono", monospace' }}>
+          Days: {getDaysElapsed(project.startDate)}
+        </div>
+        {project.notes && (
+          <div style={{ fontSize: '11px', color: '#9ba8af', fontStyle: 'italic', marginBottom: '4px' }}>
+            "{project.notes}"
+          </div>
+        )}
+      </div>
+      <div style={{
+        background: getPriorityColor(project.priority),
+        color: '#fff',
+        padding: '4px 8px',
+        borderRadius: '4px',
+        fontSize: '11px',
+        fontWeight: 'bold',
+        marginLeft: '8px'
+      }}>
+        {project.priority}
+      </div>
+    </div>
+    <div style={{ display: 'flex', gap: '6px', marginTop: '10px', fontSize: '11px' }}>
+      {project.status !== 'Planned' && (
+        <button onClick={() => moveProject(project.id, 'Planned')} style={{
+          background: 'transparent',
+          border: '1px solid #4aacf0',
+          color: '#4aacf0',
+          padding: '4px 8px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          flex: 1
+        }}>← Back</button>
+      )}
+      {project.status !== 'Complete' && (
+        <button onClick={() => moveProject(project.id, project.status === 'Waiting' ? 'Complete' : 'In Progress')} style={{
+          background: 'transparent',
+          border: '1px solid #5ec850',
+          color: '#5ec850',
+          padding: '4px 8px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          flex: 1
+        }}>
+          {project.status === 'Waiting' ? '✓ Done' : 'Next →'}
+        </button>
+      )}
+      <button onClick={() => deleteProject(project.id)} style={{
+        background: 'transparent',
+        border: '1px solid #ff6b6b',
+        color: '#ff6b6b',
+        padding: '4px 8px',
+        borderRadius: '4px',
+        cursor: 'pointer'
+      }}>✕</button>
+    </div>
+  </div>
+);
+
+const KanbanColumn = ({ status, projects: columnProjects, getStatusColor, getPriorityColor, getDaysElapsed, moveProject, deleteProject }) => (
+  <div style={{
+    background: 'rgba(12,28,14,0.6)',
+    border: `2px solid ${getStatusColor(status)}`,
+    borderRadius: '8px',
+    padding: '16px',
+    minHeight: '500px',
+    flex: 1
+  }}>
+    <div style={{
+      fontSize: '14px',
+      fontWeight: 'bold',
+      color: getStatusColor(status),
+      marginBottom: '12px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    }}>
+      {status}
+      <span style={{
+        background: getStatusColor(status),
+        color: '#0a1a10',
+        borderRadius: '50%',
+        width: '20px',
+        height: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '12px',
+        fontWeight: 'bold'
+      }}>
+        {columnProjects.length}
+      </span>
+    </div>
+    {columnProjects.map(project => (
+      <KanbanCard
+        key={project.id}
+        project={project}
+        getStatusColor={getStatusColor}
+        getPriorityColor={getPriorityColor}
+        getDaysElapsed={getDaysElapsed}
+        moveProject={moveProject}
+        deleteProject={deleteProject}
+      />
+    ))}
+  </div>
+);
+
 const IslandFlowerMap = () => {
   const [projects, setProjects] = useState([]);
   const [wateringLog, setWateringLog] = useState([]);
@@ -29,10 +157,14 @@ const IslandFlowerMap = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const projectsResult = await window.storage.get('acnh_breeding_projects');
-      const wateringResult = await window.storage.get('acnh_watering_log');
-      if (projectsResult) setProjects(JSON.parse(projectsResult.value));
-      if (wateringResult) setWateringLog(JSON.parse(wateringResult.value));
+      try {
+        const projectsResult = await window.storage.get('acnh_breeding_projects');
+        const wateringResult = await window.storage.get('acnh_watering_log');
+        if (projectsResult) setProjects(JSON.parse(projectsResult.value));
+        if (wateringResult) setWateringLog(JSON.parse(wateringResult.value));
+      } catch (e) {
+        console.error('Error loading data:', e);
+      }
     };
     loadData();
   }, []);
@@ -123,126 +255,6 @@ const IslandFlowerMap = () => {
     species,
     count: projects.filter(p => p.species === species).length
   })).filter(s => s.count > 0);
-
-  const KanbanCard = ({ project }) => (
-    <div style={{
-      background: 'rgba(12,28,14,0.95)',
-      border: `2px solid ${getStatusColor(project.status)}`,
-      borderRadius: '8px',
-      padding: '12px',
-      marginBottom: '12px',
-      transition: 'all 0.3s ease',
-      cursor: 'pointer',
-      position: 'relative'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#5ec850', marginBottom: '4px' }}>
-            {project.species} 🌸
-          </div>
-          <div style={{ fontSize: '13px', color: '#d4b030', marginBottom: '6px' }}>
-            Target: {project.color}
-          </div>
-          <div style={{ fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
-            Parents: {project.parents || 'TBD'}
-          </div>
-          <div style={{ fontSize: '11px', color: '#7e8d8f', marginBottom: '6px', fontFamily: '"DM Mono", monospace' }}>
-            Days: {getDaysElapsed(project.startDate)}
-          </div>
-          {project.notes && (
-            <div style={{ fontSize: '11px', color: '#9ba8af', fontStyle: 'italic', marginBottom: '4px' }}>
-              "{project.notes}"
-            </div>
-          )}
-        </div>
-        <div style={{
-          background: getPriorityColor(project.priority),
-          color: '#fff',
-          padding: '4px 8px',
-          borderRadius: '4px',
-          fontSize: '11px',
-          fontWeight: 'bold',
-          marginLeft: '8px'
-        }}>
-          {project.priority}
-        </div>
-      </div>
-      <div style={{ display: 'flex', gap: '6px', marginTop: '10px', fontSize: '11px' }}>
-        {project.status !== 'Planned' && (
-          <button onClick={() => moveProject(project.id, 'Planned')} style={{
-            background: 'transparent',
-            border: '1px solid #4aacf0',
-            color: '#4aacf0',
-            padding: '4px 8px',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            flex: 1
-          }}>← Back</button>
-        )}
-        {project.status !== 'Complete' && (
-          <button onClick={() => moveProject(project.id, project.status === 'Waiting' ? 'Complete' : 'In Progress')} style={{
-            background: 'transparent',
-            border: '1px solid #5ec850',
-            color: '#5ec850',
-            padding: '4px 8px',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            flex: 1
-          }}>
-            {project.status === 'Waiting' ? '✓ Done' : 'Next →'}
-          </button>
-        )}
-        <button onClick={() => deleteProject(project.id)} style={{
-          background: 'transparent',
-          border: '1px solid #ff6b6b',
-          color: '#ff6b6b',
-          padding: '4px 8px',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}>✕</button>
-      </div>
-    </div>
-  );
-
-  const KanbanColumn = ({ status, projects: columnProjects }) => (
-    <div style={{
-      background: 'rgba(12,28,14,0.6)',
-      border: `2px solid ${getStatusColor(status)}`,
-      borderRadius: '8px',
-      padding: '16px',
-      minHeight: '500px',
-      flex: 1
-    }}>
-      <div style={{
-        fontSize: '14px',
-        fontWeight: 'bold',
-        color: getStatusColor(status),
-        marginBottom: '12px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px'
-      }}>
-        {status}
-        <span style={{
-          background: getStatusColor(status),
-          color: '#0a1a10',
-          borderRadius: '50%',
-          width: '20px',
-          height: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '12px',
-          fontWeight: 'bold'
-        }}>
-          {columnProjects.length}
-        </span>
-      </div>
-      {columnProjects.map(project => (
-        <KanbanCard key={project.id} project={project} />
-      ))}
-    </div>
-  );
 
   const statuses = ['Planned', 'In Progress', 'Waiting', 'Complete'];
 
@@ -420,6 +432,11 @@ const IslandFlowerMap = () => {
                 key={status}
                 status={status}
                 projects={projects.filter(p => p.status === status)}
+                getStatusColor={getStatusColor}
+                getPriorityColor={getPriorityColor}
+                getDaysElapsed={getDaysElapsed}
+                moveProject={moveProject}
+                deleteProject={deleteProject}
               />
             ))}
           </div>

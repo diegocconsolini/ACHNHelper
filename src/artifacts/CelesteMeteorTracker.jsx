@@ -9,10 +9,11 @@ const CelesteMeteorTracker = () => {
   const [fragments, setFragments] = useState({});
   const [wishes, setWishes] = useState(0);
   const [newWishes, setNewWishes] = useState('');
+  const [hoveredButtonId, setHoveredButtonId] = useState(null);
 
   const ZODIACS = [
     { name: 'Capricorn', emoji: '♑', dates: 'Dec 22 - Jan 19', item: 'Capricorn Ornament', materials: '2 Capricorn Frags, 2 Star Frags, 2 Gold Nuggets' },
-    { name: 'Aquarius', emoji: '♒', dates: 'Jan 20 - Feb 18', item: 'Aquarius Urn', materials: '2 Aquarius Frags, 3 Star Frags, 5 Gold Nuggets' },
+    { name: 'Aquarius', emoji: '♒', dates: 'Jan 20 - Feb 18', item: 'Aquarius Urn', materials: '3 Aquarius Frags, 3 Star Frags, 5 Gold Nuggets' },
     { name: 'Pisces', emoji: '♓', dates: 'Feb 19 - Mar 20', item: 'Pisces Lamp', materials: '2 Pisces Frags, 3 Star Frags, 2 Gold Nuggets' },
     { name: 'Aries', emoji: '♈', dates: 'Mar 21 - Apr 19', item: 'Aries Rocking Chair', materials: '3 Aries Frags, 2 Star Frags, 1 Gold Nugget, 5 Stone' },
     { name: 'Taurus', emoji: '♉', dates: 'Apr 20 - May 20', item: 'Taurus Bathtub', materials: '2 Taurus Frags, 3 Star Frags, 1 Gold Nugget, 8 Stone' },
@@ -27,7 +28,7 @@ const CelesteMeteorTracker = () => {
 
   const SPACE_ITEMS = [
     'Crescent-Moon Chair', 'Nova Light', 'Moon', 'Star Clock', 'Starry Garland', 'Asteroid',
-    'Satellite', 'Rocket', 'Lunar Lander', 'Lunar Rover', 'Flying Saucer', 'Crewed Spaceship',
+    'Satellite', 'Rocket', 'Lunar Lander', 'Lunar Rover', 'Flying Saucer',
     'Space Shuttle', 'Lunar Surface', 'Astronaut Suit', 'Star Head', 'Star Pochette', 'Starry Wall',
     'Starry-Sky Wall', 'Galaxy Flooring', 'Sci-Fi Wall', 'Sci-Fi Flooring'
   ];
@@ -152,11 +153,11 @@ const CelesteMeteorTracker = () => {
 
   const styles = {
     container: {
-      width: '900px',
+      width: '100%',
       margin: '0 auto',
       padding: '20px',
       backgroundColor: '#0a1a10',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       borderRadius: '8px',
       minHeight: '100vh'
@@ -176,7 +177,7 @@ const CelesteMeteorTracker = () => {
     },
     subtitle: {
       fontSize: '14px',
-      color: '#a0a0a0',
+      color: '#5a7a50',
       margin: 0
     },
     tabContainer: {
@@ -189,7 +190,7 @@ const CelesteMeteorTracker = () => {
       padding: '12px 20px',
       border: 'none',
       backgroundColor: 'transparent',
-      color: '#a0a0a0',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontSize: '14px',
       fontWeight: '500',
@@ -215,7 +216,7 @@ const CelesteMeteorTracker = () => {
       fontSize: '13px'
     },
     statLabel: {
-      color: '#a0a0a0',
+      color: '#5a7a50',
       fontSize: '12px',
       marginBottom: '4px'
     },
@@ -264,17 +265,17 @@ const CelesteMeteorTracker = () => {
     },
     zodiacDates: {
       fontSize: '12px',
-      color: '#8a8a8a',
+      color: '#5a7a50',
       marginBottom: '8px'
     },
     zodiacItem: {
       fontSize: '13px',
-      color: '#c0c0c0',
+      color: '#c8e6c0',
       marginBottom: '6px'
     },
     zodiacMaterials: {
       fontSize: '11px',
-      color: '#6a8a6a',
+      color: '#5a7a50',
       lineHeight: '1.4'
     },
     checkbox: {
@@ -343,7 +344,7 @@ const CelesteMeteorTracker = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.7)',
       border: '1px solid rgba(94, 200, 80, 0.3)',
       borderRadius: '4px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Mono", monospace',
       fontSize: '13px',
       boxSizing: 'border-box',
@@ -373,7 +374,7 @@ const CelesteMeteorTracker = () => {
     },
     logDate: {
       fontSize: '12px',
-      color: '#a0a0a0',
+      color: '#5a7a50',
       marginBottom: '8px'
     },
     logStats: {
@@ -434,13 +435,13 @@ const CelesteMeteorTracker = () => {
     },
     progressLabel: {
       fontSize: '10px',
-      color: '#8a8a8a'
+      color: '#5a7a50'
     }
   };
 
   return (
     <div style={styles.container}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
 
       <div style={styles.header}>
         <h1 style={styles.title}>🌙 Celeste & Meteor Tracker</h1>
@@ -612,10 +613,10 @@ const CelesteMeteorTracker = () => {
               min="1"
             />
             <button
-              style={styles.button}
+              style={{ ...styles.button, ...(hoveredButtonId === 'addEntry' ? styles.buttonHover : {}) }}
               onClick={addMeteorEntry}
-              onMouseEnter={(e) => Object.assign(e.target.style, styles.buttonHover)}
-              onMouseLeave={(e) => Object.assign(e.target.style, { backgroundColor: '#5ec850', transform: 'none' })}
+              onMouseEnter={() => setHoveredButtonId('addEntry')}
+              onMouseLeave={() => setHoveredButtonId(null)}
             >
               Add Entry
             </button>
@@ -633,7 +634,7 @@ const CelesteMeteorTracker = () => {
           <div style={{ fontSize: '14px', fontWeight: '700', color: '#d4b030', marginBottom: '12px' }}>☄️ Meteor Shower Log</div>
           <div style={styles.meteorLog}>
             {meteorLog.length === 0 ? (
-              <div style={{ ...styles.logEntry, textAlign: 'center', color: '#8a8a8a' }}>No meteor showers logged yet</div>
+              <div style={{ ...styles.logEntry, textAlign: 'center', color: '#5a7a50' }}>No meteor showers logged yet</div>
             ) : (
               meteorLog.map((entry, idx) => (
                 <div key={idx} style={styles.logEntry}>
@@ -652,16 +653,16 @@ const CelesteMeteorTracker = () => {
           <div style={{ marginTop: '20px' }}>
             <div style={{ fontSize: '14px', fontWeight: '700', color: '#d4b030', marginBottom: '12px' }}>🌙 Celeste Visits</div>
             <button
-              style={styles.button}
+              style={{ ...styles.button, ...(hoveredButtonId === 'logVisit' ? styles.buttonHover : {}) }}
               onClick={addCelesteVisit}
-              onMouseEnter={(e) => Object.assign(e.target.style, styles.buttonHover)}
-              onMouseLeave={(e) => Object.assign(e.target.style, { backgroundColor: '#5ec850', transform: 'none' })}
+              onMouseEnter={() => setHoveredButtonId('logVisit')}
+              onMouseLeave={() => setHoveredButtonId(null)}
             >
               Log Visit Today
             </button>
             <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {celesteVisits.length === 0 ? (
-                <div style={{ ...styles.logEntry, textAlign: 'center', color: '#8a8a8a' }}>No Celeste visits recorded</div>
+                <div style={{ ...styles.logEntry, textAlign: 'center', color: '#5a7a50' }}>No Celeste visits recorded</div>
               ) : (
                 celesteVisits.map((visit, idx) => (
                   <div key={idx} style={{ ...styles.logEntry, padding: '8px 12px', fontSize: '13px' }}>

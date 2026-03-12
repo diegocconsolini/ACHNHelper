@@ -98,7 +98,11 @@ export default function DailyRoutine() {
         weeklyData: weeklyData
       };
 
-      await window.storage.set('acnh-daily-routine', JSON.stringify(data));
+      try {
+        await window.storage.set('acnh-daily-routine', JSON.stringify(data));
+      } catch (e) {
+        console.error('Error saving data:', e);
+      }
     };
 
     if (tasks.length > 0) {
@@ -156,12 +160,12 @@ export default function DailyRoutine() {
 
   const styles = {
     container: {
-      width: '900px',
+      width: '100%',
       margin: '0 auto',
       padding: '20px',
       backgroundColor: '#0a1a10',
       fontFamily: '"DM Sans", sans-serif',
-      color: '#ffffff',
+      color: '#c8e6c0',
       minHeight: '100vh'
     },
     header: {
@@ -169,7 +173,7 @@ export default function DailyRoutine() {
       justifyContent: 'space-between',
       alignItems: 'center',
       marginBottom: '20px',
-      borderBottom: `2px solid ${['#5ec850']}`,
+      borderBottom: `2px solid ${'#5ec850'}`,
       paddingBottom: '15px'
     },
     title: {
@@ -179,7 +183,7 @@ export default function DailyRoutine() {
     },
     date: {
       fontSize: '14px',
-      color: '#888',
+      color: '#5a7a50',
       marginTop: '5px'
     },
     progressSection: {
@@ -265,7 +269,7 @@ export default function DailyRoutine() {
     removeBtn: {
       backgroundColor: 'transparent',
       border: 'none',
-      color: '#888',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontSize: '16px',
       marginLeft: '8px',
@@ -280,7 +284,7 @@ export default function DailyRoutine() {
       flex: 1,
       padding: '10px',
       backgroundColor: '#1a2a1c',
-      border: `1px solid ${['#5ec850']}`,
+      border: `1px solid ${'#5ec850'}`,
       borderRadius: '6px',
       color: '#fff',
       fontFamily: '"DM Sans", sans-serif',
@@ -351,7 +355,7 @@ export default function DailyRoutine() {
       minHeight: '100px',
       padding: '10px',
       backgroundColor: '#1a2a1c',
-      border: `1px solid ${['#5ec850']}`,
+      border: `1px solid ${'#5ec850'}`,
       borderRadius: '6px',
       color: '#fff',
       fontFamily: '"DM Mono", monospace',
@@ -376,7 +380,7 @@ export default function DailyRoutine() {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
       `}</style>
 
@@ -439,7 +443,7 @@ export default function DailyRoutine() {
             placeholder="Add custom task..."
             value={customTaskInput}
             onChange={(e) => setCustomTaskInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && addCustomTask()}
+            onKeyDown={(e) => e.key === 'Enter' && addCustomTask()}
             style={styles.addTaskInput}
           />
           <button onClick={addCustomTask} style={styles.addTaskBtn}>Add</button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const SEA_CREATURE_DATA = [
   { id: 1, name: "Seaweed", shadowSize: "Small", movementSpeed: "Stationary", sellPrice: 600, northMonths: [1,2,3,4,5,6,7,8,9,10,11,12], southMonths: [1,2,3,4,5,6,7,8,9,10,11,12], startHour: 0, endHour: 24, allDay: true, isPascalTrigger: false, emoji: "🌱" },
@@ -52,6 +52,7 @@ export default function SeaCreatureTracker() {
   const [speedFilter, setSpeedFilter] = useState('All');
   const [availabilityFilter, setAvailabilityFilter] = useState('All');
   const [caughtStatus, setCaughtStatus] = useState({});
+  const isLoaded = useRef(false);
 
   // Load data on mount
   useEffect(() => {
@@ -67,12 +68,14 @@ export default function SeaCreatureTracker() {
         console.error('Failed to load data', e);
       }
       setCreatures(SEA_CREATURE_DATA);
+      isLoaded.current = true;
     };
     loadData();
   }, []);
 
   // Save data whenever it changes
   useEffect(() => {
+    if (!isLoaded.current) return;
     const saveData = async () => {
       try {
         await window.storage.set('acnh-sea-creature-tracker', JSON.stringify({
@@ -163,7 +166,7 @@ export default function SeaCreatureTracker() {
 
   const styles = {
     container: {
-      width: '900px',
+      width: '100%',
       backgroundColor: '#0a1a10',
       borderRadius: '12px',
       padding: '24px',
@@ -389,7 +392,7 @@ export default function SeaCreatureTracker() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(4px); }
           to { opacity: 1; transform: translateY(0); }
@@ -485,11 +488,7 @@ export default function SeaCreatureTracker() {
                 style={{
                   ...styles.card,
                   ...(available ? { borderColor: 'rgba(94,200,80,0.8)', boxShadow: '0 0 12px rgba(94,200,80,0.2)' } : {}),
-                  ...(caught ? { opacity: 0.6 } : {}),
-                  onMouseEnter: {
-                    boxShadow: '0 4px 16px rgba(94,200,80,0.3)',
-                    borderColor: 'rgba(94,200,80,0.6)'
-                  }
+                  ...(caught ? { opacity: 0.6 } : {})
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow = '0 4px 16px rgba(94,200,80,0.3)';

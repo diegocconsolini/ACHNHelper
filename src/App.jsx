@@ -103,6 +103,88 @@ const COMPONENTS = {
   DreamAddressBook,
 };
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+    this.reset = this.reset.bind(this);
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  reset() {
+    this.setState({ hasError: false, error: null });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          gap: 16,
+          background: '#0a1a10',
+          fontFamily: "'DM Sans', sans-serif",
+          color: '#c8e6c0',
+          padding: 32,
+          textAlign: 'center',
+        }}>
+          <span style={{ fontSize: 56 }}>🍂</span>
+          <h2 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 24,
+            fontWeight: 700,
+            color: '#5ec850',
+          }}>
+            This tool ran into a problem
+          </h2>
+          <p style={{ fontSize: 14, color: '#5a7a50', maxWidth: 420, lineHeight: 1.6 }}>
+            Something unexpected happened while loading this tool. Your saved data is safe.
+          </p>
+          {this.state.error && (
+            <p style={{
+              fontSize: 12,
+              color: '#5a7a50',
+              fontFamily: "'DM Mono', monospace",
+              background: 'rgba(12,28,14,0.95)',
+              border: '1px solid rgba(94,200,80,0.1)',
+              borderRadius: 8,
+              padding: '8px 16px',
+              maxWidth: 480,
+              wordBreak: 'break-word',
+            }}>
+              {this.state.error.message}
+            </p>
+          )}
+          <button
+            onClick={this.reset}
+            style={{
+              marginTop: 8,
+              padding: '10px 24px',
+              background: 'rgba(94,200,80,0.15)',
+              border: '1px solid rgba(94,200,80,0.35)',
+              borderRadius: 8,
+              color: '#5ec850',
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 14,
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            Reload Tool
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 function App() {
   const [activeId, setActiveId] = useState('fish');
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -177,14 +259,16 @@ function App() {
       {/* Main Content */}
       <div style={styles.main}>
         {ActiveComponent ? (
-          <Suspense fallback={
-            <div style={styles.loading}>
-              <span style={{ fontSize: 48 }}>🍃</span>
-              <p style={{ color: '#5ec850', fontFamily: "'DM Sans', sans-serif", marginTop: 12 }}>Loading...</p>
-            </div>
-          }>
-            <ActiveComponent />
-          </Suspense>
+          <ErrorBoundary key={activeId}>
+            <Suspense fallback={
+              <div style={styles.loading}>
+                <span style={{ fontSize: 48 }}>🍃</span>
+                <p style={{ color: '#5ec850', fontFamily: "'DM Sans', sans-serif", marginTop: 12 }}>Loading...</p>
+              </div>
+            }>
+              <ActiveComponent />
+            </Suspense>
+          </ErrorBoundary>
         ) : (
           <div style={styles.placeholder}>
             <span style={{ fontSize: 64 }}>{activeItem?.emoji || '🏝️'}</span>

@@ -156,6 +156,7 @@ const GardenPlanner = () => {
     return pairs;
   };
 
+  // Note: Breeding rules currently only cover roses. Other species return empty results.
   const getPossibleOffspring = (flower1, flower2) => {
     if (flower1.species !== flower2.species) return [];
     const rules = BREEDING_RULES[flower1.species];
@@ -174,7 +175,11 @@ const GardenPlanner = () => {
     };
     const updated = [...savedLayouts, newLayout];
     setSavedLayouts(updated);
-    await window.storage.set('gardenLayouts', JSON.stringify(updated));
+    try {
+      await window.storage.set('gardenLayouts', JSON.stringify(updated));
+    } catch (e) {
+      console.error('Error saving layout:', e);
+    }
     setLayoutName('');
   };
 
@@ -186,7 +191,11 @@ const GardenPlanner = () => {
   const deleteLayout = async (id) => {
     const updated = savedLayouts.filter(l => l.id !== id);
     setSavedLayouts(updated);
-    await window.storage.set('gardenLayouts', JSON.stringify(updated));
+    try {
+      await window.storage.set('gardenLayouts', JSON.stringify(updated));
+    } catch (e) {
+      console.error('Error deleting layout:', e);
+    }
   };
 
   const getFlowerColor = (species, color) => {
@@ -212,8 +221,9 @@ const GardenPlanner = () => {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
       `}</style>
 
       <div style={styles.header}>
@@ -460,7 +470,7 @@ const GardenPlanner = () => {
 
 const styles = {
   container: {
-    width: '900px',
+    width: '100%',
     margin: '0 auto',
     padding: '20px',
     backgroundColor: '#0a1a10',

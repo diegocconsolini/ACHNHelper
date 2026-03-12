@@ -73,7 +73,7 @@ const TurnipTracker = () => {
     if (buy === 0) return { patterns: [], chart: [] };
 
     let fluctuating = 0, smallSpike = 0, largeSpike = 0, decreasing = 0;
-    let hasSpike = false, maxPrice = Math.max(...nums), spikeFound = false;
+    let maxPrice = Math.max(...nums), spikeFound = false;
 
     for (let i = 1; i < nums.length; i++) {
       if (nums[i] > nums[i - 1] && nums[i] > buy * 1.2) {
@@ -104,8 +104,8 @@ const TurnipTracker = () => {
     return { patterns, chart: nums, buy };
   };
 
-  const getProfitInfo = () => {
-    const { chart, buy } = getPatternPrediction();
+  const getProfitInfo = (prediction) => {
+    const { chart, buy } = prediction;
     if (chart.length === 0 || buy === 0) return null;
     const bestPrice = Math.max(...chart);
     const profitPerTurnip = bestPrice - buy;
@@ -131,24 +131,25 @@ const TurnipTracker = () => {
     setBuyPrice('');
   };
 
-  const { patterns } = getPatternPrediction();
-  const profitInfo = getProfitInfo();
-  const maxChartPrice = Math.max(...(getPatternPrediction().chart || [0]));
+  const prediction = getPatternPrediction();
+  const { patterns } = prediction;
+  const profitInfo = getProfitInfo(prediction);
+  const maxChartPrice = Math.max(...(prediction.chart || [0]));
 
   return (
     <div style={{
-      width: '900px',
+      width: '100%',
       background: '#0a1a10',
       color: '#fff',
       padding: '30px',
-      fontFamily: 'DM Sans, sans-serif',
+      fontFamily: '"DM Sans", sans-serif',
       borderRadius: '12px',
     }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
 
-      <h1 style={{ fontSize: '32px', marginBottom: '10px', fontFamily: 'Playfair Display, serif', color: '#5ec850' }}>
+      <h1 style={{ fontSize: '32px', marginBottom: '10px', fontFamily: '"Playfair Display", serif', color: '#5ec850' }}>
         Turnip Tracker 📈
       </h1>
 
@@ -169,7 +170,7 @@ const TurnipTracker = () => {
             color: '#5ec850',
             fontSize: '16px',
             borderRadius: '6px',
-            fontFamily: 'DM Mono, monospace',
+            fontFamily: '"DM Mono", monospace',
           }}
         />
       </div>
@@ -195,7 +196,7 @@ const TurnipTracker = () => {
                   color: '#5ec850',
                   fontSize: '14px',
                   borderRadius: '4px',
-                  fontFamily: 'DM Mono, monospace',
+                  fontFamily: '"DM Mono", monospace',
                 }}
               />
             </div>
@@ -203,7 +204,7 @@ const TurnipTracker = () => {
         </div>
       </div>
 
-      {getPatternPrediction().chart.length > 0 && (
+      {prediction.chart.length > 0 && (
         <div style={{ marginBottom: '30px' }}>
           <h2 style={{ fontSize: '18px', marginBottom: '15px', color: '#4aacf0' }}>Price Chart</h2>
           <div style={{
@@ -217,7 +218,7 @@ const TurnipTracker = () => {
             height: '150px',
             position: 'relative',
           }}>
-            {getPatternPrediction().chart.map((price, i) => (
+            {prediction.chart.map((price, i) => (
               <div key={i} style={{
                 flex: 1,
                 background: price > (parseFloat(buyPrice) || 0) ? '#5ec850' : '#d4b030',
@@ -262,7 +263,7 @@ const TurnipTracker = () => {
                     background: p.probability > 40 ? '#5ec850' : p.probability > 20 ? '#d4b030' : '#4aacf0',
                   }} />
                 </div>
-                <span style={{ fontSize: '14px', color: '#5ec850', fontFamily: 'DM Mono, monospace', minWidth: '45px' }}>
+                <span style={{ fontSize: '14px', color: '#5ec850', fontFamily: '"DM Mono", monospace', minWidth: '45px' }}>
                   {p.probability}%
                 </span>
               </div>
@@ -277,19 +278,19 @@ const TurnipTracker = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px' }}>
             <div>
               <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Best Sell Price</div>
-              <div style={{ fontSize: '24px', fontFamily: 'DM Mono, monospace', color: '#5ec850' }}>
+              <div style={{ fontSize: '24px', fontFamily: '"DM Mono", monospace', color: '#5ec850' }}>
                 {profitInfo.bestPrice}
               </div>
             </div>
             <div>
               <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Profit per Turnip</div>
-              <div style={{ fontSize: '24px', fontFamily: 'DM Mono, monospace', color: '#4aacf0' }}>
+              <div style={{ fontSize: '24px', fontFamily: '"DM Mono", monospace', color: '#4aacf0' }}>
                 {profitInfo.profitPerTurnip > 0 ? '+' : ''}{profitInfo.profitPerTurnip}
               </div>
             </div>
             <div>
               <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Total Profit (4800)</div>
-              <div style={{ fontSize: '24px', fontFamily: 'DM Mono, monospace', color: '#d4b030' }}>
+              <div style={{ fontSize: '24px', fontFamily: '"DM Mono", monospace', color: '#d4b030' }}>
                 {profitInfo.totalProfit > 0 ? '+' : ''}{profitInfo.totalProfit.toLocaleString()}
               </div>
             </div>
@@ -356,7 +357,7 @@ const TurnipTracker = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                   <div style={{ fontSize: '13px', color: '#aaa' }}>{week.date}</div>
-                  <div style={{ fontSize: '14px', color: '#5ec850', fontFamily: 'DM Mono, monospace', marginTop: '4px' }}>
+                  <div style={{ fontSize: '14px', color: '#5ec850', fontFamily: '"DM Mono", monospace', marginTop: '4px' }}>
                     Buy: {week.buy} bells
                   </div>
                 </div>

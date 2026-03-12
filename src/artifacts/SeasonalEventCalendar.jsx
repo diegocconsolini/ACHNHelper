@@ -6,7 +6,7 @@ const SeasonalEventCalendar = () => {
   const [expandedMonth, setExpandedMonth] = useState(null);
   const [completedEvents, setCompletedEvents] = useState({});
   const [npcVisitLog, setNpcVisitLog] = useState({});
-  const [currentDate] = useState(new Date());
+  const currentDate = new Date();
 
   // Load persisted data
   useEffect(() => {
@@ -53,7 +53,7 @@ const SeasonalEventCalendar = () => {
       { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
     ],
     february: [
-      { name: 'Setsubun', emoji: '🎏', dateRange: 'Feb 1-3', type: 'holiday' },
+      { name: 'Setsubun', emoji: '👹', dateRange: 'Feb 1-3', type: 'holiday' },
       { name: 'Groundhog Day', emoji: '🦡', dateRange: 'Feb 2', type: 'holiday' },
       { name: 'Festivale', emoji: '🎭', dateRange: 'Feb (varies)', type: 'festival' },
       { name: "Valentine's Day", emoji: '💝', dateRange: 'Feb 14', type: 'holiday' },
@@ -93,11 +93,9 @@ const SeasonalEventCalendar = () => {
     ],
     november: [
       { name: 'Turkey Day', emoji: '🦃', dateRange: '4th Thursday', type: 'holiday' },
-      { name: 'Bug-Off', emoji: '🦗', dateRange: '3rd Saturday', type: 'tournament' },
     ],
     december: [
       { name: 'Toy Day', emoji: '🎁', dateRange: 'Dec 24', type: 'holiday' },
-      { name: 'Bug-Off', emoji: '🦗', dateRange: '3rd Saturday', type: 'tournament' },
       { name: "New Year's Countdown", emoji: '🎊', dateRange: 'Dec 31', type: 'holiday' },
     ],
   };
@@ -142,16 +140,16 @@ const SeasonalEventCalendar = () => {
 
   const styles = {
     container: {
-      width: '900px',
+      width: '100%',
       margin: '0 auto',
       padding: '20px',
       backgroundColor: '#0a1a10',
       borderRadius: '12px',
       color: '#e8f5e9',
-      fontFamily: 'DM Sans, sans-serif',
+      fontFamily: '"DM Sans", sans-serif',
     },
     header: {
-      fontFamily: 'Playfair Display, serif',
+      fontFamily: '"Playfair Display", serif',
       fontSize: '28px',
       marginBottom: '20px',
       color: '#5ec850',
@@ -170,7 +168,7 @@ const SeasonalEventCalendar = () => {
       borderBottom: isActive ? '2px solid #5ec850' : '2px solid transparent',
       color: isActive ? '#5ec850' : '#a0c9a0',
       cursor: 'pointer',
-      fontFamily: 'DM Sans, sans-serif',
+      fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
       fontWeight: 500,
       transition: 'all 0.3s ease',
@@ -191,7 +189,7 @@ const SeasonalEventCalendar = () => {
       border: '1px solid rgba(94, 200, 80, 0.3)',
       color: '#5ec850',
       borderRadius: '6px',
-      fontFamily: 'DM Sans, sans-serif',
+      fontFamily: '"DM Sans", sans-serif',
       cursor: 'pointer',
     },
     monthGrid: {
@@ -209,7 +207,7 @@ const SeasonalEventCalendar = () => {
       boxShadow: isCurrentMonth ? '0 0 12px rgba(94, 200, 80, 0.2)' : 'none',
     }),
     monthTitle: {
-      fontFamily: 'Playfair Display, serif',
+      fontFamily: '"Playfair Display", serif',
       fontSize: '16px',
       fontWeight: 700,
       marginBottom: '8px',
@@ -247,7 +245,7 @@ const SeasonalEventCalendar = () => {
       borderRadius: '8px',
     },
     materialName: {
-      fontFamily: 'DM Sans, sans-serif',
+      fontFamily: '"DM Sans", sans-serif',
       fontSize: '13px',
       fontWeight: 500,
       marginBottom: '4px',
@@ -256,7 +254,7 @@ const SeasonalEventCalendar = () => {
     availableText: {
       fontSize: '11px',
       color: '#a0c9a0',
-      fontFamily: 'DM Mono, monospace',
+      fontFamily: '"DM Mono", monospace',
     },
     npcList: {
       display: 'grid',
@@ -288,7 +286,7 @@ const SeasonalEventCalendar = () => {
       fontSize: '12px',
       marginTop: '16px',
       color: '#d4b030',
-      fontFamily: 'DM Mono, monospace',
+      fontFamily: '"DM Mono", monospace',
     },
   };
 
@@ -303,13 +301,6 @@ const SeasonalEventCalendar = () => {
     const newCompleted = { ...completedEvents };
     newCompleted[key] = !newCompleted[key];
     saveEventData(newCompleted);
-  };
-
-  const toggleNpcVisit = (npcName, date) => {
-    const key = `${npcName}-${date}`;
-    const newLog = { ...npcVisitLog };
-    newLog[key] = !newLog[key];
-    saveNpcData(newLog);
   };
 
   const getCompletedCount = () => {
@@ -333,7 +324,7 @@ const SeasonalEventCalendar = () => {
   return (
     <div style={styles.container}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
       `}</style>
 
