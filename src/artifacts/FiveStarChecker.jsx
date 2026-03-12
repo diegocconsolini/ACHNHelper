@@ -39,7 +39,7 @@ const FiveStarChecker = () => {
     try {
       await window.storage.set(STORAGE_KEY, JSON.stringify(newData));
     } catch (e) {
-      console.log('Data saved locally');
+      console.log('Error in saveData function', e);
     }
   };
 
