@@ -210,20 +210,41 @@ npm run lint         # ESLint check
 npm run build 2>&1 | tail -5   # Should show "✓ built in ~800ms"
 ```
 
+## Versioning
+
+The app uses **semantic versioning** displayed in the sidebar footer. The version is read from `package.json` at build time via Vite's `define` config.
+
+### How it works:
+- `package.json` → `"version": "X.Y.Z"`
+- `vite.config.js` → injects `__APP_VERSION__` global at build time
+- `App.jsx` → sidebar footer displays `v{__APP_VERSION__}`
+
+### Version bumping rules (MUST follow on every deploy):
+- **Patch** (1.1.0 → 1.1.1): Bug fixes, data corrections, typo fixes
+- **Minor** (1.1.0 → 1.2.0): New features, new tools, significant UI changes
+- **Major** (1.0.0 → 2.0.0): Breaking changes, major redesigns
+
+### Before every commit that will be deployed:
+1. Bump the `"version"` field in `package.json` according to the rules above
+2. The sidebar footer will automatically show the new version after build
+3. Never skip the version bump — every deployed change must have a new version
+
 ## Deployment (Vercel)
 
-The app is configured for Vercel deployment:
-- `vercel` CLI is in devDependencies
+The app is deployed via Vercel's GitHub integration — **pushing to `main` triggers auto-deploy**.
+
 - Framework: Vite (auto-detected)
 - Build command: `vite build`
 - Output directory: `dist`
 - Install command: `npm install`
+- Assets: `public/assets-web/` (87MB optimized WebP) is committed to git and served statically
 
-To deploy:
+### Deploy process:
 ```bash
-cd acnh-portal
-npx vercel --prod
-# OR connect the GitHub repo and push to main
+# 1. Bump version in package.json
+# 2. Commit changes
+# 3. Push to main — Vercel auto-deploys
+git push origin main
 ```
 
 ## Known Patterns & Gotchas
