@@ -234,7 +234,12 @@ const DIYRecipeTracker = () => {
       percent
     }));
     // Persist to storage
-    window.storage.set('diyTracker', JSON.stringify({ learned: Array.from(learnedRecipes) }));
+    try {
+      window.storage.set('diyTracker', JSON.stringify({ learned: Array.from(learnedRecipes) }));
+
+    } catch (error) {
+      console.error("error in DIYRecipeTracker", error)
+    }
   }, [learnedRecipes]);
 
   const toggleRecipeLearned = (recipe) => {
