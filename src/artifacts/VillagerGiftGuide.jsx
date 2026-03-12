@@ -360,7 +360,7 @@ const VillagerGiftGuide = () => {
             Gift Point Breakdown
           </h3>
           <div style={baseStyles.pointsBreakdown}>
-            <strong>+3 pts:</strong> Furniture (>10,000 bells)
+            <strong>+3 pts:</strong> Furniture ({'>'}10,000 bells)
           </div>
           <div style={baseStyles.pointsBreakdown}>
             <strong>+2 pts:</strong> Favorite clothing style ({p.style})

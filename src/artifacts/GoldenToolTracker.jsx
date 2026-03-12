@@ -383,7 +383,7 @@ const ToolCard = ({ emoji, name, requirement, isUnlocked, progressPercent, child
             }}
           />
         </div>
-        <span style={styles.progressText}>{progressPercent}%</span>
+        <span style={styles.progressLabel}>{progressPercent}%</span>
       </div>
 
       {children}
@@ -499,7 +499,7 @@ const styles = {
     height: '100%',
     transition: 'width 0.3s ease',
   },
-  progressText: {
+  progressLabel: {
     fontSize: '12px',
     color: '#5ec850',
     fontWeight: '600',
