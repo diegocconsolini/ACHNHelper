@@ -300,6 +300,13 @@ export default function GardenPlanner() {
     return () => window.removeEventListener('keydown', onKey);
   }, [state.panelOpen]);
 
+  // Drag-to-paint: wire up global mouseup listener
+  useEffect(() => {
+    const onMouseUp = () => { isDragging.current = false; };
+    window.addEventListener('mouseup', onMouseUp);
+    return () => window.removeEventListener('mouseup', onMouseUp);
+  }, []);
+
   // ─── CELL INTERACTION ────────────────────────────────────────────────────────
 
   const handleCellClick = useCallback((row, col) => {
@@ -328,6 +335,16 @@ export default function GardenPlanner() {
     dispatch({ type: 'SET_PANEL_TAB', tab: 'breed' });
   }, []);
 
+  const handleCellEnter = useCallback((row, col) => {
+    if (!isDragging.current) return;
+    const cell = state.grid[row][col];
+    if (state.tool === 'place' && !cell) {
+      dispatch({ type: 'PLACE_FLOWER', row, col });
+    } else if (state.tool === 'erase' && cell) {
+      dispatch({ type: 'ERASE_CELL', row, col });
+    }
+  }, [state.tool, state.grid]);
+
   // ─── DERIVED STATE ───────────────────────────────────────────────────────────
 
   const displayGrid = state.pendingGrid || state.grid;
@@ -343,6 +360,45 @@ export default function GardenPlanner() {
     : [];
 
   const cloneRisk = selectedCell ? canClone(displayGrid, selectedCell.row, selectedCell.col) : false;
+
+  // Compute neighbor highlight sets for grid visual polish
+  // sameSpeciesNeighborSet: cells that are neighbors of selected cell with same species
+  // offspringLandingSet: empty cells adjacent to a breeding pair
+  const sameSpeciesNeighborSet = new Set();
+  const offspringLandingSet = new Set();
+
+  if (selectedCell && selectedCellData) {
+    const { row: sr, col: sc } = selectedCell;
+    const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+    dirs.forEach(([dr, dc]) => {
+      const nr = sr + dr;
+      const nc = sc + dc;
+      if (nr >= 0 && nr < state.gridSize && nc >= 0 && nc < state.gridSize) {
+        const neighbor = displayGrid[nr]?.[nc];
+        if (neighbor && neighbor.species === selectedCellData.species) {
+          sameSpeciesNeighborSet.add(`${nr}-${nc}`);
+        }
+      }
+    });
+
+    // For each breeding pair, find empty adjacent cells (offspring landing spots)
+    breedingPairs.forEach(pair => {
+      const { row: pr, col: pc } = pair.neighbor;
+      // Empty cells adjacent to either flower in the pair
+      const pairCells = [[sr, sc], [pr, pc]];
+      pairCells.forEach(([fr, fc]) => {
+        dirs.forEach(([dr, dc]) => {
+          const nr = fr + dr;
+          const nc = fc + dc;
+          if (nr >= 0 && nr < state.gridSize && nc >= 0 && nc < state.gridSize) {
+            if (!displayGrid[nr]?.[nc]) {
+              offspringLandingSet.add(`${nr}-${nc}`);
+            }
+          }
+        });
+      });
+    });
+  }
 
   // ─── STYLES (inline only) ─────────────────────────────────────────────────
 
@@ -755,19 +811,40 @@ export default function GardenPlanner() {
   // ─── GRID ─────────────────────────────────────────────────────────────────────
 
   const Grid = () => (
-    <div style={S.gridInner(state.gridSize)}>
+    <div
+      style={S.gridInner(state.gridSize)}
+      onMouseDown={() => { isDragging.current = true; }}
+    >
       {displayGrid.map((row, ri) =>
         row.map((cell, ci) => {
           const isSelected = selectedCell?.row === ri && selectedCell?.col === ci;
           const hex = cell ? (COLOR_HEX[cell.color] || cell.hex || '#5ec850') : '#1a3a20';
           const showClone = cell && state.simulationTier !== 'static' && canClone(displayGrid, ri, ci);
+          const cellKey = `${ri}-${ci}`;
+          const isNeighborGlow = !isSelected && sameSpeciesNeighborSet.has(cellKey);
+          const isOffspringLanding = !cell && offspringLandingSet.has(cellKey);
+
+          // Build extra border/boxShadow for neighbor highlights
+          let extraStyle = {};
+          if (isNeighborGlow) {
+            extraStyle = {
+              border: '1px solid rgba(94,200,80,0.7)',
+              boxShadow: '0 0 0 2px rgba(94,200,80,0.3)',
+            };
+          } else if (isOffspringLanding) {
+            extraStyle = {
+              border: '1px dashed rgba(212,176,48,0.55)',
+            };
+          }
+
           return (
             <div
-              key={`${ri}-${ci}`}
-              style={S.cell(!!cell, isSelected, cell?.pending, hex)}
+              key={cellKey}
+              style={{ ...S.cell(!!cell, isSelected, cell?.pending, hex), ...extraStyle }}
               onClick={() => handleCellClick(ri, ci)}
               onContextMenu={(e) => handleCellRightClick(e, ri, ci)}
               onDoubleClick={() => cell && handleCellDoubleClick(ri, ci)}
+              onMouseEnter={() => handleCellEnter(ri, ci)}
               title={cell ? `${cell.color} ${cell.species}${cell.genotype ? ' · ' + cell.genotype : ''}` : `[${ri},${ci}]`}
             >
               {showClone && <span style={S.cloneOverlay}>C</span>}
@@ -807,6 +884,22 @@ export default function GardenPlanner() {
             </div>
           </div>
         </div>
+
+        {/* Gold Rose special case */}
+        {species === 'rose' && color === 'Black' && (
+          <div style={{
+            padding: '7px 10px',
+            marginBottom: '10px',
+            backgroundColor: 'rgba(212,176,48,0.08)',
+            border: '1px solid rgba(212,176,48,0.35)',
+            borderRadius: '6px',
+            fontSize: '12px',
+            color: '#d4b030',
+            lineHeight: '1.5',
+          }}>
+            💛 Water with the <strong>Golden Watering Can</strong> for a chance to produce a <strong>Gold Rose</strong>
+          </div>
+        )}
 
         {/* Breeding pairs */}
         <div style={S.pLabel}>Breeding Pairs ({breedingPairs.length})</div>
