@@ -193,7 +193,7 @@ export default function SeaCreatureTracker() {
     },
     progressLabel: {
       fontSize: '12px',
-      color: '#aaa',
+      color: '#5a7a50',
       marginBottom: '6px'
     },
     progressBar: {
@@ -223,7 +223,7 @@ export default function SeaCreatureTracker() {
     label: {
       fontSize: '12px',
       fontWeight: '600',
-      color: '#aaa',
+      color: '#5a7a50',
       textTransform: 'uppercase',
       letterSpacing: '0.5px'
     },
@@ -292,7 +292,7 @@ export default function SeaCreatureTracker() {
     },
     cardInfo: {
       fontSize: '12px',
-      color: '#aaa',
+      color: '#5a7a50',
       marginBottom: '12px',
       lineHeight: '1.6'
     },
@@ -366,7 +366,7 @@ export default function SeaCreatureTracker() {
     },
     statLabel: {
       fontSize: '11px',
-      color: '#aaa',
+      color: '#5a7a50',
       marginTop: '4px',
       textTransform: 'uppercase',
       letterSpacing: '0.5px'

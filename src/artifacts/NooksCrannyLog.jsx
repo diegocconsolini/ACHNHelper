@@ -136,7 +136,7 @@ const NooksCrannyLog = () => {
   const containerStyle = {
     fontFamily: "'DM Sans', sans-serif",
     backgroundColor: '#0a1a10',
-    color: '#ffffff',
+    color: '#c8e6c0',
     minHeight: '100vh',
     padding: '20px',
     width: '100%',
@@ -184,7 +184,7 @@ const NooksCrannyLog = () => {
     backgroundColor: 'rgba(94,200,80,0.1)',
     border: '1px solid #5ec850',
     borderRadius: '4px',
-    color: '#ffffff',
+    color: '#c8e6c0',
     fontFamily: "'DM Sans', sans-serif",
     fontSize: '14px',
     boxSizing: 'border-box'

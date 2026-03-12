@@ -493,7 +493,7 @@ const styles = {
   },
   subtitle: {
     fontSize: '14px',
-    color: '#a0b0a0',
+    color: '#5a7a50',
     margin: 0
   },
   tabBar: {
@@ -507,7 +507,7 @@ const styles = {
     background: 'none',
     border: 'none',
     borderBottom: '3px solid transparent',
-    color: '#a0b0a0',
+    color: '#5a7a50',
     fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
@@ -565,7 +565,7 @@ const styles = {
   label: {
     fontSize: '13px',
     fontWeight: '600',
-    color: '#a0b0a0'
+    color: '#5a7a50'
   },
   slider: {
     width: '120px',
@@ -626,7 +626,7 @@ const styles = {
   },
   offspringText: {
     marginLeft: 'auto',
-    color: '#a0b0a0',
+    color: '#5a7a50',
     fontSize: '12px'
   },
   paletteSection: {
@@ -660,7 +660,7 @@ const styles = {
     margin: '0 0 10px 0',
     fontSize: '14px',
     fontWeight: '600',
-    color: '#e0e0e0'
+    color: '#c8e6c0'
   },
   colorSwatches: {
     display: 'flex',
@@ -698,7 +698,7 @@ const styles = {
     animation: 'fadeIn 0.4s ease-in'
   },
   templateSubtext: {
-    color: '#a0b0a0',
+    color: '#5a7a50',
     marginBottom: '20px',
     fontSize: '13px'
   },
@@ -716,7 +716,7 @@ const styles = {
     cursor: 'pointer',
     transition: 'all 0.3s ease',
     fontFamily: '"DM Sans", sans-serif',
-    color: '#e0e0e0'
+    color: '#c8e6c0'
   },
   templateTitle: {
     fontWeight: '700',
@@ -725,7 +725,7 @@ const styles = {
   },
   templateDesc: {
     fontSize: '12px',
-    color: '#a0b0a0',
+    color: '#5a7a50',
     lineHeight: '1.5'
   },
   statsSection: {
@@ -746,7 +746,7 @@ const styles = {
   },
   statLabel: {
     fontSize: '12px',
-    color: '#a0b0a0',
+    color: '#5a7a50',
     marginBottom: '8px'
   },
   statValue: {
@@ -813,7 +813,7 @@ const styles = {
   emptyState: {
     padding: '40px 20px',
     textAlign: 'center',
-    color: '#a0b0a0',
+    color: '#5a7a50',
     fontSize: '14px'
   },
   layoutsList: {
@@ -840,7 +840,7 @@ const styles = {
   },
   layoutMeta: {
     fontSize: '12px',
-    color: '#a0b0a0'
+    color: '#5a7a50'
   },
   layoutActions: {
     display: 'flex',

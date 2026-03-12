@@ -399,7 +399,7 @@ const styles = {
   container: {
     width: '100%',
     backgroundColor: '#0a1a10',
-    color: '#ffffff',
+    color: '#c8e6c0',
     fontFamily: "'DM Sans', sans-serif",
     padding: '24px',
     boxSizing: 'border-box',

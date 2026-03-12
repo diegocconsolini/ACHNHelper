@@ -140,7 +140,7 @@ const TurnipTracker = () => {
     <div style={{
       width: '100%',
       background: '#0a1a10',
-      color: '#fff',
+      color: '#c8e6c0',
       padding: '30px',
       fontFamily: '"DM Sans", sans-serif',
       borderRadius: '12px',
@@ -237,7 +237,7 @@ const TurnipTracker = () => {
               opacity: '0.7',
             }} />
           </div>
-          <div style={{ fontSize: '12px', color: '#aaa', marginTop: '8px' }}>
+          <div style={{ fontSize: '12px', color: '#5a7a50', marginTop: '8px' }}>
             Blue line = buy price ({buyPrice})
           </div>
         </div>
@@ -277,19 +277,19 @@ const TurnipTracker = () => {
           <h2 style={{ fontSize: '18px', marginBottom: '15px', color: '#d4b030' }}>Profit Calculator</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px' }}>
             <div>
-              <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Best Sell Price</div>
+              <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '5px' }}>Best Sell Price</div>
               <div style={{ fontSize: '24px', fontFamily: '"DM Mono", monospace', color: '#5ec850' }}>
                 {profitInfo.bestPrice}
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Profit per Turnip</div>
+              <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '5px' }}>Profit per Turnip</div>
               <div style={{ fontSize: '24px', fontFamily: '"DM Mono", monospace', color: '#4aacf0' }}>
                 {profitInfo.profitPerTurnip > 0 ? '+' : ''}{profitInfo.profitPerTurnip}
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Total Profit (4800)</div>
+              <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '5px' }}>Total Profit (4800)</div>
               <div style={{ fontSize: '24px', fontFamily: '"DM Mono", monospace', color: '#d4b030' }}>
                 {profitInfo.totalProfit > 0 ? '+' : ''}{profitInfo.totalProfit.toLocaleString()}
               </div>
@@ -300,7 +300,7 @@ const TurnipTracker = () => {
 
       <div style={{ marginBottom: '30px', background: 'rgba(12,28,14,0.95)', padding: '20px', borderRadius: '8px', border: '1px solid #5ec850' }}>
         <h2 style={{ fontSize: '18px', marginBottom: '12px', color: '#5ec850' }}>💡 Trading Tips</h2>
-        <ul style={{ fontSize: '13px', lineHeight: '1.6', paddingLeft: '20px', color: '#bbb' }}>
+        <ul style={{ fontSize: '13px', lineHeight: '1.6', paddingLeft: '20px', color: '#5a7a50' }}>
           <li>Buy low on Sunday (typically 40-110 bells)</li>
           <li>Look for Large Spike patterns for maximum profit</li>
           <li>Check island visitors for better prices</li>
@@ -356,7 +356,7 @@ const TurnipTracker = () => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <div style={{ fontSize: '13px', color: '#aaa' }}>{week.date}</div>
+                  <div style={{ fontSize: '13px', color: '#5a7a50' }}>{week.date}</div>
                   <div style={{ fontSize: '14px', color: '#5ec850', fontFamily: '"DM Mono", monospace', marginTop: '4px' }}>
                     Buy: {week.buy} bells
                   </div>
