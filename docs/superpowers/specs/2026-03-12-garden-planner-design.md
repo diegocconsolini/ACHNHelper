@@ -185,7 +185,9 @@ export function simulateDayCampaign(grid, campaignState) → { newGrid, events, 
 - `wateringLog`: `[{ day, visitors, selfWatered }]` — history of watering actions
 - `history`: array of previous grid states for undo (capped at 30 entries)
 
-**Bad luck mechanic:** Each breeding pair that fails to reproduce gains +5% chance on next attempt. A pair at 3 failed days has 5% + 15% = 20% base chance (before watering bonus). Resets to 0 on successful breed. Matches actual game mechanic.
+**Bad luck mechanic:** Each breeding pair that fails to reproduce gains +5% chance on next attempt. A pair at 3 failed days has 5% base + 15% bad luck = 20% reproduction chance. Watering bonus is multiplicative on top of this (e.g., 20% × watering multiplier). Resets to 0 on successful breed. Matches actual game mechanic.
+
+**Breeding paths (Tier A) vs genotype crossover (Tier B/C):** The `BREEDING_PATHS` data is used only for Tier A static analysis — it maps parent colors to offspring colors with precomputed probabilities. Tier B and C ignore `BREEDING_PATHS` entirely and use `crossGenes()` for real Mendelian crossover based on actual genotypes.
 
 ### Utility Functions
 
