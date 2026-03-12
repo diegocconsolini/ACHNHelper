@@ -886,7 +886,7 @@ export default function GardenPlanner() {
         </div>
 
         {/* Gold Rose special case */}
-        {species === 'rose' && color === 'Black' && (
+        {species === 'rose' && color === 'Black' && state.simulationTier !== 'static' && (
           <div style={{
             padding: '7px 10px',
             marginBottom: '10px',
@@ -897,7 +897,7 @@ export default function GardenPlanner() {
             color: '#d4b030',
             lineHeight: '1.5',
           }}>
-            💛 Water with the <strong>Golden Watering Can</strong> for a chance to produce a <strong>Gold Rose</strong>
+            💛 Water with the <strong>Golden Watering Can</strong> for a chance to produce a <strong>Gold Rose</strong>. Gold Roses cannot be bred through normal crossover — this is a special game mechanic.
           </div>
         )}
 
