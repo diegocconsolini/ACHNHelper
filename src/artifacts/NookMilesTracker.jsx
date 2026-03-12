@@ -341,7 +341,7 @@ const styles = {
     margin: '0 auto',
     padding: '20px',
     backgroundColor: '#0a1a10',
-    color: '#e8e8e8',
+    color: '#c8e6c0',
     fontFamily: '"DM Sans", sans-serif',
     minHeight: '100vh'
   },
@@ -371,7 +371,7 @@ const styles = {
   },
   statLabel: {
     fontSize: '12px',
-    color: '#9a9a9a',
+    color: '#5a7a50',
     textTransform: 'uppercase',
     letterSpacing: '1px',
     marginBottom: '4px'
@@ -390,7 +390,7 @@ const styles = {
     backgroundColor: 'rgba(12, 28, 14, 0.95)',
     border: '1px solid rgba(94, 200, 80, 0.2)',
     borderRadius: '8px',
-    color: '#e8e8e8',
+    color: '#c8e6c0',
     marginBottom: '12px',
     fontSize: '14px',
     fontFamily: '"DM Sans", sans-serif',
@@ -407,7 +407,7 @@ const styles = {
     backgroundColor: 'rgba(12, 28, 14, 0.95)',
     border: '1px solid rgba(94, 200, 80, 0.2)',
     borderRadius: '6px',
-    color: '#c0c0c0',
+    color: '#c8e6c0',
     fontSize: '13px',
     cursor: 'pointer',
     fontFamily: '"DM Sans", sans-serif',
@@ -444,7 +444,7 @@ const styles = {
     fontWeight: '600'
   },
   catStatValue: {
-    color: '#c0c0c0'
+    color: '#c8e6c0'
   },
   achievementsGrid: {
     display: 'grid',
@@ -466,7 +466,7 @@ const styles = {
     margin: '0 0 8px 0',
     fontSize: '16px',
     fontWeight: '700',
-    color: '#e8e8e8'
+    color: '#c8e6c0'
   },
   achBadges: {
     display: 'flex',
@@ -502,7 +502,7 @@ const styles = {
     backgroundColor: 'rgba(94, 200, 80, 0.08)',
     border: '1px solid rgba(94, 200, 80, 0.2)',
     borderRadius: '6px',
-    color: '#c0c0c0',
+    color: '#c8e6c0',
     fontSize: '12px',
     cursor: 'pointer',
     fontFamily: '"DM Mono", monospace',

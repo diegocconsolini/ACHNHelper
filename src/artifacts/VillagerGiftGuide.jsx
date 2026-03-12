@@ -113,7 +113,7 @@ const VillagerGiftGuide = () => {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       padding: '24px',
       fontFamily: '"DM Sans", sans-serif',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       margin: '0 auto'
     },
     header: {
@@ -135,7 +135,7 @@ const VillagerGiftGuide = () => {
       padding: '10px 20px',
       border: 'none',
       background: 'transparent',
-      color: '#b0b0b0',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontSize: '14px',
       fontWeight: 500,
@@ -159,7 +159,7 @@ const VillagerGiftGuide = () => {
     label: {
       fontSize: '13px',
       fontFamily: '"DM Mono", monospace',
-      color: '#a0d4a0',
+      color: '#5a7a50',
       display: 'block',
       marginBottom: '8px',
       fontWeight: 500
@@ -169,7 +169,7 @@ const VillagerGiftGuide = () => {
       padding: '10px',
       background: 'rgba(30, 50, 30, 0.6)',
       border: '1px solid rgba(94, 200, 80, 0.3)',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       borderRadius: '4px',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
@@ -179,7 +179,7 @@ const VillagerGiftGuide = () => {
       padding: '10px',
       background: 'rgba(30, 50, 30, 0.6)',
       border: '1px solid rgba(94, 200, 80, 0.3)',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       borderRadius: '4px',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
@@ -249,7 +249,7 @@ const VillagerGiftGuide = () => {
     villagerList: {
       fontSize: '12px',
       lineHeight: '1.6',
-      color: '#b0b0b0'
+      color: '#5a7a50'
     },
     dosDonts: {
       display: 'grid',
@@ -361,7 +361,7 @@ const VillagerGiftGuide = () => {
           {universalGifts.map((gift, i) => (
             <div key={i} style={{ marginBottom: '10px', fontSize: '13px', paddingBottom: '10px', borderBottom: i < universalGifts.length - 1 ? '1px solid rgba(94, 200, 80, 0.1)' : 'none' }}>
               <strong style={{ color: '#5ec850' }}>{gift.name}</strong>
-              <div style={{ fontSize: '12px', color: '#a0a0a0', marginTop: '4px' }}>
+              <div style={{ fontSize: '12px', color: '#5a7a50', marginTop: '4px' }}>
                 {typeof gift.bells === 'number' ? `${gift.bells.toLocaleString()} bells` : gift.bells} • {gift.reason}
               </div>
             </div>
@@ -466,7 +466,7 @@ const VillagerGiftGuide = () => {
               <div key={villager.id} style={baseStyles.villagerCard}>
                 <div>
                   <strong style={{ color: '#5ec850' }}>{villager.name}</strong>
-                  <div style={{ fontSize: '12px', color: '#a0a0a0', marginTop: '4px' }}>
+                  <div style={{ fontSize: '12px', color: '#5a7a50', marginTop: '4px' }}>
                     Friendship: {'⭐'.repeat(villager.friendship)} ({villager.friendship}/6)
                   </div>
                 </div>

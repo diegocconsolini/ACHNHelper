@@ -145,7 +145,7 @@ const SeasonalEventCalendar = () => {
       padding: '20px',
       backgroundColor: '#0a1a10',
       borderRadius: '12px',
-      color: '#e8f5e9',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
     },
     header: {
@@ -166,7 +166,7 @@ const SeasonalEventCalendar = () => {
       backgroundColor: isActive ? 'rgba(94, 200, 80, 0.15)' : 'transparent',
       border: 'none',
       borderBottom: isActive ? '2px solid #5ec850' : '2px solid transparent',
-      color: isActive ? '#5ec850' : '#a0c9a0',
+      color: isActive ? '#5ec850' : '#5a7a50',
       cursor: 'pointer',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
@@ -221,7 +221,7 @@ const SeasonalEventCalendar = () => {
       borderRadius: '6px',
       fontSize: '12px',
       textDecoration: completed ? 'line-through' : 'none',
-      color: completed ? '#5ec850' : '#e8f5e9',
+      color: completed ? '#5ec850' : '#c8e6c0',
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
@@ -253,7 +253,7 @@ const SeasonalEventCalendar = () => {
     },
     availableText: {
       fontSize: '11px',
-      color: '#a0c9a0',
+      color: '#5a7a50',
       fontFamily: '"DM Mono", monospace',
     },
     npcList: {
@@ -275,7 +275,7 @@ const SeasonalEventCalendar = () => {
     },
     npcDetail: {
       fontSize: '11px',
-      color: '#a0c9a0',
+      color: '#5a7a50',
       lineHeight: '1.4',
     },
     statsContainer: {
@@ -397,7 +397,7 @@ const SeasonalEventCalendar = () => {
                       })}
                     </div>
                   ) : (
-                    <div style={{ fontSize: '11px', color: '#a0c9a0' }}>
+                    <div style={{ fontSize: '11px', color: '#5a7a50' }}>
                       {events.length} event{events.length !== 1 ? 's' : ''}
                     </div>
                   )}

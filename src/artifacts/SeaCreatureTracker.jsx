@@ -171,7 +171,7 @@ export default function SeaCreatureTracker() {
       borderRadius: '12px',
       padding: '24px',
       fontFamily: '"DM Sans", sans-serif',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       overflow: 'auto',
       maxHeight: '90vh'
     },
@@ -232,7 +232,7 @@ export default function SeaCreatureTracker() {
       backgroundColor: 'rgba(12,28,14,0.8)',
       border: '1px solid #5ec850',
       borderRadius: '6px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px'
     },
@@ -241,7 +241,7 @@ export default function SeaCreatureTracker() {
       backgroundColor: 'rgba(12,28,14,0.8)',
       border: '1px solid #5ec850',
       borderRadius: '6px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
       cursor: 'pointer'
@@ -282,7 +282,7 @@ export default function SeaCreatureTracker() {
       fontSize: '16px',
       fontWeight: '600',
       marginBottom: '8px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       display: 'flex',
       alignItems: 'center',
       gap: '8px'
@@ -343,7 +343,7 @@ export default function SeaCreatureTracker() {
     },
     checkboxLabel: {
       fontSize: '13px',
-      color: '#999'
+      color: '#5a7a50'
     },
     stats: {
       display: 'grid',

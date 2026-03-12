@@ -302,7 +302,7 @@ const DIYRecipeTracker = () => {
       backgroundColor: '#0a1a10',
       minHeight: '100vh',
       fontFamily: "'DM Sans', sans-serif",
-      color: '#e0e0e0'
+      color: '#c8e6c0'
     },
     header: {
       textAlign: 'center',
@@ -317,7 +317,7 @@ const DIYRecipeTracker = () => {
     },
     subtitle: {
       fontSize: '14px',
-      color: '#9ccc65',
+      color: '#5ec850',
       margin: 0
     },
     tabs: {
@@ -330,7 +330,7 @@ const DIYRecipeTracker = () => {
       padding: '12px 20px',
       border: 'none',
       backgroundColor: 'transparent',
-      color: '#9ccc65',
+      color: '#5ec850',
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '14px',
       fontWeight: 500,
@@ -366,7 +366,7 @@ const DIYRecipeTracker = () => {
     progressSubtext: {
       textAlign: 'center',
       fontSize: '12px',
-      color: '#9ccc65',
+      color: '#5ec850',
       margin: '4px 0 0 0'
     },
     statsContent: {
@@ -377,7 +377,7 @@ const DIYRecipeTracker = () => {
       fontSize: '14px'
     },
     statLabel: {
-      color: '#9ccc65',
+      color: '#5ec850',
       fontWeight: 500
     },
     statValue: {
@@ -392,7 +392,7 @@ const DIYRecipeTracker = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       border: '1px solid rgba(94, 200, 80, 0.3)',
       borderRadius: '6px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '14px'
     },
@@ -428,7 +428,7 @@ const DIYRecipeTracker = () => {
     },
     categoryCount: {
       fontSize: '13px',
-      color: '#9ccc65',
+      color: '#5ec850',
       fontFamily: "'DM Mono', monospace"
     },
     progressBar: {
@@ -446,7 +446,7 @@ const DIYRecipeTracker = () => {
     },
     expandIcon: {
       fontSize: '16px',
-      color: '#9ccc65',
+      color: '#5ec850',
       transition: 'transform 0.3s ease'
     },
     categoryContent: {
@@ -500,7 +500,7 @@ const DIYRecipeTracker = () => {
     },
     sourceDesc: {
       fontSize: '13px',
-      color: '#b0bec5',
+      color: '#5a7a50',
       marginBottom: '8px',
       lineHeight: 1.5
     },
@@ -519,7 +519,7 @@ const DIYRecipeTracker = () => {
       fontSize: '12px'
     },
     sourceMetaItem: {
-      color: '#b0bec5'
+      color: '#5a7a50'
     },
     sourceLabel: {
       color: '#5ec850',
@@ -544,7 +544,7 @@ const DIYRecipeTracker = () => {
     },
     seasonEvent: {
       fontSize: '13px',
-      color: '#b0bec5',
+      color: '#5a7a50',
       marginBottom: '4px',
       paddingLeft: '12px',
       borderLeft: '2px solid rgba(94, 200, 80, 0.3)'
@@ -558,7 +558,7 @@ const DIYRecipeTracker = () => {
       padding: '8px 16px',
       border: '1px solid rgba(94, 200, 80, 0.3)',
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
-      color: '#9ccc65',
+      color: '#5ec850',
       borderRadius: '4px',
       cursor: 'pointer',
       fontSize: '12px',
@@ -573,7 +573,7 @@ const DIYRecipeTracker = () => {
     noResults: {
       textAlign: 'center',
       padding: '40px 20px',
-      color: '#9ccc65',
+      color: '#5ec850',
       fontSize: '14px'
     }
   };
@@ -785,7 +785,7 @@ const DIYRecipeTracker = () => {
           </div>
 
           <div style={{ marginBottom: '16px', padding: '16px', backgroundColor: 'rgba(94, 200, 80, 0.1)', borderRadius: '8px', borderLeft: '3px solid #5ec850' }}>
-            <p style={{ margin: 0, fontSize: '13px', color: '#b0bec5' }}>
+            <p style={{ margin: 0, fontSize: '13px', color: '#5a7a50' }}>
               📅 Seasonal recipes change monthly. Balloons are your best source for limited-time DIYs!
             </p>
           </div>

@@ -169,7 +169,7 @@ const FiveStarChecker = () => {
       margin: '0 auto',
       padding: '20px',
       backgroundColor: '#0a1a10',
-      color: '#fff',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       minHeight: '100vh',
     }}>
@@ -190,7 +190,7 @@ const FiveStarChecker = () => {
           margin: '0 0 10px 0',
           color: '#5ec850',
         }}>5-Star Island Checker ⭐</h1>
-        <p style={{ margin: '0', fontSize: '14px', color: '#aaa' }}>
+        <p style={{ margin: '0', fontSize: '14px', color: '#5a7a50' }}>
           Track your progress toward island perfection
         </p>
       </div>
@@ -215,7 +215,7 @@ const FiveStarChecker = () => {
         <p style={{ fontSize: '18px', margin: '10px 0', color: '#5ec850', fontWeight: '700' }}>
           Current Rating: {stars} Star{stars !== 1 ? 's' : ''}
         </p>
-        <p style={{ margin: '5px 0 0 0', fontSize: '13px', color: '#aaa' }}>
+        <p style={{ margin: '5px 0 0 0', fontSize: '13px', color: '#5a7a50' }}>
           Total: {totalPoints} points
         </p>
       </div>
@@ -272,7 +272,7 @@ const FiveStarChecker = () => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
           {/* Villagers */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Villagers (need 8-10): {data.villagers}
             </label>
             <input
@@ -290,7 +290,7 @@ const FiveStarChecker = () => {
 
           {/* Bridges */}
           <div>
-            <label style={{ fontSize: '13px', marginBottom: '8px', color: '#aaa', display: 'block' }}>
+            <label style={{ fontSize: '13px', marginBottom: '8px', color: '#5a7a50', display: 'block' }}>
               Bridges & Inclines
             </label>
             <div style={{ display: 'flex', gap: '10px' }}>
@@ -302,15 +302,15 @@ const FiveStarChecker = () => {
                   style={{
                     width: '100%',
                     padding: '8px',
-                    backgroundColor: '#1a2f20',
+                    backgroundColor: 'rgba(12,28,14,0.95)',
                     border: '1px solid #5ec850',
-                    color: '#fff',
+                    color: '#c8e6c0',
                     borderRadius: '4px',
                     fontSize: '12px',
                   }}
                   placeholder="Bridges"
                 />
-                <div style={{ fontSize: '11px', color: '#aaa', marginTop: '3px' }}>Bridges</div>
+                <div style={{ fontSize: '11px', color: '#5a7a50', marginTop: '3px' }}>Bridges</div>
               </div>
               <div style={{ flex: 1 }}>
                 <input
@@ -320,22 +320,22 @@ const FiveStarChecker = () => {
                   style={{
                     width: '100%',
                     padding: '8px',
-                    backgroundColor: '#1a2f20',
+                    backgroundColor: 'rgba(12,28,14,0.95)',
                     border: '1px solid #5ec850',
-                    color: '#fff',
+                    color: '#c8e6c0',
                     borderRadius: '4px',
                     fontSize: '12px',
                   }}
                   placeholder="Inclines"
                 />
-                <div style={{ fontSize: '11px', color: '#aaa', marginTop: '3px' }}>Inclines</div>
+                <div style={{ fontSize: '11px', color: '#5a7a50', marginTop: '3px' }}>Inclines</div>
               </div>
             </div>
           </div>
 
           {/* Buildings */}
           <div style={{ gridColumn: '1 / -1' }}>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Buildings
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
@@ -387,7 +387,7 @@ const FiveStarChecker = () => {
 
           {/* Fencing */}
           <div style={{ gridColumn: '1 / -1' }}>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Fencing Segments (need 50+): {data.fencingSegments}
             </label>
             <div style={{ display: 'flex', gap: '10px' }}>
@@ -398,9 +398,9 @@ const FiveStarChecker = () => {
                 style={{
                   flex: 1,
                   padding: '8px',
-                  backgroundColor: '#1a2f20',
+                  backgroundColor: 'rgba(12,28,14,0.95)',
                   border: '1px solid #5ec850',
-                  color: '#fff',
+                  color: '#c8e6c0',
                   borderRadius: '4px',
                   fontSize: '14px',
                 }}
@@ -450,7 +450,7 @@ const FiveStarChecker = () => {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
           {/* Trees */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Trees Planted (110-200): {data.treesPlanted}
             </label>
             <input
@@ -460,9 +460,9 @@ const FiveStarChecker = () => {
               style={{
                 width: '100%',
                 padding: '8px',
-                backgroundColor: '#1a2f20',
+                backgroundColor: 'rgba(12,28,14,0.95)',
                 border: '1px solid #5ec850',
-                color: '#fff',
+                color: '#c8e6c0',
                 borderRadius: '4px',
                 marginBottom: '8px',
                 fontSize: '14px',
@@ -475,7 +475,7 @@ const FiveStarChecker = () => {
 
           {/* Flowers */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Flowers Planted (200+): {data.flowersPlanted}
             </label>
             <input
@@ -485,9 +485,9 @@ const FiveStarChecker = () => {
               style={{
                 width: '100%',
                 padding: '8px',
-                backgroundColor: '#1a2f20',
+                backgroundColor: 'rgba(12,28,14,0.95)',
                 border: '1px solid #5ec850',
-                color: '#fff',
+                color: '#c8e6c0',
                 borderRadius: '4px',
                 marginBottom: '8px',
                 fontSize: '14px',
@@ -500,7 +500,7 @@ const FiveStarChecker = () => {
 
           {/* Outdoor Furniture */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Outdoor Furniture Placed: {data.furnitureOutdoor}
             </label>
             <input
@@ -510,20 +510,20 @@ const FiveStarChecker = () => {
               style={{
                 width: '100%',
                 padding: '8px',
-                backgroundColor: '#1a2f20',
+                backgroundColor: 'rgba(12,28,14,0.95)',
                 border: '1px solid #5ec850',
-                color: '#fff',
+                color: '#c8e6c0',
                 borderRadius: '4px',
                 marginBottom: '8px',
                 fontSize: '14px',
               }}
             />
-            <div style={{ fontSize: '12px', color: '#aaa' }}>Varies in impact</div>
+            <div style={{ fontSize: '12px', color: '#5a7a50' }}>Varies in impact</div>
           </div>
 
           {/* DIY Furniture */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               DIY/Custom Furniture: {data.diyFurniture}
             </label>
             <input
@@ -533,20 +533,20 @@ const FiveStarChecker = () => {
               style={{
                 width: '100%',
                 padding: '8px',
-                backgroundColor: '#1a2f20',
+                backgroundColor: 'rgba(12,28,14,0.95)',
                 border: '1px solid #5ec850',
-                color: '#fff',
+                color: '#c8e6c0',
                 borderRadius: '4px',
                 marginBottom: '8px',
                 fontSize: '14px',
               }}
             />
-            <div style={{ fontSize: '12px', color: '#aaa' }}>Handmade items boost score</div>
+            <div style={{ fontSize: '12px', color: '#5a7a50' }}>Handmade items boost score</div>
           </div>
 
           {/* Weeds */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Weeds Growing: {data.weedCount}
             </label>
             <input
@@ -556,9 +556,9 @@ const FiveStarChecker = () => {
               style={{
                 width: '100%',
                 padding: '8px',
-                backgroundColor: '#1a2f20',
+                backgroundColor: 'rgba(12,28,14,0.95)',
                 border: '1px solid #5ec850',
-                color: '#fff',
+                color: '#c8e6c0',
                 borderRadius: '4px',
                 marginBottom: '8px',
                 fontSize: '14px',
@@ -571,7 +571,7 @@ const FiveStarChecker = () => {
 
           {/* Ground Items */}
           <div>
-            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#aaa' }}>
+            <label style={{ display: 'block', fontSize: '13px', marginBottom: '8px', color: '#5a7a50' }}>
               Items on Ground: {data.groundItems}
             </label>
             <input
@@ -581,9 +581,9 @@ const FiveStarChecker = () => {
               style={{
                 width: '100%',
                 padding: '8px',
-                backgroundColor: '#1a2f20',
+                backgroundColor: 'rgba(12,28,14,0.95)',
                 border: '1px solid #5ec850',
-                color: '#fff',
+                color: '#c8e6c0',
                 borderRadius: '4px',
                 marginBottom: '8px',
                 fontSize: '14px',
@@ -606,19 +606,19 @@ const FiveStarChecker = () => {
         <h3 style={{ margin: '0 0 15px 0', color: '#d4b030', fontSize: '16px' }}>Score Summary</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px' }}>
           <div style={{ padding: '10px', backgroundColor: 'rgba(94,200,80,0.1)', borderRadius: '4px', borderLeft: `3px solid #5ec850` }}>
-            <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Development</div>
+            <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '5px' }}>Development</div>
             <div style={{ fontSize: '24px', fontWeight: '700', color: '#5ec850' }}>{devPoints}</div>
-            <div style={{ fontSize: '11px', color: '#aaa', marginTop: '5px' }}>Need: 665+</div>
+            <div style={{ fontSize: '11px', color: '#5a7a50', marginTop: '5px' }}>Need: 665+</div>
           </div>
           <div style={{ padding: '10px', backgroundColor: 'rgba(94,200,80,0.1)', borderRadius: '4px', borderLeft: `3px solid #5ec850` }}>
-            <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Scenery</div>
+            <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '5px' }}>Scenery</div>
             <div style={{ fontSize: '24px', fontWeight: '700', color: '#5ec850' }}>{sceneryPoints}</div>
-            <div style={{ fontSize: '11px', color: '#aaa', marginTop: '5px' }}>Need: 450+</div>
+            <div style={{ fontSize: '11px', color: '#5a7a50', marginTop: '5px' }}>Need: 450+</div>
           </div>
           <div style={{ padding: '10px', backgroundColor: 'rgba(212,176,48,0.1)', borderRadius: '4px', borderLeft: `3px solid #d4b030` }}>
-            <div style={{ fontSize: '12px', color: '#aaa', marginBottom: '5px' }}>Total</div>
+            <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '5px' }}>Total</div>
             <div style={{ fontSize: '24px', fontWeight: '700', color: '#d4b030' }}>{totalPoints}</div>
-            <div style={{ fontSize: '11px', color: '#aaa', marginTop: '5px' }}>All thresholds</div>
+            <div style={{ fontSize: '11px', color: '#5a7a50', marginTop: '5px' }}>All thresholds</div>
           </div>
         </div>
       </div>

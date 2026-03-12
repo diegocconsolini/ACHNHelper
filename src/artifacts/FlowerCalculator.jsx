@@ -240,7 +240,7 @@ const FlowerCalculator = () => {
     container: {
       fontFamily: '"DM Sans", sans-serif',
       backgroundColor: '#0a1a10',
-      color: '#e8f5e9',
+      color: '#c8e6c0',
       minHeight: '100vh',
       padding: '20px',
       width: '100%',
@@ -266,7 +266,7 @@ const FlowerCalculator = () => {
       padding: '10px 16px',
       border: 'none',
       backgroundColor: 'transparent',
-      color: '#9ccc65',
+      color: '#5ec850',
       cursor: 'pointer',
       borderBottom: '2px solid transparent',
       fontSize: '14px',
@@ -288,7 +288,7 @@ const FlowerCalculator = () => {
       padding: '10px 16px',
       border: '2px solid rgba(94, 200, 80, 0.3)',
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
-      color: '#9ccc65',
+      color: '#5ec850',
       cursor: 'pointer',
       borderRadius: '6px',
       fontSize: '14px',
@@ -481,7 +481,7 @@ const FlowerCalculator = () => {
         <div style={styles.section}>
           <div style={styles.sectionTitle}>🧪 Breeding Calculator</div>
           <div style={styles.card}>
-            <div style={{ marginBottom: '16px', fontSize: '14px', color: '#9ccc65' }}>
+            <div style={{ marginBottom: '16px', fontSize: '14px', color: '#5ec850' }}>
               Select two parent colors to see offspring possibilities:
             </div>
             <div style={styles.colorGrid}>
@@ -523,7 +523,7 @@ const FlowerCalculator = () => {
               <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px', color: '#5ec850' }}>
                 {parent1.name} {currentFlower.emoji} × {parent2.name} {currentFlower.emoji}
               </div>
-              <div style={{ fontSize: '12px', color: '#9ccc65', marginBottom: '16px' }}>
+              <div style={{ fontSize: '12px', color: '#5ec850', marginBottom: '16px' }}>
                 Possible offspring and approximate breeding rates:
               </div>
               {offspring.map(result => (
@@ -580,7 +580,7 @@ const FlowerCalculator = () => {
             <div style={{ marginBottom: '12px', fontSize: '12px', color: '#4aacf0' }}>
               🕐 Estimated Time: 4-6 weeks of dedicated breeding
             </div>
-            <div style={{ marginBottom: '20px', fontSize: '13px', color: '#9ccc65' }}>
+            <div style={{ marginBottom: '20px', fontSize: '13px', color: '#5ec850' }}>
               Track your progress through the breeding steps:
             </div>
             <div style={styles.stepContainer}>
@@ -597,7 +597,7 @@ const FlowerCalculator = () => {
                     <div style={styles.stepNumber}>{idx + 1}</div>
                     <div>
                       <div style={{ fontWeight: '600', color: '#5ec850' }}>{step.title}</div>
-                      <div style={{ fontSize: '12px', color: '#9ccc65', marginTop: '4px' }}>
+                      <div style={{ fontSize: '12px', color: '#5ec850', marginTop: '4px' }}>
                         {step.description}
                       </div>
                     </div>

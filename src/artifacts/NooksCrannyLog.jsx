@@ -226,7 +226,7 @@ const NooksCrannyLog = () => {
 
   const statLabelStyle = {
     fontSize: '12px',
-    color: '#999999',
+    color: '#5a7a50',
     marginTop: '5px'
   };
 
@@ -315,7 +315,7 @@ const NooksCrannyLog = () => {
                     onChange={(e) => handleLimitedItemChange(idx, 'price', e.target.value)}
                     style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
                   />
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#999999', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#5a7a50', cursor: 'pointer' }}>
                     <input
                       type="checkbox"
                       checked={item.bought}
@@ -419,13 +419,13 @@ const NooksCrannyLog = () => {
                       </div>
 
                       {entry.wallpaper && (
-                        <div style={{ marginBottom: '8px', color: '#999999' }}>
+                        <div style={{ marginBottom: '8px', color: '#5a7a50' }}>
                           <span style={{ color: '#5ec850', fontWeight: 'bold' }}>Wallpaper:</span> {entry.wallpaper}
                         </div>
                       )}
 
                       {entry.flooring && (
-                        <div style={{ marginBottom: '8px', color: '#999999' }}>
+                        <div style={{ marginBottom: '8px', color: '#5a7a50' }}>
                           <span style={{ color: '#5ec850', fontWeight: 'bold' }}>Flooring:</span> {entry.flooring}
                         </div>
                       )}
@@ -433,7 +433,7 @@ const NooksCrannyLog = () => {
                       {entry.limitedItems.length > 0 && (
                         <div style={{ marginBottom: '8px' }}>
                           <span style={{ color: '#5ec850', fontWeight: 'bold' }}>Limited Items:</span>
-                          <ul style={{ margin: '8px 0 0 20px', color: '#999999' }}>
+                          <ul style={{ margin: '8px 0 0 20px', color: '#5a7a50' }}>
                             {entry.limitedItems.map((item, idx) => (
                               <li key={idx}>
                                 {item.name} - {item.price} bells {item.bought ? '✓' : ''}
@@ -444,7 +444,7 @@ const NooksCrannyLog = () => {
                       )}
 
                       {entry.notes && (
-                        <div style={{ marginTop: '8px', color: '#999999', fontStyle: 'italic' }}>
+                        <div style={{ marginTop: '8px', color: '#5a7a50', fontStyle: 'italic' }}>
                           <span style={{ color: '#5ec850', fontWeight: 'bold' }}>Notes:</span> {entry.notes}
                         </div>
                       )}
@@ -479,7 +479,7 @@ const NooksCrannyLog = () => {
           <div style={cardStyle}>
             <h4 style={{ color: '#d4b030', marginBottom: '15px' }}>⭐ Most Common Hot Items</h4>
             {hotItemStats.length === 0 ? (
-              <div style={{ color: '#999999' }}>No hot items logged yet.</div>
+              <div style={{ color: '#5a7a50' }}>No hot items logged yet.</div>
             ) : (
               <div>
                 {hotItemStats.slice(0, 10).map(([item, count], idx) => (

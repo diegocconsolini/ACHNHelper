@@ -139,7 +139,7 @@ const DreamAddressBook = () => {
       fontFamily: '"DM Sans", sans-serif',
       backgroundColor: '#0a1a10',
       minHeight: '100vh',
-      color: '#e0e0e0'
+      color: '#c8e6c0'
     },
     header: {
       textAlign: 'center',
@@ -156,7 +156,7 @@ const DreamAddressBook = () => {
     },
     subtitle: {
       fontSize: '13px',
-      color: '#888',
+      color: '#5a7a50',
       marginTop: '5px'
     },
     messageBox: {
@@ -182,7 +182,7 @@ const DreamAddressBook = () => {
       padding: '12px 18px',
       border: 'none',
       backgroundColor: 'transparent',
-      color: '#888',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontSize: '13px',
       fontWeight: 500,
@@ -222,7 +222,7 @@ const DreamAddressBook = () => {
       backgroundColor: 'rgba(255, 255, 255, 0.05)',
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '4px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '13px',
       transition: 'border-color 0.2s ease'
@@ -232,7 +232,7 @@ const DreamAddressBook = () => {
       backgroundColor: 'rgba(255, 255, 255, 0.05)',
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '4px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '13px',
       minHeight: '100px',
@@ -247,7 +247,7 @@ const DreamAddressBook = () => {
       backgroundColor: 'rgba(255, 255, 255, 0.05)',
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '4px',
-      color: '#888',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontSize: '16px',
       transition: 'all 0.2s ease',
@@ -263,7 +263,7 @@ const DreamAddressBook = () => {
       backgroundColor: 'rgba(255, 255, 255, 0.05)',
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '4px',
-      color: '#888',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontSize: '12px',
       transition: 'all 0.2s ease',
@@ -304,7 +304,7 @@ const DreamAddressBook = () => {
     },
     entryMeta: {
       fontSize: '12px',
-      color: '#888',
+      color: '#5a7a50',
       marginBottom: '8px'
     },
     dreamAddress: {
@@ -352,7 +352,7 @@ const DreamAddressBook = () => {
     },
     statLabel: {
       fontSize: '12px',
-      color: '#888',
+      color: '#5a7a50',
       textTransform: 'uppercase',
       letterSpacing: '0.5px'
     },
@@ -453,7 +453,7 @@ const DreamAddressBook = () => {
             </div>
 
             {filteredEntries.length === 0 ? (
-              <p style={{ color: '#888', textAlign: 'center', marginTop: '40px' }}>No dream addresses found</p>
+              <p style={{ color: '#5a7a50', textAlign: 'center', marginTop: '40px' }}>No dream addresses found</p>
             ) : (
               filteredEntries.map(entry => (
                 <div key={entry.id} style={styles.entryCard} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.05)'}>
@@ -467,7 +467,7 @@ const DreamAddressBook = () => {
                       <div style={{ fontSize: '18px' }}>{['⭐', '⭐⭐', '⭐⭐⭐', '⭐⭐⭐⭐', '⭐⭐⭐⭐⭐'][entry.rating - 1]}</div>
                     </div>
                   </div>
-                  {entry.notes && <p style={{ ...styles.entryMeta, marginBottom: '10px', color: '#aaa' }}>{entry.notes}</p>}
+                  {entry.notes && <p style={{ ...styles.entryMeta, marginBottom: '10px', color: '#5a7a50' }}>{entry.notes}</p>}
                   <div>
                     {entry.tags.map(tag => <span key={tag} style={styles.tagBadge}>{tag}</span>)}
                   </div>
@@ -487,7 +487,7 @@ const DreamAddressBook = () => {
           <div>
             <p style={{ ...styles.entryMeta, marginBottom: '16px' }}>Rating 4-5 stars only</p>
             {favorites.length === 0 ? (
-              <p style={{ color: '#888', textAlign: 'center', marginTop: '40px' }}>No favorites yet</p>
+              <p style={{ color: '#5a7a50', textAlign: 'center', marginTop: '40px' }}>No favorites yet</p>
             ) : (
               favorites.map(entry => (
                 <div key={entry.id} style={styles.entryCard} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.05)'}>
@@ -537,7 +537,7 @@ const DreamAddressBook = () => {
                 stats.tagCounts.slice(0, 5).map(([tag, count]) => (
                   <div key={tag} style={{ marginBottom: '12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                      <span style={{ fontSize: '13px', color: '#aaa' }}>{tag}</span>
+                      <span style={{ fontSize: '13px', color: '#5a7a50' }}>{tag}</span>
                       <span style={{ fontSize: '12px', fontFamily: '"DM Mono", monospace', color: '#5ec850' }}>{count}</span>
                     </div>
                     <div style={{ height: '6px', backgroundColor: 'rgba(94, 200, 80, 0.1)', borderRadius: '3px', overflow: 'hidden' }}>
@@ -554,7 +554,7 @@ const DreamAddressBook = () => {
                 <p style={styles.entryMeta}>No visit history</p>
               ) : (
                 Object.entries(stats.visitsByMonth).sort().reverse().slice(0, 6).map(([month, count]) => (
-                  <div key={month} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '8px', color: '#aaa' }}>
+                  <div key={month} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '8px', color: '#5a7a50' }}>
                     <span>{month}</span>
                     <span style={{ fontFamily: '"DM Mono", monospace', color: '#4aacf0' }}>{count} visit{count !== 1 ? 's' : ''}</span>
                   </div>
@@ -642,7 +642,7 @@ const AddEntryForm = ({ onSubmit, styles }) => {
           onChange={handleDreamAddressChange}
           maxLength="19"
         />
-        <p style={{ fontSize: '11px', color: '#666', margin: '4px 0 0 0' }}>Format: DA-XXXX-XXXX-XXXX</p>
+        <p style={{ fontSize: '11px', color: '#5a7a50', margin: '4px 0 0 0' }}>Format: DA-XXXX-XXXX-XXXX</p>
       </div>
 
       <div style={styles.formGroup}>

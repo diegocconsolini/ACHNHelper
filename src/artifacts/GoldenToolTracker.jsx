@@ -478,7 +478,7 @@ const styles = {
   },
   toolRequirement: {
     fontSize: '12px',
-    color: '#b0b0b0',
+    color: '#5a7a50',
     margin: '0 0 16px 0',
     textAlign: 'center',
   },
@@ -601,7 +601,7 @@ const styles = {
   },
   tip: {
     fontSize: '12px',
-    color: '#b0b0b0',
+    color: '#5a7a50',
     lineHeight: '1.6',
   },
 };

@@ -213,7 +213,7 @@ const FishTracker = () => {
     width: "100%",
     margin: "0 auto",
     backgroundColor: "#0a1a10",
-    color: "#e0e0e0",
+    color: "#c8e6c0",
     fontFamily: "'DM Sans', sans-serif",
     borderRadius: "12px",
     overflow: "hidden",
@@ -263,7 +263,7 @@ const FishTracker = () => {
     backgroundColor: "rgba(255,255,255,0.08)",
     border: "1px solid rgba(94,200,80,0.3)",
     borderRadius: "6px",
-    color: "#e0e0e0",
+    color: "#c8e6c0",
     fontFamily: "'DM Sans', sans-serif",
     fontSize: "14px"
   };
@@ -280,7 +280,7 @@ const FishTracker = () => {
     backgroundColor: "rgba(255,255,255,0.08)",
     border: "1px solid rgba(94,200,80,0.3)",
     borderRadius: "6px",
-    color: "#e0e0e0",
+    color: "#c8e6c0",
     fontFamily: "'DM Sans', sans-serif",
     fontSize: "14px",
     cursor: "pointer",
@@ -291,7 +291,7 @@ const FishTracker = () => {
   const hemisphereButtonStyle = (isActive) => ({
     padding: "8px 16px",
     backgroundColor: isActive ? "#5ec850" : "rgba(255,255,255,0.08)",
-    color: isActive ? "#0a1a10" : "#e0e0e0",
+    color: isActive ? "#0a1a10" : "#c8e6c0",
     border: `1px solid ${isActive ? "#5ec850" : "rgba(94,200,80,0.3)"}`,
     borderRadius: "6px",
     cursor: "pointer",
@@ -340,7 +340,7 @@ const FishTracker = () => {
 
   const fishDetailStyle = {
     fontSize: "12px",
-    color: "#b0b0b0",
+    color: "#5a7a50",
     marginBottom: "8px",
     fontFamily: "'DM Mono', monospace"
   };
@@ -377,7 +377,7 @@ const FishTracker = () => {
     fontSize: "13px",
     cursor: "pointer",
     opacity: isChecked ? 1 : 0.7,
-    color: isChecked ? "#5ec850" : "#b0b0b0"
+    color: isChecked ? "#5ec850" : "#5a7a50"
   });
 
   const statsPanelStyle = {
@@ -430,7 +430,7 @@ const FishTracker = () => {
 
       <div style={headerStyle}>
         <div style={titleStyle}>🎣 Fish Tracker</div>
-        <div style={{ fontSize: "13px", color: "#a0a0a0", marginBottom: "12px" }}>
+        <div style={{ fontSize: "13px", color: "#5a7a50", marginBottom: "12px" }}>
           Complete your Critterpedia
         </div>
         <div style={progressBarContainerStyle}>
@@ -581,15 +581,15 @@ const FishTracker = () => {
 
       <div style={statsPanelStyle}>
         <div style={statItemStyle}>
-          <div style={{ color: "#b0b0b0", marginBottom: "4px" }}>Total Caught</div>
+          <div style={{ color: "#5a7a50", marginBottom: "4px" }}>Total Caught</div>
           <div style={statValueStyle}>{caughtCount}</div>
         </div>
         <div style={statItemStyle}>
-          <div style={{ color: "#b0b0b0", marginBottom: "4px" }}>Total Donated</div>
+          <div style={{ color: "#5a7a50", marginBottom: "4px" }}>Total Donated</div>
           <div style={statValueStyle}>{donatedCount}</div>
         </div>
         <div style={statItemStyle}>
-          <div style={{ color: "#b0b0b0", marginBottom: "4px" }}>Completion</div>
+          <div style={{ color: "#5a7a50", marginBottom: "4px" }}>Completion</div>
           <div style={statValueStyle}>{completionPercent}%</div>
         </div>
       </div>

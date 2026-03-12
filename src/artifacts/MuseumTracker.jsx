@@ -217,7 +217,7 @@ const MuseumTracker = () => {
       width: '100%',
       margin: '0 auto',
       backgroundColor: '#0a1a10',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       padding: '24px',
       borderRadius: '8px',
@@ -267,7 +267,7 @@ const MuseumTracker = () => {
       backgroundColor: 'rgba(12,28,14,0.95)',
       border: '1px solid #5ec850',
       borderRadius: '6px',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px'
     },
@@ -282,7 +282,7 @@ const MuseumTracker = () => {
       padding: '12px 16px',
       backgroundColor: 'transparent',
       border: 'none',
-      color: '#999',
+      color: '#5a7a50',
       cursor: 'pointer',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
@@ -326,11 +326,11 @@ const MuseumTracker = () => {
     itemName: {
       fontSize: '13px',
       fontWeight: '500',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       lineHeight: '1.3'
     },
     itemNameUndone: {
-      color: '#999'
+      color: '#5a7a50'
     },
     checkbox: {
       display: 'flex',
@@ -365,7 +365,7 @@ const MuseumTracker = () => {
     },
     statLabel: {
       fontSize: '11px',
-      color: '#999',
+      color: '#5a7a50',
       textTransform: 'uppercase',
       letterSpacing: '0.5px'
     },

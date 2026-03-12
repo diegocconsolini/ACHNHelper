@@ -474,7 +474,7 @@ const styles = {
     margin: '0 auto',
     padding: '20px',
     backgroundColor: '#0a1a10',
-    color: '#e0e0e0',
+    color: '#c8e6c0',
     fontFamily: '"DM Sans", sans-serif',
     minHeight: '100vh',
     animation: 'fadeIn 0.6s ease-in-out'
@@ -795,7 +795,7 @@ const styles = {
     backgroundColor: 'rgba(12, 28, 14, 0.95)',
     border: '1px solid rgba(94, 200, 80, 0.2)',
     borderRadius: '6px',
-    color: '#e0e0e0',
+    color: '#c8e6c0',
     fontSize: '13px',
     fontFamily: '"DM Sans", sans-serif'
   },

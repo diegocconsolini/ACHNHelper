@@ -19,14 +19,14 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
         <div style={{ fontSize: '13px', color: '#d4b030', marginBottom: '6px' }}>
           Target: {project.color}
         </div>
-        <div style={{ fontSize: '12px', color: '#a0a0a0', marginBottom: '4px' }}>
+        <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '4px' }}>
           Parents: {project.parents || 'TBD'}
         </div>
-        <div style={{ fontSize: '11px', color: '#7e8d8f', marginBottom: '6px', fontFamily: '"DM Mono", monospace' }}>
+        <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '6px', fontFamily: '"DM Mono", monospace' }}>
           Days: {getDaysElapsed(project.startDate)}
         </div>
         {project.notes && (
-          <div style={{ fontSize: '11px', color: '#9ba8af', fontStyle: 'italic', marginBottom: '4px' }}>
+          <div style={{ fontSize: '11px', color: '#5a7a50', fontStyle: 'italic', marginBottom: '4px' }}>
             "{project.notes}"
           </div>
         )}
@@ -261,7 +261,7 @@ const IslandFlowerMap = () => {
   return (
     <div style={{
       background: '#0a1a10',
-      color: '#e0e0e0',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       padding: '24px',
       minHeight: '100vh',
@@ -285,7 +285,7 @@ const IslandFlowerMap = () => {
       }}>
         🌺 Island Flower Map
       </div>
-      <div style={{ fontSize: '13px', color: '#7e8d8f', marginBottom: '20px' }}>
+      <div style={{ fontSize: '13px', color: '#5a7a50', marginBottom: '20px' }}>
         Breeding Operations Tracker
       </div>
 
@@ -302,8 +302,8 @@ const IslandFlowerMap = () => {
             onClick={() => setActiveTab(tab)}
             style={{
               background: activeTab === tab ? '#5ec850' : 'transparent',
-              color: activeTab === tab ? '#0a1a10' : '#a0a0a0',
-              border: activeTab === tab ? 'none' : '1px solid #7e8d8f',
+              color: activeTab === tab ? '#0a1a10' : '#5a7a50',
+              border: activeTab === tab ? 'none' : '1px solid rgba(94, 200, 80, 0.2)',
               padding: '8px 16px',
               borderRadius: '4px',
               cursor: 'pointer',
@@ -455,7 +455,7 @@ const IslandFlowerMap = () => {
               💧 Daily Watering Checklist — {today}
             </div>
             {activeProjects.length === 0 ? (
-              <div style={{ color: '#7e8d8f', fontSize: '12px' }}>No active projects yet. Create one to start watering!</div>
+              <div style={{ color: '#5a7a50', fontSize: '12px' }}>No active projects yet. Create one to start watering!</div>
             ) : (
               <div style={{ display: 'grid', gap: '10px' }}>
                 {activeProjects.map(project => {
@@ -493,7 +493,7 @@ const IslandFlowerMap = () => {
                         <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#5ec850' }}>
                           {project.species} - {project.color}
                         </div>
-                        <div style={{ fontSize: '11px', color: '#7e8d8f' }}>
+                        <div style={{ fontSize: '11px', color: '#5a7a50' }}>
                           Status: {project.status}
                         </div>
                       </div>
@@ -515,7 +515,7 @@ const IslandFlowerMap = () => {
               borderRadius: '8px',
               padding: '16px'
             }}>
-              <div style={{ fontSize: '11px', color: '#7e8d8f', marginBottom: '8px' }}>Active Projects</div>
+              <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '8px' }}>Active Projects</div>
               <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#5ec850', fontFamily: '"DM Mono", monospace' }}>
                 {activeProjects.length}
               </div>
@@ -526,7 +526,7 @@ const IslandFlowerMap = () => {
               borderRadius: '8px',
               padding: '16px'
             }}>
-              <div style={{ fontSize: '11px', color: '#7e8d8f', marginBottom: '8px' }}>Success Rate</div>
+              <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '8px' }}>Success Rate</div>
               <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#d4b030', fontFamily: '"DM Mono", monospace' }}>
                 {successRate}%
               </div>
@@ -537,7 +537,7 @@ const IslandFlowerMap = () => {
               borderRadius: '8px',
               padding: '16px'
             }}>
-              <div style={{ fontSize: '11px', color: '#7e8d8f', marginBottom: '8px' }}>Total Projects</div>
+              <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '8px' }}>Total Projects</div>
               <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#4aacf0', fontFamily: '"DM Mono", monospace' }}>
                 {projects.length}
               </div>
@@ -558,7 +558,7 @@ const IslandFlowerMap = () => {
               <div style={{ fontSize: '12px', color: '#d4b030' }}>
                 {longestProject.species} - {longestProject.color}
               </div>
-              <div style={{ fontSize: '11px', color: '#7e8d8f' }}>
+              <div style={{ fontSize: '11px', color: '#5a7a50' }}>
                 {getDaysElapsed(longestProject.startDate)} days
               </div>
             </div>
@@ -576,7 +576,7 @@ const IslandFlowerMap = () => {
               </div>
               <div style={{ display: 'grid', gap: '8px' }}>
                 {speciesBreakdown.map(({ species, count }) => (
-                  <div key={species} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#a0a0a0' }}>
+                  <div key={species} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#5a7a50' }}>
                     <span>{species}</span>
                     <span style={{ color: '#5ec850', fontWeight: 'bold' }}>{count}</span>
                   </div>

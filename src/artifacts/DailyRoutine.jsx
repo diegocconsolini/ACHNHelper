@@ -195,7 +195,7 @@ export default function DailyRoutine() {
     progressBar: {
       width: '100%',
       height: '24px',
-      backgroundColor: '#1a2a1c',
+      backgroundColor: 'rgba(12,28,14,0.95)',
       borderRadius: '12px',
       overflow: 'hidden',
       marginBottom: '10px'
@@ -214,7 +214,7 @@ export default function DailyRoutine() {
     },
     progressText: {
       fontSize: '13px',
-      color: '#aaa'
+      color: '#5a7a50'
     },
     streakBadge: {
       display: 'inline-block',
@@ -264,7 +264,7 @@ export default function DailyRoutine() {
     },
     taskTextCompleted: {
       textDecoration: 'line-through',
-      color: '#888'
+      color: '#5a7a50'
     },
     removeBtn: {
       backgroundColor: 'transparent',
@@ -283,10 +283,10 @@ export default function DailyRoutine() {
     addTaskInput: {
       flex: 1,
       padding: '10px',
-      backgroundColor: '#1a2a1c',
+      backgroundColor: 'rgba(12,28,14,0.95)',
       border: `1px solid ${'#5ec850'}`,
       borderRadius: '6px',
-      color: '#fff',
+      color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '13px'
     },
@@ -320,7 +320,7 @@ export default function DailyRoutine() {
     dayCell: {
       textAlign: 'center',
       padding: '10px',
-      backgroundColor: '#1a2a1c',
+      backgroundColor: 'rgba(12,28,14,0.95)',
       borderRadius: '6px',
       fontSize: '11px'
     },
@@ -354,10 +354,10 @@ export default function DailyRoutine() {
       width: '100%',
       minHeight: '100px',
       padding: '10px',
-      backgroundColor: '#1a2a1c',
+      backgroundColor: 'rgba(12,28,14,0.95)',
       border: `1px solid ${'#5ec850'}`,
       borderRadius: '6px',
-      color: '#fff',
+      color: '#c8e6c0',
       fontFamily: '"DM Mono", monospace',
       fontSize: '13px',
       resize: 'vertical',
