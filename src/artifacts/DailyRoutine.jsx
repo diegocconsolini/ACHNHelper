@@ -97,8 +97,12 @@ export default function DailyRoutine() {
         streak: newStreak,
         weeklyData: weeklyData
       };
+      try {
+        await window.storage.set('acnh-daily-routine', JSON.stringify(data));
 
-      await window.storage.set('acnh-daily-routine', JSON.stringify(data));
+      } catch (error) {
+        console.error('Daily Routine errro', error.message)
+      }
     };
 
     if (tasks.length > 0) {

@@ -30,7 +30,12 @@ const IslandFlowerMap = () => {
   useEffect(() => {
     const loadData = async () => {
       const projectsResult = await window.storage.get('acnh_breeding_projects');
-      const wateringResult = await window.storage.get('acnh_watering_log');
+      try {
+        const wateringResult = await window.storage.get('acnh_watering_log');
+
+      } catch (error) {
+        console.error('useEffect error', error)
+      }
       if (projectsResult) setProjects(JSON.parse(projectsResult.value));
       if (wateringResult) setWateringLog(JSON.parse(wateringResult.value));
     };

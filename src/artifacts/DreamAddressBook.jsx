@@ -68,9 +68,15 @@ const DreamAddressBook = () => {
   };
 
   const copyToClipboard = (address) => {
-    navigator.clipboard.writeText(address);
-    setMessage('📋 Copied to clipboard');
-    setTimeout(() => setMessage(''), 2000);
+    try {
+      navigator.clipboard.writeText(address);
+      setMessage('📋 Copied to clipboard');
+      setTimeout(() => setMessage(''), 2000);
+      
+    } catch (error) {
+      console.error('error in copy to clipBoard function ', error)
+    }
+   
   };
 
   const getFilteredEntries = () => {

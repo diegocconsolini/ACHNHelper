@@ -52,21 +52,30 @@ export default function BellCalculator() {
     setItems(newItems);
     try {
       await window.storage.set('acnh-bell-calc-items', JSON.stringify(newItems));
-    } catch (e) {}
+    } catch (e) {
+      console.error('error in BellCal SaveItems function', e)
+    }
   };
 
   const saveLoans = async (newLoans) => {
     setLoans(newLoans);
     try {
       await window.storage.set('acnh-bell-calc-loans', JSON.stringify(newLoans));
-    } catch (e) {}
+    } catch (e) {
+      
+      console.error('error in BellCal saveLoans function', e)
+
+    }
   };
 
   const saveDailyIncome = async (newIncome) => {
     setDailyIncome(newIncome);
     try {
       await window.storage.set('acnh-bell-calc-income', JSON.stringify(newIncome));
-    } catch (e) {}
+    } catch (e) {
+      console.error('error in BellCal SaveDailyIncome function', e)
+
+    }
   };
 
   const addItem = (name, price, qty = 1) => {

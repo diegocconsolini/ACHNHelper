@@ -119,9 +119,9 @@ const FishTracker = () => {
 
         if (caughtResult) setCaughtFish(JSON.parse(caughtResult.value));
         if (donatedResult) setDonatedFish(JSON.parse(donatedResult.value));
-        if (hemisphereResult) setHemisphere(hemisphereResult.value);
+        if (hemisphereResult) setHemisphere(Json.parse(hemisphereResult.value));
       } catch (e) {
-        console.log("Storage not available, using defaults");
+        console.log("Storage not available, using defaults", e);
       }
       setLoading(false);
     };

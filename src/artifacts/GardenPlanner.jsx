@@ -98,7 +98,7 @@ const GardenPlanner = () => {
         const layouts = result ? JSON.parse(result.value) : [];
         setSavedLayouts(layouts);
       } catch (e) {
-        console.error('Failed to load layouts:', e);
+        console.error('Failed to load layouts:', e.message);
       }
     };
     loadSaved();
@@ -174,8 +174,11 @@ const GardenPlanner = () => {
     };
     const updated = [...savedLayouts, newLayout];
     setSavedLayouts(updated);
-    await window.storage.set('gardenLayouts', JSON.stringify(updated));
-    setLayoutName('');
+    try {
+      await window.storage.set('gardenLayouts', JSON.stringify(updated));
+    } catch (error) {
+      console.error("Failed to save garden layouts:", error);
+    }    setLayoutName('');
   };
 
   const loadLayout = (layout) => {
@@ -186,8 +189,11 @@ const GardenPlanner = () => {
   const deleteLayout = async (id) => {
     const updated = savedLayouts.filter(l => l.id !== id);
     setSavedLayouts(updated);
-    await window.storage.set('gardenLayouts', JSON.stringify(updated));
-  };
+    try {
+      await window.storage.set('gardenLayouts', JSON.stringify(updated));
+    } catch (error) {
+      console.error("Failed to save garden layouts:", error);
+    }  };
 
   const getFlowerColor = (species, color) => {
     const colorMap = {
