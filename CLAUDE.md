@@ -54,20 +54,21 @@ ACNH-Helper-Suite/          ← Spec, data files, and artifact backups
 
 These rules MUST be followed when modifying or creating artifacts:
 
-1. **Single-file JSX** — Each artifact is one `.jsx` file with a default export
-2. **No props** — Components take zero props; all data is internal or from storage
-3. **Inline styles ONLY** — No CSS files, no Tailwind, no styled-components
-4. **No duplicate `style` props** — Use spread: `style={{ ...styles.base, color: 'red' }}`
-5. **`window.storage` API** — NOT localStorage/sessionStorage (those break in Claude artifacts)
+1. **One default export per artifact** — Each artifact in `src/artifacts/` has a single default-exported React component. This is the entry point that `App.jsx` lazy-loads.
+2. **Extract logic into modules** — Complex artifacts should split data, utilities, and sub-logic into separate `.js` files under `src/artifacts/` (e.g., `gardenGenetics.js`, `gardenData.js`). The main `.jsx` file imports these. Keep files focused and under ~500 lines where practical.
+3. **No props on the root component** — The default export takes zero props; all data is internal or from storage. Internal sub-components CAN take props.
+4. **Inline styles ONLY** — No CSS files, no Tailwind, no styled-components
+5. **No duplicate `style` props** — Use spread: `style={{ ...styles.base, color: 'red' }}`
+6. **`window.storage` API** — NOT localStorage/sessionStorage (those break in Claude artifacts)
    ```js
    await window.storage.set('key', JSON.stringify(value))
    const result = await window.storage.get('key')
    const data = result ? JSON.parse(result.value) : defaultValue
    ```
-6. **Google Fonts via `@import`** in a `<style>` tag inside each component
-7. **Emoji only** — No external images, no SVG files, no icon libraries
-8. **Hardcoded game data** — All data inlined as JS arrays/objects, no API calls
-9. **900px target width** — Components render cleanly in 900px panels
+7. **Google Fonts via `@import`** in a `<style>` tag inside the root component
+8. **Use `<AssetImg>` for game sprites** — Prefer real game assets from `public/assets-web/` over emoji. Use emoji only as fallback when no asset exists.
+9. **No fabricated game data** — All data from verified sources, no API calls
+10. **Responsive layout** — Components should work well in the portal's main content area
 
 ## ZERO TOLERANCE: No Fabricated Data
 
