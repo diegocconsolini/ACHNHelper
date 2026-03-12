@@ -247,6 +247,7 @@ export default function GardenPlanner() {
   const [state, dispatch] = useReducer(reducer, undefined, makeInitialState);
   const [layoutNameInput, setLayoutNameInput] = useState('');
   const saveTimerRef = useRef(null);
+  const isDragging = useRef(false); // Used for drag-to-paint (Task 8)
 
   // Load from storage on mount
   useEffect(() => {
@@ -676,14 +677,23 @@ export default function GardenPlanner() {
       <div style={S.toolbarRow}>
         {/* Color palette */}
         <span style={S.sectionLabel}>Color:</span>
-        {colors.map(({ color, hex }) => (
+        {colors.map(({ color, hex, source }) => (
           <button
             key={color}
-            title={color}
+            title={`${color}${source === 'seed' ? ' (Seed)' : source === 'special' ? ' (Special)' : ''}`}
             onClick={() => dispatch({ type: 'SELECT_COLOR', color })}
-            style={S.colorDot(hex, state.selectedColor === color)}
+            style={{ ...S.colorDot(hex, state.selectedColor === color), position: 'relative' }}
             aria-label={`${color} flower`}
-          />
+          >
+            {source === 'seed' && (
+              <span style={{ position: 'absolute', top: -4, right: -4, fontSize: 7, color: '#d4b030',
+                fontFamily: "'DM Mono', monospace", fontWeight: 700, textShadow: '0 0 2px #0a1a10' }}>S</span>
+            )}
+            {source === 'special' && (
+              <span style={{ position: 'absolute', top: -4, right: -4, fontSize: 8, color: '#d4b030',
+                textShadow: '0 0 2px #0a1a10' }}>★</span>
+            )}
+          </button>
         ))}
 
         <div style={S.separator} />
