@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const GulliverTracker = () => {
   const [activeMode, setActiveMode] = useState('gulliver');
@@ -135,7 +136,9 @@ const GulliverTracker = () => {
       </style>
       <div style={styles.container}>
         <div style={styles.header}>
-          <h1 style={styles.title}>🐦 Gulliver Tracker 🏴‍☠️</h1>
+          <h1 style={{ ...styles.title, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+            <AssetImg category="npcs" name="Gulliver" size={32} /> Gulliver Tracker 🏴‍☠️
+          </h1>
           <p style={styles.subtitle}>Track visits and collect all rewards</p>
         </div>
 
@@ -147,7 +150,7 @@ const GulliverTracker = () => {
               ...(activeMode === 'gulliver' ? styles.tabActive : styles.tabInactive)
             }}
           >
-            🐦 Gulliver (Sailor)
+            <AssetImg category="npcs" name="Gulliver" size={32} /> Gulliver (Sailor)
           </button>
           <button
             onClick={() => setActiveMode('gullivarrr')}

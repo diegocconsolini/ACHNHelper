@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const SEA_CREATURE_DATA = [
   { id: 1, name: "Seaweed", shadowSize: "Small", movementSpeed: "Stationary", sellPrice: 600, northMonths: [1,2,3,4,5,6,7,8,9,10,11,12], southMonths: [1,2,3,4,5,6,7,8,9,10,11,12], startHour: 0, endHour: 24, allDay: true, isPascalTrigger: false, emoji: "🌱" },
@@ -505,7 +506,7 @@ export default function SeaCreatureTracker() {
                 }}
               >
                 <div style={styles.cardName}>
-                  <span style={styles.cardEmoji}>{creature.emoji}</span>
+                  <AssetImg category="sea-creatures" name={creature.name} size={32} />
                   <span>{creature.name}</span>
                   {creature.isPascalTrigger && <span style={styles.pascalBadge}>🦦</span>}
                 </div>

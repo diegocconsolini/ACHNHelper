@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const DIYRecipeTracker = () => {
   const [activeTab, setActiveTab] = useState('category');
@@ -716,6 +717,7 @@ const DIYRecipeTracker = () => {
                             onChange={() => toggleRecipeLearned(recipe)}
                             style={styles.checkbox}
                           />
+                          <AssetImg category="recipes" name={recipe} size={24} />
                           <span style={{ textDecoration: learnedRecipes.has(recipe) ? 'line-through' : 'none' }}>
                             {recipe}
                           </span>

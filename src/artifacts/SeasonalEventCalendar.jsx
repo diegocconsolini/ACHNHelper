@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const SeasonalEventCalendar = () => {
   const [activeTab, setActiveTab] = useState('calendar');
@@ -124,18 +125,18 @@ const SeasonalEventCalendar = () => {
   };
 
   const npcVisitors = [
-    { name: 'Kicks', emoji: '👟', offers: 'Shoes & bags', frequency: 'Random weekly' },
-    { name: 'Label', emoji: '📋', offers: 'Fashion items', frequency: 'Random weekly' },
-    { name: 'Saharah', emoji: '🏜️', offers: 'Rugs & flooring', frequency: 'Random weekly' },
-    { name: 'Leif', emoji: '🌿', offers: 'Shrubs & flowers', frequency: 'Random weekly' },
-    { name: 'Redd', emoji: '🎨', offers: 'Artwork (some fake)', frequency: 'Random weekly' },
-    { name: 'Flick', emoji: '🦗', offers: 'Bug models', frequency: 'Random weekly' },
-    { name: 'C.J.', emoji: '🐟', offers: 'Fish models', frequency: 'Random weekly' },
-    { name: 'Gulliver', emoji: '⚓', offers: 'Souvenirs', frequency: 'Random weekly' },
-    { name: 'Gullivarrr', emoji: '🏴‍☠️', offers: 'Pirate items', frequency: 'Random weekly' },
-    { name: 'Wisp', emoji: '👻', offers: 'Spooky items', frequency: 'Random' },
-    { name: 'Celeste', emoji: '🔭', offers: 'Star fragments', frequency: 'New moon nights' },
-    { name: 'K.K. Slider', emoji: '🎸', offers: 'Music', frequency: 'Saturdays' },
+    { name: 'Kicks', emoji: '👟', assetName: 'Kicks', offers: 'Shoes & bags', frequency: 'Random weekly' },
+    { name: 'Label', emoji: '📋', assetName: 'Label', offers: 'Fashion items', frequency: 'Random weekly' },
+    { name: 'Saharah', emoji: '🏜️', assetName: 'Saharah', offers: 'Rugs & flooring', frequency: 'Random weekly' },
+    { name: 'Leif', emoji: '🌿', assetName: 'Leif', offers: 'Shrubs & flowers', frequency: 'Random weekly' },
+    { name: 'Redd', emoji: '🎨', assetName: 'Redd', offers: 'Artwork (some fake)', frequency: 'Random weekly' },
+    { name: 'Flick', emoji: '🦗', assetName: null, offers: 'Bug models', frequency: 'Random weekly' },
+    { name: 'C.J.', emoji: '🐟', assetName: null, offers: 'Fish models', frequency: 'Random weekly' },
+    { name: 'Gulliver', emoji: '⚓', assetName: 'Gulliver', offers: 'Souvenirs', frequency: 'Random weekly' },
+    { name: 'Gullivarrr', emoji: '🏴‍☠️', assetName: null, offers: 'Pirate items', frequency: 'Random weekly' },
+    { name: 'Wisp', emoji: '👻', assetName: null, offers: 'Spooky items', frequency: 'Random' },
+    { name: 'Celeste', emoji: '🔭', assetName: 'Celeste', offers: 'Star fragments', frequency: 'New moon nights' },
+    { name: 'K.K. Slider', emoji: '🎸', assetName: 'K.K.', offers: 'Music', frequency: 'Saturdays' },
   ];
 
   const styles = {
@@ -455,7 +456,13 @@ const SeasonalEventCalendar = () => {
           <div style={styles.npcList}>
             {npcVisitors.map((npc, idx) => (
               <div key={idx} style={styles.npcCard}>
-                <div style={styles.npcName}>{npc.emoji} {npc.name}</div>
+                <div style={{ ...styles.npcName, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  {npc.assetName
+                    ? <AssetImg category="npcs" name={npc.assetName} size={28} />
+                    : <span>{npc.emoji}</span>
+                  }
+                  {npc.name}
+                </div>
                 <div style={styles.npcDetail}>
                   <div>📦 {npc.offers}</div>
                   <div style={{ marginTop: '4px' }}>🔄 {npc.frequency}</div>

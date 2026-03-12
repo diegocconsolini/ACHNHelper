@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const MuseumTracker = () => {
   const FISH = [
@@ -422,6 +423,7 @@ const MuseumTracker = () => {
                         if (!isDonated) e.currentTarget.style.borderColor = 'rgba(94,200,80,0.3)';
                       }}
                     >
+                      <AssetImg category="fossils" name={fossil.name} size={40} />
                       <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                         {fossil.name}
                       </div>
@@ -470,6 +472,7 @@ const MuseumTracker = () => {
                     if (!isDonated) e.currentTarget.style.borderColor = 'rgba(94,200,80,0.3)';
                   }}
                 >
+                  <AssetImg category="art" name={art.name} size={40} />
                   <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                     {art.name} {art.alwaysReal && '⭐'}
                   </div>
@@ -507,6 +510,7 @@ const MuseumTracker = () => {
                     if (!isDonated) e.currentTarget.style.borderColor = 'rgba(94,200,80,0.3)';
                   }}
                 >
+                  <AssetImg category="art" name={art.name} size={40} />
                   <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                     {art.name} {art.alwaysReal && '⭐'}
                   </div>
@@ -523,9 +527,10 @@ const MuseumTracker = () => {
 
     let sectionItems = [];
     let sectionPrefix = '';
-    if (sectionKey === 'fish') { sectionItems = FISH; sectionPrefix = 'fish'; }
-    else if (sectionKey === 'bugs') { sectionItems = BUGS; sectionPrefix = 'bugs'; }
-    else if (sectionKey === 'sea') { sectionItems = SEA_CREATURES; sectionPrefix = 'sea'; }
+    let assetCategory = '';
+    if (sectionKey === 'fish') { sectionItems = FISH; sectionPrefix = 'fish'; assetCategory = 'fish'; }
+    else if (sectionKey === 'bugs') { sectionItems = BUGS; sectionPrefix = 'bugs'; assetCategory = 'bugs'; }
+    else if (sectionKey === 'sea') { sectionItems = SEA_CREATURES; sectionPrefix = 'sea'; assetCategory = 'sea-creatures'; }
 
     return (
       <div key={sectionKey} style={styles.itemGrid}>
@@ -548,6 +553,7 @@ const MuseumTracker = () => {
                 if (!isDonated) e.currentTarget.style.borderColor = 'rgba(94,200,80,0.3)';
               }}
             >
+              <AssetImg category={assetCategory} name={name} size={40} />
               <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                 {name}
               </div>
@@ -592,11 +598,11 @@ const MuseumTracker = () => {
 
       <div style={styles.tabContainer}>
         {[
-          { key: 'fish', label: '🐟 Fish', count: 80 },
-          { key: 'bugs', label: '🪲 Bugs', count: 80 },
-          { key: 'sea', label: '🐚 Sea Creatures', count: 40 },
-          { key: 'fossils', label: '🦴 Fossils', count: 73 },
-          { key: 'art', label: '🎨 Art', count: 43 }
+          { key: 'fish', label: <><AssetImg category="fish" name="Bitterling" size={18} /> Fish</>, count: 80 },
+          { key: 'bugs', label: <><AssetImg category="bugs" name="Common Butterfly" size={18} /> Bugs</>, count: 80 },
+          { key: 'sea', label: <><AssetImg category="sea-creatures" name="Seaweed" size={18} /> Sea Creatures</>, count: 40 },
+          { key: 'fossils', label: <><AssetImg category="fossils" name="Ammonite" size={18} /> Fossils</>, count: 73 },
+          { key: 'art', label: <><AssetImg category="art" name="Academic Painting" size={18} /> Art</>, count: 43 }
         ].map(section => (
           <button
             key={section.key}

@@ -26,3 +26,4 @@ dist-ssr
 
 # Game assets (885MB+ PNGs, downloaded separately via acnh-images)
 public/assets/
+public/assets-web/

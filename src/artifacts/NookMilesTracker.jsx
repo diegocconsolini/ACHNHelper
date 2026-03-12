@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const NOOK_MILES_DATA = [
   { id: 101, name: "Angling for Perfection!", category: "Fishing", tiers: [{ target: 10, reward: 300 },{ target: 100, reward: 500 },{ target: 500, reward: 1000 },{ target: 2000, reward: 2000 },{ target: 5000, reward: 3000 }], isRepeatable: true },
@@ -138,6 +139,20 @@ const CATEGORY_EMOJI = {
   "Cooking": "🍳",
   "Customization": "🎨"
 };
+
+const CATEGORY_ASSET = {
+  "Fishing": { category: "tools", name: "fishing rod" },
+  "Bug Catching": { category: "tools", name: "net" },
+  "DIY": { category: "tools", name: "stone axe" },
+};
+
+function CategoryIcon({ cat, size = 20 }) {
+  const asset = CATEGORY_ASSET[cat];
+  if (asset) {
+    return <AssetImg category={asset.category} name={asset.name} size={size} />;
+  }
+  return <span>{CATEGORY_EMOJI[cat]}</span>;
+}
 
 const CATEGORIES = [
   "All", "Fishing", "Bug Catching", "Diving", "Gardening", "Nature", "DIY",
@@ -284,7 +299,7 @@ export default function NookMilesTracker() {
       <div style={styles.statsPanel}>
         {Object.entries(stats.categoryStats).filter(([_, data]) => data.total > 0).map(([cat, data]) => (
           <div key={cat} style={styles.catStatItem}>
-            <span style={styles.catStatLabel}>{CATEGORY_EMOJI[cat]} {cat}</span>
+            <span style={{ ...styles.catStatLabel, display: 'inline-flex', alignItems: 'center', gap: '4px' }}><CategoryIcon cat={cat} size={16} /> {cat}</span>
             <span style={styles.catStatValue}>{data.completed}/{data.total} • {data.miles.toLocaleString()}</span>
           </div>
         ))}
@@ -300,8 +315,8 @@ export default function NookMilesTracker() {
               <div style={styles.achHeader}>
                 <h3 style={styles.achName}>{ach.name}</h3>
                 <div style={styles.achBadges}>
-                  <span style={styles.categoryBadge}>
-                    {CATEGORY_EMOJI[ach.category]} {ach.category}
+                  <span style={{ ...styles.categoryBadge, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <CategoryIcon cat={ach.category} size={14} /> {ach.category}
                   </span>
                   {ach.isRepeatable && <span style={styles.repeatableBadge}>🔄 Repeatable</span>}
                 </div>

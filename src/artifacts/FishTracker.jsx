@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const FISH_DATA = [
   { id: 1, name: "Bitterling", location: "River", shadowSize: "Tiny", sellPrice: 900, northMonths: [1,2,3,11,12], southMonths: [5,6,7,8,9], startHour: 0, endHour: 24, allDay: true, rarity: "Common" },
@@ -513,7 +514,7 @@ const FishTracker = () => {
                 }}
               >
                 <div style={fishNameStyle}>
-                  <span style={{ fontSize: "20px" }}>🐟</span>
+                  <AssetImg category="fish" name={fish.name} size={32} />
                   {fish.name}
                 </div>
 

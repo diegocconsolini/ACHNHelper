@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const VillagerGiftGuide = () => {
   const [activeTab, setActiveTab] = useState('guide');
@@ -405,7 +406,8 @@ const VillagerGiftGuide = () => {
             <div style={baseStyles.monthTitle}>{month}</div>
             <div style={baseStyles.villagerList}>
               {birthdayVillagers[idx + 1]?.map((v, i) => (
-                <div key={i}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <AssetImg category="villagers" name={v.name} size={24} />
                   <strong>{v.name}</strong> – {v.date}
                 </div>
               ))}

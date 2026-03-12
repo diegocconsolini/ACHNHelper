@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const BUG_DATA = [
   { id: 1, name: "Common Butterfly", location: "Flowers", sellPrice: 90, northMonths: [3,4,5,6,7,8,9], southMonths: [9,10,11,12,1,2,3], startHour: 4, endHour: 19, allDay: false, specialCondition: null, farmingTip: "Found near flowers during daytime" },
@@ -200,7 +201,7 @@ export default function BugTracker() {
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.headerTitle}>
-          <span style={styles.emoji}>{BUG_EMOJI}</span>
+          <AssetImg category="bugs" name={bug.name} size={32} />
           <h1 style={styles.title}>Bug Tracker</h1>
         </div>
         <div style={styles.progressContainer}>
@@ -293,7 +294,7 @@ export default function BugTracker() {
             >
               {/* Bug Name and Location */}
               <div style={styles.bugNameSection}>
-                <span style={styles.bugNameEmoji}>{BUG_EMOJI}</span>
+                <AssetImg category="bugs" name={bug.name} size={20} />
                 <div>
                   <div style={styles.bugName}>{bug.name}</div>
                   <div style={styles.bugLocation}>

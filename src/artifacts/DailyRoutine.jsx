@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 export default function DailyRoutine() {
   const [tasks, setTasks] = useState([]);
@@ -419,8 +420,11 @@ export default function DailyRoutine() {
                 onChange={() => {}}
                 style={styles.checkbox}
               />
-              <span style={{...styles.taskText, ...(task.completed ? styles.taskTextCompleted : {})}}>
-                {task.emoji} {task.name}
+              <span style={{...styles.taskText, ...(task.completed ? styles.taskTextCompleted : {}), display: 'inline-flex', alignItems: 'center', gap: '6px'}}>
+                {task.id === 1 ? <AssetImg category="tools" name="shovel" size={24} /> :
+                 task.id === 4 ? <AssetImg category="fossils" name="amber" size={24} /> :
+                 <span>{task.emoji}</span>}
+                {task.name}
               </span>
               {task.custom && (
                 <button

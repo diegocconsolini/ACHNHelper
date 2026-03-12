@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const GoldenToolTracker = () => {
   const [toolsData, setToolsData] = useState({
@@ -116,7 +117,7 @@ const GoldenToolTracker = () => {
       <div style={styles.toolsGrid}>
         {/* Golden Fishing Rod */}
         <ToolCard
-          emoji="🎣"
+          toolAssetName="golden fishing rod"
           name="Golden Fishing Rod"
           requirement="Catch all 80 fish"
           isUnlocked={toolsData.fishingRod.caught >= 80}
@@ -153,7 +154,7 @@ const GoldenToolTracker = () => {
 
         {/* Golden Net */}
         <ToolCard
-          emoji="🦋"
+          toolAssetName="golden net"
           name="Golden Net"
           requirement="Catch all 80 bugs"
           isUnlocked={toolsData.net.caught >= 80}
@@ -190,7 +191,7 @@ const GoldenToolTracker = () => {
 
         {/* Golden Axe */}
         <ToolCard
-          emoji="🪓"
+          toolAssetName="golden axe"
           name="Golden Axe"
           requirement="Break 100 axes"
           isUnlocked={toolsData.axe.broken >= 100}
@@ -227,7 +228,7 @@ const GoldenToolTracker = () => {
 
         {/* Golden Slingshot */}
         <ToolCard
-          emoji="🏹"
+          toolAssetName="golden slingshot"
           name="Golden Slingshot"
           requirement="Shoot down 300 balloons"
           isUnlocked={toolsData.slingshot.shot >= 300}
@@ -264,7 +265,7 @@ const GoldenToolTracker = () => {
 
         {/* Golden Watering Can */}
         <ToolCard
-          emoji="💧"
+          toolAssetName="golden watering can"
           name="Golden Watering Can"
           requirement="Achieve 5-star island rating"
           isUnlocked={toolsData.wateringCan.fiveStar}
@@ -285,7 +286,7 @@ const GoldenToolTracker = () => {
 
         {/* Golden Shovel */}
         <ToolCard
-          emoji="🛠️"
+          toolAssetName="golden shovel"
           name="Golden Shovel"
           requirement="Help Gulliver/Gullivarrr 30 times"
           isUnlocked={toolsData.shovel.helped >= 30}
@@ -349,7 +350,7 @@ const GoldenToolTracker = () => {
   );
 };
 
-const ToolCard = ({ emoji, name, requirement, isUnlocked, progressPercent, children }) => {
+const ToolCard = ({ toolAssetName, name, requirement, isUnlocked, progressPercent, children }) => {
   const cardStyle = {
     ...styles.toolCard,
     border: isUnlocked
@@ -362,7 +363,7 @@ const ToolCard = ({ emoji, name, requirement, isUnlocked, progressPercent, child
 
   return (
     <div style={cardStyle}>
-      <div style={styles.emojiSection}>{emoji}</div>
+      <div style={styles.emojiSection}><AssetImg category="tools" name={toolAssetName} size={40} /></div>
       <h3 style={{
         ...styles.toolName,
         color: isUnlocked ? '#d4b030' : '#ffffff',

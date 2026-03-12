@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed, moveProject, deleteProject }) => (
   <div style={{
@@ -13,8 +14,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
   }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#5ec850', marginBottom: '4px' }}>
-          {project.species} 🌸
+        <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#5ec850', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {project.species} <AssetImg category="other" name={`red-${project.species.toLowerCase()} plant`} size={18} />
         </div>
         <div style={{ fontSize: '13px', color: '#d4b030', marginBottom: '6px' }}>
           Target: {project.color}
@@ -282,7 +283,7 @@ const IslandFlowerMap = () => {
         alignItems: 'center',
         gap: '12px'
       }}>
-        🌺 Island Flower Map
+        <AssetImg category="other" name="red-windflower plant" size={28} /> Island Flower Map
       </div>
       <div style={{ fontSize: '13px', color: '#5a7a50', marginBottom: '20px' }}>
         Breeding Operations Tracker

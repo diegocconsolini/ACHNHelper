@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const CelesteMeteorTracker = () => {
   const [activeTab, setActiveTab] = useState('zodiac');
@@ -556,7 +557,8 @@ const CelesteMeteorTracker = () => {
                   }}
                   onClick={() => toggleRecipe(zodiac.item)}
                 >
-                  {zodiac.emoji} {zodiac.item}
+                  <AssetImg category="recipes" name={zodiac.item} size={32} style={{ display: 'block', margin: '0 auto 4px' }} />
+                  {zodiac.item}
                 </div>
               ))}
             </div>
@@ -574,6 +576,7 @@ const CelesteMeteorTracker = () => {
                   }}
                   onClick={() => toggleRecipe(item)}
                 >
+                  <AssetImg category="recipes" name={item} size={32} style={{ display: 'block', margin: '0 auto 4px' }} />
                   {item}
                 </div>
               ))}
@@ -592,6 +595,7 @@ const CelesteMeteorTracker = () => {
                   }}
                   onClick={() => toggleRecipe(wand)}
                 >
+                  <AssetImg category="recipes" name={wand} size={32} style={{ display: 'block', margin: '0 auto 4px' }} />
                   {wand}
                 </div>
               ))}

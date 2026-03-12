@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const FlowerCalculator = () => {
   const [selectedSpecies, setSelectedSpecies] = useState('Rose');
@@ -438,7 +439,9 @@ const FlowerCalculator = () => {
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
 
-      <div style={styles.header}>🌹 Flower Breeding Calculator 🌹</div>
+      <div style={{ ...styles.header, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
+        <AssetImg category="other" name="red-rose plant" size={32} /> Flower Breeding Calculator <AssetImg category="other" name="blue-rose plant" size={32} />
+      </div>
 
       <div style={styles.tabContainer}>
         {['calculator', 'gallery', 'blueRose'].map(tab => (
@@ -472,7 +475,7 @@ const FlowerCalculator = () => {
               setOffspring([]);
             }}
           >
-            {flowerData[species].emoji} {species}
+            <AssetImg category="other" name={`red-${species.toLowerCase()} plant`} size={24} /> {species}
           </button>
         ))}
       </div>
@@ -521,7 +524,7 @@ const FlowerCalculator = () => {
           {parent1 && parent2 && (
             <div style={styles.card}>
               <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px', color: '#5ec850' }}>
-                {parent1.name} {currentFlower.emoji} × {parent2.name} {currentFlower.emoji}
+                {parent1.name} <AssetImg category="other" name={`red-${selectedSpecies.toLowerCase()} plant`} size={20} /> × {parent2.name} <AssetImg category="other" name={`red-${selectedSpecies.toLowerCase()} plant`} size={20} />
               </div>
               <div style={{ fontSize: '12px', color: '#5ec850', marginBottom: '16px' }}>
                 Possible offspring and approximate breeding rates:
@@ -547,7 +550,7 @@ const FlowerCalculator = () => {
 
       {activeTab === 'gallery' && (
         <div style={styles.section}>
-          <div style={styles.sectionTitle}>🎨 {currentFlower.emoji} Color Gallery</div>
+          <div style={styles.sectionTitle}>🎨 <AssetImg category="other" name={`red-${selectedSpecies.toLowerCase()} plant`} size={24} /> Color Gallery</div>
           <div style={styles.card}>
             <div style={styles.colorGrid}>
               {currentFlower.colors.map(color => (
@@ -602,7 +605,13 @@ const FlowerCalculator = () => {
                       </div>
                     </div>
                   </div>
-                  <div style={{ fontSize: '24px', marginLeft: '40px' }}>{step.flowers}</div>
+                  <div style={{ fontSize: '24px', marginLeft: '40px', display: 'flex', gap: '4px', alignItems: 'center' }}>
+                    <AssetImg category="other" name="red-rose plant" size={24} />
+                    {idx < 3
+                      ? <AssetImg category="other" name="red-rose plant" size={24} />
+                      : <span>💙</span>
+                    }
+                  </div>
                   <div style={styles.timeEstimate}>Step {idx + 1} of 4</div>
                 </div>
               ))}

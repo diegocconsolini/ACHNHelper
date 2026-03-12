@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const SONGS = [
   { id: 1, name: "Agent K.K.", genre: "Rock", mood: ["Energetic", "Bold"], isHidden: false },
@@ -698,7 +699,7 @@ export default function KKCatalogue() {
                     onMouseEnter={() => setHoveredSongId(song.id)}
                     onMouseLeave={() => setHoveredSongId(null)}
                   >
-                    <div style={styles.songEmoji}>🎵</div>
+                    <AssetImg category="music" name={song.name} size={48} imageType="Album Image" />
                     <div style={styles.songName}>{song.name}</div>
                     {song.isHidden && <span style={styles.hiddenBadge}>🔒 Hidden</span>}
                     <span style={styles.genreTag}>{song.genre}</span>
@@ -816,7 +817,7 @@ export default function KKCatalogue() {
                           const song = SONGS.find(s => s.id === songId);
                           return (
                             <div key={songId} style={styles.songBadge}>
-                              🎵 {song.name}
+                              <AssetImg category="music" name={song.name} size={20} imageType="Album Image" /> {song.name}
                               <button
                                 style={{
                                   background: 'none',

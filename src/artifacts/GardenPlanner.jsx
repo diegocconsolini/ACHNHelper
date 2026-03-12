@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const GardenPlanner = () => {
   const FLOWERS = {
@@ -280,7 +281,7 @@ const GardenPlanner = () => {
                           justifyContent: 'center'
                         }}
                       >
-                        {cell && FLOWERS[cell.species].emoji}
+                        {cell && <AssetImg category="other" name={`red-${cell.species} plant`} size={20} />}
                       </div>
                     ))}
                   </div>
@@ -316,9 +317,9 @@ const GardenPlanner = () => {
                   const offspring = getPossibleOffspring(f1, f2);
                   return (
                     <div key={idx} style={styles.pairInfo}>
-                      <span>{FLOWERS[f1.species].emoji} {f1.color}</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><AssetImg category="other" name={`red-${f1.species} plant`} size={18} /> {f1.color}</span>
                       <span style={styles.pairArrow}>→</span>
-                      <span>{FLOWERS[f2.species].emoji} {f2.color}</span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><AssetImg category="other" name={`red-${f2.species} plant`} size={18} /> {f2.color}</span>
                       {offspring.length > 0 && (
                         <span style={styles.offspringText}>Can produce: {offspring.join(', ')}</span>
                       )}
@@ -336,7 +337,7 @@ const GardenPlanner = () => {
             <div style={styles.flowersGrid}>
               {Object.entries(FLOWERS).map(([key, flower]) => (
                 <div key={key} style={styles.flowerCard}>
-                  <div style={styles.flowerEmoji}>{flower.emoji}</div>
+                  <div style={styles.flowerEmoji}><AssetImg category="other" name={`red-${key} plant`} size={32} /></div>
                   <h3 style={styles.flowerName}>{flower.name}</h3>
                   <div style={styles.colorSwatches}>
                     {flower.colors.map(color => (
@@ -361,7 +362,7 @@ const GardenPlanner = () => {
             {selectedSpecies && (
               <div style={styles.selectedDisplay}>
                 <div style={styles.selectedFlower}>
-                  <div style={{ fontSize: '48px' }}>{FLOWERS[selectedSpecies].emoji}</div>
+                  <div style={{ fontSize: '48px' }}><AssetImg category="other" name={`red-${selectedSpecies} plant`} size={48} /></div>
                   <div style={styles.selectedText}>{selectedColor} {FLOWERS[selectedSpecies].name}</div>
                 </div>
               </div>
@@ -420,7 +421,7 @@ const GardenPlanner = () => {
               {Object.entries(stats.bySpecies).map(([species, count]) => (
                 count > 0 && (
                   <div key={species} style={styles.speciesRow}>
-                    <span>{FLOWERS[species].emoji} {FLOWERS[species].name}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><AssetImg category="other" name={`red-${species} plant`} size={18} /> {FLOWERS[species].name}</span>
                     <span style={styles.speciesCount}>{count}</span>
                   </div>
                 )

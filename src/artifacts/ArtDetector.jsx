@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AssetImg } from '../assetHelper';
 
 const ART_DATA = [
   // PAINTINGS - Always Real (14)
@@ -500,7 +501,7 @@ const ArtDetector = () => {
                   onMouseLeave={() => setExpandedId(null)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '20px' }}>{art.type === 'painting' ? '🖼️' : '🗿'}</span>
+                    <AssetImg category="art" name={art.name} size={32} />
                     <h3 style={styles.artName}>{art.name}</h3>
                   </div>
 
@@ -559,7 +560,7 @@ const ArtDetector = () => {
                   onMouseLeave={() => setExpandedId(null)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '20px' }}>{art.type === 'painting' ? '🖼️' : '🗿'}</span>
+                    <AssetImg category="art" name={art.name} size={32} />
                     <h3 style={styles.artName}>{art.name}</h3>
                   </div>
 
@@ -612,7 +613,7 @@ const ArtDetector = () => {
                   onClick={() => !isDisabled && toggleReddSelection(art.id)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '18px' }}>{art.type === 'painting' ? '🖼️' : '🗿'}</span>
+                    <AssetImg category="art" name={art.name} size={32} />
                     <h4 style={{ ...styles.artName, fontSize: '14px', margin: '0' }}>{art.name}</h4>
                   </div>
 
@@ -659,8 +660,8 @@ const ArtDetector = () => {
                 const art = ART_DATA.find(a => a.id === id);
                 return (
                   <div key={id} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(74, 172, 240, 0.2)' }}>
-                    <p style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: '600', color: '#c8e6c0' }}>
-                      {art.type === 'painting' ? '🖼️' : '🗿'} {art.name}
+                    <p style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: '600', color: '#c8e6c0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <AssetImg category="art" name={art.name} size={32} /> {art.name}
                     </p>
                     <p style={{ margin: '0', fontSize: '12px', color: '#5a7a50' }}>
                       {art.alwaysReal ? '✅ Safe - Always genuine' : `⚠️ Risk - Check for: ${art.fakeTell}`}
