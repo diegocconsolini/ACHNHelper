@@ -242,7 +242,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v1.0 — 22/22 tools
+            v{__APP_VERSION__} — 22 tools
           </span>
         </div>
       </div>

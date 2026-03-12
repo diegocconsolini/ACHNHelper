@@ -24,6 +24,5 @@ dist-ssr
 *.sw?
 .vercel
 
-# Game assets (885MB+ PNGs, downloaded separately via acnh-images)
+# Original game assets (885MB+ full-size PNGs, not committed)
 public/assets/
-public/assets-web/
