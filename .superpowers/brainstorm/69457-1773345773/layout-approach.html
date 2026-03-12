@@ -1,0 +1,209 @@
+<h2>Garden Planner: Core Layout</h2>
+<p class="subtitle">The grid is always visible. How should the tools and info panels be arranged around it?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;gap:4px;padding:16px;background:#0a1a10;border-radius:8px;min-height:220px;">
+        <!-- Left: palette -->
+        <div style="width:80px;background:#0c1c0e;border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:4px;">
+          <div style="font-size:9px;color:#5a7a50;text-align:center;margin-bottom:4px;">PALETTE</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+            <div style="width:16px;height:16px;background:#e74c3c;border-radius:50%;margin:auto;"></div>
+            <div style="width:16px;height:16px;background:#fff;border-radius:50%;margin:auto;"></div>
+            <div style="width:16px;height:16px;background:#f1c40f;border-radius:50%;margin:auto;"></div>
+            <div style="width:16px;height:16px;background:#e91e9f;border-radius:50%;margin:auto;"></div>
+            <div style="width:16px;height:16px;background:#9b59b6;border-radius:50%;margin:auto;"></div>
+            <div style="width:16px;height:16px;background:#e67e22;border-radius:50%;margin:auto;"></div>
+          </div>
+          <div style="font-size:9px;color:#5a7a50;text-align:center;margin-top:8px;">SPECIES</div>
+          <div style="font-size:8px;color:#5ec850;text-align:center;">Rose</div>
+          <div style="font-size:8px;color:#5a7a50;text-align:center;">Tulip</div>
+          <div style="font-size:8px;color:#5a7a50;text-align:center;">Pansy</div>
+        </div>
+        <!-- Center: grid -->
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#e74c3c;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#f1c40f;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#f1c40f;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#e74c3c;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#fff;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#e74c3c;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#e91e9f;border-radius:3px;"></div>
+            <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+          </div>
+        </div>
+        <!-- Right: info panel -->
+        <div style="width:120px;background:#0c1c0e;border-radius:6px;padding:8px;">
+          <div style="font-size:9px;color:#5a7a50;text-align:center;margin-bottom:6px;">BREEDING INFO</div>
+          <div style="background:#1a3a20;border-radius:4px;padding:6px;margin-bottom:4px;">
+            <div style="font-size:8px;color:#5ec850;">Red + Yellow</div>
+            <div style="font-size:7px;color:#e67e22;">50% Orange</div>
+            <div style="font-size:7px;color:#e74c3c;">25% Red</div>
+            <div style="font-size:7px;color:#f1c40f;">25% Yellow</div>
+          </div>
+          <div style="font-size:9px;color:#5a7a50;text-align:center;margin-top:8px;">GENOTYPE</div>
+          <div style="font-size:8px;color:#4aacf0;text-align:center;font-family:monospace;">RR-yy-Ww-ss</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A: Three-Panel (Palette | Grid | Info)</h3>
+      <p>Palette on left, grid center, breeding info on right. Everything visible at once. Grid stays large and central. Click a cell to see its breeding pairs and genotype in the right panel.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;flex-direction:column;gap:4px;padding:16px;background:#0a1a10;border-radius:8px;min-height:220px;">
+        <!-- Top: toolbar -->
+        <div style="display:flex;gap:6px;background:#0c1c0e;border-radius:6px;padding:6px 10px;align-items:center;">
+          <div style="font-size:9px;color:#5ec850;">Rose</div>
+          <div style="font-size:9px;color:#5a7a50;">|</div>
+          <div style="width:14px;height:14px;background:#e74c3c;border-radius:50%;"></div>
+          <div style="width:14px;height:14px;background:#fff;border-radius:50%;"></div>
+          <div style="width:14px;height:14px;background:#f1c40f;border-radius:50%;"></div>
+          <div style="width:14px;height:14px;background:#e91e9f;border-radius:50%;border:1px solid #333;"></div>
+          <div style="width:14px;height:14px;background:#9b59b6;border-radius:50%;"></div>
+          <div style="width:14px;height:14px;background:#e67e22;border-radius:50%;"></div>
+          <div style="width:14px;height:14px;background:#222;border-radius:50%;border:1px solid #333;"></div>
+          <div style="font-size:9px;color:#5a7a50;margin-left:auto;">🔍 Eraser | Templates | Save</div>
+        </div>
+        <!-- Center: full-width grid -->
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;">
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#e74c3c;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#f1c40f;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#e74c3c;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#f1c40f;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#e74c3c;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#fff;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#e91e9f;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#e74c3c;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#e91e9f;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#9b59b6;border-radius:3px;"></div>
+            <div style="width:20px;height:20px;background:#1a3a20;border-radius:3px;"></div>
+          </div>
+        </div>
+        <!-- Bottom: context panel (collapsible) -->
+        <div style="background:#0c1c0e;border-radius:6px;padding:6px 10px;display:flex;gap:16px;">
+          <div>
+            <div style="font-size:8px;color:#5a7a50;">SELECTED: Red Rose</div>
+            <div style="font-size:8px;color:#4aacf0;font-family:monospace;">RR-yy-Ww-ss</div>
+          </div>
+          <div style="border-left:1px solid #1a3a20;padding-left:12px;">
+            <div style="font-size:8px;color:#5a7a50;">BREEDING PAIRS</div>
+            <div style="font-size:8px;color:#5ec850;">Red+Yellow → 50% Orange</div>
+          </div>
+          <div style="font-size:8px;color:#5a7a50;margin-left:auto;cursor:pointer;">▼ Expand</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B: Toolbar + Grid + Bottom Bar</h3>
+      <p>Horizontal toolbar on top (species/color picker), grid takes maximum space, collapsible info bar at bottom. Grid is as large as possible. Click a cell to show details in the bottom bar.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;gap:4px;padding:16px;background:#0a1a10;border-radius:8px;min-height:220px;">
+        <!-- Left: grid + palette combined -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+          <!-- Palette strip -->
+          <div style="display:flex;gap:4px;background:#0c1c0e;border-radius:6px;padding:6px;align-items:center;">
+            <div style="font-size:9px;color:#5ec850;">Rose</div>
+            <div style="width:14px;height:14px;background:#e74c3c;border-radius:50%;"></div>
+            <div style="width:14px;height:14px;background:#fff;border-radius:50%;"></div>
+            <div style="width:14px;height:14px;background:#f1c40f;border-radius:50%;"></div>
+            <div style="width:14px;height:14px;background:#e91e9f;border-radius:50%;border:1px solid #333;"></div>
+            <div style="width:14px;height:14px;background:#9b59b6;border-radius:50%;"></div>
+          </div>
+          <!-- Grid -->
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#e74c3c;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#f1c40f;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#e74c3c;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#f1c40f;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#e74c3c;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#fff;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#e91e9f;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#9b59b6;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+              <div style="width:18px;height:18px;background:#1a3a20;border-radius:3px;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Right: tabbed panel -->
+        <div style="width:140px;background:#0c1c0e;border-radius:6px;padding:0;display:flex;flex-direction:column;">
+          <div style="display:flex;border-bottom:1px solid #1a3a20;">
+            <div style="flex:1;text-align:center;padding:6px;font-size:8px;color:#5ec850;border-bottom:2px solid #5ec850;">Breed</div>
+            <div style="flex:1;text-align:center;padding:6px;font-size:8px;color:#5a7a50;">Sim</div>
+            <div style="flex:1;text-align:center;padding:6px;font-size:8px;color:#5a7a50;">Save</div>
+          </div>
+          <div style="padding:8px;flex:1;">
+            <div style="font-size:8px;color:#5a7a50;margin-bottom:4px;">SELECTED CELL</div>
+            <div style="font-size:9px;color:#5ec850;">Red Rose (Seed)</div>
+            <div style="font-size:8px;color:#4aacf0;font-family:monospace;margin-bottom:8px;">RR-yy-Ww-ss</div>
+            <div style="font-size:8px;color:#5a7a50;margin-bottom:4px;">ADJACENT PAIRS</div>
+            <div style="background:#1a3a20;border-radius:4px;padding:4px;margin-bottom:3px;">
+              <div style="font-size:7px;color:#5ec850;">Red + Yellow</div>
+              <div style="font-size:7px;color:#e67e22;">→ 50% Orange</div>
+            </div>
+            <div style="background:#1a3a20;border-radius:4px;padding:4px;">
+              <div style="font-size:7px;color:#5ec850;">Red + White</div>
+              <div style="font-size:7px;color:#e91e9f;">→ 50% Pink</div>
+            </div>
+            <div style="font-size:8px;color:#d4b030;text-align:center;margin-top:12px;cursor:pointer;">▶ Simulate Day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C: Grid + Tabbed Sidebar (Breed / Simulate / Save)</h3>
+      <p>Palette strip above grid, tabbed right panel for breeding info, simulation controls, and saved layouts. Breeding tab shows selected cell details and adjacent pairs. Simulate tab runs day-by-day evolution. Combines all features without cluttering the grid.</p>
+    </div>
+  </div>
+</div>
