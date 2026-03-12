@@ -69,6 +69,38 @@ These rules MUST be followed when modifying or creating artifacts:
 8. **Hardcoded game data** — All data inlined as JS arrays/objects, no API calls
 9. **900px target width** — Components render cleanly in 900px panels
 
+## ZERO TOLERANCE: No Fabricated Data
+
+**NEVER fabricate, invent, guess, or hallucinate any game data.** This is the #1 most critical rule in this project. Every item name, price, date, recipe, villager, stat, and description MUST come from verified real sources.
+
+### Mandatory Rules
+
+1. **ALL game data must be verified** — Every single data point (item names, prices, availability, materials, unlock conditions, etc.) must be sourced from verified references. NEVER invent or guess.
+2. **Preferred approach: ALWAYS look for real data first** — Before writing any data, search for it in:
+   - `ACNH-Helper-Suite/data/` (9 verified data files — the primary source of truth)
+   - The asset manifest at `public/assets-web/manifest.json` (21,655 real item names from datamined game files)
+   - Nookipedia (nookipedia.com) — the authoritative ACNH community wiki
+   - Nintendo Life, Game8 guides
+3. **If real data cannot be found, DO NOT make it up** — Remove the feature or ask the user. An empty section is better than fabricated data.
+4. **Cross-reference item names against the asset manifest** — If a name doesn't exist in `manifest.json`, it's probably wrong.
+5. **Fabricated data must be replaced or removed** — If you discover fabricated data in any artifact, the priority is: (a) find the real data and replace it, (b) if real data can't be found, remove the fabricated entries entirely.
+
+### Data Verification Hierarchy
+1. `ACNH-Helper-Suite/data/*.js` — Verified local data files (highest priority)
+2. `public/assets-web/manifest.json` — Datamined game file names
+3. Nookipedia API/wiki — Community-verified data
+4. Nintendo Life / Game8 — Secondary references
+
+### What Counts as Fabrication
+- Inventing item names that don't exist in the game (e.g., "Zodiac Furniture Aquarius", "Jack Skellington Costume")
+- Guessing prices, materials, or availability dates
+- Using generic names instead of actual in-game names (e.g., "Desk" instead of "wooden end table")
+- Inventing recipe categories or counts without verification
+
+## Communication Rules
+
+- **Never ask questions inline** — If you need to ask the user something, use the `AskUserQuestion` tool. Do not embed questions in your response text.
+
 ## Design System
 
 ### Colors

@@ -12,12 +12,16 @@ import { useState, useEffect, useCallback, memo } from 'react';
 const BASE = '/assets-web';
 
 // Preferred image type priority for auto-selection
+// Note: 'Image' is a catch-all substring — must be LAST
 const ICON_PRIORITY = [
   'Icon Image',
   'Critterpedia Image',
   'Album Image',
-  'Image',
   'Furniture Image',
+  'Inventory Image',
+  'Photo Image',
+  'Framed Image',
+  'Image',
 ];
 
 // Maps artifact data categories to asset directory names
