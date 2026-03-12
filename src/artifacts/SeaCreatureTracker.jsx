@@ -52,6 +52,7 @@ export default function SeaCreatureTracker() {
   const [speedFilter, setSpeedFilter] = useState('All');
   const [availabilityFilter, setAvailabilityFilter] = useState('All');
   const [caughtStatus, setCaughtStatus] = useState({});
+  const [loading, setLoading] = useState(true);
 
   // Load data on mount
   useEffect(() => {
@@ -67,6 +68,7 @@ export default function SeaCreatureTracker() {
         console.error('Failed to load data', e);
       }
       setCreatures(SEA_CREATURE_DATA);
+      setLoading(false);
     };
     loadData();
   }, []);
@@ -84,7 +86,7 @@ export default function SeaCreatureTracker() {
       }
     };
     saveData();
-  }, [hemisphere, caughtStatus]);
+  }, [hemisphere, caughtStatus, loading]);
 
   const getCurrentMonth = () => new Date().getMonth() + 1;
   const getCurrentHour = () => new Date().getHours();
