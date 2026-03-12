@@ -1,122 +1,349 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 
+// Verified ACNH DIY Recipe Tracker — all names sourced from manifest + Nookipedia
 const DIYRecipeTracker = () => {
   const [activeTab, setActiveTab] = useState('category');
   const [learnedRecipes, setLearnedRecipes] = useState(new Set());
   const [expandedCategories, setExpandedCategories] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState('');
   const [hemisphere, setHemisphere] = useState('northern');
-  const [stats, setStats] = useState({ total: 922, learned: 0, percent: 0 });
 
-  // ACNH DIY Recipe Categories with sample recipes
+  // All verified ACNH DIY recipe categories — names from manifest + Nookipedia
   const DIY_CATEGORIES = {
     'Tools': {
-      count: 17,
       emoji: '🔨',
-      recipes: ['Wooden Axe', 'Stone Axe', 'Iron Axe', 'Golden Axe', 'Wooden Shovel', 'Iron Shovel', 'Golden Shovel', 'Fish Rod', 'Fishing Rod', 'Net', 'Golden Net', 'Slingshot', 'Golden Slingshot', 'Watering Can', 'Golden Watering Can', 'Bug Net', 'Ladder']
+      recipes: [
+        'axe', 'fishing rod', 'flimsy axe', 'flimsy fishing rod', 'flimsy net',
+        'flimsy shovel', 'flimsy watering can', 'golden axe', 'golden net',
+        'golden rod', 'golden shovel', 'golden slingshot', 'golden watering can',
+        'ladder', 'net', 'shovel', 'slingshot', 'stone axe', 'vaulting pole',
+        'watering can'
+      ]
     },
-    'Housewares': {
-      count: 195,
-      emoji: '🏠',
-      recipes: ['Wooden Simple Bed', 'Log Bed', 'Iron Bed', 'Cot', 'Bunk Bed', 'Sleigh', 'Rattan Bed', 'Imperial Bed', 'Wooden Chest', 'Log Stool', 'Wooden Chair', 'Wooden Table', 'Dining Table', 'Desk', 'Bookshelf', 'Shelving Unit', 'Cabinet', 'Dresser', 'Wardrobe', 'Sofa', 'Armchair', 'Office Chair', 'Stool', 'Bench', 'Rack', 'Stand', 'Pedestal', 'Plant', 'Planter']
+    'Ironwood': {
+      emoji: '🪵',
+      recipes: [
+        'ironwood DIY workbench', 'ironwood bed', 'ironwood cart', 'ironwood chair',
+        'ironwood clock', 'ironwood cupboard', 'ironwood dresser', 'ironwood kitchenette',
+        'ironwood low table', 'ironwood table'
+      ]
     },
-    'Miscellaneous': {
-      count: 125,
-      emoji: '✨',
-      recipes: ['Scarecrow', 'Straw Coat', 'Straw Hat', 'Bamboo Basket', 'Bamboo Noodle Slide', 'Bamboo Lunch Box', 'Bamboo Wand', 'Pan Flute', 'Wooden Flute', 'Ocarina', 'Panpipes', 'Light Stick', 'Glowing Moss Jar', 'Moon', 'Star', 'Crescent Chair', 'Zodiac Furniture', 'Star Fragment', 'Dung Bomb', 'Birdcage', 'Birdhouse', 'Bell Tent', 'Teepee']
+    'Log': {
+      emoji: '🪵',
+      recipes: [
+        'log bed', 'log bench', 'log chair', 'log decorative shelves',
+        'log dining table', 'log extra-long sofa', 'log garden lounge',
+        'log pack', 'log round table', 'log stakes', 'log stool',
+        'log wall-mounted clock'
+      ]
     },
-    'Wall-Mounted': {
-      count: 52,
-      emoji: '🖼️',
-      recipes: ['Clock', 'Wooden Clock', 'Brass Clock', 'Cuckoo Clock', 'Dinosaur Skull', 'Dippy Skull', 'Fossil Door Plate', 'Leaf Campfire Cookie', 'Wooden Bookshelf', 'Wall Shelf', 'Wall-Mounted Shelf', 'Wooden Wall Shelf', 'Shelving Unit', 'Wall-Mounted Candle', 'Wall-Mounted TV', 'Wall-Mounted Monitor', 'Mounted Black Bass', 'Fish Doorplate', 'Peach Rug']
+    'Wooden': {
+      emoji: '🪑',
+      recipes: [
+        'wooden bookshelf', 'wooden bucket', 'wooden chair', 'wooden chest',
+        'wooden double bed', 'wooden end table', 'wooden fish',
+        'wooden full-length mirror', 'wooden low table', 'wooden mini table',
+        'wooden simple bed', 'wooden stool', 'wooden table', 'wooden table mirror',
+        'wooden toolbox', 'wooden wardrobe', 'wooden waste bin'
+      ]
     },
-    'Wallpaper/Flooring/Rugs': {
-      count: 48,
-      emoji: '🎨',
-      recipes: ['Wooden Flooring', 'Bamboo Flooring', 'Hardwood Flooring', 'Parquet Flooring', 'Dark Parquet Flooring', 'Stone Flooring', 'Brick Flooring', 'Dirt Flooring', 'Tatami Mat', 'Straw Mat', 'Wooden Rug', 'Bamboo Rug', 'Natural Rug', 'Grass Rug', 'Straw Rug', 'Wooden Wallpaper']
+    'Wooden-Block': {
+      emoji: '🧱',
+      recipes: [
+        'wooden-block bed', 'wooden-block bench', 'wooden-block bookshelf',
+        'wooden-block chair', 'wooden-block chest', 'wooden-block stereo',
+        'wooden-block stool', 'wooden-block table', 'wooden-block toy',
+        'wooden-block wall clock'
+      ]
     },
-    'Equipment': {
-      count: 32,
-      emoji: '🎽',
-      recipes: ['Straw Coat', 'Straw Hat', 'Wooden Bucket Hat', 'Sailor Hat', 'Bamboo Hat', 'Leaf Mask', 'Wooden Full-Face Mask', 'Samurai Armor', 'Rei Cape', 'Tropical Wrap', 'Snorkel Mask', 'Safari Hat', 'Mushroom Mum Cushion', 'Festive Sweater', 'Winter Sweater']
-    },
-    'Seasonal - Cherry Blossom': {
-      count: 14,
-      emoji: '🌸',
-      recipes: ['Cherry Blossom Pond Stone', 'Cherry Blossom Clock', 'Cherry Blossom Bonsai', 'Cherry Blossom Branches', 'Cherry Blossom Umbrella', 'Outdoor Picnic Set', 'Sakura Wood Flooring', 'Sakura Wood Wall', 'Cherry Blossom Wand', 'Cherry Blossom Petal Pile', 'Blossom Viewing Lantern', 'Sakura Leaf Pile', 'Jingle Bells']
-    },
-    'Seasonal - Young Spring Bamboo': {
-      count: 6,
-      emoji: '🎋',
-      recipes: ['Bamboo Noodle Slide', 'Bamboo Lunch Box', 'Bamboo Wand', 'Bamboo Flooring', 'Bamboo Wall', 'Steamer-Basket Set']
-    },
-    'Seasonal - Summer Shell': {
-      count: 6,
+    'Shell': {
       emoji: '🐚',
-      recipes: ['Shell Bed', 'Shell Fountain', 'Shell Table', 'Shell Stool', 'Shell Arch', 'Shell Partition']
+      recipes: [
+        'shell arch', 'shell bed', 'shell fountain', 'shell lamp',
+        'shell partition', 'shell rug', 'shell speaker', 'shell stool',
+        'shell table', 'shell wand', 'shell wreath'
+      ]
     },
-    'Seasonal - Acorn/Pine Cone': {
-      count: 9,
-      emoji: '🍂',
-      recipes: ["Tree's Bounty Big Tree", "Tree's Bounty Arch", "Tree's Bounty Lamp", "Tree's Bounty Shelf", "Tree's Bounty Mobile", "Tree's Bounty Little Tree", "Tree's Bounty Rug", "Tree's Bounty Stool", "Tree's Bounty Wall"]
+    'Gold': {
+      emoji: '✨',
+      recipes: [
+        'gold armor', 'gold bars', 'gold helmet', 'gold rose crown',
+        'gold rose wreath', 'gold-armor shoes', 'gold-screen wall',
+        'golden arowana model', 'golden candlestick', 'golden casket',
+        'golden dishes', 'golden dung beetle', 'golden flooring',
+        'golden gears', 'golden seat', 'golden toilet', 'golden wall'
+      ]
     },
-    'Seasonal - Mushroom': {
-      count: 12,
+    'Iron': {
+      emoji: '⚙️',
+      recipes: [
+        'iron armor', 'iron closet', 'iron doorplate', 'iron fence',
+        'iron frame', 'iron garden bench', 'iron garden chair',
+        'iron garden table', 'iron hanger stand', 'iron shelf',
+        'iron wall lamp', 'iron wall rack', 'iron wand', 'iron worktable',
+        'iron-and-stone fence'
+      ]
+    },
+    'Fruit': {
+      emoji: '🍎',
+      recipes: [
+        'apple chair', 'apple dress', 'apple hat', 'apple rug',
+        'apple umbrella', 'apple wall', 'cherry dress', 'cherry hat',
+        'cherry lamp', 'cherry rug', 'cherry speakers', 'cherry umbrella',
+        'cherry wall', 'coconut juice', 'coconut wall planter',
+        'fruit basket', 'fruit wreath', 'juicy-apple TV',
+        'orange dress', 'orange end table', 'orange hat', 'orange rug',
+        'orange umbrella', 'orange wall', 'orange wall-mounted clock',
+        'peach chair', 'peach dress', 'peach hat', 'peach rug',
+        'peach surprise box', 'peach umbrella', 'peach wall',
+        'pear bed', 'pear dress', 'pear hat', 'pear rug',
+        'pear umbrella', 'pear wall', 'pear wardrobe'
+      ]
+    },
+    'Bamboo': {
+      emoji: '🎋',
+      recipes: [
+        'bamboo basket', 'bamboo bench', 'bamboo candleholder',
+        'bamboo doll', 'bamboo drum', 'bamboo floor lamp', 'bamboo flooring',
+        'bamboo hat', 'bamboo lattice fence', 'bamboo lunch box',
+        'bamboo noodle slide', 'bamboo partition', 'bamboo shelf',
+        'bamboo speaker', 'bamboo sphere', 'bamboo stool', 'bamboo stopblock',
+        'bamboo wall', 'bamboo wall decoration', 'bamboo-grove wall',
+        'bamboo-shoot lamp', 'dark bamboo rug', 'light bamboo rug'
+      ]
+    },
+    'Fences': {
+      emoji: '🌿',
+      recipes: [
+        'bamboo lattice fence', 'barbed-wire fence', 'brick fence',
+        'corral fence', 'country fence', 'imperial fence', 'iron fence',
+        'iron-and-stone fence', 'lattice fence', 'rope fence',
+        'simple wooden fence', 'spiky fence', 'stone fence', 'straw fence',
+        'vertical-board fence', 'zen fence'
+      ]
+    },
+    'Crowns & Wreaths': {
+      emoji: '👑',
+      recipes: [
+        'blue rose crown', 'blue rose wreath', 'chic cosmos wreath',
+        'chic mum crown', 'chic rose crown', 'chic tulip crown',
+        'chic windflower wreath', 'cool hyacinth crown', 'cool hyacinth wreath',
+        'cool pansy crown', 'cool pansy wreath', 'cool windflower crown',
+        'cool windflower wreath', 'cosmos crown', 'cosmos wreath',
+        'cute lily crown', 'cute rose crown', 'dark cosmos crown',
+        'dark lily crown', 'dark lily wreath', 'dark rose wreath',
+        'dark tulip crown', 'dark tulip wreath', 'fancy lily wreath',
+        'fancy mum wreath', 'fancy rose wreath', 'gold rose crown',
+        'gold rose wreath', 'hyacinth crown', 'hyacinth wreath',
+        'lily crown', 'lily wreath', 'lovely cosmos crown',
+        'mum crown', 'mum wreath', 'natural mum wreath',
+        'pansy crown', 'pansy wreath', 'pretty cosmos wreath',
+        'pretty tulip wreath', 'purple hyacinth crown', 'purple hyacinth wreath',
+        'purple pansy crown', 'purple windflower crown', 'rose crown',
+        'rose wreath', 'simple mum crown', 'snazzy pansy wreath',
+        'tree branch wreath', 'tulip crown', 'tulip wreath',
+        'windflower crown', 'windflower wreath'
+      ]
+    },
+    'Wands': {
+      emoji: '🪄',
+      recipes: [
+        'bamboo wand', 'cherry-blossom wand', 'cosmos wand', 'golden wand',
+        'hyacinth wand', 'ice wand', 'iron wand', 'lily wand',
+        'mums wand', 'mushroom wand', 'pansy wand', 'rose wand',
+        'shamrock wand', 'shell wand', 'spooky wand', 'star wand',
+        'tree-branch wand', 'tulip wand', 'wand', 'wedding wand',
+        'windflower wand'
+      ]
+    },
+    'Mermaid': {
+      emoji: '🧜',
+      recipes: [
+        'mermaid bed', 'mermaid chair', 'mermaid closet', 'mermaid dresser',
+        'mermaid fence', 'mermaid flooring', 'mermaid lamp', 'mermaid rug',
+        'mermaid screen', 'mermaid shelf', 'mermaid sofa', 'mermaid table',
+        'mermaid vanity', 'mermaid wall', 'mermaid wall clock'
+      ]
+    },
+    'Cherry Blossom': {
+      emoji: '🌸',
+      recipes: [
+        'blossom-viewing lantern', 'cherry-blossom bonsai',
+        'cherry-blossom branches', 'cherry-blossom clock',
+        'cherry-blossom flooring', 'cherry-blossom pochette',
+        'cherry-blossom pond stone', 'cherry-blossom umbrella',
+        'cherry-blossom-petal pile', 'cherry-blossom-trees wall',
+        'outdoor picnic set', 'sakura-wood flooring', 'sakura-wood wall'
+      ]
+    },
+    'Mushroom': {
       emoji: '🍄',
-      recipes: ['Mush Low Stool', 'Mush Stool', 'Mush Table', 'Mush Closet', 'Mush Bed', 'Mush Wall Lamp', 'Mush Lamp', 'Mush Parasol', 'Mush Umbrella', 'Mush Wreath', 'Mush Partition', 'Mush DIY Workbench']
+      recipes: [
+        'forest flooring', 'forest wall', 'mush lamp', 'mush log',
+        'mush low stool', 'mush parasol', 'mush partition', 'mush table',
+        'mush umbrella', 'mush wall', 'mushroom wand', 'mushroom wreath'
+      ]
     },
-    'Seasonal - Maple Leaf': {
-      count: 9,
+    'Maple & Acorn': {
       emoji: '🍁',
-      recipes: ['Maple Leaf Pile', 'Maple Leaf Pond Stone', 'Maple Leaf Arch', 'Maple Leaf Umbrella', 'Maple Leaf Rug', 'Leaf Campfire Cookie', 'Leaf Stool', 'Leaf Pile', 'Autumn Fence']
+      recipes: [
+        'acorn pochette', 'autumn wall', 'colored-leaves flooring',
+        'leaf campfire', 'leaf stool', 'maple-leaf pochette',
+        'maple-leaf pond stone', 'maple-leaf umbrella', 'pile of leaves',
+        'pine bonsai tree', 'red-leaf pile', "tree's bounty arch",
+        "tree's bounty big tree", "tree's bounty lamp",
+        "tree's bounty little tree", "tree's bounty mobile", 'yellow-leaf pile'
+      ]
     },
-    'Seasonal - Snowflake': {
-      count: 17,
+    'Frozen & Snowflake': {
       emoji: '❄️',
-      recipes: ['Frozen Bed', 'Frozen Chair', 'Frozen Desk', 'Frozen Partition', 'Frozen Counter', 'Frozen Table', 'Frozen Sofa', 'Frozen Arch', 'Frozen Sculpture', 'Frozen Treat Set', 'Frozen Flooring', 'Frozen Wall', 'Iced Decorative Shelves', 'Ice Flooring', 'Ice Wall', 'Snowflake Wreath', 'Snowflake Wall']
+      recipes: [
+        'falling-snow wall', 'frozen arch', 'frozen bed', 'frozen chair',
+        'frozen counter', 'frozen partition', 'frozen pillar',
+        'frozen sculpture', 'frozen table', 'frozen tree', 'frozen-treat set',
+        'ice flooring', 'ice wall', 'iceberg flooring', 'iceberg wall',
+        'snowflake pochette', 'snowflake wall', 'snowflake wreath',
+        'snowperson head', 'three-tiered snowperson',
+        'ski-slope flooring', 'ski-slope wall'
+      ]
     },
-    'Seasonal - Ornament': {
-      count: 8,
-      emoji: '🎄',
-      recipes: ['Jingle Bell', 'Festive Candle', 'Festive Tree', 'Festive Wreath', 'Festive Tacky Sweater', 'Festive Stocking', 'Ornament Wreath', 'Toy Day Stocking']
-    },
-    'Celeste': {
-      count: 46,
-      emoji: '⭐',
-      recipes: ['Zodiac Furniture Aquarius', 'Zodiac Furniture Pisces', 'Zodiac Furniture Aries', 'Zodiac Furniture Taurus', 'Zodiac Furniture Gemini', 'Zodiac Furniture Cancer', 'Zodiac Furniture Leo', 'Zodiac Furniture Virgo', 'Zodiac Furniture Libra', 'Zodiac Furniture Scorpio', 'Zodiac Furniture Sagittarius', 'Zodiac Furniture Capricorn', 'Moon', 'Crescent Chair Moon', 'Moon Rug', 'Star Wand', 'Moon Wand', 'Zodiac Wand Aquarius', 'Zodiac Wand Pisces', 'Zodiac Wand Aries', 'Space Shuttle', 'Flying Saucer', 'Lunar Module', 'Asteroid', 'Satellite']
+    'Summer Shell': {
+      emoji: '🌊',
+      recipes: [
+        'shellfish pochette', 'starry-sands flooring', 'summer-shell rug',
+        'tropical vista', 'underwater flooring', 'underwater wall',
+        'water flooring'
+      ]
     },
     'Bunny Day': {
-      count: 17,
       emoji: '🐰',
-      recipes: ['Bunny Day Bed', 'Bunny Day Chair', 'Bunny Day Closet', 'Bunny Day Table', 'Bunny Day Lamp', 'Bunny Day Arch', 'Bunny Day Flooring', 'Bunny Day Wall', 'Bunny Day Wreath', 'Bunny Day Basket', 'Bunny Day Stool', 'Bunny Day Wardrobe', 'Bunny Day Fenestration', 'Bunny Day Vanity', 'Bunny Day Glowing Eggs', 'Bunny Day Crown', 'Bunny Day Wand']
+      recipes: [
+        'Bunny Day arch', 'Bunny Day bag', 'Bunny Day bed',
+        'Bunny Day crown', 'Bunny Day fence', 'Bunny Day festive balloons',
+        'Bunny Day flooring', 'Bunny Day glowy garland', 'Bunny Day lamp',
+        'Bunny Day merry balloons', 'Bunny Day rug', 'Bunny Day stool',
+        'Bunny Day table', 'Bunny Day vanity', 'Bunny Day wall',
+        'Bunny Day wall clock', 'Bunny Day wand', 'Bunny Day wardrobe',
+        'Bunny Day wreath',
+        'earth-egg outfit', 'earth-egg shell', 'earth-egg shoes',
+        'egg party dress', 'egg party hat',
+        'leaf-egg outfit', 'leaf-egg shell', 'leaf-egg shoes',
+        'sky-egg outfit', 'sky-egg shell', 'sky-egg shoes',
+        'stone-egg outfit', 'stone-egg shell', 'stone-egg shoes',
+        'water-egg outfit', 'water-egg shell', 'water-egg shoes',
+        'wood-egg outfit', 'wood-egg shell', 'wood-egg shoes',
+        'wobbling Zipper toy'
+      ]
     },
-    'Spooky/Halloween': {
-      count: 17,
+    'Spooky': {
       emoji: '👻',
-      recipes: ['Spooky Bed', 'Spooky Chair', 'Spooky Sofa', 'Spooky Table', 'Spooky Dresser', 'Spooky Lantern', 'Spooky Scarecrow', 'Spooky Carriage', 'Spooky Arch', 'Spooky Flooring', 'Spooky Wall', 'Spooky Candy Set', 'Spooky Wand', 'Jack Skellington Costume', 'Jack Jack-In-Box', 'Jack Skeleton Skeleton', 'Jack Spooky Head']
+      recipes: [
+        'spooky arch', 'spooky candy set', 'spooky carriage',
+        'spooky chair', 'spooky cookies', 'spooky fence', 'spooky garland',
+        'spooky lantern', 'spooky lantern set', 'spooky scarecrow',
+        'spooky standing lamp', 'spooky table', 'spooky table setting',
+        'spooky tower', 'spooky treats basket', 'spooky tree',
+        'spooky trick lamp', 'spooky wand'
+      ]
     },
     'Turkey Day': {
-      count: 8,
       emoji: '🦃',
-      recipes: ['Harvest Bed', 'Harvest Chair', 'Harvest Sofa', 'Harvest Table', 'Harvest Lamp', 'Harvest Wreath', 'Harvest Basket', 'Harvest Decoration']
+      recipes: [
+        'Turkey Day casserole', 'Turkey Day chair', 'Turkey Day decorations',
+        'Turkey Day garden stand', 'Turkey Day hearth', 'Turkey Day table',
+        'Turkey Day table setting', 'Turkey Day wheat decor'
+      ]
     },
-    'Toy Day': {
-      count: 3,
-      emoji: '🎁',
-      recipes: ['Jingle-Bell Sweater', 'Jingle-Bell Stockings', 'Jingle-Bell Table']
+    'Festive': {
+      emoji: '🎄',
+      recipes: [
+        'big festive tree', 'festive rug', 'festive top set', 'festive tree',
+        'festive wrapping paper', 'gift pile', 'holiday candle',
+        'illuminated present', 'illuminated reindeer', 'illuminated snowflakes',
+        'illuminated tree', 'ornament mobile', 'ornament wreath',
+        'tabletop festive tree'
+      ]
+    },
+    'Celeste': {
+      emoji: '⭐',
+      recipes: [
+        'Aquarius urn', 'Aries rocking chair', 'Cancer table',
+        'Capricorn ornament', 'Gemini closet', 'Leo sculpture',
+        'Libra scale', 'Pisces lamp', 'Sagittarius arrow', 'Scorpio lamp',
+        'Taurus bathtub', 'Virgo harp',
+        'asteroid', 'astronaut suit', 'crescent-moon chair',
+        'crewed spaceship', 'flying saucer', 'galaxy flooring',
+        'lunar lander', 'lunar rover', 'lunar surface', 'moon',
+        'nova light', 'rocket', 'satellite', 'sci-fi flooring', 'sci-fi wall',
+        'space shuttle', 'star clock', 'star head', 'star pochette',
+        'starry garland', 'starry wall', 'starry-sky wall',
+        'wand', 'tree-branch wand', 'iron wand', 'golden wand',
+        'star wand', 'windflower wand', 'mums wand', 'cosmos wand',
+        'tulip wand', 'rose wand', 'pansy wand', 'hyacinth wand',
+        'lily wand', 'bamboo wand', 'cherry-blossom wand'
+      ]
     },
     'Cooking - Savory': {
-      count: 72,
       emoji: '🍲',
-      recipes: ['Apple Pie', 'Baked Potatoes', 'Baked Vegetable Quiche', 'Beef Tomato Soup', 'Bread', 'Brownies', 'Butter', 'Carrot Cake', 'Cheese Curry Rice', 'Cherry Pie', 'Chestnut Cookies', 'Chocolate Cookies', 'Churros', 'Coconut Cookies', 'Coconut Juice', 'Cozy Soup', 'Crab Cakes', 'Crab Soup', 'Cream Soup', 'Creamy Tomato Soup', 'Cupcakes', 'Curry Rice', 'Doughnut', 'Foie Gras', 'French Toast', 'Fries', 'Fruit Cupcakes', 'Gazpacho', 'Jam', 'Kebabs', 'Meatball Soup', 'Miso Soup', 'Mixed Beans Soup', 'Mixed Fruits Cookies', 'Mixed Juice', 'Mixed Rice', 'Mushroom Pasta', 'Napolitan', 'Noodle Soup', 'Oil', 'Omelet', 'Onion Soup', 'Orange Cookies', 'Orange Juice', 'Oysters', 'Paella', 'Peach Pie', 'Pear Pie', 'Peppermint Candy', 'Phyllo Nuts Pie', 'Pork Cutlet', 'Pumpkin Pie', 'Salade Cookies', 'Salad', 'Salt', 'Sashimi', 'Sauteed Mushrooms', 'Seaweed Soup', 'Seafood Pasta', 'Seafood Rice Bowls', 'Seafood Salad', 'Seasoned Butterfish', 'Seaweed Soup', 'Shrimp Burger Combo', 'Snow Cones', 'Spaghetti', 'Spring Rolls', 'Sushi', 'Tart', 'Tea', 'Tempura', 'Tomato Juice', 'Tomato Soup', 'Tortilla', 'Tropical Smoothie', 'Turkey Sandwich']
+      recipes: [
+        'flour', 'whole-wheat flour', 'sugar', 'brown sugar',
+        'carrot potage', 'potato potage', 'minestrone soup',
+        'bamboo-shoot soup', 'mushroom potage', 'seaweed soup',
+        'salad', 'salade de carottes rapees', 'mushroom salad',
+        'turnip salad', 'fruit salad', 'poke', 'seafood salad',
+        'French fries', 'fish-and-chips', 'baked potatoes',
+        'potato galette', 'veggie quiche', 'veggie sandwich',
+        'mixed-fruits sandwich', 'salmon sandwich',
+        'tomato bagel sandwich', 'carrot bagel sandwich',
+        'pumpkin bagel sandwich', 'mixed-fruits bagel sandwich',
+        'salmon bagel sandwich', 'mushroom crepe', 'veggie crepe',
+        'bread gratin', 'salad-stuffed tomato', 'pumpkin soup',
+        'kabu ankake', 'tomates al ajillo', 'champinones al ajillo',
+        'anchoas al ajillo', 'seafood ajillo', 'pull-apart bread',
+        'bread', 'organic bread', 'snack bread', 'savory bread',
+        'gnocchi di carote', 'gnocchi di patate', 'gnocchi di zucca',
+        'spaghetti marinara', 'spaghetti napolitan', 'squid-ink spaghetti',
+        'tomato curry', 'carrot-tops curry', 'potato curry',
+        'pumpkin curry', 'mushroom curry', 'squid-ink curry',
+        'pizza margherita', 'mushroom pizza', 'fruit pizza', 'seafood pizza',
+        'carpaccio di capesante', 'carpaccio di salmone',
+        'barred-knifejaw carpaccio', 'carpaccio di marlin blu',
+        'sea-bass pie', 'grilled sea bass with herbs', 'aji fry',
+        'karei no nitsuke', 'sauteed olive flounder',
+        "pesce all'acqua pazza", 'tomato puree', 'pickled veggies',
+        'jarred bamboo shoots', 'jarred mushrooms', 'orange marmalade',
+        'cherry jam', 'peach jam', 'pear jam', 'apple jam', 'coconut oil',
+        'sardines in oil', 'clam chowder', 'pumpkin pie', 'gratin',
+        'olive-flounder meuniere'
+      ]
     },
     'Cooking - Sweet': {
-      count: 69,
       emoji: '🍰',
-      recipes: ['Apple Cookies', 'Baked Apples', 'Baked Potatoes', 'Banana Cookies', 'Banana Split', 'Blueberry Jam Cookies', 'Blueberries Smoothies', 'Bread', 'Butter', 'Candied Nut', 'Caramel Popcorn', 'Carrot Cake', 'Cherry Pie', 'Chestnut Cookies', 'Chocolate Chip Cookies', 'Chocolate Cookies', 'Chocolate Heart Cookies', 'Chocolates', 'Churros', 'Cinnamon Rolls', 'Citrus Tart', 'Coconut Cookies', 'Coconut Juice', 'Cookie Crumbles', 'Cookies', 'Copra Juice', 'Custard', 'Doughnut', 'Exotic Fruit Cookies', 'Fancy Cookies', 'Fruit Cupcakes', 'Fruit Sandwich', 'Fudge', 'Gingerbread House', 'Gingerbread Wall', 'Gingerbread Roof', 'Gingerbread Flooring', 'Gingerbread Door Plate', 'Graham Biscuits', 'Granola', 'Green Tea Cookies', 'Guacamole', 'Hamburger', 'Hash Brown', 'Herbal Cookies', 'Honey Toast', 'Honey Cookies', 'Jelly Bean', 'Jelly', 'Juice', 'Lemon Cookies', 'Lime Sherbet', 'Maple Cookies', 'Maple Leaf Cookies', 'Marmalade', 'Marshmallow Cookies', 'Milk', 'Mint Candy', 'Mixed Fruit Cookies', 'Mixed Juice', 'Mixed Smoothies', 'Mocha Cookies', 'Mochi', 'Molasses Cookies', 'Mushroom Cookies', 'Oatmeal Cookies', 'Orange Cookies', 'Orange Juice', 'Orange Tart']
+      recipes: [
+        'cookies', 'frosted cookies', 'thumbprint jam cookies',
+        'coconut cookies', 'veggie cookies', 'Roost sable cookie',
+        'pretzels', 'frosted pretzels', 'plain cupcakes',
+        'brown-sugar cupcakes', 'fruit cupcakes', 'pumpkin cupcakes',
+        'veggie cupcakes', 'orange jelly', 'cherry jelly', 'peach jelly',
+        'pear jelly', 'apple jelly', 'coconut pudding', 'plain scones',
+        'fruit scones', 'carrot scones', 'pumpkin scones', 'orange tart',
+        'cherry tart', 'peach tart', 'pear tart', 'apple tart',
+        'mixed-fruits tart', 'carrot cake', 'sugar crepe',
+        'mixed-fruits crepe', 'pound cake', 'brown-sugar pound cake',
+        'orange pound cake', 'pumpkin pound cake', 'cake sale', 'pancakes',
+        'coconut pancakes', 'fruit-topped pancakes', 'orange pie',
+        'cherry pie', 'peach pie', 'pear pie', 'apple pie',
+        'mixed-fruits pie', 'orange smoothie', 'cherry smoothie',
+        'peach smoothie', 'pear smoothie', 'apple smoothie',
+        'coconut milk', 'tomato juice', 'carrot juice', 'spooky cookies'
+      ]
     }
   };
+
+  const TOTAL_RECIPES = Object.values(DIY_CATEGORIES).reduce(
+    (sum, cat) => sum + cat.recipes.length, 0
+  );
 
   // Recipe sources
   const SOURCES = [
@@ -124,97 +351,208 @@ const DIYRecipeTracker = () => {
       name: 'Villager Crafting',
       emoji: '🏠',
       description: 'Visit villagers at their homes when they\'re crafting. Up to 3 unique recipes per day from different personality types.',
-      tips: 'Each villager personality gives recipes from their pool. Visit during daytime.',
+      tips: 'Each villager personality gives recipes from their pool. Visit during morning and afternoon.',
       daily: true,
-      limit: '3 unique'
+      limit: '3 per day'
     },
     {
       name: 'Message in a Bottle',
       emoji: '🍾',
       description: 'Check beaches for bottles with DIY recipes. One guaranteed per day.',
-      tips: 'Always spawn near the north and south beach corners. Check daily!',
+      tips: 'Always spawn near beach corners. Check daily!',
       daily: true,
-      limit: '1 guaranteed'
+      limit: '1 per day'
     },
     {
       name: 'Balloon Presents',
       emoji: '🎈',
       description: 'Pop balloons floating over your island. Recipes vary by season and balloon color.',
-      tips: 'Red balloons: tools & regular items. Yellow: regular items. Blue: regular items. Green (seasonal): seasonal recipes.',
+      tips: 'Green balloons during seasonal windows often contain seasonal DIY recipes.',
       daily: false,
       limit: 'Variable'
     },
     {
-      name: 'Nook\'s Cranny',
+      name: "Nook's Cranny",
       emoji: '🏪',
-      description: 'Purchase DIY recipes from the shop. Rotates daily.',
-      tips: 'Always stock some recipes. Stock changes daily.',
+      description: 'Purchase DIY recipes from the shop. Stock rotates daily.',
+      tips: 'Check daily — the recipe card in the rotating stock changes every day.',
       daily: true,
-      limit: 'Variable'
-    },
-    {
-      name: 'Nook Miles Exchange',
-      emoji: '🏷️',
-      description: 'Redeem Nook Miles for seasonal recipes and special DIY cards.',
-      tips: 'Save your miles! Prices vary from 200-500 miles per recipe.',
-      daily: false,
       limit: 'Variable'
     },
     {
       name: 'Celeste',
       emoji: '⭐',
-      description: 'Visit Celeste on clear nights (no rain/snow) for zodiac, moon, and wand recipes.',
-      tips: 'One recipe per visit. Zodiac recipes change monthly.',
+      description: 'Visit Celeste on clear nights (no rain/snow) for zodiac, space, and wand recipes.',
+      tips: 'One recipe per visit. Zodiac recipes change monthly based on the current star sign.',
       daily: false,
       limit: '1 per visit'
     },
     {
-      name: 'Seasonal Events',
-      emoji: '🎊',
-      description: 'Special NPCs bring event-specific recipes: Zipper (Bunny Day), Jack (Halloween), Jingle (Toy Day), Franklin (Turkey Day).',
-      tips: 'Events happen on specific dates each year.',
-      daily: false,
-      limit: 'Event specific'
-    },
-    {
       name: 'Pascal',
       emoji: '🐚',
-      description: 'Give a scallop to Pascal for mermaid DIY recipes. Once per day.',
-      tips: 'Appears on beach if you give him a scallop. Mermaid recipes only.',
+      description: 'Give a scallop to Pascal while diving for mermaid DIY recipes.',
+      tips: 'Appears on the beach when you bring him a scallop. Mermaid recipes only.',
       daily: true,
       limit: '1 per day'
     },
     {
       name: 'Snowboy',
       emoji: '⛄',
-      description: 'Build perfect snowboys during winter (Dec-Feb) for frozen DIY recipes.',
-      tips: 'Build a perfect snowboy for a recipe. Different recipe each day.',
+      description: 'Build perfect snowboys during winter (Dec–Feb NH / Jun–Aug SH) for frozen/ice DIY recipes.',
+      tips: 'Only a perfect snowboy gives a recipe card. Each snowboy gives a different recipe.',
       daily: true,
       limit: '1 per day'
+    },
+    {
+      name: 'Seasonal Events',
+      emoji: '🎊',
+      description: 'Special NPCs bring event-specific recipes: Zipper (Bunny Day), Jack (Halloween), Franklin (Turkey Day).',
+      tips: 'Franklin gives Turkey Day recipes for completing his dishes on the holiday.',
+      daily: false,
+      limit: 'Event specific'
+    },
+    {
+      name: 'Tom Nook',
+      emoji: '🦝',
+      description: 'Tom Nook gives early-game tool recipes as part of the island tutorial.',
+      tips: 'These are given automatically on your first days on the island.',
+      daily: false,
+      limit: 'One-time'
     }
   ];
 
-  // Seasonal timeline data
-  const SEASONAL_TIMELINE = [
-    { month: 'January', hemisphere: 'both', events: ['Snowflake recipes (Dec 11 - Feb 24)', 'Toy Day recipes (Dec 1 - Dec 25)'], window: 'Dec 11 - Feb 24' },
-    { month: 'February', hemisphere: 'both', events: ['Snowflake recipes end (Feb 24)', 'Valentine recipes (Feb 1 - Feb 14)'] },
-    { month: 'March', hemisphere: 'northern', events: ['Cherry Blossom recipes (Feb 25 - Apr 10)', 'Young Spring Bamboo (Mar 1 - May 31)'], window: 'Feb 25 - Apr 10' },
-    { month: 'April', hemisphere: 'northern', events: ['Cherry Blossom recipes', 'Young Spring Bamboo recipes'] },
-    { month: 'May', hemisphere: 'northern', events: ['Young Spring Bamboo continues', 'Summer Shell recipes start (May 22 - Sep 8)', 'Fishing Tourney (May 1 - May 31)'], window: 'May 22 - Sep 8' },
-    { month: 'June', hemisphere: 'northern', events: ['Summer Shell recipes', 'Rattan recipes available'] },
-    { month: 'July', hemisphere: 'northern', events: ['Summer Shell recipes continue', 'Bug-off event (Jul 1 - Jul 31)'] },
-    { month: 'August', hemisphere: 'northern', events: ['Summer Shell recipes end (Sep 8)', 'Backyard Campfire cookout recipes'] },
-    { month: 'September', hemisphere: 'northern', events: ['Acorn/Pine Cone recipes (Sep 1 - Dec 11)', 'Fall recipes begin'], window: 'Sep 1 - Dec 11' },
-    { month: 'October', hemisphere: 'northern', events: ['Acorn/Pine Cone recipes', 'Spooky recipes (Oct 1 - Oct 31)', 'Fishing Tourney'], window: 'Oct 1 - Oct 31' },
-    { month: 'November', hemisphere: 'northern', events: ['Acorn/Pine Cone recipes', 'Mushroom recipes (Nov 1 - Nov 30)', 'Turkey Day (Nov 1 - Nov 30)', 'Maple Leaf recipes (Oct 1 - Nov 30)'], window: 'Oct 1 - Nov 30' },
-    { month: 'December', hemisphere: 'northern', events: ['Snowflake recipes (Dec 11 - Feb 24)', 'Toy Day recipes (Dec 1 - Dec 25)', 'Maple Leaf recipes end'], window: 'Dec 11 - Feb 24' }
+  // Verified seasonal windows (NH / SH)
+  const SEASONAL_SECTIONS = [
+    {
+      name: 'Cherry Blossom',
+      emoji: '🌸',
+      nh: 'Apr 1 – Apr 10',
+      sh: 'Oct 1 – Oct 10',
+      source: 'Balloons',
+      recipes: [
+        'blossom-viewing lantern', 'cherry-blossom bonsai', 'cherry-blossom branches',
+        'cherry-blossom clock', 'cherry-blossom flooring', 'cherry-blossom pochette',
+        'cherry-blossom pond stone', 'cherry-blossom umbrella',
+        'cherry-blossom-petal pile', 'cherry-blossom-trees wall',
+        'outdoor picnic set', 'sakura-wood flooring', 'sakura-wood wall'
+      ]
+    },
+    {
+      name: 'Mushroom',
+      emoji: '🍄',
+      nh: 'Nov 1 – Nov 30',
+      sh: 'May 1 – May 31',
+      source: 'Balloons',
+      recipes: [
+        'forest flooring', 'forest wall', 'mush lamp', 'mush log',
+        'mush low stool', 'mush parasol', 'mush partition', 'mush table',
+        'mush umbrella', 'mush wall', 'mushroom wand', 'mushroom wreath'
+      ]
+    },
+    {
+      name: 'Maple & Acorn',
+      emoji: '🍁',
+      nh: 'Sep 1 – Dec 10',
+      sh: 'Mar 1 – Jun 10',
+      source: 'Balloons',
+      recipes: [
+        'acorn pochette', 'autumn wall', 'colored-leaves flooring',
+        'leaf campfire', 'leaf stool', 'maple-leaf pochette',
+        'maple-leaf pond stone', 'maple-leaf umbrella', 'pile of leaves',
+        'pine bonsai tree', 'red-leaf pile', "tree's bounty arch",
+        "tree's bounty big tree", "tree's bounty lamp",
+        "tree's bounty little tree", "tree's bounty mobile", 'yellow-leaf pile'
+      ]
+    },
+    {
+      name: 'Frozen & Snowflake',
+      emoji: '❄️',
+      nh: 'Dec 11 – Feb 24',
+      sh: 'Jun 11 – Aug 24',
+      source: 'Balloons + Snowboy',
+      recipes: [
+        'falling-snow wall', 'frozen arch', 'frozen bed', 'frozen chair',
+        'frozen counter', 'frozen partition', 'frozen pillar',
+        'frozen sculpture', 'frozen table', 'frozen tree', 'frozen-treat set',
+        'ice flooring', 'ice wall', 'iceberg flooring', 'iceberg wall',
+        'snowflake pochette', 'snowflake wall', 'snowflake wreath',
+        'snowperson head', 'three-tiered snowperson',
+        'ski-slope flooring', 'ski-slope wall'
+      ]
+    },
+    {
+      name: 'Summer Shell',
+      emoji: '🌊',
+      nh: 'Jun 1 – Aug 31',
+      sh: 'Dec 1 – Feb 28',
+      source: 'Balloons',
+      recipes: [
+        'shellfish pochette', 'starry-sands flooring', 'summer-shell rug',
+        'tropical vista', 'underwater flooring', 'underwater wall', 'water flooring'
+      ]
+    },
+    {
+      name: 'Bunny Day',
+      emoji: '🐰',
+      nh: 'Easter week (varies yearly)',
+      sh: 'Easter week (varies yearly)',
+      source: 'Zipper T. Bunny + crafting',
+      recipes: [
+        'Bunny Day arch', 'Bunny Day bag', 'Bunny Day bed', 'Bunny Day crown',
+        'Bunny Day fence', 'Bunny Day festive balloons', 'Bunny Day flooring',
+        'Bunny Day glowy garland', 'Bunny Day lamp', 'Bunny Day merry balloons',
+        'Bunny Day rug', 'Bunny Day stool', 'Bunny Day table', 'Bunny Day vanity',
+        'Bunny Day wall', 'Bunny Day wall clock', 'Bunny Day wand',
+        'Bunny Day wardrobe', 'Bunny Day wreath', 'wobbling Zipper toy',
+        'egg party hat', 'egg party dress'
+      ]
+    },
+    {
+      name: 'Spooky / Halloween',
+      emoji: '👻',
+      nh: 'Oct 1 – Oct 31',
+      sh: 'Apr 1 – Apr 30',
+      source: 'Balloons + Jack',
+      recipes: [
+        'spooky arch', 'spooky candy set', 'spooky carriage', 'spooky chair',
+        'spooky fence', 'spooky garland', 'spooky lantern', 'spooky lantern set',
+        'spooky scarecrow', 'spooky standing lamp', 'spooky table',
+        'spooky table setting', 'spooky tower', 'spooky tree',
+        'spooky trick lamp', 'spooky treats basket', 'spooky cookies', 'spooky wand'
+      ]
+    },
+    {
+      name: 'Turkey Day',
+      emoji: '🦃',
+      nh: '4th Thursday of November',
+      sh: '4th Thursday of November',
+      source: 'Franklin',
+      recipes: [
+        'Turkey Day casserole', 'Turkey Day chair', 'Turkey Day decorations',
+        'Turkey Day garden stand', 'Turkey Day hearth', 'Turkey Day table',
+        'Turkey Day table setting', 'Turkey Day wheat decor'
+      ]
+    },
+    {
+      name: 'Festive / Ornament',
+      emoji: '🎄',
+      nh: 'Dec 15 – Jan 6',
+      sh: 'Dec 15 – Jan 6',
+      source: 'Balloons',
+      recipes: [
+        'big festive tree', 'festive rug', 'festive top set', 'festive tree',
+        'festive wrapping paper', 'gift pile', 'holiday candle',
+        'illuminated present', 'illuminated reindeer', 'illuminated snowflakes',
+        'illuminated tree', 'ornament mobile', 'ornament wreath', 'tabletop festive tree'
+      ]
+    }
   ];
 
   // Load data from storage
   useEffect(() => {
     const loadData = async () => {
       try {
-        const result = await window.storage.get('diyTracker');
+        const result = await window.storage.get('acnh-diy-tracker');
         if (result) {
           const data = JSON.parse(result.value);
           setLearnedRecipes(new Set(data.learned || []));
@@ -226,18 +564,14 @@ const DIYRecipeTracker = () => {
     loadData();
   }, []);
 
-  // Calculate stats whenever learned recipes change
+  // Persist whenever learnedRecipes changes
   useEffect(() => {
-    const percent = Math.round((learnedRecipes.size / stats.total) * 100);
-    setStats(prev => ({
-      ...prev,
-      learned: learnedRecipes.size,
-      percent
-    }));
-    // Persist to storage
     (async () => {
       try {
-        await window.storage.set('diyTracker', JSON.stringify({ learned: Array.from(learnedRecipes) }));
+        await window.storage.set(
+          'acnh-diy-tracker',
+          JSON.stringify({ learned: Array.from(learnedRecipes) })
+        );
       } catch (e) {
         console.error('Error saving recipes:', e);
       }
@@ -268,30 +602,29 @@ const DIYRecipeTracker = () => {
     });
   };
 
-  // Filter recipes based on search
   const getFilteredCategories = () => {
     if (!searchTerm) return DIY_CATEGORIES;
+    const term = searchTerm.toLowerCase();
     const filtered = {};
     Object.entries(DIY_CATEGORIES).forEach(([cat, data]) => {
       const matchedRecipes = data.recipes.filter(r =>
-        r.toLowerCase().includes(searchTerm.toLowerCase())
+        r.toLowerCase().includes(term)
       );
-      if (matchedRecipes.length > 0 || cat.toLowerCase().includes(searchTerm.toLowerCase())) {
+      if (matchedRecipes.length > 0 || cat.toLowerCase().includes(term)) {
         filtered[cat] = { ...data, recipes: matchedRecipes.length > 0 ? matchedRecipes : data.recipes };
       }
     });
     return filtered;
   };
 
-  // Get category stats
-  const getCategoryProgress = (category) => {
-    const recipes = DIY_CATEGORIES[category].recipes;
+  const getCategoryProgress = (categoryName) => {
+    const recipes = DIY_CATEGORIES[categoryName].recipes;
     const learned = recipes.filter(r => learnedRecipes.has(r)).length;
     return { learned, total: recipes.length };
   };
 
-  // Overall progress ring
-  const progressPercent = stats.percent;
+  const learnedCount = learnedRecipes.size;
+  const progressPercent = TOTAL_RECIPES > 0 ? Math.round((learnedCount / TOTAL_RECIPES) * 100) : 0;
   const circumference = 2 * Math.PI * 45;
   const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
 
@@ -318,26 +651,27 @@ const DIYRecipeTracker = () => {
     },
     subtitle: {
       fontSize: '14px',
-      color: '#5ec850',
+      color: '#5a7a50',
       margin: 0
     },
     tabs: {
       display: 'flex',
-      gap: '12px',
+      gap: '4px',
       marginBottom: '24px',
-      borderBottom: '1px solid rgba(94, 200, 80, 0.2)'
+      borderBottom: '1px solid rgba(94, 200, 80, 0.2)',
+      flexWrap: 'wrap'
     },
     tabButton: {
-      padding: '12px 20px',
+      padding: '10px 18px',
       border: 'none',
       backgroundColor: 'transparent',
-      color: '#5ec850',
+      color: '#5a7a50',
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '14px',
       fontWeight: 500,
       cursor: 'pointer',
       borderBottom: '2px solid transparent',
-      transition: 'all 0.3s ease'
+      transition: 'all 0.2s ease'
     },
     tabButtonActive: {
       color: '#5ec850',
@@ -351,38 +685,40 @@ const DIYRecipeTracker = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '8px',
-      alignItems: 'center'
+      alignItems: 'center',
+      flexWrap: 'wrap'
     },
-    progressRing: {
-      flex: '0 0 120px'
+    progressRingWrap: {
+      flex: '0 0 120px',
+      textAlign: 'center'
     },
     progressText: {
-      textAlign: 'center',
       fontFamily: "'DM Mono', monospace",
       fontSize: '24px',
       fontWeight: 700,
       color: '#5ec850',
-      margin: '0'
-    },
-    progressSubtext: {
-      textAlign: 'center',
-      fontSize: '12px',
-      color: '#5ec850',
       margin: '4px 0 0 0'
     },
-    statsContent: {
-      flex: 1
+    progressSubtext: {
+      fontSize: '12px',
+      color: '#5a7a50',
+      margin: '2px 0 0 0'
     },
-    statItem: {
+    statsContent: {
+      flex: 1,
+      minWidth: '160px'
+    },
+    statRow: {
+      display: 'flex',
+      justifyContent: 'space-between',
       marginBottom: '8px',
       fontSize: '14px'
     },
     statLabel: {
-      color: '#5ec850',
-      fontWeight: 500
+      color: '#5a7a50'
     },
     statValue: {
-      color: '#5ec850',
+      color: '#d4b030',
       fontFamily: "'DM Mono', monospace",
       fontWeight: 700
     },
@@ -395,50 +731,52 @@ const DIYRecipeTracker = () => {
       borderRadius: '6px',
       color: '#c8e6c0',
       fontFamily: "'DM Sans', sans-serif",
-      fontSize: '14px'
+      fontSize: '14px',
+      boxSizing: 'border-box'
     },
     categoryCard: {
-      marginBottom: '12px',
+      marginBottom: '10px',
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '8px',
-      overflow: 'hidden',
-      transition: 'all 0.3s ease'
+      overflow: 'hidden'
     },
     categoryHeader: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '16px',
+      padding: '14px 16px',
       cursor: 'pointer',
-      backgroundColor: 'rgba(12, 28, 14, 0.95)',
-      transition: 'background-color 0.3s ease'
-    },
-    categoryHeaderHover: {
-      backgroundColor: 'rgba(94, 200, 80, 0.1)'
+      transition: 'background-color 0.2s ease'
     },
     categoryTitle: {
       display: 'flex',
       alignItems: 'center',
-      gap: '12px',
+      gap: '10px',
       flex: 1,
       margin: 0,
-      fontSize: '16px',
+      fontSize: '15px',
       fontWeight: 600,
-      color: '#5ec850'
+      color: '#c8e6c0'
+    },
+    categoryRight: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px'
     },
     categoryCount: {
       fontSize: '13px',
-      color: '#5ec850',
-      fontFamily: "'DM Mono', monospace"
+      color: '#d4b030',
+      fontFamily: "'DM Mono', monospace",
+      minWidth: '48px',
+      textAlign: 'right'
     },
     progressBar: {
-      width: '100px',
-      height: '6px',
-      backgroundColor: 'rgba(94, 200, 80, 0.1)',
+      width: '80px',
+      height: '5px',
+      backgroundColor: 'rgba(94, 200, 80, 0.15)',
       borderRadius: '3px',
-      overflow: 'hidden',
-      marginRight: '12px'
+      overflow: 'hidden'
     },
     progressBarFill: {
       height: '100%',
@@ -446,39 +784,36 @@ const DIYRecipeTracker = () => {
       transition: 'width 0.3s ease'
     },
     expandIcon: {
-      fontSize: '16px',
-      color: '#5ec850',
-      transition: 'transform 0.3s ease'
+      fontSize: '14px',
+      color: '#5a7a50',
+      transition: 'transform 0.25s ease'
     },
     categoryContent: {
-      padding: '16px',
-      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+      padding: '14px',
+      backgroundColor: 'rgba(0, 0, 0, 0.25)',
       borderTop: '1px solid rgba(94, 200, 80, 0.1)',
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-      gap: '8px'
+      gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))',
+      gap: '6px'
     },
     recipeItem: {
       display: 'flex',
       alignItems: 'center',
-      gap: '8px',
-      padding: '8px',
+      gap: '7px',
+      padding: '7px 8px',
       backgroundColor: 'rgba(12, 28, 14, 0.6)',
-      border: '1px solid rgba(94, 200, 80, 0.15)',
+      border: '1px solid rgba(94, 200, 80, 0.12)',
       borderRadius: '4px',
       cursor: 'pointer',
-      transition: 'all 0.2s ease',
-      fontSize: '13px'
-    },
-    recipeItemHover: {
-      backgroundColor: 'rgba(94, 200, 80, 0.15)',
-      borderColor: 'rgba(94, 200, 80, 0.4)'
+      transition: 'all 0.15s ease',
+      fontSize: '12px'
     },
     checkbox: {
-      width: '16px',
-      height: '16px',
+      width: '14px',
+      height: '14px',
       cursor: 'pointer',
-      accentColor: '#5ec850'
+      accentColor: '#5ec850',
+      flexShrink: 0
     },
     sourceCard: {
       padding: '16px',
@@ -496,27 +831,24 @@ const DIYRecipeTracker = () => {
       color: '#5ec850',
       margin: '0 0 8px 0'
     },
-    sourceEmoji: {
-      fontSize: '20px'
-    },
     sourceDesc: {
       fontSize: '13px',
       color: '#5a7a50',
       marginBottom: '8px',
-      lineHeight: 1.5
+      lineHeight: 1.55
     },
     sourceTips: {
       fontSize: '12px',
       color: '#4aacf0',
-      padding: '8px',
-      backgroundColor: 'rgba(156, 204, 101, 0.1)',
+      padding: '8px 10px',
+      backgroundColor: 'rgba(74, 172, 240, 0.08)',
       borderRadius: '4px',
-      marginBottom: '8px',
-      borderLeft: '3px solid #9ccc65'
+      marginBottom: '10px',
+      borderLeft: '3px solid #4aacf0'
     },
     sourceMeta: {
       display: 'flex',
-      gap: '16px',
+      gap: '20px',
       fontSize: '12px'
     },
     sourceMetaItem: {
@@ -533,27 +865,55 @@ const DIYRecipeTracker = () => {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '8px'
     },
-    seasonHighlight: {
-      color: '#d4b030',
-      fontWeight: 700
+    seasonHeader: {
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: '10px',
+      marginBottom: '10px'
     },
-    seasonMonth: {
-      fontSize: '14px',
-      fontWeight: 600,
+    seasonName: {
+      fontSize: '16px',
+      fontWeight: 700,
       color: '#d4b030',
-      marginBottom: '8px'
+      margin: 0,
+      fontFamily: "'Playfair Display', serif"
     },
-    seasonEvent: {
-      fontSize: '13px',
-      color: '#5a7a50',
-      marginBottom: '4px',
-      paddingLeft: '12px',
-      borderLeft: '2px solid rgba(94, 200, 80, 0.3)'
+    seasonSource: {
+      fontSize: '12px',
+      color: '#4aacf0',
+      fontStyle: 'italic'
+    },
+    seasonDates: {
+      display: 'flex',
+      gap: '16px',
+      marginBottom: '10px',
+      fontSize: '13px'
+    },
+    seasonDate: {
+      color: '#5a7a50'
+    },
+    seasonDateHL: {
+      color: '#5ec850',
+      fontWeight: 600
+    },
+    seasonRecipes: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '6px'
+    },
+    seasonRecipePill: {
+      fontSize: '11px',
+      padding: '3px 8px',
+      backgroundColor: 'rgba(94, 200, 80, 0.08)',
+      border: '1px solid rgba(94, 200, 80, 0.2)',
+      borderRadius: '12px',
+      color: '#c8e6c0'
     },
     hemisphereToggle: {
       display: 'flex',
       gap: '8px',
-      marginBottom: '16px'
+      marginBottom: '16px',
+      flexWrap: 'wrap'
     },
     toggleButton: {
       padding: '8px 16px',
@@ -574,7 +934,7 @@ const DIYRecipeTracker = () => {
     noResults: {
       textAlign: 'center',
       padding: '40px 20px',
-      color: '#5ec850',
+      color: '#5a7a50',
       fontSize: '14px'
     }
   };
@@ -586,20 +946,20 @@ const DIYRecipeTracker = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
-        input:focus { outline: none; border-color: #5ec850 !important; }
+        input[type="text"]:focus { outline: none; border-color: #5ec850 !important; }
       `}</style>
 
       <div style={styles.header}>
         <h1 style={styles.title}>🎀 DIY Recipe Tracker</h1>
-        <p style={styles.subtitle}>Track your ACNH DIY recipe collection</p>
+        <p style={styles.subtitle}>Track all {TOTAL_RECIPES} verified ACNH DIY recipes</p>
       </div>
 
       {/* Tabs */}
       <div style={styles.tabs}>
         {[
-          { id: 'category', label: 'By Category' },
-          { id: 'source', label: 'By Source' },
-          { id: 'seasonal', label: 'Seasonal Guide' }
+          { id: 'category', label: '📂 By Category' },
+          { id: 'source', label: '📖 By Source' },
+          { id: 'seasonal', label: '🗓️ Seasonal Guide' }
         ].map(tab => (
           <button
             key={tab.id}
@@ -617,37 +977,39 @@ const DIYRecipeTracker = () => {
       {/* Stats Box */}
       {activeTab !== 'seasonal' && (
         <div style={styles.statsBox}>
-          <div style={styles.progressRing}>
-            <svg width="120" height="120" viewBox="0 0 120 120">
-              <circle cx="60" cy="60" r="45" fill="none" stroke="rgba(94, 200, 80, 0.1)" strokeWidth="4" />
+          <div style={styles.progressRingWrap}>
+            <svg width="100" height="100" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="45" fill="none" stroke="rgba(94,200,80,0.1)" strokeWidth="6" />
               <circle
-                cx="60"
-                cy="60"
-                r="45"
+                cx="60" cy="60" r="45"
                 fill="none"
                 stroke="#5ec850"
-                strokeWidth="4"
+                strokeWidth="6"
                 strokeDasharray={circumference}
                 strokeDashoffset={strokeDashoffset}
                 strokeLinecap="round"
-                style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+                style={{ transition: 'stroke-dashoffset 0.5s ease', transformOrigin: 'center', transform: 'rotate(-90deg)' }}
               />
             </svg>
             <p style={styles.progressText}>{progressPercent}%</p>
-            <p style={styles.progressSubtext}>{stats.learned} / {stats.total}</p>
+            <p style={styles.progressSubtext}>{learnedCount} / {TOTAL_RECIPES}</p>
           </div>
           <div style={styles.statsContent}>
-            <div style={styles.statItem}>
-              <span style={styles.statLabel}>Total Learned: </span>
-              <span style={styles.statValue}>{stats.learned}</span>
+            <div style={styles.statRow}>
+              <span style={styles.statLabel}>Learned</span>
+              <span style={styles.statValue}>{learnedCount}</span>
             </div>
-            <div style={styles.statItem}>
-              <span style={styles.statLabel}>Remaining: </span>
-              <span style={styles.statValue}>{stats.total - stats.learned}</span>
+            <div style={styles.statRow}>
+              <span style={styles.statLabel}>Remaining</span>
+              <span style={styles.statValue}>{TOTAL_RECIPES - learnedCount}</span>
             </div>
-            <div style={styles.statItem}>
-              <span style={styles.statLabel}>Categories: </span>
+            <div style={styles.statRow}>
+              <span style={styles.statLabel}>Categories</span>
               <span style={styles.statValue}>{Object.keys(DIY_CATEGORIES).length}</span>
+            </div>
+            <div style={styles.statRow}>
+              <span style={styles.statLabel}>Total Recipes</span>
+              <span style={styles.statValue}>{TOTAL_RECIPES}</span>
             </div>
           </div>
         </div>
@@ -668,29 +1030,25 @@ const DIYRecipeTracker = () => {
             Object.entries(filteredCategories).map(([category, data]) => {
               const { learned, total } = getCategoryProgress(category);
               const isExpanded = expandedCategories.has(category);
-              const progressPercent = (learned / total) * 100;
+              const catPct = total > 0 ? (learned / total) * 100 : 0;
 
               return (
                 <div key={category} style={styles.categoryCard}>
                   <div
                     style={styles.categoryHeader}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(12, 28, 14, 0.95)'}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94,200,80,0.07)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
                     onClick={() => toggleCategory(category)}
                   >
                     <h3 style={styles.categoryTitle}>
                       <span>{data.emoji}</span>
                       <span>{category}</span>
                     </h3>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={styles.categoryRight}>
                       <div style={styles.progressBar}>
-                        <div
-                          style={{ ...styles.progressBarFill, width: `${progressPercent}%` }}
-                        />
+                        <div style={{ ...styles.progressBarFill, width: `${catPct}%` }} />
                       </div>
-                      <div style={styles.categoryCount}>
-                        {learned}/{total}
-                      </div>
+                      <div style={styles.categoryCount}>{learned}/{total}</div>
                       <span
                         style={{
                           ...styles.expandIcon,
@@ -704,25 +1062,42 @@ const DIYRecipeTracker = () => {
 
                   {isExpanded && (
                     <div style={styles.categoryContent}>
-                      {data.recipes.map(recipe => (
-                        <div
-                          key={recipe}
-                          style={styles.recipeItem}
-                          onMouseEnter={(e) => Object.assign(e.currentTarget.style, styles.recipeItemHover)}
-                          onMouseLeave={(e) => Object.assign(e.currentTarget.style, { backgroundColor: 'rgba(12, 28, 14, 0.6)', borderColor: 'rgba(94, 200, 80, 0.15)' })}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={learnedRecipes.has(recipe)}
-                            onChange={() => toggleRecipeLearned(recipe)}
-                            style={styles.checkbox}
-                          />
-                          <AssetImg category="recipes" name={recipe} size={24} />
-                          <span style={{ textDecoration: learnedRecipes.has(recipe) ? 'line-through' : 'none' }}>
-                            {recipe}
-                          </span>
-                        </div>
-                      ))}
+                      {data.recipes.map(recipe => {
+                        const isLearned = learnedRecipes.has(recipe);
+                        return (
+                          <div
+                            key={recipe}
+                            style={{
+                              ...styles.recipeItem,
+                              backgroundColor: isLearned ? 'rgba(94,200,80,0.12)' : 'rgba(12,28,14,0.6)',
+                              borderColor: isLearned ? 'rgba(94,200,80,0.35)' : 'rgba(94,200,80,0.12)'
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!isLearned) e.currentTarget.style.backgroundColor = 'rgba(94,200,80,0.08)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = isLearned ? 'rgba(94,200,80,0.12)' : 'rgba(12,28,14,0.6)';
+                            }}
+                            onClick={() => toggleRecipeLearned(recipe)}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isLearned}
+                              onChange={() => toggleRecipeLearned(recipe)}
+                              onClick={(e) => e.stopPropagation()}
+                              style={styles.checkbox}
+                            />
+                            <AssetImg category="recipes" name={recipe} size={22} />
+                            <span style={{
+                              textDecoration: isLearned ? 'line-through' : 'none',
+                              color: isLearned ? '#5a7a50' : '#c8e6c0',
+                              lineHeight: 1.3
+                            }}>
+                              {recipe}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -740,7 +1115,7 @@ const DIYRecipeTracker = () => {
           {SOURCES.map((source, idx) => (
             <div key={idx} style={styles.sourceCard}>
               <h3 style={styles.sourceTitle}>
-                <span style={styles.sourceEmoji}>{source.emoji}</span>
+                <span style={{ fontSize: '20px' }}>{source.emoji}</span>
                 {source.name}
               </h3>
               <p style={styles.sourceDesc}>{source.description}</p>
@@ -750,7 +1125,7 @@ const DIYRecipeTracker = () => {
               <div style={styles.sourceMeta}>
                 <div style={styles.sourceMetaItem}>
                   <span style={styles.sourceLabel}>Daily: </span>
-                  {source.daily ? '✓ Yes' : '✗ No'}
+                  {source.daily ? '✓ Yes' : '— No'}
                 </div>
                 <div style={styles.sourceMetaItem}>
                   <span style={styles.sourceLabel}>Limit: </span>
@@ -786,20 +1161,40 @@ const DIYRecipeTracker = () => {
             </button>
           </div>
 
-          <div style={{ marginBottom: '16px', padding: '16px', backgroundColor: 'rgba(94, 200, 80, 0.1)', borderRadius: '8px', borderLeft: '3px solid #5ec850' }}>
-            <p style={{ margin: 0, fontSize: '13px', color: '#5a7a50' }}>
-              📅 Seasonal recipes change monthly. Balloons are your best source for limited-time DIYs!
-            </p>
+          <div style={{
+            marginBottom: '20px',
+            padding: '12px 16px',
+            backgroundColor: 'rgba(74,172,240,0.08)',
+            borderRadius: '6px',
+            borderLeft: '3px solid #4aacf0',
+            fontSize: '13px',
+            color: '#5a7a50'
+          }}>
+            📅 Seasonal recipes are obtained from balloons and special NPCs during their active windows.
+            Dates shown are for the <strong style={{ color: '#5ec850' }}>
+              {hemisphere === 'northern' ? 'Northern' : 'Southern'} Hemisphere
+            </strong>.
           </div>
 
-          {SEASONAL_TIMELINE.map((season, idx) => (
+          {SEASONAL_SECTIONS.map((section, idx) => (
             <div key={idx} style={styles.seasonCard}>
-              <div style={styles.seasonMonth}>{season.month}</div>
-              {season.events.map((event, i) => (
-                <div key={i} style={styles.seasonEvent}>
-                  {event}
-                </div>
-              ))}
+              <div style={styles.seasonHeader}>
+                <h3 style={styles.seasonName}>{section.emoji} {section.name}</h3>
+                <span style={styles.seasonSource}>{section.source}</span>
+              </div>
+              <div style={styles.seasonDates}>
+                <span style={styles.seasonDate}>
+                  Window:{' '}
+                  <span style={styles.seasonDateHL}>
+                    {hemisphere === 'northern' ? section.nh : section.sh}
+                  </span>
+                </span>
+              </div>
+              <div style={styles.seasonRecipes}>
+                {section.recipes.map(recipe => (
+                  <span key={recipe} style={styles.seasonRecipePill}>{recipe}</span>
+                ))}
+              </div>
             </div>
           ))}
         </div>
