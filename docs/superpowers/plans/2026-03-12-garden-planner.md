@@ -19,11 +19,11 @@
 **Files:**
 - Create: `src/artifacts/gardenData.js`
 
-**Data source:** Copy flower data verbatim from `src/artifacts/FlowerCalculator.jsx` lines 29-243. This data was previously verified against `ACNH-Helper-Suite/data/flowers.js`, `manifest.json`, and Nookipedia.
+**Data source:** Copy flower data from `src/artifacts/FlowerCalculator.jsx` lines 29-243, with one structural change: rename the `name` field to `color` in each color entry (FlowerCalculator uses `{ name: 'Red', ... }`, we use `{ color: 'Red', ... }`). This data was previously verified against `ACNH-Helper-Suite/data/flowers.js`, `manifest.json`, and Nookipedia.
 
 - [ ] **Step 1: Create `gardenData.js` with SPECIES data**
 
-Create `src/artifacts/gardenData.js` exporting all 8 species with their colors, genotypes, sources, and asset flags. Data comes directly from FlowerCalculator.jsx `flowerData` object (lines 29-150), converted to module exports.
+Create `src/artifacts/gardenData.js` exporting all 8 species with their colors, genotypes, sources, and asset flags. Data comes from FlowerCalculator.jsx `flowerData` object (lines 29-150), converted to module exports. **Important:** Rename `name` → `color` in each color entry (the genetics engine uses `c.color`, not `c.name`).
 
 ```js
 // src/artifacts/gardenData.js
@@ -158,6 +158,23 @@ export const COLOR_HEX = {};
 Object.values(SPECIES).forEach(sp =>
   sp.colors.forEach(c => { if (!COLOR_HEX[c.color]) COLOR_HEX[c.color] = c.hex; })
 );
+```
+
+`BREEDING_PATHS` is used for Tier A static analysis only (Tier B/C use real genotype crossover via `crossGenes()`). Copy from FlowerCalculator.jsx `breedingPaths` object (lines 178-242), converting `{ p1, p2, results: [{ color, chance }] }` to `{ parents: [p1, p2], offspring: [{ color, probability }] }` where `chance` (integer 0-100) becomes `probability` (float 0-1, e.g., 75→0.75). Example for Rose:
+
+```js
+export const BREEDING_PATHS = {
+  rose: [
+    { parents: ['Red', 'Red'],    offspring: [{ color: 'Red', probability: 0.75 }, { color: 'Pink', probability: 0.25 }] },
+    { parents: ['Red', 'White'],  offspring: [{ color: 'Red', probability: 0.25 }, { color: 'White', probability: 0.25 }, { color: 'Pink', probability: 0.50 }] },
+    { parents: ['Red', 'Yellow'], offspring: [{ color: 'Red', probability: 0.25 }, { color: 'Yellow', probability: 0.25 }, { color: 'Orange', probability: 0.50 }] },
+    // ... remaining rose pairs from FlowerCalculator lines 183-188
+  ],
+  tulip: [
+    // Copy from FlowerCalculator lines 190-195, same chance→probability conversion
+  ],
+  // ... all 8 species. Follow the exact same pattern for pansy, cosmos, lily, hyacinth, windflower, mum.
+};
 ```
 
 - [ ] **Step 2: Verify data integrity**
@@ -334,8 +351,9 @@ export function getSeedGenotype(speciesKey, color) {
 }
 
 /**
- * Check if a flower at (row, col) has no adjacent same-species neighbor.
- * Such flowers will clone instead of breed.
+ * Check if a flower at (row, col) is isolated (no adjacent same-species neighbor).
+ * Returns true = flower WILL clone itself (no breeding partner available).
+ * Returns false = flower has at least one breeding partner.
  */
 export function canClone(grid, row, col) {
   const cell = grid[row]?.[col];
@@ -352,7 +370,10 @@ export function canClone(grid, row, col) {
 }
 
 /**
- * Find all breeding pairs for a specific cell.
+ * Find all breeding pairs for a specific cell (used by UI for panel display).
+ * Note: The spec mentions a grid-wide `findBreedingPairs(grid)` in gardenSimulation.js —
+ * that function is NOT needed because simulateDay() handles pair-finding internally.
+ * This per-cell version lives in gardenGenetics.js because it calls getOffspring().
  * Returns array of { neighbor: {row, col}, offspring: [...] }
  */
 export function findBreedingPairs(grid, row, col) {
@@ -562,6 +583,8 @@ export function simulateDay(grid, options = {}) {
   return { newGrid, events };
 }
 ```
+
+**Note on spec deviation:** The spec defines a separate `simulateDayCampaign()` function for Tier C. The plan intentionally collapses this into `simulateDay()` with a `useBadLuck` option flag, plus a separate `updateBadLuckCounters()` helper. The reducer in Task 4 handles the campaign-specific state updates (day counter, watering log, history). This avoids duplicating the simulation loop while keeping campaign features available via options.
 
 - [ ] **Step 3: Add `updateBadLuckCounters` for campaign mode (Tier C)**
 
@@ -780,6 +803,17 @@ function reducer(state, action) {
     case 'REJECT_DAY':
       return { ...state, pendingGrid: null, simulationEvents: [] };
 
+    case 'REROLL_DAY': {
+      // Re-run simulation with same settings (new random seed)
+      const { newGrid, events } = simulateDay(state.grid, {
+        wateringVisitors: state.wateringVisitors,
+        badLuckCounters: state.badLuckCounters,
+        useBadLuck: state.simulationTier === 'campaign',
+        day: state.day + 1,
+      });
+      return { ...state, pendingGrid: newGrid, simulationEvents: events };
+    }
+
     case 'UNDO': {
       if (state.history.length === 0) return state;
       const prev = state.history[state.history.length - 1];
@@ -932,6 +966,7 @@ function applyTemplate(grid, template, size) {
 const GardenPlanner = () => {
   const [state, dispatch] = useReducer(reducer, null, createInitialState);
   const initialized = useRef(false);
+  const isDragging = useRef(false); // Used by Task 8 for drag-to-paint
 
   // Load from storage on mount
   useEffect(() => {
@@ -1013,25 +1048,84 @@ git commit -m "feat(garden): rewrite GardenPlanner.jsx with state reducer and st
 
 - [ ] **Step 1: Replace the minimal render with the full layout structure**
 
-Replace the temporary render with the real layout: root container, toolbar, grid area placeholder, and bottom bar placeholder. The toolbar includes species selector, color palette, tool buttons, and simulation tier pills.
+Replace the temporary render with the real layout. The toolbar JSX structure:
 
-The toolbar renders:
-- Species buttons: loop through `Object.entries(SPECIES)`, show emoji + name, highlight selected in green
-- Color palette: loop through `SPECIES[state.selectedSpecies].colors`, show colored dots with `<AssetImg>` at 20px, seed colors get "S" badge, special get star
-- Tool buttons: Place / Erase toggle
-- Grid size slider: 5-20 range input
-- Template dropdown: Checkerboard, Rows, Blue Rose, Pairs
-- Simulation pills: Static / Day Sim / Campaign
-- Clear grid button
+```jsx
+return (
+  <div style={styles.root}>
+    <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
 
-Use the project's design system colors: `#0a1a10` background, `#5ec850` green accent, `#d4b030` gold accent, `#4aacf0` blue accent. All inline styles.
+    {/* Toolbar */}
+    <div style={styles.toolbar}>
+      {/* Species selector */}
+      <div style={styles.speciesRow}>
+        {Object.entries(SPECIES).map(([key, sp]) => (
+          <button key={key} onClick={() => dispatch({ type: 'SELECT_SPECIES', species: key })}
+            style={{ ...styles.speciesBtn, ...(state.selectedSpecies === key ? styles.speciesBtnActive : {}) }}>
+            <span>{sp.emoji}</span>
+            <span style={{ fontSize: 11 }}>{sp.name}</span>
+          </button>
+        ))}
+      </div>
+      {/* Color palette + tools row */}
+      <div style={styles.paletteRow}>
+        {SPECIES[state.selectedSpecies].colors.map(c => (
+          <button key={c.color} onClick={() => dispatch({ type: 'SELECT_COLOR', color: c.color })}
+            style={{ ...styles.colorDot, background: c.hex,
+              boxShadow: state.selectedColor === c.color ? '0 0 0 2px #5ec850' : 'none' }}>
+            {c.source === 'seed' && <span style={styles.seedBadge}>S</span>}
+            {c.source === 'special' && <span style={styles.specialBadge}>★</span>}
+          </button>
+        ))}
+        <div style={styles.separator} />
+        {/* Tool buttons */}
+        <button onClick={() => dispatch({ type: 'SET_TOOL', tool: 'place' })}
+          style={{ ...styles.toolBtn, ...(state.tool === 'place' ? styles.toolBtnActive : {}) }}>🌱 Place</button>
+        <button onClick={() => dispatch({ type: 'SET_TOOL', tool: 'erase' })}
+          style={{ ...styles.toolBtn, ...(state.tool === 'erase' ? styles.toolBtnActive : {}) }}>🧹 Erase</button>
+        <div style={styles.separator} />
+        {/* Grid size slider */}
+        <span style={{ fontSize: 11, color: '#5a7a50' }}>{state.gridSize}×{state.gridSize}</span>
+        <input type="range" min={5} max={20} value={state.gridSize}
+          onChange={e => dispatch({ type: 'SET_GRID_SIZE', size: Number(e.target.value) })} />
+        <div style={styles.separator} />
+        {/* Simulation tier pills */}
+        {['static', 'dayByDay', 'campaign'].map(tier => (
+          <button key={tier} onClick={() => dispatch({ type: 'SET_SIMULATION_TIER', tier })}
+            style={{ ...styles.tierPill, ...(state.simulationTier === tier ? styles.tierPillActive : {}) }}>
+            {tier === 'static' ? 'Static' : tier === 'dayByDay' ? 'Day Sim' : 'Campaign'}
+          </button>
+        ))}
+      </div>
+    </div>
 
-- [ ] **Step 2: Verify build and visual appearance**
+    {/* Grid area + panel (Tasks 6-7 will fill these in) */}
+    <div style={styles.gridContainer}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: '#5a7a50' }}>Grid renders here (Task 6)</p>
+      </div>
+    </div>
+  </div>
+);
+```
+
+Define `styles` object at bottom of file with all inline style objects: `root` (flex column, full height, `#0a1a10` bg), `toolbar` (flex column, gap 6, padding 12, border-bottom), `speciesRow` (flex, gap 4), `speciesBtn` (flex column, align center, bg transparent, border none, color `#5a7a50`, cursor pointer), `speciesBtnActive` (color `#5ec850`), `paletteRow` (flex, align center, gap 6, flex-wrap), `colorDot` (width 24, height 24, border-radius 50%, border none, cursor pointer, position relative), `seedBadge` / `specialBadge` (position absolute, font-size 8, top -4, right -4), `toolBtn` / `toolBtnActive`, `tierPill` / `tierPillActive`, `separator` (width 1, height 20, bg `rgba(94,200,80,0.15)`), `gridContainer` (flex 1, display flex, overflow hidden).
+
+- [ ] **Step 2: Verify build**
 
 Run: `npm run build`
-Then `npm run dev` — open in browser, navigate to Garden Planner. Toolbar should render with all 8 species, color palette for roses, and all control buttons.
+Expected: Clean build, no errors.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 3: Verify toolbar interactivity**
+
+Run: `npm run dev`, open in browser, navigate to Garden Planner. Verify:
+1. All 8 species buttons render with emoji + name
+2. Clicking a species updates the color palette (e.g., Pansy should NOT show Pink)
+3. Clicking a color highlights it with green glow
+4. Grid size slider changes the displayed size value
+5. Simulation tier pills toggle between Static / Day Sim / Campaign
+
+- [ ] **Step 4: Commit**
 
 ```bash
 git add src/artifacts/GardenPlanner.jsx
@@ -1093,7 +1187,7 @@ When `state.selectedCell` is set and the cell is occupied, show the bottom bar:
 
 - [ ] **Step 2: Implement the sliding panel**
 
-The panel is a div with `position: absolute` or flex layout, sliding from the right. Width ~280px. Transition: `transform 0.3s ease` or `width 0.3s ease`.
+The panel uses **flex layout** (not absolute positioning) to avoid z-index/overflow issues with the grid. The grid container is `display: flex`, the grid takes `flex: 1`, and the panel is a sibling div with `width: 280px` when open, `width: 0; overflow: hidden` when closed, with `transition: width 0.3s ease`. This way the grid naturally shrinks when the panel opens.
 
 **Breed tab:**
 - Selected cell info (sprite, name, genotype, source)
@@ -1199,12 +1293,16 @@ git commit -m "feat(garden): add breeding highlights, drag paint, gold rose, pol
 - [ ] **Step 1: Run production build**
 
 Run: `npm run build`
-Expected: Clean build with no errors or warnings. All 4 new/modified files should be bundled.
+Expected: Clean build with no errors or warnings.
 
-- [ ] **Step 2: Run dev server and test all features**
+Verify all modules are bundled:
+Run: `ls dist/assets/*.js | wc -l`
+Expected: Multiple JS chunks (the 3 garden modules get bundled into the GardenPlanner chunk via code splitting).
 
-Run: `npm run dev`
-Manual test checklist:
+- [ ] **Step 2: Run dev server and test all features (human-gated)**
+
+**This step requires manual browser testing.** Run: `npm run dev`
+Manual test checklist (a human or browser automation agent must verify):
 - All 8 species selectable with correct color palettes
 - No Pink Pansy, no Yellow Windflower visible in palette
 - Blue Hyacinth and Orange Windflower show as seed colors
@@ -1222,12 +1320,16 @@ Manual test checklist:
 
 - [ ] **Step 3: Bump version**
 
-Bump `package.json` version from `1.1.1` to `1.2.0` (minor: new feature — complete Garden Planner rebuild).
+First verify current version:
+Run: `node -e "console.log(require('./package.json').version)"`
+Expected: `1.1.1`
+
+Bump `package.json` version to `1.2.0` (minor: new feature — complete Garden Planner rebuild).
 
 - [ ] **Step 4: Final commit**
 
 ```bash
-git add -A
+git add src/artifacts/gardenData.js src/artifacts/gardenGenetics.js src/artifacts/gardenSimulation.js src/artifacts/GardenPlanner.jsx package.json
 git commit -m "feat(garden): complete Garden Planner rebuild v1.2.0 (Issue #26)
 
 Modular architecture: gardenData.js, gardenGenetics.js, gardenSimulation.js,
@@ -1247,10 +1349,10 @@ git push origin main
 
 Vercel auto-deploys from main. Wait for deployment to complete.
 
-- [ ] **Step 2: Verify deployment**
+- [ ] **Step 2: Verify deployment (human-gated)**
 
-Check https://acnh-portal.vercel.app — navigate to Garden Planner. Verify:
-- Tool loads without errors
+Check https://acnh-portal.vercel.app — navigate to Garden Planner. A human or browser automation agent must verify:
+- Tool loads without errors (check browser console for errors)
 - Sprites appear (AssetImg working)
 - Sidebar footer shows v1.2.0
-- All features functional
+- Place a flower, open panel, run a simulation day
