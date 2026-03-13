@@ -36,9 +36,12 @@ Create `scripts/categorize-recipes.cjs` (must be `.cjs` since package.json has `
 // Output the grouped results to console for manual verification
 // Categories: Tools, Bamboo, Cherry Blossom, Shell, Summer Shell,
 // Ironwood, Log, Wooden, Wooden-Block, Fruit, Iron, Gold & Golden,
-// Celeste, Crowns & Wreaths, Wands, Mermaid, Mushroom, Maple & Acorn,
-// Frozen & Snowflake, Festive & Illuminated, Bunny Day, Spooky,
-// Turkey Day, Fences, Walls/Floors/Rugs, Miscellaneous & Other
+// Celeste (zodiac+star+space items), Crowns & Wreaths, Wands,
+// Mermaid, Mushroom, Maple & Acorn, Frozen & Snowflake,
+// Festive & Illuminated, Bunny Day, Spooky, Turkey Day,
+// Fences, Walls/Floors/Rugs, Miscellaneous & Other
+// NOTE: Wands is a 27th DIY category (not in original spec which merged them
+// into Celeste, but separation is cleaner since there are 21 wand recipes)
 ```
 
 The script should:
@@ -54,7 +57,7 @@ Run: `node scripts/categorize-recipes.cjs`
 - [ ] **Step 2: Verify categorization output against Nookipedia**
 
 Review the script output. Cross-check:
-- Celeste recipes against Nookipedia (zodiac items, star items, NOT wands — wands have their own category)
+- Celeste recipes against Nookipedia (zodiac items + star/space items ONLY — wands go in the separate Wands category)
 - Seasonal recipes (Cherry Blossom, Mushroom, etc.) against Nookipedia seasonal pages
 - Crowns & Wreaths should contain ALL crown/wreath recipes EXCEPT those in event categories (e.g., Bunny Day wreath stays in Bunny Day)
 - Tools should match Nookipedia's tool list exactly
@@ -67,10 +70,13 @@ Use web search to verify any ambiguous categorizations.
 Create `src/artifacts/diyRecipeData.js` with these exports:
 
 ```js
-export const DIY_CATEGORIES = { ... };    // 28 categories (26 DIY + 2 cooking)
+export const DIY_CATEGORIES = { ... };    // 29 categories (27 DIY + 2 cooking)
 export const SOURCES = [ ... ];           // 14 sources
 export const SEASONAL_SECTIONS = [ ... ]; // 11 seasonal windows
 export const STORAGE_KEY = 'acnh-diy-tracker';
+export const TOTAL_RECIPES = Object.values(DIY_CATEGORIES).reduce(
+  (sum, cat) => sum + cat.recipes.length, 0
+);
 ```
 
 **DIY_CATEGORIES format** (keyed object):
@@ -82,7 +88,7 @@ export const DIY_CATEGORIES = {
       'axe', 'fishing rod', 'flimsy axe', ...  // from manifest, alphabetically sorted
     ]
   },
-  // ... 25 more DIY categories ...
+  // ... 26 more DIY categories (including Wands as separate from Celeste) ...
   'Cooking - Savory': {
     emoji: '🍲',
     isCooking: true,
@@ -115,8 +121,8 @@ export const DIY_CATEGORIES = {
 - Leif / Daisy Mae / Niko (2.0 update vine/moss/golden recipes)
 
 **SEASONAL_SECTIONS array** — 11 items. See spec lines 141-153 for the date table. The existing file has 9 sections at lines 425-549 — keep those and add:
-- Spring Bamboo (Feb 25–May 31 NH / Aug 25–Nov 30 SH)
-- Maple Leaves sub-window (Nov 16–25 NH / May 16–25 SH)
+- Spring Bamboo (Feb 25–May 31 NH / Aug 25–Nov 30 SH) — this is a NEW seasonal entry. The recipe list is a SUBSET of the Bamboo DIY category (only recipes requiring young spring bamboo, not all bamboo recipes).
+- Maple Leaves sub-window (Nov 16–25 NH / May 16–25 SH) — narrower window than Maple & Acorn; only maple-leaf material recipes
 
 Each seasonal section format:
 ```js
@@ -155,8 +161,9 @@ Create `scripts/verify-diy-recipes.cjs`:
 // 4. Cross-check: every manifest recipe must appear in exactly one category
 // 5. Check for duplicates across categories
 // 6. Cooking recipes (isCooking: true) are EXEMPT from manifest check
-// 7. Print summary: matched, missing from data, missing from manifest, duplicates
-// 8. Exit code 0 if clean, 1 if any issues
+// 7. Cross-check SEASONAL_SECTIONS: every recipe in seasonal lists must exist in at least one DIY_CATEGORIES entry
+// 8. Print summary: matched, missing from data, missing from manifest, duplicates, seasonal mismatches
+// 9. Exit code 0 if clean, 1 if any issues
 ```
 
 Note: Since `diyRecipeData.js` uses ES module exports and this is a `.cjs` script, use dynamic `import()`:
@@ -203,15 +210,18 @@ import { AssetImg } from '../assetHelper';
 // NEW:
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
-import { DIY_CATEGORIES, SOURCES, SEASONAL_SECTIONS, STORAGE_KEY } from './diyRecipeData';
+import { DIY_CATEGORIES, SOURCES, SEASONAL_SECTIONS, STORAGE_KEY, TOTAL_RECIPES } from './diyRecipeData';
 ```
 
 Then delete the entire inline data block:
 - Delete lines 13-342 (the `const DIY_CATEGORIES = { ... }` object)
+- **Delete lines 344-346** (the `const TOTAL_RECIPES = ...` computation — now imported from data module)
 - Delete lines 349-422 (the `const SOURCES = [ ... ]` array)
 - Delete lines 425-549 (the `const SEASONAL_SECTIONS = [ ... ]` array)
 
-The `TOTAL_RECIPES` computation (line 344-346) stays but uses the imported `DIY_CATEGORIES`.
+**IMPORTANT:** `TOTAL_RECIPES` is now exported from `diyRecipeData.js` and imported above. Do NOT keep the inline computation — delete it along with the data.
+
+The `getFilteredCategories()` helper (around line ~605) references `DIY_CATEGORIES` directly. After extraction, it will reference the imported module-scope constant, which works identically. No changes needed to this function.
 
 - [ ] **Step 2: Add orphan cleanup to storage load**
 
@@ -260,6 +270,8 @@ Add a conditional for cooking categories:
 ```
 
 This requires passing `data` (the category object) into the recipe rendering context. The current code uses `Object.entries(getFilteredCategories())` which gives `[categoryName, data]` — so `data.isCooking` is available.
+
+**Dependency:** This conditional relies on `isCooking: true` being present on cooking categories in `diyRecipeData.js` (set in Task 1, Step 3). Verify the flag exists before implementing.
 
 - [ ] **Step 4: Verify build passes**
 
@@ -320,8 +332,7 @@ Vercel auto-deploys on push to main.
 
 Delete the categorization helper script (it was a one-time tool):
 ```bash
-rm scripts/categorize-recipes.cjs
-git add -A scripts/
+git rm scripts/categorize-recipes.cjs
 git commit -m "chore: remove one-time categorization script"
 git push origin main
 ```
@@ -348,7 +359,9 @@ All tasks are sequential — each depends on the previous.
 
 1. **ZERO TOLERANCE for fabricated data.** Every recipe name must come from manifest.json (for DIY) or Nookipedia/Game8 (for cooking). If you can't verify a name, remove it.
 2. **Case sensitivity matters.** `<AssetImg>` does case-insensitive lookup, but the manifest has specific casing (e.g., "Bunny Day arch" not "bunny day arch"). Use manifest casing for DIY recipes.
-3. **Wands category note:** The existing code puts wands in BOTH a "Wands" category AND "Celeste". The spec says each recipe in ONE category only. Put flower/seasonal wands in "Wands" and only zodiac/star/space items in "Celeste".
-4. **Fences overlap:** Some fences appear in other categories too (e.g., "bamboo lattice fence" in both Bamboo and Fences). Put themed fences in Fences only.
+3. **Wands category:** Split wands into their own "Wands" category (27th DIY category). Celeste keeps ONLY zodiac items + star/space furniture. This deviates from the original spec which merged wands into Celeste, but is cleaner since there are 21 wand recipes.
+4. **Fences overlap:** Some fences appear in other categories too (e.g., "bamboo lattice fence" in both Bamboo and Fences). Put themed fences in Fences only — each recipe in exactly ONE category.
 5. **The `scripts/` directory** uses `.cjs` extension because `package.json` has `"type": "module"`.
 6. **Cooking recipe names** — many are real Italian/Japanese dish names from the 2.0 update. Names like "carpaccio di capesante", "kabu ankake", "pesce all'acqua pazza" are REAL in-game names. Verify but don't assume they're fabricated.
+7. **Spooky cookies conflict:** "spooky cookies" currently appears in BOTH "Cooking - Sweet" and the "Spooky" category/seasonal section. It is a cooking recipe (2.0 update). Keep it in "Cooking - Sweet" only. Remove from Spooky category and seasonal section.
+8. **Category count note:** The spec says 26 DIY + 2 cooking = 28. This plan adds Wands as a separate category making it 27 DIY + 2 cooking = 29. The spec's provisional counts are superseded by the implementer's manifest extraction.
