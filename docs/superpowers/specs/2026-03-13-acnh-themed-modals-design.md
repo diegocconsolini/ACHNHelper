@@ -71,11 +71,12 @@ Props:
 - `destructive` (boolean, optional) — if true, confirm button uses red/warning style
 - `onConfirm` (function) — called on confirm
 - `onCancel` (function) — called on cancel or backdrop click
+- `themeOverride` (string, optional) — if set, uses this theme key instead of context. Used by Settings preview.
 
 Renders nothing when `open` is false. When open:
-1. Reads `modalTheme` from `useSettings()`
+1. Reads `modalTheme` from `useSettings()` (or uses `themeOverride` if provided)
 2. Looks up theme from `modalThemes.js`
-3. Renders backdrop overlay + themed modal card
+3. Renders backdrop overlay (`zIndex: 10000`) + themed modal card (`zIndex: 10001`)
 4. Traps focus (confirm button auto-focused)
 5. Escape key triggers `onCancel`
 
@@ -87,6 +88,7 @@ Props:
 - `message` (string)
 - `buttonLabel` (string, optional) — defaults to "OK"
 - `onClose` (function) — called on button click, backdrop click, or Escape
+- `themeOverride` (string, optional) — same as ConfirmModal
 
 Same theme system as ConfirmModal but with single button.
 
@@ -125,7 +127,7 @@ const [showClearConfirm, setShowClearConfirm] = useState(false);
 |---------|-------|
 | Backdrop | `rgba(0,0,0,0.5)` |
 | Container | `background: #f5efe0`, `border: 3px solid #8b7355`, `border-radius: 20px` |
-| Speech tail | CSS triangle below modal (border trick), brown outer + parchment inner |
+| Speech tail | Rendered as a small rotated `<div>` (45deg, 12px) positioned below the container with matching background and border. Not a pseudo-element — a real DOM element to stay within inline-styles constraint. |
 | Title | `'Playfair Display', serif`, `color: #3d3428`, `font-weight: 700` |
 | Message | `'DM Sans', sans-serif`, `color: #6b5e4a`, `font-size: 13px` |
 | Icon | `🍃` leaf emoji |
@@ -169,8 +171,8 @@ const [showClearConfirm, setShowClearConfirm] = useState(false);
 ### Animation (all themes)
 
 - **Open:** Backdrop fades in 200ms. Modal fades in + scales from `transform: scale(0.95)` to `scale(1)`, 200ms `ease-out`.
-- **Close:** Reverse, 150ms `ease-in`.
-- Implementation: CSS `@keyframes` injected via `<style>` tag inside the modal component.
+- **Close:** Reverse, 150ms `ease-in`. Implemented via an internal `isClosing` state: when `open` transitions from `true` to `false`, the component sets `isClosing = true`, applies the exit animation class, and uses a `setTimeout(150)` to unmount after the animation completes.
+- **Implementation:** CSS `@keyframes` injected via a single `<style>` tag inside the modal component (shared between both modals). The `<style>` tag defines `@keyframes modalFadeIn`, `@keyframes modalFadeOut`, `@keyframes backdropFadeIn`, `@keyframes backdropFadeOut`.
 
 ---
 
@@ -180,9 +182,9 @@ const [showClearConfirm, setShowClearConfirm] = useState(false);
 
 ### Sidebar Entry
 
-New category in `MENU`:
+New category in `MENU`. The actual item schema must match the existing MENU format in App.jsx (fields: `id`, `label`, `emoji`, `component`):
 ```js
-{ category: '⚙️ Settings', items: [{ key: 'Settings', label: 'Settings' }] }
+{ category: '⚙️ Settings', items: [{ id: 'settings', label: 'Settings', emoji: '⚙️', component: 'Settings' }] }
 ```
 
 ### Layout
@@ -197,7 +199,7 @@ New category in `MENU`:
     - Theme name below the preview
     - Active theme has green border (`#5ec850`) and checkmark badge
   - Clicking a card: switches theme via `setModalTheme()`, immediate visual feedback
-  - "Preview" button on each card: opens a sample ConfirmModal in that theme so the user can see it full-size
+  - "Preview" button on each card: opens a sample ConfirmModal with `themeOverride={themeKey}` so the user sees it in that specific theme regardless of current selection
 - **Future sections** (placeholder, not implemented now): reserved for Issue #28 preferences
 
 ### Storage
@@ -213,16 +215,15 @@ New category in `MENU`:
 1. Add lazy import: `const Settings = lazy(() => import('./artifacts/Settings.jsx'));`
 2. Add to `COMPONENTS`: `Settings`
 3. Add to `MENU`: new `'⚙️ Settings'` category at the end
-4. Wrap content area in `<SettingsProvider>`:
+4. Wrap the **entire App return** in `<SettingsProvider>` (not just the content area — the sidebar may reference settings in the future):
    ```jsx
    import { SettingsProvider } from './SettingsContext';
-   // In render:
+   // In render — outermost wrapper:
    <SettingsProvider>
-     <Suspense fallback={...}>
-       {/* existing content */}
-     </Suspense>
+     {/* sidebar + main content area */}
    </SettingsProvider>
    ```
+5. Update sidebar footer tool count from "22 tools" to "23 tools"
 
 ---
 
@@ -326,3 +327,6 @@ const [showAlert, setShowAlert] = useState(false);
 - [ ] Build passes with no errors or warnings
 - [ ] All 3 accent colors used in Settings page (green, gold, blue)
 - [ ] Google Fonts imported in Settings.jsx
+- [ ] Version bumped in `package.json` (minor bump to 1.3.0)
+- [ ] Sidebar footer updated: "23 tools"
+- [ ] Modal z-index (10000+) renders above all other UI elements
