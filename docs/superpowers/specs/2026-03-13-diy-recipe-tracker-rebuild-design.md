@@ -38,7 +38,7 @@ export const DIY_CATEGORIES = {
   'Cooking - Sweet': { emoji: '🍰', recipes: [...], isCooking: true },
 };
 export const SOURCES = [ ... ];           // 14 recipe sources
-export const SEASONAL_SECTIONS = [ ... ]; // 10 seasonal windows
+export const SEASONAL_SECTIONS = [ ... ]; // 11 seasonal windows
 
 // Constants
 export const STORAGE_KEY = 'acnh-diy-tracker';
@@ -50,7 +50,7 @@ export const STORAGE_KEY = 'acnh-diy-tracker';
 
 ### DIY_CATEGORIES (26 crafting + 2 cooking = 28 total)
 
-Exact counts verified against `manifest.json` (640 recipes) and Nookipedia:
+**Provisional counts** — final counts will be determined during Phase 1 when all 640 manifest recipes are extracted and categorized. Counts below are best estimates from prefix-matching and Nookipedia cross-referencing. Some recipes belong to multiple possible categories (e.g., shell wreath could be Shell or Crowns & Wreaths); the implementer resolves these during categorization:
 
 | # | Category | Count | Verification Source |
 |---|---|---|---|
@@ -83,7 +83,12 @@ Exact counts verified against `manifest.json` (640 recipes) and Nookipedia:
 | 27 | Cooking - Savory | ~85 | Game8 food recipes + Nookipedia |
 | 28 | Cooking - Sweet | ~56 | Game8 food recipes + Nookipedia |
 
-Note: Categories 1-26 must have every recipe name present in `manifest.json` recipes. The "Miscellaneous & Other" category is a catch-all for real manifest recipes not fitting the named series. Categories 27-28 (cooking) have no manifest entries and use the `isCooking: true` flag.
+**Categorization rules:**
+- Each of the 640 manifest recipes goes into exactly ONE category (no duplicates)
+- When a recipe could fit multiple categories (e.g., "shell wreath" → Shell or Wreaths), prefer the thematic series (Shell) over the generic grouping (Wreaths)
+- The "Miscellaneous & Other" category is a catch-all for real manifest recipes not fitting any named series
+- Categories 27-28 (cooking) have no manifest entries and use the `isCooking: true` flag
+- The verification script (Phase 2) must confirm the union of all category recipes equals exactly 640 manifest entries with no gaps or duplicates
 
 **Maple & Acorn sub-seasons note:** Acorn/pine cone recipes are available Sep 1–Dec 10 NH, but maple leaf recipes (maple-leaf pochette, maple-leaf pond stone, etc.) are only available Nov 16–Nov 25 NH. The seasonal guide tab should note this distinction.
 
@@ -117,7 +122,7 @@ Sources (verified against Nookipedia):
 13. Basic Cooking Recipes (4,980 Bells at Nook's Cranny, 8 recipes)
 14. Leif / Daisy Mae / Niko (2.0 update sources)
 
-### SEASONAL_SECTIONS (~10 seasonal windows)
+### SEASONAL_SECTIONS (11 seasonal windows)
 
 Each section:
 ```js
