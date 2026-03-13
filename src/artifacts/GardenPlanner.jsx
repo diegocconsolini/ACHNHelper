@@ -6,6 +6,7 @@ import { AssetImg } from '../assetHelper';
 import { SPECIES, BREEDING_PATHS, COLOR_HEX } from './gardenData.js';
 import { getSeedGenotype, findBreedingPairs, canClone, getOffspring } from './gardenGenetics.js';
 import { simulateDay, updateBadLuckCounters, createEmptyGrid } from './gardenSimulation.js';
+import ConfirmModal from '../ConfirmModal';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
@@ -246,6 +247,7 @@ function reducer(state, action) {
 export default function GardenPlanner() {
   const [state, dispatch] = useReducer(reducer, undefined, makeInitialState);
   const [layoutNameInput, setLayoutNameInput] = useState('');
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
   const saveTimerRef = useRef(null);
   const isDragging = useRef(false); // Used for drag-to-paint (Task 8)
 
@@ -793,7 +795,7 @@ export default function GardenPlanner() {
         <button onClick={() => dispatch({ type: 'UNDO' })} style={S.actionBtn('muted')} disabled={state.history.length === 0}>
           ↩ Undo
         </button>
-        <button onClick={() => { if (window.confirm('Clear garden?')) dispatch({ type: 'CLEAR_GRID' }); }} style={S.actionBtn('red')}>
+        <button onClick={() => setShowClearConfirm(true)} style={S.actionBtn('red')}>
           Clear
         </button>
 
@@ -1203,6 +1205,16 @@ export default function GardenPlanner() {
 
       {/* Bottom bar */}
       <BottomBar />
+
+      <ConfirmModal
+        open={showClearConfirm}
+        title="Clear garden?"
+        message="This will remove all flowers from your garden layout."
+        confirmLabel="Clear"
+        destructive
+        onConfirm={() => { dispatch({ type: 'CLEAR_GRID' }); setShowClearConfirm(false); }}
+        onCancel={() => setShowClearConfirm(false)}
+      />
     </div>
   );
 }
