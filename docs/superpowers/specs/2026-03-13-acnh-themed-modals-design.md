@@ -150,6 +150,7 @@ const [showClearConfirm, setShowClearConfirm] = useState(false);
 | Confirm button | `background: #5ec850`, `border: none`, `border-radius: 8px`, `color: white` |
 | Destructive confirm | `background: #e74c3c` |
 | Alert OK button | `background: #5ec850`, `border: none`, `border-radius: 8px`, `color: white` |
+| Speech tail / Accent bar | None — not applicable to this theme |
 | Box shadow | `0 0 30px rgba(94,200,80,0.08), 0 8px 32px rgba(0,0,0,0.5)` |
 
 ### Theme C: `hybrid` — Hybrid (DEFAULT)
