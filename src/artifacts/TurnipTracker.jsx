@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AlertModal from '../AlertModal';
 
 const TurnipTracker = () => {
   const STORAGE_KEY = 'acnh-turnip-tracker';
@@ -18,6 +19,7 @@ const TurnipTracker = () => {
   ];
 
   const [buyPrice, setBuyPrice] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
   const [prices, setPrices] = useState({
     monAM: '', monPM: '', tueAM: '', tuePM: '', wedAM: '', wedPM: '',
     thuAM: '', thuPM: '', friAM: '', friPM: '', satAM: '', satPM: '',
@@ -115,8 +117,7 @@ const TurnipTracker = () => {
 
   const saveToHistory = () => {
     if (!buyPrice || DAYS.every(d => !prices[d.key])) {
-      alert('Please enter a buy price and at least one daily price.');
-      return;
+      setShowAlert(true); return;
     }
     const weekData = {
       date: new Date().toLocaleDateString(),
@@ -375,6 +376,13 @@ const TurnipTracker = () => {
           ))}
         </div>
       )}
+
+      <AlertModal
+        open={showAlert}
+        title="Missing Info"
+        message="Please enter a buy price and at least one daily price."
+        onClose={() => setShowAlert(false)}
+      />
     </div>
   );
 };

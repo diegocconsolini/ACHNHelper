@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import AlertModal from '../AlertModal';
 
 const NooksCrannyLog = () => {
   const STORAGE_KEY = 'acnh-nooks-cranny-log';
   const [entries, setEntries] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [hotItem, setHotItem] = useState('');
   const [hotItemPrice, setHotItemPrice] = useState('');
@@ -36,8 +38,7 @@ const NooksCrannyLog = () => {
 
   const handleAddEntry = async () => {
     if (!hotItem.trim()) {
-      alert('Please enter a hot item');
-      return;
+      setShowAlert(true); return;
     }
 
     const validLimitedItems = limitedItems.filter(item => item.name.trim());
@@ -495,6 +496,13 @@ const NooksCrannyLog = () => {
           </div>
         </div>
       )}
+
+      <AlertModal
+        open={showAlert}
+        title="Missing Info"
+        message="Please enter a hot item."
+        onClose={() => setShowAlert(false)}
+      />
     </div>
   );
 };
