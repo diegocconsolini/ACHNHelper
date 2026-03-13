@@ -29,76 +29,63 @@ src/artifacts/
 ### diyRecipeData.js Exports
 
 ```js
-// Primary data
-export const DIY_CATEGORIES = { ... };   // 26 crafting categories
-export const COOKING_CATEGORIES = { ... }; // 2 cooking categories
-export const SOURCES = [ ... ];           // ~14 recipe sources
-export const SEASONAL_SECTIONS = [ ... ]; // ~10 seasonal windows
+// Primary data — keyed-object format (matches existing UI iteration via Object.entries())
+export const DIY_CATEGORIES = {
+  'Tools': { emoji: '🔨', recipes: ['Flimsy axe', 'Stone axe', ...] },
+  'Ironwood': { emoji: '🪵', recipes: ['Ironwood bed', 'Ironwood cart', ...] },
+  // ... 26 categories total for DIY, then 2 cooking categories appended
+  'Cooking - Savory': { emoji: '🍲', recipes: [...], isCooking: true },
+  'Cooking - Sweet': { emoji: '🍰', recipes: [...], isCooking: true },
+};
+export const SOURCES = [ ... ];           // 14 recipe sources
+export const SEASONAL_SECTIONS = [ ... ]; // 10 seasonal windows
 
 // Constants
 export const STORAGE_KEY = 'acnh-diy-tracker';
 ```
 
-### DIY_CATEGORIES (26 categories, ~640 recipes)
+**Data structure:** `DIY_CATEGORIES` is a **keyed object** (not an array). The existing UI uses `Object.entries(DIY_CATEGORIES)` for iteration and `DIY_CATEGORIES[categoryName]` for direct access. Cooking categories are included in the same object with an `isCooking: true` flag so that the UI can apply emoji fallbacks for sprites.
 
-Each category:
-```js
-{
-  name: 'Ironwood',
-  emoji: '🪵',
-  recipes: ['Ironwood bed', 'Ironwood cart', 'Ironwood chair', ...]
-}
-```
+**UI impact of cooking categories:** The UI code's `getFilteredCategories()` and progress ring already iterate `Object.entries(DIY_CATEGORIES)`, so cooking categories are rendered automatically with no structural UI changes. The only small UI addition: when `isCooking` is true, show a category emoji instead of `<AssetImg>` for individual recipe items (since cooking recipes have no manifest sprites yet).
 
-Categories and verified counts:
+### DIY_CATEGORIES (26 crafting + 2 cooking = 28 total)
 
-| Category | Approx Count | Verification Source |
-|---|---|---|
-| Tools | 20 | Nookipedia + Game8 |
-| Bamboo | 23 | Game8 bamboo series page |
-| Spring Bamboo | 12 | Nookipedia /DIY_recipes/Spring |
-| Cherry Blossom | 15 | Nookipedia /DIY_recipes/Spring |
-| Shell | ~10 | manifest.json cross-ref |
-| Summer Shell | 9 | Nookipedia /DIY_recipes/Summer |
-| Ironwood | 10 | manifest.json cross-ref |
-| Log | ~13 | manifest.json cross-ref |
-| Wooden | ~17 | manifest.json cross-ref |
-| Wooden-Block | ~10 | manifest.json cross-ref |
-| Fruit | ~39 | manifest.json cross-ref |
-| Iron | ~15 | manifest.json cross-ref |
-| Gold | ~17 | manifest.json cross-ref |
-| Celeste | ~49 | Nookipedia /DIY_recipes/Celeste |
-| Crowns & Wreaths | ~53 | Game8 wall-mounted page |
-| Mermaid | 15 | Nookipedia /DIY_recipes/Pascal |
-| Mushroom | 12 | Nookipedia /DIY_recipes/Fall |
-| Maple & Acorn | ~22 | Nookipedia /DIY_recipes/Fall |
-| Frozen & Snowflake | 26 | Nookipedia /DIY_recipes/Winter |
-| Festive & Illuminated | ~14 | manifest.json cross-ref |
-| Bunny Day | ~40 | Nookipedia /DIY_recipes/Bunny_Day |
-| Spooky | 18 | Nookipedia /DIY_recipes/Halloween |
-| Turkey Day | ~11 | Nookipedia /Turkey_Day |
-| Fences | ~21 | manifest.json fencing category |
-| Walls, Floors & Rugs | ~98 | Game8 wallpaper/floor/rug page |
-| 2.0 Update (Vine/Moss/Golden/Misc) | ~80 | Nookipedia /DIY_recipes/2.0 |
+Exact counts verified against `manifest.json` (640 recipes) and Nookipedia:
 
-Every recipe name must exist in `manifest.json` recipes category. If a recipe name does not match the manifest, it must be corrected or placed in the cooking category (which has no manifest entries).
+| # | Category | Count | Verification Source |
+|---|---|---|---|
+| 1 | Tools | 20 | Nookipedia + Game8 |
+| 2 | Bamboo | 22 | manifest.json (bamboo* prefix) |
+| 3 | Spring Bamboo | 12 | Nookipedia /DIY_recipes/Spring |
+| 4 | Cherry Blossom | 14 | Nookipedia /DIY_recipes/Spring + manifest |
+| 5 | Shell | 11 | manifest.json (shell* prefix) |
+| 6 | Summer Shell | 9 | Nookipedia /DIY_recipes/Summer |
+| 7 | Ironwood | 10 | manifest.json (ironwood* prefix) |
+| 8 | Log | 12 | manifest.json (log* prefix) |
+| 9 | Wooden | 17 | manifest.json (wooden* excl. block/mosaic/knot/plank) |
+| 10 | Wooden-Block | 10 | manifest.json (wooden-block* prefix) |
+| 11 | Fruit | 38 | manifest.json (apple/cherry/orange/peach/pear/coconut/fruit*) |
+| 12 | Iron | 15 | manifest.json (iron*/iron-* excl. ironwood) |
+| 13 | Gold & Golden | 25 | manifest.json (gold*/golden*) |
+| 14 | Celeste | 49 | Nookipedia /DIY_recipes/Celeste (zodiac+star+wands) |
+| 15 | Crowns & Wreaths | 53 | Game8 wall-mounted page (all crown/wreath recipes) |
+| 16 | Mermaid | 15 | Nookipedia /DIY_recipes/Pascal |
+| 17 | Mushroom | 10 | manifest.json (mush*/mushroom*) |
+| 18 | Maple & Acorn | 22 | Nookipedia /DIY_recipes/Fall |
+| 19 | Frozen & Snowflake | 26 | Nookipedia /DIY_recipes/Winter |
+| 20 | Festive & Illuminated | 14 | manifest.json verified |
+| 21 | Bunny Day | 40 | manifest.json (bunny*/egg*) + Nookipedia |
+| 22 | Spooky | 14 | manifest.json (spooky* prefix) |
+| 23 | Turkey Day | 8 | manifest.json (turkey day* prefix) |
+| 24 | Fences | 20 | manifest.json (*fence*) |
+| 25 | Walls, Floors & Rugs | 98 | Game8 wallpaper/floor/rug page |
+| 26 | Miscellaneous & Other | remainder | Recipes not fitting above categories |
+| 27 | Cooking - Savory | ~85 | Game8 food recipes + Nookipedia |
+| 28 | Cooking - Sweet | ~56 | Game8 food recipes + Nookipedia |
 
-### COOKING_CATEGORIES (2 categories, ~141 recipes)
+Note: Categories 1-26 must have every recipe name present in `manifest.json` recipes. The "Miscellaneous & Other" category is a catch-all for real manifest recipes not fitting the named series. Categories 27-28 (cooking) have no manifest entries and use the `isCooking: true` flag.
 
-```js
-{
-  name: 'Cooking - Savory',
-  emoji: '🍲',
-  recipes: ['Aji fry', 'Anchoas al ajillo', 'Baked potatoes', ...]
-}
-```
-
-| Category | Approx Count | Verification Source |
-|---|---|---|
-| Cooking - Savory | ~85 | Game8 food recipes page + Nookipedia |
-| Cooking - Sweet | ~56 | Game8 food recipes page + Nookipedia |
-
-Cooking recipe names verified against Game8's complete food recipe list and Nookipedia individual item pages.
+**Maple & Acorn sub-seasons note:** Acorn/pine cone recipes are available Sep 1–Dec 10 NH, but maple leaf recipes (maple-leaf pochette, maple-leaf pond stone, etc.) are only available Nov 16–Nov 25 NH. The seasonal guide tab should note this distinction.
 
 ### SOURCES (~14 recipe acquisition methods)
 
@@ -140,7 +127,7 @@ Each section:
   nh: { start: 'Apr 1', end: 'Apr 10' },
   sh: { start: 'Oct 1', end: 'Oct 10' },
   recipes: ['Cherry-blossom bonsai', 'Cherry-blossom branches', ...],
-  recipeCount: 15
+  recipeCount: 14
 }
 ```
 
@@ -148,16 +135,19 @@ Verified date ranges (from Nookipedia):
 
 | Season | NH Dates | SH Dates | Count |
 |---|---|---|---|
-| Cherry Blossom | Apr 1–10 | Oct 1–10 | 15 |
+| Cherry Blossom | Apr 1–10 | Oct 1–10 | 14 |
 | Spring Bamboo | Feb 25–May 31 | Aug 25–Nov 30 | 12 |
 | Summer Shell | Jun 1–Aug 31 | Dec 1–Feb 28 | 9 |
-| Mushroom | Nov 1–30 | May 1–31 | 12 |
-| Maple & Acorn | Sep 1–Dec 10 | Mar 1–Jun 10 | ~22 |
+| Mushroom | Nov 1–30 | May 1–31 | 10 |
+| Maple & Acorn (acorns/pine cones) | Sep 1–Dec 10 | Mar 1–Jun 10 | 10 |
+| Maple Leaves (sub-window) | Nov 16–25 | May 16–25 | 10 |
 | Frozen & Snowflake | Dec 11–Feb 24 | Jun 11–Aug 24 | 26 |
-| Bunny Day | Easter week (varies) | Easter week (varies) | ~40 |
-| Spooky / Halloween | Oct 1–31 | Apr 1–30 | 18 |
-| Turkey Day | 4th Thu Nov | 4th Thu Nov | ~11 |
-| Festive / Toy Day | Dec 15–Jan 6 | Dec 15–Jan 6 | ~14 |
+| Bunny Day | Easter week (varies) | Easter week (varies) | 40 |
+| Spooky / Halloween | Oct 1–31 | Apr 1–30 | 14 |
+| Turkey Day | 4th Thu Nov | 4th Thu Nov | 8 |
+| Festive / Toy Day | Dec 15–Jan 6 | Dec 15–Jan 6 | 14 |
+
+Note: Spring Bamboo is a NEW seasonal entry not present in the current implementation. Maple Leaves is split from Maple & Acorn to accurately reflect the narrower availability window.
 
 ---
 
@@ -193,6 +183,12 @@ The existing 3-tab layout is kept:
 - Storage format: `{ learned: ['recipe name', ...] }` (unchanged)
 - Existing user progress is preserved
 - Recipes that were renamed (e.g. fabricated → real name) will naturally show as unlearned; this is acceptable since the old names were wrong
+- **Orphan cleanup:** On load, filter the `learned` set to only include names present in `DIY_CATEGORIES`. This removes old fabricated names from storage, keeping it clean.
+
+### UI Notes
+
+- The refactored `DIYRecipeTracker.jsx` must retain the Google Fonts `<style>` tag with `@import` for all 3 fonts (Playfair Display, DM Sans, DM Mono) per CLAUDE.md rule 7
+- All 3 accent colors (green, gold, blue) must remain in the UI per design system
 
 ---
 
