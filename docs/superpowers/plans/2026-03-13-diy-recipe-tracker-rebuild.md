@@ -133,6 +133,7 @@ Each seasonal section format:
   sh: 'Oct 1 – Oct 10',
   source: 'Balloons',
   recipes: ['blossom-viewing lantern', ...]  // from manifest, matching category data
+  // Note: spec shows a `recipeCount` field but it's omitted here — derivable from recipes.length
 }
 ```
 
