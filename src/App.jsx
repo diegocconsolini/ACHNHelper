@@ -1,4 +1,5 @@
 import React, { useState, lazy, Suspense } from 'react';
+import { SettingsProvider } from './SettingsContext';
 
 const FishTracker = lazy(() => import('./artifacts/FishTracker.jsx'));
 const BugTracker = lazy(() => import('./artifacts/BugTracker.jsx'));
@@ -22,6 +23,7 @@ const SeasonalEventCalendar = lazy(() => import('./artifacts/SeasonalEventCalend
 const DIYRecipeTracker = lazy(() => import('./artifacts/DIYRecipeTracker.jsx'));
 const CelesteMeteorTracker = lazy(() => import('./artifacts/CelesteMeteorTracker.jsx'));
 const DreamAddressBook = lazy(() => import('./artifacts/DreamAddressBook.jsx'));
+const Settings = lazy(() => import('./artifacts/Settings.jsx'));
 
 const MENU = [
   {
@@ -76,6 +78,12 @@ const MENU = [
       { id: 'dreams', label: 'Dream Address Book', emoji: '☁️', component: 'DreamAddressBook' },
     ],
   },
+  {
+    category: '⚙️ Settings',
+    items: [
+      { id: 'settings', label: 'Settings', emoji: '⚙️', component: 'Settings' },
+    ],
+  },
 ];
 
 const COMPONENTS = {
@@ -101,6 +109,7 @@ const COMPONENTS = {
   DIYRecipeTracker,
   CelesteMeteorTracker,
   DreamAddressBook,
+  Settings,
 };
 
 class ErrorBoundary extends React.Component {
@@ -193,6 +202,7 @@ function App() {
   const ActiveComponent = activeItem?.component ? COMPONENTS[activeItem.component] : null;
 
   return (
+    <SettingsProvider>
     <div style={styles.root}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -242,7 +252,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{__APP_VERSION__} — 22 tools
+            v{__APP_VERSION__} — 23 tools
           </span>
         </div>
       </div>
@@ -278,6 +288,7 @@ function App() {
         )}
       </div>
     </div>
+    </SettingsProvider>
   );
 }
 
