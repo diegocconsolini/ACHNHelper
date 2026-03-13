@@ -297,6 +297,14 @@ export const MODAL_THEMES = {
 
 export const THEME_KEYS = Object.keys(MODAL_THEMES);
 export const DEFAULT_THEME = 'hybrid';
+
+// Shared animation keyframes — imported by both ConfirmModal and AlertModal
+export const MODAL_ANIM_STYLE = `
+@keyframes modalFadeIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
+@keyframes modalFadeOut { from { opacity:1; transform:scale(1); } to { opacity:0; transform:scale(0.95); } }
+@keyframes backdropFadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes backdropFadeOut { from { opacity:1; } to { opacity:0; } }
+`;
 ```
 
 - [ ] **Step 2: Commit**
@@ -389,14 +397,7 @@ This component:
 // src/ConfirmModal.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSettings } from './SettingsContext';
-import { MODAL_THEMES, DEFAULT_THEME } from './modalThemes';
-
-const ANIM_STYLE = `
-@keyframes modalFadeIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
-@keyframes modalFadeOut { from { opacity:1; transform:scale(1); } to { opacity:0; transform:scale(0.95); } }
-@keyframes backdropFadeIn { from { opacity:0; } to { opacity:1; } }
-@keyframes backdropFadeOut { from { opacity:1; } to { opacity:0; } }
-`;
+import { MODAL_THEMES, DEFAULT_THEME, MODAL_ANIM_STYLE } from './modalThemes';
 
 export default function ConfirmModal({
   open,
@@ -457,7 +458,7 @@ export default function ConfirmModal({
 
   return (
     <>
-      <style>{ANIM_STYLE}</style>
+      <style>{MODAL_ANIM_STYLE}</style>
       {/* Backdrop */}
       <div
         onClick={onCancel}
@@ -537,14 +538,7 @@ Same animation/theme system as ConfirmModal but with single OK button.
 // src/AlertModal.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSettings } from './SettingsContext';
-import { MODAL_THEMES, DEFAULT_THEME } from './modalThemes';
-
-const ANIM_STYLE = `
-@keyframes modalFadeIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
-@keyframes modalFadeOut { from { opacity:1; transform:scale(1); } to { opacity:0; transform:scale(0.95); } }
-@keyframes backdropFadeIn { from { opacity:0; } to { opacity:1; } }
-@keyframes backdropFadeOut { from { opacity:1; } to { opacity:0; } }
-`;
+import { MODAL_THEMES, DEFAULT_THEME, MODAL_ANIM_STYLE } from './modalThemes';
 
 export default function AlertModal({
   open,
@@ -599,7 +593,7 @@ export default function AlertModal({
 
   return (
     <>
-      <style>{ANIM_STYLE}</style>
+      <style>{MODAL_ANIM_STYLE}</style>
       <div
         onClick={onClose}
         style={{
@@ -886,16 +880,21 @@ Changes:
 4. Wrap entire App return in SettingsProvider (line 195)
 5. Update footer tool count: "22 tools" → "23 tools" (line 245)
 
-- [ ] **Step 1: Add lazy import**
+- [ ] **Step 1: Add imports**
 
-At `src/App.jsx:25` (after the DreamAddressBook import), add:
+At the top of `src/App.jsx`, add the SettingsProvider import:
+```js
+import { SettingsProvider } from './SettingsContext';
+```
+
+After the DreamAddressBook lazy import (line 24), add:
 ```js
 const Settings = lazy(() => import('./artifacts/Settings.jsx'));
 ```
 
 - [ ] **Step 2: Add MENU entry**
 
-After the Island Life category closing `}` at line 78, add:
+Inside the `MENU` array, after the Island Life category closing `},` (line 78) and before the array's closing `];` (line 79), add:
 ```js
   {
     category: '⚙️ Settings',
@@ -907,51 +906,51 @@ After the Island Life category closing `}` at line 78, add:
 
 - [ ] **Step 3: Add to COMPONENTS**
 
-At `src/App.jsx:104` (after `DreamAddressBook,`), add:
+Inside the `COMPONENTS` object, after `DreamAddressBook,` (line 103) and before the closing `};` (line 104), add:
 ```js
   Settings,
 ```
 
-- [ ] **Step 4: Add SettingsProvider import**
+- [ ] **Step 4: Wrap App return in SettingsProvider**
 
-At the top of `src/App.jsx`, add:
-```js
-import { SettingsProvider } from './SettingsContext';
-```
-
-- [ ] **Step 5: Wrap App return in SettingsProvider**
-
-Change the `return` in the `App` function (line 195) from:
+The entire `App` function return must be wrapped in `<SettingsProvider>`. Change the return (currently at line 195) from:
 ```jsx
   return (
     <div style={styles.root}>
+      ...
+    </div>
+  );
 ```
 to:
 ```jsx
   return (
     <SettingsProvider>
     <div style={styles.root}>
+      ...
+    </div>
+    </SettingsProvider>
+  );
 ```
 
-And at the very end of the App return (before the final `);`), add the closing `</SettingsProvider>` tag after `</div>`.
+The `</SettingsProvider>` goes **after** the root `</div>` and **before** the closing `);` of the return statement.
 
-- [ ] **Step 6: Update footer tool count**
+- [ ] **Step 5: Update footer tool count**
 
-At line 245, change:
+Find the sidebar footer (line 245):
 ```
 v{__APP_VERSION__} — 22 tools
 ```
-to:
+Change to:
 ```
 v{__APP_VERSION__} — 23 tools
 ```
 
-- [ ] **Step 7: Verify build**
+- [ ] **Step 6: Verify build**
 
 Run: `npm run build`
 Expected: Clean build with no errors.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add src/App.jsx
@@ -1044,7 +1043,7 @@ const [alertMsg, setAlertMsg] = useState(null);
 
 - [ ] **Step 2: Replace the `window.confirm` in `deleteEntry`**
 
-At line 59-63, replace:
+At lines 59-63, **completely replace the entire function body**. The old `window.confirm` guard and `saveData` call must be removed entirely. Replace:
 ```js
 const deleteEntry = (id) => {
   if (window.confirm('Delete this dream address entry?')) {
@@ -1052,7 +1051,7 @@ const deleteEntry = (id) => {
   }
 };
 ```
-with:
+with these two functions (deleteEntry now only sets state; confirmDelete does the actual deletion):
 ```js
 const deleteEntry = (id) => {
   setDeleteTarget(id);
@@ -1068,7 +1067,14 @@ const confirmDelete = () => {
 
 - [ ] **Step 3: Replace the 4 `alert()` calls in `handleSubmit`**
 
-At lines 600-616, replace the 4 alert calls in `handleSubmit` with `setAlertMsg(...)`:
+`handleSubmit` lives inside the `AddEntryForm` sub-component (defined around line 570). Since it's a child component, **declare `alertMsg`/`setAlertMsg` state and render `AlertModal` inside `AddEntryForm` itself** — this is self-contained and requires no prop threading.
+
+Add state inside `AddEntryForm`:
+```js
+const [alertMsg, setAlertMsg] = useState(null);
+```
+
+At lines 600-616, replace each `alert(...)` call with `setAlertMsg(...)`:
 ```js
 const handleSubmit = () => {
   if (!formData.islandName.trim()) {
@@ -1092,11 +1098,19 @@ const handleSubmit = () => {
 };
 ```
 
-**Note:** `handleSubmit` is inside a sub-component (`AddEntryForm`). The `alertMsg` state and `AlertModal` must be accessible from there. The simplest approach: lift `alertMsg`/`setAlertMsg` to the parent component and pass `setAlertMsg` as a prop to `AddEntryForm`, or declare the `AlertModal` at the parent level. Check the component structure and choose the approach that requires fewer changes. If `handleSubmit` is in the parent component, keep `alertMsg` there. If it's in a child, pass `setAlertMsg` down.
+Add `AlertModal` import at the top of the file, and add `AlertModal` JSX at the end of `AddEntryForm`'s return:
+```jsx
+<AlertModal
+  open={alertMsg !== null}
+  title="Missing Info"
+  message={alertMsg || ''}
+  onClose={() => setAlertMsg(null)}
+/>
+```
 
-- [ ] **Step 4: Add ConfirmModal and AlertModal JSX**
+- [ ] **Step 4: Add ConfirmModal JSX to the parent component**
 
-At the end of the root component's return:
+At the end of the root `DreamAddressBook` component's return (not inside `AddEntryForm`):
 ```jsx
 <ConfirmModal
   open={deleteTarget !== null}
@@ -1107,13 +1121,9 @@ At the end of the root component's return:
   onConfirm={confirmDelete}
   onCancel={() => setDeleteTarget(null)}
 />
-<AlertModal
-  open={alertMsg !== null}
-  title="Missing Info"
-  message={alertMsg || ''}
-  onClose={() => setAlertMsg(null)}
-/>
 ```
+
+Note: The `AlertModal` for form validation is rendered inside `AddEntryForm` (see Step 3), not at the parent level.
 
 - [ ] **Step 5: Verify no `alert(` or `window.confirm` remain**
 
@@ -1230,7 +1240,7 @@ git commit -m "feat(modals): replace alert() in NooksCrannyLog and TurnipTracker
 
 - [ ] **Step 1: Verify zero dialog calls remain**
 
-Run: `grep -rn 'window\.confirm\|window\.alert\|[^.]alert(' src/artifacts/ src/App.jsx`
+Run: `grep -rn 'window\.confirm\|window\.alert\|\balert(' src/artifacts/ src/App.jsx`
 Expected: No matches (zero remaining browser dialogs).
 
 - [ ] **Step 2: Verify build**
