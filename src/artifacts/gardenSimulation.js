@@ -145,6 +145,7 @@ export function simulateDay(grid, options = {}) {
     if (!cell) continue; // cell may have been filled this iteration
 
     const cellKey = `${row},${col}`;
+    if (pairedThisDay.has(cellKey)) continue;
 
     // Find same-species neighbors that haven't been paired yet
     const neighborOffsets = [
@@ -168,8 +169,6 @@ export function simulateDay(grid, options = {}) {
         eligibleNeighbors.push({ row: nr, col: nc });
       }
     }
-
-    if (pairedThisDay.has(cellKey)) continue;
 
     if (eligibleNeighbors.length > 0) {
       // Pick a random eligible neighbor
@@ -253,9 +252,11 @@ export function simulateDay(grid, options = {}) {
         });
       }
     } else {
-      // Isolated flower — try to clone
-      const isIsolated = canClone(newGrid, row, col);
-      if (isIsolated) {
+      // No eligible partner this day — clone if truly isolated (no unpaired same-species neighbor).
+      // We already know eligibleNeighbors is empty, meaning all same-species neighbors are paired
+      // or there are none. In ACNH, only truly isolated flowers clone, so we still check canClone
+      // to respect the game mechanic: if a same-species neighbor exists (even paired), no clone.
+      if (canClone(newGrid, row, col)) {
         const pairKey = makePairKey(row, col, row, col);
 
         let chance = baseRate;

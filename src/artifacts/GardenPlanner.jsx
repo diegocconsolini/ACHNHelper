@@ -369,7 +369,7 @@ export default function GardenPlanner() {
 
   if (selectedCell && selectedCellData) {
     const { row: sr, col: sc } = selectedCell;
-    const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+    const dirs = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
     dirs.forEach(([dr, dc]) => {
       const nr = sr + dr;
       const nc = sc + dc;
