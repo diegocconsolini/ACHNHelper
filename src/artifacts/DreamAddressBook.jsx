@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ConfirmModal from '../ConfirmModal';
+import AlertModal from '../AlertModal';
 
 const THEME_TAGS = ['Cottagecore', 'Japanese', 'Urban', 'Fairytale', 'Spooky', 'Natural', 'Modern', 'Tropical', 'Medieval', 'Space', 'Farm', 'Cluttercore', 'Minimalist', 'Custom'];
 
@@ -11,6 +13,7 @@ const DreamAddressBook = () => {
   const [filterTag, setFilterTag] = useState('');
   const [sortBy, setSortBy] = useState('date');
   const [message, setMessage] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const EXAMPLE_DATA = [
     { id: '1', islandName: 'Jambette Isle', dreamAddress: 'DA-1234-5678-9012', ownerName: 'Example', rating: 5, tags: ['Cottagecore'], notes: 'Beautiful pastoral island with charming buildings', dateVisited: new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0], mustRevisit: true },
@@ -57,8 +60,13 @@ const DreamAddressBook = () => {
   };
 
   const deleteEntry = (id) => {
-    if (window.confirm('Delete this dream address entry?')) {
-      saveData(entries.filter(e => e.id !== id));
+    setDeleteTarget(id);
+  };
+
+  const confirmDelete = () => {
+    if (deleteTarget !== null) {
+      saveData(entries.filter(e => e.id !== deleteTarget));
+      setDeleteTarget(null);
     }
   };
 
@@ -408,6 +416,16 @@ const DreamAddressBook = () => {
         ))}
       </div>
 
+      <ConfirmModal
+        open={deleteTarget !== null}
+        title="Delete dream address?"
+        message="This entry will be permanently removed."
+        confirmLabel="Delete"
+        destructive
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
+
       <div style={styles.panel}>
         {activeTab === 'book' && (
           <div>
@@ -576,6 +594,7 @@ const AddEntryForm = ({ onSubmit, styles }) => {
     tags: [],
     notes: ''
   });
+  const [alertMsg, setAlertMsg] = useState(null);
 
   const handleDreamAddressChange = (e) => {
     let value = e.target.value.toUpperCase().replace(/[^0-9A-Z\-]/g, '');
@@ -599,19 +618,19 @@ const AddEntryForm = ({ onSubmit, styles }) => {
 
   const handleSubmit = () => {
     if (!formData.islandName.trim()) {
-      alert('Please enter island name');
+      setAlertMsg('Please enter island name');
       return;
     }
     if (!validateDreamAddress(formData.dreamAddress)) {
-      alert('Dream Address must be in format: DA-XXXX-XXXX-XXXX');
+      setAlertMsg('Dream Address must be in format: DA-XXXX-XXXX-XXXX');
       return;
     }
     if (!formData.ownerName.trim()) {
-      alert('Please enter owner name');
+      setAlertMsg('Please enter owner name');
       return;
     }
     if (formData.tags.length === 0) {
-      alert('Please select at least one theme');
+      setAlertMsg('Please select at least one theme');
       return;
     }
     onSubmit(formData);
@@ -698,6 +717,13 @@ const AddEntryForm = ({ onSubmit, styles }) => {
       <button style={styles.button} onClick={handleSubmit}>
         💾 Save Dream Address
       </button>
+
+      <AlertModal
+        open={alertMsg !== null}
+        title="Missing Info"
+        message={alertMsg || ''}
+        onClose={() => setAlertMsg(null)}
+      />
     </div>
   );
 };
