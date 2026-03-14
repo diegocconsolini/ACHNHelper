@@ -8,109 +8,95 @@
 
 ## Problem
 
-The FlowerCalculator has mostly correct data but needs verification against datamined sources. The verified data file (`ACNH-Helper-Suite/data/flowers.js`) has errors: fabricated Pink Pansy, wrong Hyacinth data (missing Yellow seed, missing Orange color, "Light Blue" instead of "Blue"). Component genotypes need cross-checking against the Aeon/Paleh datamined spreadsheet.
+The FlowerCalculator (834 lines) has all flower data inlined. A verified data module `src/artifacts/gardenData.js` (238 lines) already exists with corrected data — used by GardenPlanner. The FlowerCalculator should import from `gardenData.js` instead of duplicating data. Some genotypes still need verification against datamined sources.
 
 ## Solution
 
-Fix confirmed errors, verify all genotypes against datamined sources, extract data to a separate module. No UI changes.
+Refactor FlowerCalculator to import from the existing `gardenData.js`. Verify genotypes against the Aeon/Paleh datamined spreadsheet. Adapt field names where needed (gardenData uses `color`, component uses `name`). No new data files. No UI changes.
 
 ---
 
-## Section 1: Data Fixes
+## Section 1: Data Source
 
-### Fix `ACNH-Helper-Suite/data/flowers.js`
-1. **Remove Pink Pansy** — does not exist in ACNH. Remove the entry and any breeding paths referencing it.
-2. **Fix Hyacinth:**
-   - Add Yellow as a seed color (buyable from Leif/Nook's Cranny)
-   - Add Orange Hyacinth color entry with correct genotype
-   - Rename "Light Blue" → "Blue" (the in-game name is Blue Hyacinth)
-   - Fix seed color list: should be Red, White, Yellow (not Red, White, Blue)
+### Existing `gardenData.js` (already verified)
+Located at `src/artifacts/gardenData.js`, this module already exports:
+- `SPECIES` — 8 species with colors, genotypes, hex values, seed info, asset flags
+- `BREEDING_PATHS` — per-species parent combinations with offspring probabilities (float 0-1)
+- `SEED_GENOTYPES` — derived lookup: species → seed color → genotype
+- `COLOR_HEX` — flat lookup: color name → hex value
 
-### Verify component genotypes
-Cross-reference all 55 color genotypes across 8 species against the Aeon/Paleh datamined ACNH flower genetics spreadsheet:
-- **Roses** (10 colors, 4-gene RR-YY-WW-ss system)
-- **Tulips** (7 colors, 3-gene RR-YY-ss system)
-- **Pansies** (6 colors, 3-gene RR-YY-WW system) — no Pink
-- **Cosmos** (6 colors, 3-gene RR-YY-ss system)
-- **Lilies** (6 colors, 3-gene RR-YY-ss system)
-- **Hyacinths** (7 colors, 3-gene RR-YY-WW system) — includes Orange
-- **Windflowers** (6 colors, 3-gene RR-OO-WW system) — no Yellow
-- **Mums** (6 colors, 3-gene RR-YY-WW system)
+**Already-applied fixes in gardenData.js:**
+- No Pink Pansy (correctly removed)
+- No Yellow Windflower (correctly omitted)
+- Hyacinth has Yellow seed, Orange color, Blue (not "Light Blue")
+- Orange Windflower correctly marked as seed color
+- Gold Rose marked as `source: 'special'` with note about golden watering can
+- Green Rose marked as `hasAsset: false`
 
-Fix any genotypes that don't match the datamined values.
+### What gardenData.js does NOT have
+- `BLUE_ROSE_PATH` — the 4-step breeding guide (currently only in FlowerCalculator.jsx)
+- `GOLD_ROSE_INFO` — gold rose mechanic details (currently only in FlowerCalculator.jsx)
 
-### Verify breeding paths
-For each species, verify that the listed breeding combinations (parent1 + parent2 → offspring with probabilities) are correct per Punnett square math with the corrected genotypes.
+These two should be added to `gardenData.js` as new exports.
 
 ---
 
-## Section 2: File Structure
-
-### Extract data to `flowerCalculatorData.js`
-
-```
-src/artifacts/
-├── FlowerCalculator.jsx        ← UI only (~400 lines)
-└── flowerCalculatorData.js     ← All verified genetics data (~400 lines)
-```
-
-### flowerCalculatorData.js exports
-
-```js
-export const FLOWERS = { ... };          // 8 species with colors, genotypes, seed info
-export const BREEDING_PATHS = { ... };   // Per-species breeding combinations
-export const BLUE_ROSE_PATH = [ ... ];   // 4-step blue rose breeding guide
-export const GOLD_ROSE_INFO = { ... };   // Gold rose special mechanic
-```
-
-**Data structure** — keyed object matching current format:
-```js
-export const FLOWERS = {
-  rose: {
-    name: 'Rose',
-    genes: ['R', 'Y', 'W', 'S'],  // 4-gene system
-    seedColors: ['Red', 'White', 'Yellow'],
-    colors: [
-      { name: 'Red', genotype: 'RR-yy-WW-ss', source: 'seed', hasAsset: true },
-      // ... all colors with verified genotypes
-    ]
-  },
-  // ... 7 more species
-};
-```
+## Section 2: Refactoring Plan
 
 ### FlowerCalculator.jsx changes
-- Add import: `import { FLOWERS, BREEDING_PATHS, BLUE_ROSE_PATH, GOLD_ROSE_INFO } from './flowerCalculatorData';`
-- Delete inline data definitions
-- Keep all UI code, styles, state management, rendering
-- No functional changes to the calculator behavior
+
+1. **Add imports from gardenData.js:**
+```js
+import { SPECIES, BREEDING_PATHS } from './gardenData';
+```
+
+2. **Adapt field names** — gardenData uses `color` field, FlowerCalculator uses `name`:
+   - Add a small adapter at the top of the component that maps `SPECIES` to the format the UI expects
+   - Or update the rendering code to use `color` instead of `name` (simpler, fewer moving parts)
+
+3. **Move Blue Rose path and Gold Rose info to gardenData.js:**
+   - Extract `BLUE_ROSE_PATH` array (4-step method) from FlowerCalculator
+   - Extract `GOLD_ROSE_INFO` object from FlowerCalculator
+   - Add as exports in gardenData.js
+   - Import in FlowerCalculator
+
+4. **Delete inline data** — remove the `FLOWERS`, breeding paths, and related data from FlowerCalculator.jsx
+
+5. **Convert probability format** — gardenData uses float 0-1, FlowerCalculator UI displays as integer 0-100. Apply `Math.round(prob * 100)` at render time.
+
+### gardenData.js additions
+- `export const BLUE_ROSE_PATH = [...]` — 4-step breeding guide
+- `export const GOLD_ROSE_INFO = {...}` — gold rose mechanic
 
 ---
 
-## Section 3: What stays the same
+## Section 3: Genotype Verification
 
-- **Blue Rose path**: 4-step method with 1/64 (1.56%) probability — already verified correct
-- **Gold Rose mechanic**: Golden watering can on black roses — already correct
-- **UI**: 4 tabs (Calculator, Gallery, Blue Rose, Gold Rose) — unchanged
-- **Storage**: same key, same format
-- **Asset integration**: `<AssetImg>` with flower names — unchanged
-- **Green Rose**: correctly marked as `hasAsset: false`
+### Verify against datamined sources
+Use web search to find the Aeon/Paleh ACNH flower genetics spreadsheet. Cross-check:
+- All 54 color genotypes (10 rose + 7 tulip + 6 pansy + 6 cosmos + 6 lily + 7 hyacinth + 6 windflower + 6 mum)
+- Breeding path outcomes and probabilities
+- Seed color assignments
+
+### Known issues to investigate
+- Several species share identical genotypes for different colors (e.g., Pansy Blue and Purple both `rr-yy-ww`). This is how ACNH actually works — multiple genotype combinations can produce the same phenotype, and the data file shows simplified "representative" genotypes. Verify this is correct.
+- Hyacinth seed colors: gardenData lists Red, White, Yellow, Blue. Per Nookipedia, Blue Hyacinth seeds are NOT sold — Blue is bred from White + White. Investigate and fix if needed.
 
 ---
 
 ## Section 4: What Changes
 
-### New files
-- `src/artifacts/flowerCalculatorData.js` — verified genetics data
-
 ### Modified files
-- `src/artifacts/FlowerCalculator.jsx` — refactored to import from data module
-- `ACNH-Helper-Suite/data/flowers.js` — fix Pink Pansy and Hyacinth errors
+- `src/artifacts/FlowerCalculator.jsx` — import from gardenData.js, remove inline data (~834 → ~450 lines)
+- `src/artifacts/gardenData.js` — add BLUE_ROSE_PATH and GOLD_ROSE_INFO exports
+
+### No new files
+(gardenData.js already exists — no new data module needed)
 
 ### No changes to
 - `src/App.jsx` — same lazy import, same menu entry
+- `src/artifacts/GardenPlanner.jsx` — already imports from gardenData.js, unaffected
 - `src/assetHelper.jsx` — no changes
-- `public/assets-web/manifest.json` — no changes
 
 ### Version bump
-- `package.json`: bump to `1.5.0` (genetics data verification + module extraction)
+- `package.json`: bump to `1.4.2` (data fix, patch version per project rules)
