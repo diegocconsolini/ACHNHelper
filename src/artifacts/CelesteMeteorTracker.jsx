@@ -36,7 +36,7 @@ const CelesteMeteorTracker = () => {
 
   const WANDS = [
     'Star Wand', 'Cosmos Wand', 'Rose Wand', 'Lily Wand', 'Hyacinth Wand', 'Windflower Wand',
-    'Tulip Wand', 'Pansy Wand', 'Mum Wand', 'Bamboo Wand', 'Iron Wand', 'Golden Wand', 'Tree-Branch Wand'
+    'Tulip Wand', 'Pansy Wand', 'Mums Wand', 'Bamboo Wand', 'Iron Wand', 'Golden Wand', 'Tree-Branch Wand'
   ];
 
   const getCurrentZodiac = () => {
