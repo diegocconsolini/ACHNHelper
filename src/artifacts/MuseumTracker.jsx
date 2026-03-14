@@ -81,9 +81,9 @@ const MuseumTracker = () => {
     { id: 34, name: 'Parasaur Skull', species: 'Parasaurolophus', part: 'Skull', sellPrice: 3500 },
     { id: 35, name: 'Parasaur Torso', species: 'Parasaurolophus', part: 'Torso', sellPrice: 3000 },
     { id: 36, name: 'Parasaur Tail', species: 'Parasaurolophus', part: 'Tail', sellPrice: 2500 },
-    // Plesiosaur (3 parts)
+    // Plesiosaur (3 parts) — "Plesio Body" renamed to "Plesio Torso" in v1.3.0
     { id: 37, name: 'Plesio Skull', species: 'Plesiosaur', part: 'Skull', sellPrice: 4000 },
-    { id: 38, name: 'Plesio Body', species: 'Plesiosaur', part: 'Body', sellPrice: 4500 },
+    { id: 38, name: 'Plesio Torso', species: 'Plesiosaur', part: 'Torso', sellPrice: 4500 },
     { id: 39, name: 'Plesio Tail', species: 'Plesiosaur', part: 'Tail', sellPrice: 4000 },
     // Pteranodon (3 parts)
     { id: 40, name: 'Ptera Body', species: 'Pteranodon', part: 'Body', sellPrice: 4000 },
