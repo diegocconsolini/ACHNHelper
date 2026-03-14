@@ -395,13 +395,13 @@ export const DIY_CATEGORIES = {
     ]
   },
 
-  // ── 27. Cooking - Savory (84) — verified against Nookipedia ──
+  // ── 27. Cooking - Savory (86) — verified against Nookipedia ──
   'Cooking - Savory': {
     emoji: '\u{1F372}',
     isCooking: true,
     recipes: [
       'aji fry', 'anchoas al ajillo', 'apple jam',
-      'baked potatoes', 'bamboo-shoot soup', 'barred-knifejaw carpaccio',
+      'baked potatoes', 'bamboo-shoot soup', 'barred-knifejaw carpaccio', 'brown sugar',
       'bread', 'bread gratin',
       'carpaccio di capesante', 'carpaccio di marlin blu', 'carpaccio di salmone',
       'carrot bagel sandwich', 'carrot potage', 'carrot-tops curry',
@@ -439,7 +439,7 @@ export const DIY_CATEGORIES = {
     isCooking: true,
     recipes: [
       'apple jelly', 'apple pie', 'apple smoothie', 'apple tart',
-      'brown sugar', 'brown-sugar cupcakes', 'brown-sugar pound cake',
+      'brown-sugar cupcakes', 'brown-sugar pound cake',
       'cake sal\u00e9', 'carrot cake', 'carrot juice', 'carrot scones',
       'cherry jelly', 'cherry pie', 'cherry smoothie', 'cherry tart',
       'coconut cookies', 'coconut milk', 'coconut pancakes', 'coconut pudding',
