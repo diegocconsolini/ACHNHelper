@@ -433,7 +433,7 @@ export const DIY_CATEGORIES = {
     ]
   },
 
-  // ── 28. Cooking - Sweet (55) — verified against Nookipedia ──
+  // ── 28. Cooking - Sweet (55) — verified against Nookipedia; spooky cookies here, NOT in Spooky ──
   'Cooking - Sweet': {
     emoji: '\u{1F370}',
     isCooking: true,
