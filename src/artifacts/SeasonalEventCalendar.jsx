@@ -76,12 +76,11 @@ const SeasonalEventCalendar = () => {
       { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
     ],
     july: [
-      { name: 'Tanabata Festival', emoji: '⭐', dateRange: 'Jul 7', type: 'festival' },
+      { name: 'Tanabata Festival', emoji: '⭐', dateRange: 'Jul 1-7', type: 'festival' },
       { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
       { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
     ],
     august: [
-      { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
       { name: 'Fireworks Show', emoji: '🎆', dateRange: 'Every Sunday', type: 'celebration' },
       { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
     ],
@@ -134,8 +133,8 @@ const SeasonalEventCalendar = () => {
     { name: 'C.J.', emoji: '🐟', assetName: null, offers: 'Fish models', frequency: 'Random weekly' },
     { name: 'Gulliver', emoji: '⚓', assetName: 'Gulliver', offers: 'Souvenirs', frequency: 'Random weekly' },
     { name: 'Gullivarrr', emoji: '🏴‍☠️', assetName: null, offers: 'Pirate items', frequency: 'Random weekly' },
-    { name: 'Wisp', emoji: '👻', assetName: null, offers: 'Spooky items', frequency: 'Random' },
-    { name: 'Celeste', emoji: '🔭', assetName: 'Celeste', offers: 'Star fragments', frequency: 'New moon nights' },
+    { name: 'Wisp', emoji: '👻', assetName: null, offers: 'Furniture & clothing', frequency: 'Random nights (8 PM - 5 AM)' },
+    { name: 'Celeste', emoji: '🔭', assetName: 'Celeste', offers: 'DIY recipes (star, zodiac, wand)', frequency: 'Random meteor shower nights' },
     { name: 'K.K. Slider', emoji: '🎸', assetName: 'K.K.', offers: 'Music', frequency: 'Saturdays' },
   ];
 
