@@ -1,6 +1,13 @@
 // gardenData.js — Flower Species Database for ACNH Garden Planner
 // Data sourced from FlowerCalculator.jsx (originally from ACNH-Helper-Suite/data/flowers.js)
-// All genotypes and breeding paths verified against Nookipedia
+// All genotypes verified against datamined sources:
+//   - Satogu/Aeon flower genotype tables (aiterusawato.github.io/satogu/acnh/flowers/)
+//   - Joey's ACNH Flower Guide (joeyparrish.github.io/acnh-flowers/)
+//   - Paleh's ACNH Advanced Flower Genetics document
+//
+// Genotype notation: RR=homozygous dominant(2), Rr=heterozygous(1), rr=recessive(0)
+// Roses use 4 genes (R-Y-W-S), all others use 3 genes (R-Y-W)
+// Each color entry shows ONE representative genotype (many colors have multiple valid genotypes)
 
 // ─── SPECIES ─────────────────────────────────────────────────────────────────
 // All 8 flower species with colors, genotypes, sources, hex values, asset flags.
@@ -9,10 +16,10 @@
 //   - Rose: 4-gene system (geneCount: 4), all others are 3-gene
 //   - No Pink Pansy — does not exist in game
 //   - No Yellow Windflower — does not exist in game
+//   - No Green Rose — does not exist in game
 //   - Blue Hyacinth is source: 'hybrid' (bred from White × White)
 //   - Orange Windflower is source: 'seed', not hybrid
 //   - Gold Rose: source: 'special', requires golden watering can on black rose
-//   - Green Rose: hasAsset: false
 
 export const SPECIES = {
   rose: {
@@ -21,17 +28,16 @@ export const SPECIES = {
     geneCount: 4,
     seedColors: ['Red', 'White', 'Yellow'],
     colors: [
-      { color: 'Red',    genes: 'RR-yy-WW-ss', source: 'seed',    hex: '#d63031', hasAsset: true },
-      { color: 'White',  genes: 'rr-yy-WW-Ss', source: 'seed',    hex: '#f8f9fa', hasAsset: true },
-      { color: 'Yellow', genes: 'rr-YY-WW-ss', source: 'seed',    hex: '#fdcb6e', hasAsset: true },
-      { color: 'Pink',   genes: 'Rr-yy-WW-Ss', source: 'hybrid',  hex: '#fd79a8', hasAsset: true },
-      { color: 'Purple', genes: 'rr-yy-ww-Ss', source: 'hybrid',  hex: '#a29bfe', hasAsset: true },
-      { color: 'Orange', genes: 'RR-Yy-WW-ss', source: 'hybrid',  hex: '#e17055', hasAsset: true },
+      { color: 'Red',    genes: 'RR-yy-ww-Ss', source: 'seed',    hex: '#d63031', hasAsset: true },
+      { color: 'White',  genes: 'rr-yy-Ww-ss', source: 'seed',    hex: '#f8f9fa', hasAsset: true },
+      { color: 'Yellow', genes: 'rr-YY-ww-ss', source: 'seed',    hex: '#fdcb6e', hasAsset: true },
+      { color: 'Pink',   genes: 'Rr-yy-ww-Ss', source: 'hybrid',  hex: '#fd79a8', hasAsset: true },
+      { color: 'Purple', genes: 'rr-yy-WW-ss', source: 'hybrid',  hex: '#a29bfe', hasAsset: true },
+      { color: 'Orange', genes: 'Rr-Yy-ww-ss', source: 'hybrid',  hex: '#e17055', hasAsset: true },
       { color: 'Black',  genes: 'RR-yy-ww-ss', source: 'hybrid',  hex: '#2d3436', hasAsset: true },
-      { color: 'Blue',   genes: 'RR-YY-ww-ss', source: 'hybrid',  hex: '#4aacf0', hasAsset: true },
-      { color: 'Gold',   genes: 'RR-YY-ww-ss', source: 'special', hex: '#d4b030', hasAsset: true,
+      { color: 'Blue',   genes: 'RR-YY-WW-ss', source: 'hybrid',  hex: '#4aacf0', hasAsset: true },
+      { color: 'Gold',   genes: 'RR-YY-WW-ss', source: 'special', hex: '#d4b030', hasAsset: true,
         note: 'Water Black roses with Golden Watering Can' },
-      { color: 'Green',  genes: 'rr-YY-ww-ss', source: 'hybrid',  hex: '#5ec850', hasAsset: false },
     ],
   },
   tulip: {
@@ -40,13 +46,13 @@ export const SPECIES = {
     geneCount: 3,
     seedColors: ['Red', 'White', 'Yellow'],
     colors: [
-      { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#e74c3c', hasAsset: true },
-      { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#ecf0f1', hasAsset: true },
-      { color: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#f1c40f', hasAsset: true },
-      { color: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#f48fb1', hasAsset: true },
-      { color: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#9b59b6', hasAsset: true },
-      { color: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#e67e22', hasAsset: true },
-      { color: 'Black',  genes: 'rr-yy-ww', source: 'hybrid', hex: '#34495e', hasAsset: true },
+      { color: 'Red',    genes: 'RR-yy-Ww', source: 'seed',   hex: '#e74c3c', hasAsset: true },
+      { color: 'White',  genes: 'rr-yy-Ww', source: 'seed',   hex: '#ecf0f1', hasAsset: true },
+      { color: 'Yellow', genes: 'rr-YY-ww', source: 'seed',   hex: '#f1c40f', hasAsset: true },
+      { color: 'Pink',   genes: 'Rr-yy-Ww', source: 'hybrid', hex: '#f48fb1', hasAsset: true },
+      { color: 'Purple', genes: 'RR-YY-ww', source: 'hybrid', hex: '#9b59b6', hasAsset: true },
+      { color: 'Orange', genes: 'Rr-Yy-ww', source: 'hybrid', hex: '#e67e22', hasAsset: true },
+      { color: 'Black',  genes: 'RR-yy-ww', source: 'hybrid', hex: '#34495e', hasAsset: true },
     ],
   },
   pansy: {
@@ -57,11 +63,11 @@ export const SPECIES = {
     seedColors: ['Red', 'White', 'Yellow'],
     colors: [
       { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#c0392b', hasAsset: true },
-      { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f5f6fa', hasAsset: true },
-      { color: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#f9ca24', hasAsset: true },
-      { color: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#ff7f50', hasAsset: true },
-      { color: 'Blue',   genes: 'rr-yy-ww', source: 'hybrid', hex: '#0984e3', hasAsset: true },
-      { color: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#6c5ce7', hasAsset: true },
+      { color: 'White',  genes: 'rr-yy-Ww', source: 'seed',   hex: '#f5f6fa', hasAsset: true },
+      { color: 'Yellow', genes: 'rr-YY-ww', source: 'seed',   hex: '#f9ca24', hasAsset: true },
+      { color: 'Orange', genes: 'Rr-Yy-ww', source: 'hybrid', hex: '#ff7f50', hasAsset: true },
+      { color: 'Blue',   genes: 'rr-yy-WW', source: 'hybrid', hex: '#0984e3', hasAsset: true },
+      { color: 'Purple', genes: 'RR-yy-WW', source: 'hybrid', hex: '#6c5ce7', hasAsset: true },
     ],
   },
   cosmos: {
@@ -71,11 +77,11 @@ export const SPECIES = {
     seedColors: ['Red', 'White', 'Yellow'],
     colors: [
       { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#e63946', hasAsset: true },
-      { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f0f0f0', hasAsset: true },
-      { color: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffd60a', hasAsset: true },
-      { color: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ff69b4', hasAsset: true },
-      { color: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#f77f00', hasAsset: true },
-      { color: 'Black',  genes: 'rr-yy-ww', source: 'hybrid', hex: '#1a1a2e', hasAsset: true },
+      { color: 'White',  genes: 'rr-yy-Ww', source: 'seed',   hex: '#f0f0f0', hasAsset: true },
+      { color: 'Yellow', genes: 'rr-YY-Ww', source: 'seed',   hex: '#ffd60a', hasAsset: true },
+      { color: 'Pink',   genes: 'Rr-yy-ww', source: 'hybrid', hex: '#ff69b4', hasAsset: true },
+      { color: 'Orange', genes: 'Rr-Yy-ww', source: 'hybrid', hex: '#f77f00', hasAsset: true },
+      { color: 'Black',  genes: 'RR-YY-ww', source: 'hybrid', hex: '#1a1a2e', hasAsset: true },
     ],
   },
   lily: {
@@ -84,12 +90,12 @@ export const SPECIES = {
     geneCount: 3,
     seedColors: ['Red', 'White', 'Yellow'],
     colors: [
-      { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#dc143c', hasAsset: true },
+      { color: 'Red',    genes: 'RR-yy-Ww', source: 'seed',   hex: '#dc143c', hasAsset: true },
       { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#fffaf0', hasAsset: true },
-      { color: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffeb3b', hasAsset: true },
-      { color: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ff1493', hasAsset: true },
-      { color: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#ff6347', hasAsset: true },
-      { color: 'Black',  genes: 'rr-yy-ww', source: 'hybrid', hex: '#1c1c1c', hasAsset: true },
+      { color: 'Yellow', genes: 'rr-YY-ww', source: 'seed',   hex: '#ffeb3b', hasAsset: true },
+      { color: 'Pink',   genes: 'Rr-yy-Ww', source: 'hybrid', hex: '#ff1493', hasAsset: true },
+      { color: 'Orange', genes: 'Rr-Yy-ww', source: 'hybrid', hex: '#ff6347', hasAsset: true },
+      { color: 'Black',  genes: 'RR-yy-ww', source: 'hybrid', hex: '#1c1c1c', hasAsset: true },
     ],
   },
   hyacinth: {
@@ -99,13 +105,13 @@ export const SPECIES = {
     // Seed colors: Red, White, Yellow — Blue is bred from White × White
     seedColors: ['Red', 'White', 'Yellow'],
     colors: [
-      { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#ff0000', hasAsset: true },
-      { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#ffffff', hasAsset: true },
-      { color: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffff00', hasAsset: true },
-      { color: 'Blue',   genes: 'rr-yy-ww', source: 'hybrid', hex: '#1e90ff', hasAsset: true },
-      { color: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ffc0cb', hasAsset: true },
-      { color: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#ff8c00', hasAsset: true },
-      { color: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#800080', hasAsset: true },
+      { color: 'Red',    genes: 'RR-yy-Ww', source: 'seed',   hex: '#ff0000', hasAsset: true },
+      { color: 'White',  genes: 'rr-yy-Ww', source: 'seed',   hex: '#ffffff', hasAsset: true },
+      { color: 'Yellow', genes: 'rr-YY-ww', source: 'seed',   hex: '#ffff00', hasAsset: true },
+      { color: 'Blue',   genes: 'rr-yy-WW', source: 'hybrid', hex: '#1e90ff', hasAsset: true },
+      { color: 'Pink',   genes: 'Rr-yy-Ww', source: 'hybrid', hex: '#ffc0cb', hasAsset: true },
+      { color: 'Orange', genes: 'Rr-Yy-ww', source: 'hybrid', hex: '#ff8c00', hasAsset: true },
+      { color: 'Purple', genes: 'RR-YY-ww', source: 'hybrid', hex: '#800080', hasAsset: true },
     ],
   },
   windflower: {
@@ -116,12 +122,12 @@ export const SPECIES = {
     seedColors: ['Red', 'White', 'Orange'],
     colors: [
       { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#b22222', hasAsset: true },
-      { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f5f5f5', hasAsset: true },
+      { color: 'White',  genes: 'rr-yy-Ww', source: 'seed',   hex: '#f5f5f5', hasAsset: true },
       // Orange is a SEED color for Windflower (not hybrid)
-      { color: 'Orange', genes: 'RR-Yy-ww', source: 'seed',   hex: '#ff8c00', hasAsset: true },
-      { color: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#dda0dd', hasAsset: true },
-      { color: 'Blue',   genes: 'rr-yy-ww', source: 'hybrid', hex: '#4169e1', hasAsset: true },
-      { color: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#dda0dd', hasAsset: true },
+      { color: 'Orange', genes: 'rr-YY-ww', source: 'seed',   hex: '#ff8c00', hasAsset: true },
+      { color: 'Pink',   genes: 'Rr-Yy-ww', source: 'hybrid', hex: '#dda0dd', hasAsset: true },
+      { color: 'Blue',   genes: 'rr-yy-WW', source: 'hybrid', hex: '#4169e1', hasAsset: true },
+      { color: 'Purple', genes: 'RR-yy-WW', source: 'hybrid', hex: '#dda0dd', hasAsset: true },
     ],
   },
   mum: {
@@ -131,11 +137,11 @@ export const SPECIES = {
     seedColors: ['Red', 'White', 'Yellow'],
     colors: [
       { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#8b0000', hasAsset: true },
-      { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f0f8ff', hasAsset: true },
-      { color: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffd700', hasAsset: true },
-      { color: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ff69b4', hasAsset: true },
-      { color: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#ba55d3', hasAsset: true },
-      { color: 'Green',  genes: 'rr-YY-ww', source: 'hybrid', hex: '#32cd32', hasAsset: true },
+      { color: 'White',  genes: 'rr-yy-Ww', source: 'seed',   hex: '#f0f8ff', hasAsset: true },
+      { color: 'Yellow', genes: 'rr-YY-ww', source: 'seed',   hex: '#ffd700', hasAsset: true },
+      { color: 'Pink',   genes: 'Rr-yy-ww', source: 'hybrid', hex: '#ff69b4', hasAsset: true },
+      { color: 'Purple', genes: 'rr-yy-WW', source: 'hybrid', hex: '#ba55d3', hasAsset: true },
+      { color: 'Green',  genes: 'RR-YY-ww', source: 'hybrid', hex: '#32cd32', hasAsset: true },
     ],
   },
 };
@@ -269,5 +275,5 @@ export const GOLD_ROSE_INFO = {
   requirement: 'Golden Watering Can',
   method: 'Water Black Roses with Golden Watering Can',
   note: 'Gold roses can only be obtained by watering black roses with a golden watering can. This is NOT a standard breeding mechanic.',
-  genotype: 'RR-YY-ww-ss'
+  genotype: 'RR-YY-WW-ss'
 };
