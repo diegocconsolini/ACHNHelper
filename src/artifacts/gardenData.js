@@ -9,7 +9,7 @@
 //   - Rose: 4-gene system (geneCount: 4), all others are 3-gene
 //   - No Pink Pansy — does not exist in game
 //   - No Yellow Windflower — does not exist in game
-//   - Blue Hyacinth is source: 'seed', not hybrid
+//   - Blue Hyacinth is source: 'hybrid' (bred from White × White)
 //   - Orange Windflower is source: 'seed', not hybrid
 //   - Gold Rose: source: 'special', requires golden watering can on black rose
 //   - Green Rose: hasAsset: false
@@ -96,13 +96,13 @@ export const SPECIES = {
     name: 'Hyacinth',
     emoji: '💐',
     geneCount: 3,
-    // Blue is also a seed color per Nookipedia
-    seedColors: ['Red', 'White', 'Yellow', 'Blue'],
+    // Seed colors: Red, White, Yellow — Blue is bred from White × White
+    seedColors: ['Red', 'White', 'Yellow'],
     colors: [
       { color: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#ff0000', hasAsset: true },
       { color: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#ffffff', hasAsset: true },
       { color: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffff00', hasAsset: true },
-      { color: 'Blue',   genes: 'rr-yy-ww', source: 'seed',   hex: '#1e90ff', hasAsset: true },
+      { color: 'Blue',   genes: 'rr-yy-ww', source: 'hybrid', hex: '#1e90ff', hasAsset: true },
       { color: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ffc0cb', hasAsset: true },
       { color: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#ff8c00', hasAsset: true },
       { color: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#800080', hasAsset: true },
@@ -235,3 +235,39 @@ export const COLOR_HEX = {};
 Object.values(SPECIES).forEach(sp =>
   sp.colors.forEach(c => { if (!COLOR_HEX[c.color]) COLOR_HEX[c.color] = c.hex; })
 );
+
+// ─── BLUE_ROSE_PATH ─────────────────────────────────────────────────────────
+// 4-step guide for breeding blue roses (1/64 ≈ 1.56% chance)
+
+export const BLUE_ROSE_PATH = [
+  {
+    title: 'Breed Seed Red + Seed Yellow',
+    description: 'Plant seed red and seed yellow roses next to each other. They produce orange roses with special hybrid genes — these are NOT regular orange roses.',
+    note: 'Seed Red × Seed Yellow → Special Orange Hybrids'
+  },
+  {
+    title: 'Breed Special Orange Hybrids Together',
+    description: 'Take two orange hybrid roses from Step 1 and breed them together. This produces a mix of colors including rare hybrid red roses.',
+    note: 'Orange Hybrid × Orange Hybrid → Hybrid Red (rare)'
+  },
+  {
+    title: 'Breed Hybrid Red + Hybrid Red',
+    description: 'Breed two hybrid red roses together. This creates another generation of hybrid reds with more refined gene combinations.',
+    note: 'Hybrid Red × Hybrid Red → Hybrid Red++'
+  },
+  {
+    title: 'Breed Hybrid Red++ for Blue Rose',
+    description: 'Continue breeding hybrid red roses. Blue roses appear at approximately 1/64 chance (~1.56%) per bloom cycle. Keep at it!',
+    note: '~1.56% chance per bloom — estimated 4–6 weeks'
+  }
+];
+
+// ─── GOLD_ROSE_INFO ─────────────────────────────────────────────────────────
+// Gold rose requires golden watering can on black roses — NOT standard breeding
+
+export const GOLD_ROSE_INFO = {
+  requirement: 'Golden Watering Can',
+  method: 'Water Black Roses with Golden Watering Can',
+  note: 'Gold roses can only be obtained by watering black roses with a golden watering can. This is NOT a standard breeding mechanic.',
+  genotype: 'RR-YY-ww-ss'
+};
