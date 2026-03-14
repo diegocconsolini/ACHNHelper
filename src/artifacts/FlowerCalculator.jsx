@@ -1,5 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import { SPECIES, BREEDING_PATHS, BLUE_ROSE_PATH, GOLD_ROSE_INFO } from './gardenData';
+
+// Adapt gardenData format to component format:
+// gardenData: SPECIES[lowercase].colors[].color, probability float 0-1
+// Component: flowerData[TitleCase].colors[].name, chance int 0-100
+const flowerData = Object.fromEntries(
+  Object.entries(SPECIES).map(([key, sp]) => [
+    sp.name,
+    {
+      emoji: sp.emoji,
+      genes: sp.geneCount,
+      seedColors: sp.seedColors,
+      colors: sp.colors.map(c => ({
+        name: c.color,
+        genes: c.genes,
+        source: c.source,
+        hex: c.hex,
+        hasAsset: c.hasAsset,
+        ...(c.note ? { note: c.note } : {}),
+      })),
+    }
+  ])
+);
+
+const breedingPaths = Object.fromEntries(
+  Object.entries(BREEDING_PATHS).map(([key, paths]) => [
+    SPECIES[key].name,
+    paths.map(p => ({
+      p1: p.parents[0],
+      p2: p.parents[1],
+      results: p.offspring.map(o => ({
+        color: o.color,
+        chance: Math.round(o.probability * 100),
+      })),
+    })),
+  ])
+);
 
 const FlowerCalculator = () => {
   const [selectedSpecies, setSelectedSpecies] = useState('Rose');
@@ -23,224 +60,6 @@ const FlowerCalculator = () => {
     };
     loadProgress();
   }, []);
-
-  // All genotypes sourced from ACNH-Helper-Suite/data/flowers.js
-  // Colors verified against manifest.json and Nookipedia
-  const flowerData = {
-    Rose: {
-      emoji: '🌹',
-      genes: 4,
-      seedColors: ['Red', 'White', 'Yellow'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-WW-ss', source: 'seed',   hex: '#d63031', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW-Ss', source: 'seed',   hex: '#f8f9fa', hasAsset: true },
-        { name: 'Yellow', genes: 'rr-YY-WW-ss', source: 'seed',   hex: '#fdcb6e', hasAsset: true },
-        { name: 'Pink',   genes: 'Rr-yy-WW-Ss', source: 'hybrid', hex: '#fd79a8', hasAsset: true },
-        { name: 'Purple', genes: 'rr-yy-ww-Ss', source: 'hybrid', hex: '#a29bfe', hasAsset: true },
-        { name: 'Orange', genes: 'RR-Yy-WW-ss', source: 'hybrid', hex: '#e17055', hasAsset: true },
-        { name: 'Black',  genes: 'RR-yy-ww-ss', source: 'hybrid', hex: '#2d3436', hasAsset: true },
-        { name: 'Blue',   genes: 'RR-YY-ww-ss', source: 'hybrid', hex: '#4aacf0', hasAsset: true },
-        // Gold rose requires golden watering can on black rose — see Gold Rose section
-        { name: 'Gold',   genes: 'RR-YY-ww-ss', source: 'special', hex: '#d4b030', hasAsset: true,
-          note: 'Water Black roses with Golden Watering Can' },
-        // Green rose has no manifest asset
-        { name: 'Green',  genes: 'rr-YY-ww-ss', source: 'hybrid', hex: '#5ec850', hasAsset: false }
-      ]
-    },
-    Tulip: {
-      emoji: '🌷',
-      genes: 3,
-      seedColors: ['Red', 'White', 'Yellow'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#e74c3c', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#ecf0f1', hasAsset: true },
-        { name: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#f1c40f', hasAsset: true },
-        { name: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#f48fb1', hasAsset: true },
-        { name: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#9b59b6', hasAsset: true },
-        { name: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#e67e22', hasAsset: true },
-        { name: 'Black',  genes: 'rr-yy-ww', source: 'hybrid', hex: '#34495e', hasAsset: true }
-      ]
-    },
-    Pansy: {
-      emoji: '🌸',
-      genes: 3,
-      // NO PINK PANSY — does not exist in the game
-      seedColors: ['Red', 'White', 'Yellow'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#c0392b', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f5f6fa', hasAsset: true },
-        { name: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#f9ca24', hasAsset: true },
-        { name: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#ff7f50', hasAsset: true },
-        { name: 'Blue',   genes: 'rr-yy-ww', source: 'hybrid', hex: '#0984e3', hasAsset: true },
-        { name: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#6c5ce7', hasAsset: true }
-      ]
-    },
-    Cosmos: {
-      emoji: '🌼',
-      genes: 3,
-      seedColors: ['Red', 'White', 'Yellow'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#e63946', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f0f0f0', hasAsset: true },
-        { name: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffd60a', hasAsset: true },
-        { name: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ff69b4', hasAsset: true },
-        { name: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#f77f00', hasAsset: true },
-        { name: 'Black',  genes: 'rr-yy-ww', source: 'hybrid', hex: '#1a1a2e', hasAsset: true }
-      ]
-    },
-    Lily: {
-      emoji: '🌺',
-      genes: 3,
-      seedColors: ['Red', 'White', 'Yellow'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#dc143c', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#fffaf0', hasAsset: true },
-        { name: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffeb3b', hasAsset: true },
-        { name: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ff1493', hasAsset: true },
-        { name: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#ff6347', hasAsset: true },
-        { name: 'Black',  genes: 'rr-yy-ww', source: 'hybrid', hex: '#1c1c1c', hasAsset: true }
-      ]
-    },
-    Hyacinth: {
-      emoji: '💐',
-      genes: 3,
-      // Seed colors: Red, White, Yellow (Blue is also a seed color per Nookipedia)
-      seedColors: ['Red', 'White', 'Yellow', 'Blue'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#ff0000', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#ffffff', hasAsset: true },
-        // Yellow hyacinth: RR-YY-ww (same pattern as other 3-gene species, seed from Nook's)
-        { name: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffff00', hasAsset: true },
-        // Blue is available as seed bag per Nookipedia
-        { name: 'Blue',   genes: 'rr-yy-ww', source: 'seed',   hex: '#1e90ff', hasAsset: true },
-        { name: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ffc0cb', hasAsset: true },
-        // Orange hyacinth: RR-Yy-ww (consistent with other 3-gene orange hybrid pattern)
-        { name: 'Orange', genes: 'RR-Yy-ww', source: 'hybrid', hex: '#ff8c00', hasAsset: true },
-        { name: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#800080', hasAsset: true }
-      ]
-    },
-    Windflower: {
-      emoji: '🪻',
-      genes: 3,
-      // Seed colors: Red, White, Orange — NO YELLOW WINDFLOWER
-      seedColors: ['Red', 'White', 'Orange'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#b22222', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f5f5f5', hasAsset: true },
-        // Orange is a SEED color for Windflower (not hybrid)
-        { name: 'Orange', genes: 'RR-Yy-ww', source: 'seed',   hex: '#ff8c00', hasAsset: true },
-        { name: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#dda0dd', hasAsset: true },
-        { name: 'Blue',   genes: 'rr-yy-ww', source: 'hybrid', hex: '#4169e1', hasAsset: true },
-        { name: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#dda0dd', hasAsset: true }
-      ]
-    },
-    Mum: {
-      emoji: '🌻',
-      genes: 3,
-      seedColors: ['Red', 'White', 'Yellow'],
-      colors: [
-        { name: 'Red',    genes: 'RR-yy-ww', source: 'seed',   hex: '#8b0000', hasAsset: true },
-        { name: 'White',  genes: 'rr-yy-WW', source: 'seed',   hex: '#f0f8ff', hasAsset: true },
-        { name: 'Yellow', genes: 'RR-YY-ww', source: 'seed',   hex: '#ffd700', hasAsset: true },
-        { name: 'Pink',   genes: 'Rr-yy-WW', source: 'hybrid', hex: '#ff69b4', hasAsset: true },
-        { name: 'Purple', genes: 'rr-yy-ww', source: 'hybrid', hex: '#ba55d3', hasAsset: true },
-        { name: 'Green',  genes: 'rr-YY-ww', source: 'hybrid', hex: '#32cd32', hasAsset: true }
-      ]
-    }
-  };
-
-  // Blue Rose path from flowers.js blueRosePath
-  const blueRoseSteps = [
-    {
-      title: 'Breed Seed Red + Seed Yellow',
-      description: 'Plant seed red and seed yellow roses next to each other. They produce orange roses with special hybrid genes — these are NOT regular orange roses.',
-      note: 'Seed Red × Seed Yellow → Special Orange Hybrids'
-    },
-    {
-      title: 'Breed Special Orange Hybrids Together',
-      description: 'Take two orange hybrid roses from Step 1 and breed them together. This produces a mix of colors including rare hybrid red roses.',
-      note: 'Orange Hybrid × Orange Hybrid → Hybrid Red (rare)'
-    },
-    {
-      title: 'Breed Hybrid Red + Hybrid Red',
-      description: 'Breed two hybrid red roses together. This creates another generation of hybrid reds with more refined gene combinations.',
-      note: 'Hybrid Red × Hybrid Red → Hybrid Red++'
-    },
-    {
-      title: 'Breed Hybrid Red++ for Blue Rose',
-      description: 'Continue breeding hybrid red roses. Blue roses appear at approximately 1/64 chance (~1.56%) per bloom cycle. Keep at it!',
-      note: '~1.56% chance per bloom — estimated 4–6 weeks'
-    }
-  ];
-
-  // Breeding paths sourced from flowers.js breedingPaths
-  // Pansy: NO Pink path — Pink pansy does not exist
-  const breedingPaths = {
-    Rose: [
-      { p1: 'Red',    p2: 'Red',    results: [{ color: 'Red', chance: 75 }, { color: 'Pink', chance: 25 }] },
-      { p1: 'Red',    p2: 'White',  results: [{ color: 'Red', chance: 25 }, { color: 'White', chance: 25 }, { color: 'Pink', chance: 50 }] },
-      { p1: 'Red',    p2: 'Yellow', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] },
-      { p1: 'Yellow', p2: 'Yellow', results: [{ color: 'Yellow', chance: 100 }] },
-      { p1: 'White',  p2: 'White',  results: [{ color: 'White', chance: 100 }] },
-      { p1: 'Orange', p2: 'Orange', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] },
-      { p1: 'Purple', p2: 'Purple', results: [{ color: 'Purple', chance: 100 }] },
-      { p1: 'Pink',   p2: 'Pink',   results: [{ color: 'Red', chance: 25 }, { color: 'Pink', chance: 50 }, { color: 'White', chance: 25 }] }
-    ],
-    Tulip: [
-      { p1: 'Red',    p2: 'Red',    results: [{ color: 'Red', chance: 75 }, { color: 'Pink', chance: 25 }] },
-      { p1: 'Red',    p2: 'Yellow', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] },
-      { p1: 'White',  p2: 'White',  results: [{ color: 'White', chance: 100 }] },
-      { p1: 'Purple', p2: 'Purple', results: [{ color: 'Purple', chance: 100 }] },
-      { p1: 'Orange', p2: 'Orange', results: [{ color: 'Orange', chance: 50 }, { color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }] }
-    ],
-    // Pansy has NO Pink — breeding paths updated accordingly
-    Pansy: [
-      { p1: 'White',  p2: 'White',  results: [{ color: 'White', chance: 100 }] },
-      { p1: 'Yellow', p2: 'Yellow', results: [{ color: 'Yellow', chance: 100 }] },
-      { p1: 'Red',    p2: 'Yellow', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] },
-      { p1: 'Purple', p2: 'Purple', results: [{ color: 'Purple', chance: 100 }] },
-      { p1: 'Blue',   p2: 'Blue',   results: [{ color: 'Blue', chance: 100 }] }
-    ],
-    Cosmos: [
-      { p1: 'Red',    p2: 'Red',    results: [{ color: 'Red', chance: 75 }, { color: 'Pink', chance: 25 }] },
-      { p1: 'Red',    p2: 'Yellow', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] },
-      { p1: 'White',  p2: 'Red',    results: [{ color: 'Red', chance: 25 }, { color: 'White', chance: 25 }, { color: 'Pink', chance: 50 }] },
-      { p1: 'Orange', p2: 'Orange', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] },
-      { p1: 'Black',  p2: 'Black',  results: [{ color: 'Black', chance: 100 }] }
-    ],
-    Lily: [
-      { p1: 'Red',    p2: 'Red',    results: [{ color: 'Red', chance: 75 }, { color: 'Pink', chance: 25 }] },
-      { p1: 'White',  p2: 'White',  results: [{ color: 'White', chance: 100 }] },
-      { p1: 'Yellow', p2: 'Yellow', results: [{ color: 'Yellow', chance: 100 }] },
-      { p1: 'Red',    p2: 'Yellow', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] },
-      { p1: 'Black',  p2: 'Black',  results: [{ color: 'Black', chance: 100 }] }
-    ],
-    Hyacinth: [
-      { p1: 'Red',    p2: 'Red',    results: [{ color: 'Red', chance: 75 }, { color: 'Pink', chance: 25 }] },
-      { p1: 'White',  p2: 'White',  results: [{ color: 'White', chance: 100 }] },
-      { p1: 'Blue',   p2: 'Blue',   results: [{ color: 'Blue', chance: 100 }] },
-      { p1: 'Red',    p2: 'Blue',   results: [{ color: 'Red', chance: 25 }, { color: 'Blue', chance: 25 }, { color: 'Purple', chance: 50 }] },
-      { p1: 'Purple', p2: 'Purple', results: [{ color: 'Purple', chance: 100 }] },
-      { p1: 'Red',    p2: 'Yellow', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Orange', chance: 50 }] }
-    ],
-    // Windflower: Orange is a seed — Orange x Orange path valid, NO Yellow windflower
-    Windflower: [
-      { p1: 'Red',    p2: 'Red',    results: [{ color: 'Red', chance: 75 }, { color: 'Pink', chance: 25 }] },
-      { p1: 'White',  p2: 'White',  results: [{ color: 'White', chance: 100 }] },
-      { p1: 'Orange', p2: 'Orange', results: [{ color: 'Orange', chance: 75 }, { color: 'Red', chance: 25 }] },
-      { p1: 'Red',    p2: 'White',  results: [{ color: 'Red', chance: 25 }, { color: 'White', chance: 25 }, { color: 'Pink', chance: 50 }] },
-      { p1: 'Purple', p2: 'Purple', results: [{ color: 'Purple', chance: 100 }] },
-      { p1: 'Blue',   p2: 'Blue',   results: [{ color: 'Blue', chance: 100 }] }
-    ],
-    Mum: [
-      { p1: 'Red',    p2: 'Red',    results: [{ color: 'Red', chance: 75 }, { color: 'Pink', chance: 25 }] },
-      { p1: 'White',  p2: 'White',  results: [{ color: 'White', chance: 100 }] },
-      { p1: 'Yellow', p2: 'Yellow', results: [{ color: 'Yellow', chance: 100 }] },
-      { p1: 'Red',    p2: 'Yellow', results: [{ color: 'Red', chance: 25 }, { color: 'Yellow', chance: 25 }, { color: 'Purple', chance: 50 }] },
-      { p1: 'Purple', p2: 'Purple', results: [{ color: 'Purple', chance: 100 }] },
-      { p1: 'Green',  p2: 'Green',  results: [{ color: 'Green', chance: 100 }] }
-    ]
-  };
 
   const calculateOffspring = (color1, color2) => {
     const paths = breedingPaths[selectedSpecies] || [];
@@ -726,7 +545,7 @@ const FlowerCalculator = () => {
           </div>
 
           <div style={styles.stepContainer}>
-            {blueRoseSteps.map((step, idx) => (
+            {BLUE_ROSE_PATH.map((step, idx) => (
               <div
                 key={idx}
                 style={{ ...styles.step, ...(blueRoseProgress === idx ? styles.stepActive : {}) }}
