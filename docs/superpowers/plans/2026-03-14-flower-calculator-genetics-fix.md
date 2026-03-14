@@ -27,6 +27,8 @@ Change Blue Hyacinth's `source` from `'seed'` to `'hybrid'`.
 
 Remove or update the comment `// Blue is also a seed color per Nookipedia` — this was incorrect. Blue Hyacinth is bred from White × White.
 
+Also update the file header comment at line 12 which says `// - Blue Hyacinth is source: 'seed', not hybrid`. Change it to `// - Blue Hyacinth is source: 'hybrid' (bred from White × White)`.
+
 The hyacinth section should look like:
 ```js
 hyacinth: {
@@ -162,16 +164,16 @@ These adapters are computed ONCE at module scope (not inside the component), so 
 
 Delete these inline data blocks from inside the component function:
 - Lines 29-143: `const flowerData = { ... }` (replaced by module-scope adapter above)
-- Lines 145-174: `const blueRosePath = [...]` (now imported as `BLUE_ROSE_PATH`)
+- Lines 145-174: `const blueRoseSteps = [...]` (now imported as `BLUE_ROSE_PATH`)
 - Lines 178-243: `const breedingPaths = { ... }` (replaced by module-scope adapter above)
 
 **IMPORTANT:** Keep everything else — `calculateOffspring`, `updateBlueRoseProgress`, all useEffect hooks, styles, and JSX rendering.
 
 - [ ] **Step 3: Update Blue Rose and Gold Rose references**
 
-Find references to the old `blueRosePath` variable in the JSX rendering and replace with `BLUE_ROSE_PATH`:
-- The Blue Rose tab renders `blueRosePath.map(...)` — change to `BLUE_ROSE_PATH.map(...)`
-- The Blue Rose progress tracker references `blueRosePath.length` — change to `BLUE_ROSE_PATH.length`
+Find references to the old `blueRoseSteps` variable in the JSX rendering and replace with `BLUE_ROSE_PATH`:
+- The Blue Rose tab renders `blueRoseSteps.map(...)` — change to `BLUE_ROSE_PATH.map(...)`
+- If there are any references to `blueRoseSteps.length`, change to `BLUE_ROSE_PATH.length`
 
 For Gold Rose, the component currently has the info hardcoded in JSX text. If `GOLD_ROSE_INFO` can be used, wire it in. Otherwise, leave the hardcoded text (it's already correct).
 
