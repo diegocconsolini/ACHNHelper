@@ -201,7 +201,6 @@ export default function BugTracker() {
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.headerTitle}>
-          <AssetImg category="bugs" name={bug.name} size={32} />
           <h1 style={styles.title}>Bug Tracker</h1>
         </div>
         <div style={styles.progressContainer}>
