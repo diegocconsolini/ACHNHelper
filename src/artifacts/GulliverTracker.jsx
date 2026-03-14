@@ -13,20 +13,19 @@ const GulliverTracker = () => {
 
   const GULLIVER_REWARDS = [
     'Pagoda', 'Pyramid', 'Sphinx', 'Stonehenge', 'Statue of Liberty',
-    'Tower of Pisa', 'Moai Statue', 'Dala Horse', 'Hula Doll', 'Lucky Cat',
-    'Nutcracker', 'Katana', 'Tubeteika', 'Silk Hat', 'Sombrero', 'Tam-o\'-Shanter',
-    'Turban', 'Veil', 'Pigtail', 'Geisha Wig', 'Kaffiyeh', 'Milkmaid Hat',
-    'Elder Mask', 'Alpinist Hat', 'Ancient Administrator Hat', 'Candy-Skull Mask',
-    'Coin Headpiece'
+    'Tower of Pisa', 'Moai Statue', 'South Pole', 'Dala Horse', 'Hula Doll',
+    'Lucky Cat', 'Nutcracker', 'Katana', 'Tubeteika', 'Silk Hat', 'Sombrero',
+    'Tam-o\'-Shanter', 'Turban', 'Veil', 'Pigtail', 'Geisha Wig', 'Samurai Wig',
+    'Kaffiyeh', 'Milkmaid Hat', 'Elder Mask', 'Alpinist Hat',
+    'Ancient Administrator Hat', 'Candy-Skull Mask', 'Coin Headpiece'
   ];
 
   const GULLIVARRR_REWARDS = [
-    'Pirate Treasure Chest', 'Pirate Barrel', 'Pirate Ship Cannon', 'Pirate Ship Helm',
+    'Pirate-Treasure Chest', 'Pirate Barrel', 'Pirate-Ship Cannon', 'Pirate-Ship Helm',
     'Sideways Pirate Barrel', 'Pirate Wall', 'Pirate Flooring', 'Pirate Rug',
-    'Pirate Treasure Crown', 'Pirate Treasure Robe', 'Pirate Outfit (Blue)', 'Pirate Outfit (Red)',
-    'Pirate Coat (Blue)', 'Pirate Coat (Red)', 'Pirate Dress (Blue)', 'Pirate Dress (Red)',
-    'Pirate Pants', 'Pirate Boots', 'Pirate Bandanna (Blue)', 'Pirate Bandanna (Red)',
-    'Pirate Eye Patch', 'Sea Captain\'s Coat (Blue)', 'Sea Captain\'s Coat (Red)'
+    'Pirate-Treasure Crown', 'Pirate-Treasure Robe', 'Pirate Outfit', 'Pirate Dress',
+    'Pirate Pants', 'Pirate Boots', 'Pirate Bandanna', 'Pirate Eye Patch',
+    'Pirate Beard', 'Pirate\'s Hat', 'Sea Captain\'s Coat'
   ];
 
   useEffect(() => {
