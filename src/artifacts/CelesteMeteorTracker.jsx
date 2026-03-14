@@ -13,23 +13,23 @@ const CelesteMeteorTracker = () => {
   const [hoveredButtonId, setHoveredButtonId] = useState(null);
 
   const ZODIACS = [
-    { name: 'Capricorn', emoji: '♑', dates: 'Dec 22 - Jan 19', item: 'Capricorn Ornament', materials: '2 Capricorn Frags, 2 Star Frags, 2 Gold Nuggets' },
-    { name: 'Aquarius', emoji: '♒', dates: 'Jan 20 - Feb 18', item: 'Aquarius Urn', materials: '3 Aquarius Frags, 3 Star Frags, 5 Gold Nuggets' },
-    { name: 'Pisces', emoji: '♓', dates: 'Feb 19 - Mar 20', item: 'Pisces Lamp', materials: '2 Pisces Frags, 3 Star Frags, 2 Gold Nuggets' },
-    { name: 'Aries', emoji: '♈', dates: 'Mar 21 - Apr 19', item: 'Aries Rocking Chair', materials: '3 Aries Frags, 2 Star Frags, 1 Gold Nugget, 5 Stone' },
+    { name: 'Capricorn', emoji: '♑', dates: 'Dec 22 - Jan 19', item: 'Capricorn Ornament', materials: '2 Capricorn Frags, 3 Star Frags, 2 Gold Nuggets, 12 Stone' },
+    { name: 'Aquarius', emoji: '♒', dates: 'Jan 20 - Feb 18', item: 'Aquarius Urn', materials: '2 Aquarius Frags, 3 Star Frags, 2 Gold Nuggets, 5 Stone' },
+    { name: 'Pisces', emoji: '♓', dates: 'Feb 19 - Mar 20', item: 'Pisces Lamp', materials: '2 Pisces Frags, 3 Star Frags, 2 Gold Nuggets, 4 Stone' },
+    { name: 'Aries', emoji: '♈', dates: 'Mar 21 - Apr 19', item: 'Aries Rocking Chair', materials: '2 Aries Frags, 3 Star Frags, 1 Gold Nugget, 5 Stone' },
     { name: 'Taurus', emoji: '♉', dates: 'Apr 20 - May 20', item: 'Taurus Bathtub', materials: '2 Taurus Frags, 3 Star Frags, 1 Gold Nugget, 8 Stone' },
     { name: 'Gemini', emoji: '♊', dates: 'May 21 - Jun 20', item: 'Gemini Closet', materials: '2 Gemini Frags, 3 Star Frags, 2 Gold Nuggets, 6 Stone' },
     { name: 'Cancer', emoji: '♋', dates: 'Jun 21 - Jul 22', item: 'Cancer Table', materials: '2 Cancer Frags, 3 Star Frags, 2 Gold Nuggets, 3 Stone' },
     { name: 'Leo', emoji: '♌', dates: 'Jul 23 - Aug 22', item: 'Leo Sculpture', materials: '2 Leo Frags, 3 Star Frags, 2 Gold Nuggets, 3 Stone' },
     { name: 'Virgo', emoji: '♍', dates: 'Aug 23 - Sep 22', item: 'Virgo Harp', materials: '2 Virgo Frags, 3 Star Frags, 2 Gold Nuggets, 4 Stone' },
-    { name: 'Libra', emoji: '♎', dates: 'Sep 23 - Oct 22', item: 'Libra Scale', materials: '2 Libra Frags, 3 Star Frags, 2 Gold Nuggets' },
+    { name: 'Libra', emoji: '♎', dates: 'Sep 23 - Oct 22', item: 'Libra Scale', materials: '2 Libra Frags, 3 Star Frags, 2 Gold Nuggets, 4 Stone' },
     { name: 'Scorpio', emoji: '♏', dates: 'Oct 23 - Nov 21', item: 'Scorpio Lamp', materials: '2 Scorpio Frags, 3 Star Frags, 2 Gold Nuggets, 5 Stone' },
     { name: 'Sagittarius', emoji: '♐', dates: 'Nov 22 - Dec 21', item: 'Sagittarius Arrow', materials: '2 Sagittarius Frags, 3 Star Frags, 2 Gold Nuggets' },
   ];
 
   const SPACE_ITEMS = [
     'Crescent-Moon Chair', 'Nova Light', 'Moon', 'Star Clock', 'Starry Garland', 'Asteroid',
-    'Satellite', 'Rocket', 'Lunar Lander', 'Lunar Rover', 'Flying Saucer',
+    'Satellite', 'Rocket', 'Crewed Spaceship', 'Lunar Lander', 'Lunar Rover', 'Flying Saucer',
     'Space Shuttle', 'Lunar Surface', 'Astronaut Suit', 'Star Head', 'Star Pochette', 'Starry Wall',
     'Starry-Sky Wall', 'Galaxy Flooring', 'Sci-Fi Wall', 'Sci-Fi Flooring'
   ];
