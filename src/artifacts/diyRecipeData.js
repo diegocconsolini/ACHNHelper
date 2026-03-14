@@ -1,7 +1,7 @@
 /**
  * diyRecipeData.js — Verified DIY recipe data for ACNH
  *
- * 640 DIY recipe names extracted from public/assets-web/manifest.json (exact case).
+ * 781 recipe names (640 DIY + 141 cooking) extracted from public/assets-web/manifest.json (exact case).
  * Cooking recipe names verified against Nookipedia (nookipedia.com/wiki/DIY_recipes/Savory
  * and nookipedia.com/wiki/DIY_recipes/Sweet).
  *
@@ -171,7 +171,7 @@ export const DIY_CATEGORIES = {
 
   // ── 14. Log (12) ──
   'Log': {
-    emoji: '\u{1FAB5}',
+    emoji: '\u{1F332}',
     recipes: [
       'log bed', 'log bench', 'log chair', 'log decorative shelves',
       'log dining table', 'log extra-long sofa', 'log garden lounge',
@@ -651,6 +651,7 @@ export const SEASONAL_SECTIONS = [
     nh: 'Dec 11 \u2013 Feb 24',
     sh: 'Jun 11 \u2013 Aug 24',
     source: 'Balloons + Snowboy',
+    // Note: ice wand is Celeste recipe, not seasonal balloon
     recipes: [
       'falling-snow wall', 'frozen arch', 'frozen bed', 'frozen chair',
       'frozen counter', 'frozen partition', 'frozen pillar',
