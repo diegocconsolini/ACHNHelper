@@ -93,8 +93,8 @@ export const DIY_CATEGORIES = {
   'Ironwood': {
     emoji: '\u{1FAB5}',
     recipes: [
-      'ironwood DIY workbench', 'ironwood bed', 'ironwood cart', 'ironwood chair',
-      'ironwood clock', 'ironwood cupboard', 'ironwood dresser',
+      'ironwood bed', 'ironwood cart', 'ironwood chair',
+      'ironwood clock', 'ironwood cupboard', 'ironwood DIY workbench', 'ironwood dresser',
       'ironwood kitchenette', 'ironwood low table', 'ironwood table'
     ]
   },
@@ -118,10 +118,10 @@ export const DIY_CATEGORIES = {
   'Festive & Illuminated': {
     emoji: '\u{1F384}',
     recipes: [
-      'Jingle wall', 'big festive tree', 'festive rug', 'festive top set',
+      'big festive tree', 'festive rug', 'festive top set',
       'festive tree', 'festive wrapping paper', 'gift pile', 'holiday candle',
       'illuminated present', 'illuminated reindeer', 'illuminated snowflakes',
-      'illuminated tree', 'ornament mobile', 'ornament wreath',
+      'illuminated tree', 'Jingle wall', 'ornament mobile', 'ornament wreath',
       'sleigh', 'tabletop festive tree'
     ]
   },
@@ -257,15 +257,15 @@ export const DIY_CATEGORIES = {
   'Celeste': {
     emoji: '\u2B50',
     recipes: [
-      'Aquarius urn', 'Aries rocking chair', 'Cancer table', 'Capricorn ornament',
-      'Gemini closet', 'Leo sculpture', 'Libra scale', 'Pisces lamp',
-      'Sagittarius arrow', 'Scorpio lamp', 'Taurus bathtub', 'Virgo harp',
-      'asteroid', 'astronaut suit', 'crescent-moon chair', 'crewed spaceship',
-      'flying saucer', 'galaxy flooring', 'lunar lander', 'lunar rover',
-      'lunar surface', 'moon', 'nova light', 'rocket', 'satellite',
-      'sci-fi flooring', 'sci-fi wall', 'space shuttle',
-      'star clock', 'star head', 'star pochette',
-      'starry garland', 'starry wall', 'starry-sky wall'
+      'Aquarius urn', 'Aries rocking chair', 'asteroid', 'astronaut suit',
+      'Cancer table', 'Capricorn ornament', 'crescent-moon chair', 'crewed spaceship',
+      'flying saucer', 'galaxy flooring', 'Gemini closet', 'Leo sculpture',
+      'Libra scale', 'lunar lander', 'lunar rover', 'lunar surface',
+      'moon', 'nova light', 'Pisces lamp', 'rocket',
+      'Sagittarius arrow', 'satellite', 'sci-fi flooring', 'sci-fi wall',
+      'Scorpio lamp', 'space shuttle', 'star clock', 'star head', 'star pochette',
+      'starry garland', 'starry wall', 'starry-sky wall',
+      'Taurus bathtub', 'Virgo harp'
     ]
   },
 
@@ -345,7 +345,6 @@ export const DIY_CATEGORIES = {
   'Miscellaneous & Other': {
     emoji: '\u{1F4E6}',
     recipes: [
-      'DIY workbench', 'King Tut mask',
       'acoustic guitar', 'angled signpost', 'armor shoes', 'aroma pot',
       'backyard lawn', 'barbell', 'barrel', 'basket pack',
       "beekeeper's hive", 'birdbath', 'birdcage', 'birdhouse',
@@ -356,7 +355,7 @@ export const DIY_CATEGORIES = {
       'clackercart', 'classic pitcher', 'clothesline',
       'cosmos shower', 'crest doorplate', 'cutting board',
       'decoy duck', 'deer decoration', 'deer scare',
-      'destinations signpost', 'document stack', 'doghouse', 'drinking fountain',
+      'destinations signpost', 'DIY workbench', 'document stack', 'doghouse', 'drinking fountain',
       'firewood', 'fish bait', 'flat garden rock', 'floral swag', 'flower stand',
       'fossil doorplate', 'fountain', 'frying pan',
       'garden bench', 'garden rock', 'garden wagon', 'giant teddy bear', 'gong',
@@ -365,7 +364,7 @@ export const DIY_CATEGORIES = {
       'hyacinth lamp', 'infused-water dispenser',
       'jail bars', 'juicy-apple TV',
       'kettle bathtub', 'kettlebell', 'key holder',
-      "knight's helmet", 'knitted-grass backpack',
+      'King Tut mask', "knight's helmet", 'knitted-grass backpack',
       'large cardboard boxes', 'leaf', 'leaf mask', 'leaf umbrella',
       'lily record player', 'lucky gold cat',
       'magazine rack', 'manhole cover', 'matryoshka', 'medicine',
@@ -401,8 +400,8 @@ export const DIY_CATEGORIES = {
     isCooking: true,
     recipes: [
       'aji fry', 'anchoas al ajillo', 'apple jam',
-      'baked potatoes', 'bamboo-shoot soup', 'barred-knifejaw carpaccio', 'brown sugar',
-      'bread', 'bread gratin',
+      'baked potatoes', 'bamboo-shoot soup', 'barred-knifejaw carpaccio',
+      'bread', 'bread gratin', 'brown sugar',
       'carpaccio di capesante', 'carpaccio di marlin blu', 'carpaccio di salmone',
       'carrot bagel sandwich', 'carrot potage', 'carrot-tops curry',
       'champi\u00f1ones al ajillo', 'cherry jam', 'clam chowder', 'coconut oil',
@@ -590,7 +589,7 @@ export const SEASONAL_SECTIONS = [
     recipes: [
       'blossom-viewing lantern', 'cherry-blossom bonsai', 'cherry-blossom branches',
       'cherry-blossom clock', 'cherry-blossom flooring', 'cherry-blossom pochette',
-      'cherry-blossom pond stone', 'cherry-blossom umbrella',
+      'cherry-blossom pond stone', 'cherry-blossom umbrella', 'cherry-blossom wand',
       'cherry-blossom-petal pile', 'cherry-blossom-trees wall',
       'outdoor picnic set', 'sakura-wood flooring', 'sakura-wood wall'
     ]
