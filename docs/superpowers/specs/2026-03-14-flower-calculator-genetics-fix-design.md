@@ -28,7 +28,7 @@ Located at `src/artifacts/gardenData.js`, this module already exports:
 **Already-applied fixes in gardenData.js:**
 - No Pink Pansy (correctly removed)
 - No Yellow Windflower (correctly omitted)
-- Hyacinth has Yellow seed, Orange color, Blue (not "Light Blue")
+- Hyacinth has Yellow seed, Orange color, Blue renamed from "Light Blue"
 - Orange Windflower correctly marked as seed color
 - Gold Rose marked as `source: 'special'` with note about golden watering can
 - Green Rose marked as `hasAsset: false`
@@ -78,9 +78,12 @@ Use web search to find the Aeon/Paleh ACNH flower genetics spreadsheet. Cross-ch
 - Breeding path outcomes and probabilities
 - Seed color assignments
 
-### Known issues to investigate
-- Several species share identical genotypes for different colors (e.g., Pansy Blue and Purple both `rr-yy-ww`). This is how ACNH actually works — multiple genotype combinations can produce the same phenotype, and the data file shows simplified "representative" genotypes. Verify this is correct.
-- Hyacinth seed colors: gardenData lists Red, White, Yellow, Blue. Per Nookipedia, Blue Hyacinth seeds are NOT sold — Blue is bred from White + White. Investigate and fix if needed.
+### Known issues to fix
+- **Hyacinth Blue seed color is WRONG:** gardenData.js lists Blue as `source: 'seed'` with seedColors including Blue. Per GameWith/Game8/Nookipedia, Blue Hyacinth is bred from White × White — it is NOT sold as a seed. Fix: change Blue Hyacinth `source` from `'seed'` to `'hybrid'`, remove Blue from `seedColors` array. Correct seedColors: `['Red', 'White', 'Yellow']`.
+- Several species share identical genotypes for different colors (e.g., Pansy Blue and Purple both `rr-yy-ww`). This is how ACNH actually works — multiple genotype combinations can produce the same phenotype, and the data file shows simplified "representative" genotypes. Verify against datamined sources.
+
+### Probability conversion
+gardenData.js uses float 0-1 probabilities. FlowerCalculator displays integer 0-100. Apply conversion once at import/adapter time, not scattered in render code.
 
 ---
 
