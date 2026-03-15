@@ -28,6 +28,7 @@ const DIYRecipeTracker = lazy(() => import('./artifacts/DIYRecipeTracker.jsx'));
 const CelesteMeteorTracker = lazy(() => import('./artifacts/CelesteMeteorTracker.jsx'));
 const DreamAddressBook = lazy(() => import('./artifacts/DreamAddressBook.jsx'));
 const Settings = lazy(() => import('./artifacts/Settings.jsx'));
+const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
   {
@@ -85,6 +86,7 @@ const MENU = [
   {
     category: '⚙️ Settings',
     items: [
+      { id: 'profile', label: 'My Profile', emoji: '👤', component: 'UserProfile' },
       { id: 'settings', label: 'Settings', emoji: '⚙️', component: 'Settings' },
     ],
   },
@@ -114,6 +116,7 @@ const COMPONENTS = {
   CelesteMeteorTracker,
   DreamAddressBook,
   Settings,
+  UserProfile,
 };
 
 class ErrorBoundary extends React.Component {
@@ -306,7 +309,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 23 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 24 tools
           </span>
         </div>
       </div>
