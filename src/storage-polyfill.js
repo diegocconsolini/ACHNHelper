@@ -1,7 +1,8 @@
 // Polyfill for window.storage API used by Claude artifacts
 // Maps to localStorage in a normal browser environment
+// Guarded for SSR compatibility (Next.js)
 
-if (!window.storage) {
+if (typeof window !== 'undefined' && !window.storage) {
   window.storage = {
     async get(key) {
       const value = localStorage.getItem(key);
