@@ -1,3 +1,5 @@
+import SessionWrapper from '../src/SessionWrapper';
+
 export const metadata = {
   title: 'ACNH Helper Suite',
   description: '23 interactive tools for Animal Crossing: New Horizons',
@@ -10,7 +12,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body style={{ margin: 0, padding: 0, backgroundColor: '#0a1a10' }}>
-        {children}
+        <SessionWrapper>
+          {children}
+        </SessionWrapper>
       </body>
     </html>
   );
