@@ -1,12 +1,7 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
-// Import storage polyfill before anything else
-import '../src/storage-polyfill';
-
-const App = dynamic(() => import('../src/App'), { ssr: false });
+import LandingPage from '../src/LandingPage';
 
 export default function Home() {
-  return <App />;
+  return <LandingPage />;
 }
