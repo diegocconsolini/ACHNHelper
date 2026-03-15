@@ -1,0 +1,83 @@
+<h2>Hero Carousel Style</h2>
+<p class="subtitle">How should the sprite carousel look and move?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 15px; background: #0a1a10; overflow: hidden;">
+      <!-- Marquee rows going opposite directions -->
+      <div style="margin-bottom: 6px; display: flex; gap: 8px; overflow: hidden;">
+        <div style="display: flex; gap: 8px; animation: none;">
+          <div style="width: 48px; height: 48px; background: rgba(94,200,80,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🐟</div>
+          <div style="width: 48px; height: 48px; background: rgba(212,176,48,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🦋</div>
+          <div style="width: 48px; height: 48px; background: rgba(74,172,240,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🌹</div>
+          <div style="width: 48px; height: 48px; background: rgba(94,200,80,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🎵</div>
+          <div style="width: 48px; height: 48px; background: rgba(212,176,48,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🦴</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; overflow: hidden; margin-left: 24px;">
+        <div style="display: flex; gap: 8px;">
+          <div style="width: 48px; height: 48px; background: rgba(74,172,240,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🎨</div>
+          <div style="width: 48px; height: 48px; background: rgba(94,200,80,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🐙</div>
+          <div style="width: 48px; height: 48px; background: rgba(212,176,48,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🏠</div>
+          <div style="width: 48px; height: 48px; background: rgba(74,172,240,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">⭐</div>
+          <div style="width: 48px; height: 48px; background: rgba(94,200,80,0.1); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px;">🪵</div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 12px;">
+        <div style="color: #5ec850; font-size: 18px; font-weight: 700;">ACNH Helper Suite</div>
+        <div style="color: #5a7a50; font-size: 10px; margin-top: 4px;">→ → → scrolling left/right → → →</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A: Horizontal Marquee Rows</h3>
+      <p>2-3 rows of sprites scrolling in alternating directions (CSS animation). Infinite loop, no interaction. Behind/above the title text. Like a living wallpaper of game items.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 15px; background: #0a1a10;">
+      <div style="text-align: center; margin-bottom: 10px;">
+        <div style="color: #5ec850; font-size: 18px; font-weight: 700;">ACNH Helper Suite</div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;">
+        <div style="aspect-ratio: 1; background: rgba(94,200,80,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.6;">🐟</div>
+        <div style="aspect-ratio: 1; background: rgba(212,176,48,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.8;">🦋</div>
+        <div style="aspect-ratio: 1; background: rgba(94,200,80,0.2); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; border: 1px solid rgba(94,200,80,0.3);">🌹</div>
+        <div style="aspect-ratio: 1; background: rgba(74,172,240,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.8;">🎵</div>
+        <div style="aspect-ratio: 1; background: rgba(212,176,48,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.6;">🦴</div>
+        <div style="aspect-ratio: 1; background: rgba(94,200,80,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.4;">🎨</div>
+        <div style="aspect-ratio: 1; background: rgba(74,172,240,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.4;">🐙</div>
+        <div style="aspect-ratio: 1; background: rgba(94,200,80,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.6;">🏠</div>
+        <div style="aspect-ratio: 1; background: rgba(212,176,48,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.8;">⭐</div>
+        <div style="aspect-ratio: 1; background: rgba(94,200,80,0.15); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; border: 1px solid rgba(94,200,80,0.2);">🪵</div>
+        <div style="aspect-ratio: 1; background: rgba(74,172,240,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.6;">🌸</div>
+        <div style="aspect-ratio: 1; background: rgba(212,176,48,0.12); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 18px; opacity: 0.4;">💰</div>
+      </div>
+      <div style="text-align: center; color: #5a7a50; font-size: 9px; margin-top: 6px;">items fade in/out randomly</div>
+    </div>
+    <div class="card-body">
+      <h3>B: Breathing Grid Mosaic</h3>
+      <p>Static grid of sprites that "breathes" — items gently fade in and out, randomly swapping with new ones. Subtle, mesmerizing. Items closer to center are brighter, edges fade out. Creates depth.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 15px; background: #0a1a10;">
+      <div style="display: flex; gap: 8px; align-items: flex-end; justify-content: center; height: 100px;">
+        <div style="width: 40px; height: 40px; background: rgba(94,200,80,0.1); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 20px; transform: translateY(-20px); opacity: 0.5;">🐟</div>
+        <div style="width: 50px; height: 50px; background: rgba(212,176,48,0.15); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px; transform: translateY(-10px); opacity: 0.7;">🦋</div>
+        <div style="width: 70px; height: 70px; background: rgba(94,200,80,0.2); border-radius: 14px; display:flex; align-items:center; justify-content:center; font-size: 36px; border: 2px solid rgba(94,200,80,0.4);">🌹</div>
+        <div style="width: 50px; height: 50px; background: rgba(74,172,240,0.15); border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size: 24px; transform: translateY(-10px); opacity: 0.7;">🎵</div>
+        <div style="width: 40px; height: 40px; background: rgba(212,176,48,0.1); border-radius: 8px; display:flex; align-items:center; justify-content:center; font-size: 20px; transform: translateY(-20px); opacity: 0.5;">🦴</div>
+      </div>
+      <div style="text-align: center; margin-top: 10px;">
+        <div style="color: #5ec850; font-size: 18px; font-weight: 700;">ACNH Helper Suite</div>
+        <div style="color: #c8e6c0; font-size: 10px; margin-top: 4px;">← swipe to explore →</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C: 3D Carousel / Coverflow</h3>
+      <p>Single row of sprites with perspective — center item large + focused, items shrink toward edges. Auto-rotates through categories. Touch/swipe friendly on mobile. Apple coverflow style.</p>
+    </div>
+  </div>
+</div>
