@@ -273,15 +273,36 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 
 ## Chunk 3: Clean Up Vite Files, Update .gitignore, Verify Build
 
-### Task 6: Remove Vite files and update .gitignore
+### Task 6: Fix ESLint config, remove Vite files, update .gitignore
 
 **Files:**
 - Delete: `vite.config.js`
 - Delete: `index.html`
 - Delete: `src/main.jsx`
+- Modify: `eslint.config.js`
 - Modify: `.gitignore`
 
-- [ ] **Step 1: Delete Vite-specific files**
+- [ ] **Step 1: Fix ESLint config (CRITICAL — build will fail without this)**
+
+The current `eslint.config.js` imports `eslint-plugin-react-refresh` which was uninstalled in Task 1. Next.js runs linting during `next build` by default. Fix by either:
+
+**Option A (recommended):** Disable ESLint during build — add to `next.config.mjs`:
+```js
+const nextConfig = {
+  // ... existing config ...
+  eslint: { ignoreDuringBuilds: true },
+};
+```
+
+**Option B:** Replace ESLint config entirely:
+```bash
+npm install eslint-config-next
+```
+Then replace `eslint.config.js` with Next.js defaults.
+
+Choose Option A for now (simpler, can fix ESLint later).
+
+- [ ] **Step 2: Delete Vite-specific files**
 
 ```bash
 git rm vite.config.js index.html src/main.jsx
@@ -432,6 +453,8 @@ Task 1 (install deps) → Task 2 (app shell) → Task 3 (storage fix) → Task 4
 ```
 
 All tasks are sequential.
+
+**IMPORTANT: No intermediate builds are possible before Task 7.** Tasks 1-6 all introduce breaking changes (`__APP_VERSION__` undefined, ESLint imports broken, missing entry point). Do NOT try `npm run build` until ALL of Tasks 1-6 are complete. Task 7 is the first point where a clean build is expected.
 
 ## Notes for Implementer
 
