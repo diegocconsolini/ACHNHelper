@@ -30,3 +30,6 @@ dist-ssr
 # Original game assets (885MB+ full-size PNGs, not committed)
 public/assets/
 .env*.local
+
+# Supabase local config (not needed for deployment)
+supabase/.temp/
