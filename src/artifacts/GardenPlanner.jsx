@@ -1,3 +1,5 @@
+'use client';
+
 // GardenPlanner.jsx — Full UI rewrite (Tasks 4-7)
 // Interactive garden grid with reducer state, sliding panel, simulation, and storage persistence.
 

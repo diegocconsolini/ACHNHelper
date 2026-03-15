@@ -1,3 +1,5 @@
+'use client';
+
 // src/AlertModal.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSettings } from './SettingsContext';

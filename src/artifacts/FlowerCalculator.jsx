@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 import { SPECIES, BREEDING_PATHS, BLUE_ROSE_PATH, GOLD_ROSE_INFO } from './gardenData';

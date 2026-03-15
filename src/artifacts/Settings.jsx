@@ -1,3 +1,5 @@
+'use client';
+
 // src/artifacts/Settings.jsx
 import React, { useState } from 'react';
 import { useSettings } from '../SettingsContext';

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, lazy, Suspense } from 'react';
 import { SettingsProvider } from './SettingsContext';
 

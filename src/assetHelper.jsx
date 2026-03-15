@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Asset Helper — React component and hook for ACNH game sprites.
  *

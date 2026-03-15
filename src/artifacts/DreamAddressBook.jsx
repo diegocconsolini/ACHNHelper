@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import ConfirmModal from '../ConfirmModal';
 import AlertModal from '../AlertModal';

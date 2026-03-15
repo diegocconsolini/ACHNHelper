@@ -1,3 +1,5 @@
+'use client';
+
 // src/SettingsContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { DEFAULT_THEME, THEME_KEYS } from './modalThemes';
