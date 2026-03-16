@@ -16,6 +16,11 @@ const FLOWER_COLORS = {
   pansies: 'red', roses: 'red', tulips: 'red', windflowers: 'red',
 };
 
+const FLOWER_SINGULAR = {
+  cosmos: 'cosmos', hyacinths: 'hyacinth', lilies: 'lily', mums: 'mum',
+  pansies: 'pansy', roses: 'rose', tulips: 'tulip', windflowers: 'windflower',
+};
+
 function formatFriendCode(value) {
   const digits = value.replace(/[^0-9]/g, '').slice(0, 12);
   const parts = [];
@@ -238,7 +243,7 @@ export default function UserProfile() {
                 >
                   <AssetImg
                     category="other"
-                    name={`${FLOWER_COLORS[flower]}-${flower.slice(0, -1)} plant`}
+                    name={`${FLOWER_COLORS[flower]}-${FLOWER_SINGULAR[flower]} plant`}
                     size={28}
                   />
                   <span style={styles.optionLabel}>{flower}</span>
