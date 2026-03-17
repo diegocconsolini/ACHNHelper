@@ -223,6 +223,12 @@ These rules MUST be followed when modifying or creating artifacts:
 
 **NEVER fabricate, invent, guess, or hallucinate any game data.** Every item name, price, date, recipe, villager, stat, and description MUST come from verified real sources.
 
+### Nookipedia API
+- **Full reference:** `docs/nookipedia-api-reference.md`
+- **Auth:** `X-API-KEY` header + `Accept-Version: 1.7.0`
+- **Key:** stored in Keychain, `.env.local`, and Vercel env vars as `NOOKIPEDIA_API_KEY`
+- **Use for:** villager birthday verification, cooking recipe images, data cross-referencing
+
 ### Data Verification Hierarchy
 1. `ACNH-Helper-Suite/data/*.js` — Verified local data files (highest priority)
 2. `public/assets-web/manifest.json` — Datamined game file names
