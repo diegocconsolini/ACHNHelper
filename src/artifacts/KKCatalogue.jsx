@@ -15,7 +15,7 @@ const SONGS = [
   { id: 9, name: "Drivin'", genre: "Soul/R&B", mood: ["Chill", "Peaceful"], isHidden: true },
   { id: 10, name: "Farewell", genre: "Ballad", mood: ["Sad", "Mellow", "Peaceful"], isHidden: true },
   { id: 11, name: "Forest Life", genre: "Pop", mood: ["Peaceful", "Chill"], isHidden: false },
-  { id: 12, name: "Go K.K. Rider", genre: "Country", mood: ["Energetic", "Bold"], isHidden: false },
+  { id: 12, name: "Go K.K. Rider!", genre: "Country", mood: ["Energetic", "Bold"], isHidden: false },
   { id: 13, name: "Hypno K.K.", genre: "Electronic", mood: ["Chill", "Upbeat"], isHidden: false },
   { id: 14, name: "I Love You", genre: "Ballad", mood: ["Romantic", "Peaceful"], isHidden: false },
   { id: 15, name: "Imperial K.K.", genre: "World", mood: ["Bold", "Energetic"], isHidden: false },
