@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import { VILLAGERS, BIRTHDAY_CALENDAR } from './villagerData';
 
 const VillagerGiftGuide = () => {
   const [activeTab, setActiveTab] = useState('guide');
@@ -9,6 +10,8 @@ const VillagerGiftGuide = () => {
   const [myVillagers, setMyVillagers] = useState([]);
   const [villagerInput, setVillagerInput] = useState('');
   const [friendshipLevel, setFriendshipLevel] = useState(3);
+  const [birthdaySearch, setBirthdaySearch] = useState('');
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [giftLog, setGiftLog] = useState([]);
   const [dreamieWishlist, setDreamieWishlist] = useState('');
 
@@ -21,21 +24,6 @@ const VillagerGiftGuide = () => {
     snooty: { style: 'Elegant/Gorgeous', emoji: '💅', color: '#ffdd99' },
     smug: { style: 'Elegant/Cool', emoji: '🎩', color: '#88ddff' },
     uchi: { style: 'Active/Cool', emoji: '🤙', color: '#ff99dd' }
-  };
-
-  const birthdayVillagers = {
-    1: [{ name: 'Bob', date: 1 }, { name: 'Diana', date: 4 }, { name: 'Roald', date: 5 }, { name: 'Genji', date: 21 }, { name: 'Sherb', date: 18 }],
-    2: [{ name: 'Stitches', date: 10 }, { name: 'Ribbot', date: 13 }, { name: 'Lily', date: 4 }, { name: 'Olivia', date: 3 }, { name: 'Rosie', date: 27 }],
-    3: [{ name: 'Coco', date: 1 }, { name: 'Molly', date: 7 }, { name: 'Zucker', date: 8 }, { name: 'Judy', date: 10 }, { name: 'Hopkins', date: 11 }, { name: 'Dotty', date: 14 }, { name: 'Julian', date: 15 }, { name: 'Merengue', date: 19 }, { name: 'Dom', date: 18 }, { name: 'Fauna', date: 26 }, { name: 'Lolly', date: 27 }, { name: 'Skye', date: 24 }],
-    4: [{ name: 'Beau', date: 5 }, { name: 'Colton', date: 1 }, { name: 'Punchy', date: 11 }, { name: 'Pietro', date: 19 }, { name: 'Agnes', date: 21 }, { name: 'Cephalobot', date: 20 }],
-    5: [{ name: 'Cherry', date: 11 }, { name: 'Pekoe', date: 18 }, { name: 'Gayle', date: 17 }, { name: 'Sasha', date: 19 }],
-    6: [{ name: 'Maple', date: 15 }, { name: 'Marina', date: 26 }, { name: 'Tangy', date: 17 }],
-    7: [{ name: 'Apollo', date: 4 }, { name: 'Ketchup', date: 27 }, { name: 'Erik', date: 27 }, { name: 'Static', date: 9 }, { name: 'Merry', date: 29 }],
-    8: [{ name: 'Audie', date: 31 }, { name: 'Poppy', date: 5 }, { name: 'Nan', date: 24 }],
-    9: [{ name: 'Ankha', date: 22 }, { name: 'Marshal', date: 29 }, { name: 'Ione', date: 28 }, { name: 'Whitney', date: 17 }],
-    10: [{ name: 'Raymond', date: 1 }, { name: 'Shino', date: 8 }, { name: 'Petri', date: 11 }],
-    11: [{ name: 'Lucky', date: 4 }, { name: 'Tia', date: 18 }, { name: 'Wolfgang', date: 25 }, { name: 'Kabuki', date: 29 }, { name: 'Bam', date: 7 }],
-    12: [{ name: 'Fang', date: 18 }, { name: 'Freya', date: 14 }, { name: 'Blanche', date: 21 }, { name: 'Kyle', date: 6 }]
   };
 
   const universalGifts = [
@@ -341,19 +329,22 @@ const VillagerGiftGuide = () => {
             Gift Point Breakdown
           </h3>
           <div style={baseStyles.pointsBreakdown}>
-            <strong>+3 pts:</strong> Furniture ({'>'}10,000 bells)
+            <strong>+3 pts:</strong> Furniture (any value)
           </div>
           <div style={baseStyles.pointsBreakdown}>
-            <strong>+2 pts:</strong> Favorite clothing style ({p.style})
+            <strong>+2 pts:</strong> Clothing (matching style/color), flowers, bugs, fish, favorite songs
           </div>
           <div style={baseStyles.pointsBreakdown}>
-            <strong>+2 pts:</strong> Flowers, Fish, Insects, Tools, or Music
+            <strong>+1 pt:</strong> Any other non-trash item
           </div>
           <div style={baseStyles.pointsBreakdown}>
-            <strong>+1 pt:</strong> Wrapped gift bonus (always wrap!)
+            <strong style={{ color: '#4aacf0' }}>+1 bonus:</strong> Gift wrapping (always wrap!)
+          </div>
+          <div style={baseStyles.pointsBreakdown}>
+            <strong style={{ color: '#d4b030' }}>Value bonus:</strong> 250-749 bells = +1 extra, 750+ bells = +1-3 extra
           </div>
           <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(255, 100, 100, 0.2)' }}>
-            <strong style={{ color: '#ff8888' }}>-2 pts:</strong> Garbage items (boots, cans, tires)
+            <strong style={{ color: '#ff8888' }}>-2 pts:</strong> Trash (boots, cans, tires, weeds, spoiled turnips)
           </div>
         </div>
 
@@ -387,7 +378,7 @@ const VillagerGiftGuide = () => {
             <div style={baseStyles.badgeList}>
               <div>• Never give garbage items</div>
               <div>• Avoid wrong style clothes</div>
-              <div>• Don't skip wrapping (-1 pt)</div>
+              <div>• Don't skip wrapping (miss +1 bonus)</div>
               <div>• No spoiled/rotten fruit</div>
               <div>• Don't gift twice daily</div>
             </div>
@@ -400,22 +391,60 @@ const VillagerGiftGuide = () => {
   // Birthday Calendar Tab
   const renderBirthdayCalendar = () => {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const searchLower = birthdaySearch.toLowerCase().trim();
+
+    // Filter calendar entries if search is active
+    const getMonthVillagers = (monthNum) => {
+      const entries = BIRTHDAY_CALENDAR[monthNum] || [];
+      if (!searchLower) return entries;
+      return entries.filter(v => v.name.toLowerCase().includes(searchLower));
+    };
+
+    const totalResults = searchLower
+      ? Object.keys(BIRTHDAY_CALENDAR).reduce((sum, m) => sum + getMonthVillagers(Number(m)).length, 0)
+      : VILLAGERS.length;
 
     return (
-      <div style={baseStyles.monthGrid}>
-        {months.map((month, idx) => (
-          <div key={idx} style={baseStyles.monthBox}>
-            <div style={baseStyles.monthTitle}>{month}</div>
-            <div style={baseStyles.villagerList}>
-              {birthdayVillagers[idx + 1]?.map((v, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <AssetImg category="villagers" name={v.name} size={24} />
-                  <strong>{v.name}</strong> – {v.date}
-                </div>
-              ))}
-            </div>
+      <div>
+        <div style={{ marginBottom: '16px' }}>
+          <input
+            type="text"
+            placeholder="Search villagers by name..."
+            value={birthdaySearch}
+            onChange={(e) => setBirthdaySearch(e.target.value)}
+            style={{ ...baseStyles.input, marginBottom: '8px' }}
+          />
+          <div style={{ fontSize: '12px', color: '#5a7a50', fontFamily: '"DM Mono", monospace' }}>
+            {searchLower ? `${totalResults} villager${totalResults !== 1 ? 's' : ''} found` : `${VILLAGERS.length} villagers total`}
           </div>
-        ))}
+        </div>
+        <div style={baseStyles.monthGrid}>
+          {months.map((month, idx) => {
+            const villagers = getMonthVillagers(idx + 1);
+            if (searchLower && villagers.length === 0) return null;
+            return (
+              <div key={idx} style={baseStyles.monthBox}>
+                <div style={baseStyles.monthTitle}>
+                  {month}
+                  <span style={{ fontSize: '12px', color: '#5a7a50', fontWeight: 400, marginLeft: '8px' }}>
+                    ({villagers.length})
+                  </span>
+                </div>
+                <div style={{ ...baseStyles.villagerList, maxHeight: '200px', overflowY: 'auto' }}>
+                  {villagers.map((v, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingRight: '4px' }}>
+                      <AssetImg category="villagers" name={v.name} size={20} />
+                      <strong>{v.name}</strong>
+                      <span style={{ marginLeft: 'auto', fontFamily: '"DM Mono", monospace', fontSize: '11px', color: '#5a7a50' }}>
+                        {v.date}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   };
@@ -426,15 +455,52 @@ const VillagerGiftGuide = () => {
       <div>
         <div style={baseStyles.section}>
           <h3 style={{ marginTop: 0, color: '#5ec850', fontFamily: '"Playfair Display", serif' }}>Add Island Resident (Max 10)</h3>
-          <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
-            <input
-              type="text"
-              placeholder="Villager name..."
-              value={villagerInput}
-              onChange={(e) => setVillagerInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && addVillager()}
-              style={{ ...baseStyles.input, flex: 1 }}
-            />
+          <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', position: 'relative' }}>
+            <div style={{ flex: 1, position: 'relative' }}>
+              <input
+                type="text"
+                placeholder="Villager name..."
+                value={villagerInput}
+                onChange={(e) => { setVillagerInput(e.target.value); setShowAutocomplete(true); }}
+                onKeyPress={(e) => e.key === 'Enter' && addVillager()}
+                onBlur={() => setTimeout(() => setShowAutocomplete(false), 150)}
+                onFocus={() => villagerInput.length > 0 && setShowAutocomplete(true)}
+                style={baseStyles.input}
+              />
+              {showAutocomplete && villagerInput.length >= 1 && (() => {
+                const suggestions = VILLAGERS.filter(v =>
+                  v.name.toLowerCase().startsWith(villagerInput.toLowerCase())
+                ).slice(0, 8);
+                if (suggestions.length === 0) return null;
+                return (
+                  <div style={{
+                    position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10,
+                    background: 'rgba(12, 28, 14, 0.98)', border: '1px solid rgba(94, 200, 80, 0.3)',
+                    borderRadius: '0 0 4px 4px', maxHeight: '200px', overflowY: 'auto'
+                  }}>
+                    {suggestions.map(v => (
+                      <div
+                        key={v.name}
+                        onMouseDown={() => { setVillagerInput(v.name); setShowAutocomplete(false); }}
+                        style={{
+                          padding: '8px 10px', cursor: 'pointer', fontSize: '13px',
+                          display: 'flex', alignItems: 'center', gap: '8px',
+                          borderBottom: '1px solid rgba(94, 200, 80, 0.1)'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(94, 200, 80, 0.1)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                      >
+                        <AssetImg category="villagers" name={v.name} size={20} />
+                        <span style={{ color: '#5ec850' }}>{v.name}</span>
+                        <span style={{ fontSize: '11px', color: '#5a7a50', marginLeft: 'auto' }}>
+                          {v.species} / {v.personality}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
             <button
               onClick={addVillager}
               disabled={myVillagers.length >= 10}
