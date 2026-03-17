@@ -24,7 +24,7 @@ const CelesteMeteorTracker = () => {
     { name: 'Cancer', emoji: '♋', dates: 'Jun 21 - Jul 22', item: 'Cancer Table', materials: '2 Cancer Frags, 3 Star Frags, 2 Gold Nuggets, 3 Stone' },
     { name: 'Leo', emoji: '♌', dates: 'Jul 23 - Aug 22', item: 'Leo Sculpture', materials: '2 Leo Frags, 3 Star Frags, 2 Gold Nuggets, 3 Stone' },
     { name: 'Virgo', emoji: '♍', dates: 'Aug 23 - Sep 22', item: 'Virgo Harp', materials: '2 Virgo Frags, 3 Star Frags, 2 Gold Nuggets, 4 Stone' },
-    { name: 'Libra', emoji: '♎', dates: 'Sep 23 - Oct 22', item: 'Libra Scale', materials: '2 Libra Frags, 3 Star Frags, 2 Gold Nuggets, 4 Stone' },
+    { name: 'Libra', emoji: '♎', dates: 'Sep 23 - Oct 22', item: 'Libra Scale', materials: '2 Libra Frags, 3 Star Frags, 2 Gold Nuggets' },
     { name: 'Scorpio', emoji: '♏', dates: 'Oct 23 - Nov 21', item: 'Scorpio Lamp', materials: '2 Scorpio Frags, 3 Star Frags, 2 Gold Nuggets, 5 Stone' },
     { name: 'Sagittarius', emoji: '♐', dates: 'Nov 22 - Dec 21', item: 'Sagittarius Arrow', materials: '2 Sagittarius Frags, 3 Star Frags, 2 Gold Nuggets' },
   ];
