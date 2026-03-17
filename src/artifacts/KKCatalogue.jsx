@@ -130,11 +130,27 @@ export default function KKCatalogue() {
   const [rooms, setRooms] = useState([]);
   const [newRoomName, setNewRoomName] = useState('');
   const [hoveredSongId, setHoveredSongId] = useState(null);
+  const [selectedSong, setSelectedSong] = useState(null);
+  const [isDrawerClosing, setIsDrawerClosing] = useState(false);
 
   useEffect(() => {
     loadCollectedSongs();
     loadWallPlan();
   }, []);
+
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') closeDrawer(); };
+    if (selectedSong) window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [selectedSong]);
+
+  const closeDrawer = () => {
+    setIsDrawerClosing(true);
+    setTimeout(() => {
+      setSelectedSong(null);
+      setIsDrawerClosing(false);
+    }, 200);
+  };
 
   const loadCollectedSongs = async () => {
     try {
@@ -612,6 +628,139 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '13px',
     },
+    drawerBackdrop: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      zIndex: 9999,
+    },
+    drawerPanel: {
+      position: 'fixed',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: typeof window !== 'undefined' && window.innerWidth < 600 ? '100%' : '420px',
+      backgroundColor: '#0a1a10',
+      borderLeft: '1px solid rgba(94, 200, 80, 0.3)',
+      zIndex: 10000,
+      overflowY: 'auto',
+      padding: '24px',
+      animation: isDrawerClosing ? 'kkDrawerSlideOut 0.2s ease-in forwards' : 'kkDrawerSlideIn 0.25s ease-out forwards',
+    },
+    drawerCloseBtn: {
+      position: 'absolute',
+      top: '16px',
+      right: '16px',
+      background: 'rgba(94, 200, 80, 0.1)',
+      border: '1px solid rgba(94, 200, 80, 0.3)',
+      borderRadius: '50%',
+      width: '36px',
+      height: '36px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#c8e6c0',
+      fontSize: '18px',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+    },
+    drawerAlbumContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: '16px',
+      marginBottom: '20px',
+    },
+    drawerEmojiContainer: {
+      width: '280px',
+      height: '280px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'rgba(94, 200, 80, 0.05)',
+      border: '1px solid rgba(94, 200, 80, 0.2)',
+      borderRadius: '12px',
+      fontSize: '96px',
+    },
+    drawerSongTitle: {
+      fontFamily: "'Playfair Display', serif",
+      fontSize: '28px',
+      fontWeight: '700',
+      color: '#5ec850',
+      textAlign: 'center',
+      marginBottom: '16px',
+    },
+    drawerGenrePill: {
+      display: 'inline-block',
+      backgroundColor: 'rgba(212, 176, 48, 0.25)',
+      border: '1px solid rgba(212, 176, 48, 0.5)',
+      borderRadius: '16px',
+      padding: '6px 16px',
+      fontSize: '13px',
+      fontWeight: '600',
+      color: '#d4b030',
+    },
+    drawerMoodPill: {
+      display: 'inline-block',
+      backgroundColor: 'transparent',
+      border: '1px solid rgba(74, 172, 240, 0.5)',
+      borderRadius: '16px',
+      padding: '5px 12px',
+      fontSize: '12px',
+      fontWeight: '500',
+      color: '#4aacf0',
+    },
+    drawerSection: {
+      marginTop: '24px',
+      paddingTop: '20px',
+      borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+    },
+    drawerSectionLabel: {
+      fontSize: '11px',
+      fontWeight: '700',
+      color: '#5a7a50',
+      textTransform: 'uppercase',
+      letterSpacing: '1px',
+      marginBottom: '12px',
+    },
+    drawerHiddenBadge: {
+      display: 'inline-block',
+      backgroundColor: 'rgba(220, 60, 60, 0.15)',
+      border: '1px solid rgba(220, 60, 60, 0.4)',
+      borderRadius: '16px',
+      padding: '6px 14px',
+      fontSize: '12px',
+      fontWeight: '600',
+      color: '#e05050',
+    },
+    drawerObtainBox: {
+      backgroundColor: 'rgba(94, 200, 80, 0.06)',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+      borderRadius: '8px',
+      padding: '14px',
+      fontSize: '13px',
+      color: '#c8e6c0',
+      lineHeight: '1.6',
+    },
+    drawerCheckboxRow: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      marginTop: '20px',
+      padding: '14px',
+      backgroundColor: 'rgba(94, 200, 80, 0.06)',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+    },
+    drawerCheckbox: {
+      width: '22px',
+      height: '22px',
+      cursor: 'pointer',
+      accentColor: '#5ec850',
+    },
   };
 
   return (
@@ -619,6 +768,10 @@ export default function KKCatalogue() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
+        @keyframes kkDrawerSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes kkDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        @keyframes kkFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes kkFadeOut { from { opacity: 1; } to { opacity: 0; } }
       `}</style>
       <div style={styles.panel}>
         <h1 style={styles.header}>🎵 K.K. Catalogue</h1>
@@ -709,6 +862,7 @@ export default function KKCatalogue() {
                     }}
                     onMouseEnter={() => setHoveredSongId(song.id)}
                     onMouseLeave={() => setHoveredSongId(null)}
+                    onClick={() => setSelectedSong(song)}
                   >
                     <AssetImg category="music" name={song.name} size={48} imageType="Album Image" />
                     <div style={styles.songName}>{song.name}</div>
@@ -724,6 +878,7 @@ export default function KKCatalogue() {
                         type="checkbox"
                         checked={isCollected}
                         onChange={() => toggleSongCollected(song.id)}
+                        onClick={(e) => e.stopPropagation()}
                         style={styles.checkbox}
                       />
                       <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)' }}>
@@ -871,6 +1026,95 @@ export default function KKCatalogue() {
           </div>
         )}
       </div>
+
+      {selectedSong && (() => {
+        const song = selectedSong;
+        const isCollected = collectedSongs.has(song.id);
+        const isHiddenSong = song.isHidden;
+        return (
+          <>
+            <div
+              style={{
+                ...styles.drawerBackdrop,
+                animation: isDrawerClosing ? 'kkFadeOut 0.2s ease-in forwards' : 'kkFadeIn 0.2s ease-out forwards',
+              }}
+              onClick={closeDrawer}
+            />
+            <div style={styles.drawerPanel}>
+              <button
+                style={styles.drawerCloseBtn}
+                onClick={closeDrawer}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.25)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'; }}
+              >
+                ✕
+              </button>
+
+              <div style={styles.drawerAlbumContainer}>
+                <AssetImg category="music" name={song.name} size={280} imageType="Album Image" />
+              </div>
+
+              <div style={styles.drawerSongTitle}>{song.name}</div>
+
+              <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+                <span style={styles.drawerGenrePill}>{song.genre}</span>
+              </div>
+
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', marginBottom: '8px' }}>
+                {song.mood.map(m => (
+                  <span key={m} style={styles.drawerMoodPill}>{m}</span>
+                ))}
+              </div>
+
+              {isHiddenSong && (
+                <div style={{ textAlign: 'center', marginTop: '12px' }}>
+                  <span style={styles.drawerHiddenBadge}>🔒 Secret Song</span>
+                </div>
+              )}
+
+              <div style={styles.drawerSection}>
+                <div style={styles.drawerSectionLabel}>Wall Display</div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <AssetImg category="music" name={song.name} size={160} imageType="Framed Image" />
+                </div>
+              </div>
+
+              <div style={styles.drawerSection}>
+                <div style={styles.drawerSectionLabel}>How to Obtain</div>
+                <div style={styles.drawerObtainBox}>
+                  {isHiddenSong ? (
+                    <div>
+                      <div style={{ marginBottom: '8px' }}>🔒 Must be requested by exact name — not in K.K.'s regular rotation.</div>
+                      <div>💰 Nook Shopping: 3,200 Bells</div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ marginBottom: '8px' }}>🎵 Request from K.K. Slider on Saturday nights. Available at Nook Shopping after first listen.</div>
+                      <div>💰 Nook Shopping: 3,200 Bells</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div
+                style={styles.drawerCheckboxRow}
+                onClick={() => toggleSongCollected(song.id)}
+              >
+                <input
+                  type="checkbox"
+                  checked={isCollected}
+                  onChange={() => toggleSongCollected(song.id)}
+                  onClick={(e) => e.stopPropagation()}
+                  style={styles.drawerCheckbox}
+                />
+                <span style={{ fontSize: '14px', fontWeight: '600', color: isCollected ? '#5ec850' : '#c8e6c0' }}>
+                  {isCollected ? '✅ Collected' : 'Mark as Collected'}
+                </span>
+              </div>
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 }
