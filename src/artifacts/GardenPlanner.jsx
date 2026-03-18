@@ -707,6 +707,7 @@ export default function GardenPlanner() {
       width: '100%',
       accentColor: '#5ec850',
       cursor: 'pointer',
+      outline: 'none',
     },
     offspringChip: (hex) => ({
       display: 'inline-flex',
