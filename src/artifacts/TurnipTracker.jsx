@@ -3,23 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import AlertModal from '../AlertModal';
 
-const TurnipTracker = () => {
-  const STORAGE_KEY = 'acnh-turnip-tracker';
-  const DAYS = [
-    { label: 'Monday AM', key: 'monAM' },
-    { label: 'Monday PM', key: 'monPM' },
-    { label: 'Tuesday AM', key: 'tueAM' },
-    { label: 'Tuesday PM', key: 'tuePM' },
-    { label: 'Wednesday AM', key: 'wedAM' },
-    { label: 'Wednesday PM', key: 'wedPM' },
-    { label: 'Thursday AM', key: 'thuAM' },
-    { label: 'Thursday PM', key: 'thuPM' },
-    { label: 'Friday AM', key: 'friAM' },
-    { label: 'Friday PM', key: 'friPM' },
-    { label: 'Saturday AM', key: 'satAM' },
-    { label: 'Saturday PM', key: 'satPM' },
-  ];
+const STORAGE_KEY = 'acnh-turnip-tracker';
+const DAYS = [
+  { label: 'Monday AM', key: 'monAM' },
+  { label: 'Monday PM', key: 'monPM' },
+  { label: 'Tuesday AM', key: 'tueAM' },
+  { label: 'Tuesday PM', key: 'tuePM' },
+  { label: 'Wednesday AM', key: 'wedAM' },
+  { label: 'Wednesday PM', key: 'wedPM' },
+  { label: 'Thursday AM', key: 'thuAM' },
+  { label: 'Thursday PM', key: 'thuPM' },
+  { label: 'Friday AM', key: 'friAM' },
+  { label: 'Friday PM', key: 'friPM' },
+  { label: 'Saturday AM', key: 'satAM' },
+  { label: 'Saturday PM', key: 'satPM' },
+];
 
+const TurnipTracker = () => {
   const [buyPrice, setBuyPrice] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [prices, setPrices] = useState({

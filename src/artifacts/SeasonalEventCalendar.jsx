@@ -3,6 +3,74 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 
+// ACNH Event Data
+const monthlyEvents = {
+  january: [
+    { name: "New Year's Day", emoji: '🎉', dateRange: 'Jan 1', type: 'holiday' },
+    { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
+  ],
+  february: [
+    { name: 'Setsubun', emoji: '👹', dateRange: 'Feb 1-3', type: 'holiday' },
+    { name: 'Groundhog Day', emoji: '🦡', dateRange: 'Feb 2', type: 'holiday' },
+    { name: 'Festivale', emoji: '🎭', dateRange: 'Feb (varies)', type: 'festival' },
+    { name: "Valentine's Day", emoji: '💝', dateRange: 'Feb 14', type: 'holiday' },
+  ],
+  march: [
+    { name: 'Shamrock Day', emoji: '☘️', dateRange: 'Mar 10-17', type: 'holiday' },
+  ],
+  april: [
+    { name: 'Bunny Day (Easter)', emoji: '🐰', dateRange: 'Easter Sunday', type: 'festival' },
+    { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
+    { name: 'Nature Day', emoji: '🌍', dateRange: 'Apr 15-22', type: 'celebration' },
+  ],
+  may: [
+    { name: 'May Day Event', emoji: '🌸', dateRange: 'Apr 29 - May 7', type: 'festival' },
+    { name: 'Museum Day', emoji: '🏛️', dateRange: 'May 18-31', type: 'celebration' },
+  ],
+  june: [
+    { name: 'Wedding Season', emoji: '💒', dateRange: 'Entire month', type: 'season' },
+    { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
+  ],
+  july: [
+    { name: 'Tanabata Festival', emoji: '⭐', dateRange: 'Jul 1-7', type: 'festival' },
+    { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
+    { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
+  ],
+  august: [
+    { name: 'Fireworks Show', emoji: '🎆', dateRange: 'Every Sunday', type: 'celebration' },
+    { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
+  ],
+  september: [
+    { name: 'Bug-Off (Final)', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
+  ],
+  october: [
+    { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
+    { name: 'Halloween', emoji: '👻', dateRange: 'Oct 31', type: 'holiday' },
+  ],
+  november: [
+    { name: 'Turkey Day', emoji: '🦃', dateRange: '4th Thursday', type: 'holiday' },
+  ],
+  december: [
+    { name: 'Toy Day', emoji: '🎁', dateRange: 'Dec 24', type: 'holiday' },
+    { name: "New Year's Countdown", emoji: '🎊', dateRange: 'Dec 31', type: 'holiday' },
+  ],
+};
+
+const npcVisitors = [
+  { name: 'Kicks', emoji: '👟', assetName: 'Kicks', offers: 'Shoes & bags', frequency: 'Random weekly' },
+  { name: 'Label', emoji: '📋', assetName: 'Label', offers: 'Fashion items', frequency: 'Random weekly' },
+  { name: 'Saharah', emoji: '🏜️', assetName: 'Saharah', offers: 'Rugs & flooring', frequency: 'Random weekly' },
+  { name: 'Leif', emoji: '🌿', assetName: 'Leif', offers: 'Shrubs & flowers', frequency: 'Random weekly' },
+  { name: 'Redd', emoji: '🎨', assetName: 'Redd', offers: 'Artwork (some fake)', frequency: 'Random weekly' },
+  { name: 'Flick', emoji: '🦗', assetName: null, offers: 'Bug models', frequency: 'Random weekly' },
+  { name: 'C.J.', emoji: '🐟', assetName: null, offers: 'Fish models', frequency: 'Random weekly' },
+  { name: 'Gulliver', emoji: '⚓', assetName: 'Gulliver', offers: 'Souvenirs', frequency: 'Random weekly' },
+  { name: 'Gullivarrr', emoji: '🏴‍☠️', assetName: null, offers: 'Pirate items', frequency: 'Random weekly' },
+  { name: 'Wisp', emoji: '👻', assetName: null, offers: 'Furniture & clothing', frequency: 'Random nights (8 PM - 5 AM)' },
+  { name: 'Celeste', emoji: '🔭', assetName: 'Celeste', offers: 'DIY recipes (star, zodiac, wand)', frequency: 'Random meteor shower nights' },
+  { name: 'K.K. Slider', emoji: '🎸', assetName: 'K.K.', offers: 'Music', frequency: 'Saturdays' },
+];
+
 const SeasonalEventCalendar = () => {
   const [activeTab, setActiveTab] = useState('calendar');
   const [hemisphere, setHemisphere] = useState('northern');
@@ -49,59 +117,6 @@ const SeasonalEventCalendar = () => {
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
 
-  // ACNH Event Data
-  const monthlyEvents = {
-    january: [
-      { name: "New Year's Day", emoji: '🎉', dateRange: 'Jan 1', type: 'holiday' },
-      { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
-    ],
-    february: [
-      { name: 'Setsubun', emoji: '👹', dateRange: 'Feb 1-3', type: 'holiday' },
-      { name: 'Groundhog Day', emoji: '🦡', dateRange: 'Feb 2', type: 'holiday' },
-      { name: 'Festivale', emoji: '🎭', dateRange: 'Feb (varies)', type: 'festival' },
-      { name: "Valentine's Day", emoji: '💝', dateRange: 'Feb 14', type: 'holiday' },
-    ],
-    march: [
-      { name: 'Shamrock Day', emoji: '☘️', dateRange: 'Mar 10-17', type: 'holiday' },
-    ],
-    april: [
-      { name: 'Bunny Day (Easter)', emoji: '🐰', dateRange: 'Easter Sunday', type: 'festival' },
-      { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
-      { name: 'Nature Day', emoji: '🌍', dateRange: 'Apr 15-22', type: 'celebration' },
-    ],
-    may: [
-      { name: 'May Day Event', emoji: '🌸', dateRange: 'Apr 29 - May 7', type: 'festival' },
-      { name: 'Museum Day', emoji: '🏛️', dateRange: 'May 18-31', type: 'celebration' },
-    ],
-    june: [
-      { name: 'Wedding Season', emoji: '💒', dateRange: 'Entire month', type: 'season' },
-      { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
-    ],
-    july: [
-      { name: 'Tanabata Festival', emoji: '⭐', dateRange: 'Jul 1-7', type: 'festival' },
-      { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
-      { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
-    ],
-    august: [
-      { name: 'Fireworks Show', emoji: '🎆', dateRange: 'Every Sunday', type: 'celebration' },
-      { name: 'Bug-Off', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
-    ],
-    september: [
-      { name: 'Bug-Off (Final)', emoji: '🦗', dateRange: '4th Saturday', type: 'tournament' },
-    ],
-    october: [
-      { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
-      { name: 'Halloween', emoji: '👻', dateRange: 'Oct 31', type: 'holiday' },
-    ],
-    november: [
-      { name: 'Turkey Day', emoji: '🦃', dateRange: '4th Thursday', type: 'holiday' },
-    ],
-    december: [
-      { name: 'Toy Day', emoji: '🎁', dateRange: 'Dec 24', type: 'holiday' },
-      { name: "New Year's Countdown", emoji: '🎊', dateRange: 'Dec 31', type: 'holiday' },
-    ],
-  };
-
   const seasonalMaterials = {
     northern: [
       { name: 'Cherry Blossoms', emoji: '🌸', available: 'Apr 1-10', type: 'spring' },
@@ -124,21 +139,6 @@ const SeasonalEventCalendar = () => {
       { name: 'Holiday Ornaments', emoji: '🎀', available: 'Jun 15 - Jul 6', type: 'winter' },
     ],
   };
-
-  const npcVisitors = [
-    { name: 'Kicks', emoji: '👟', assetName: 'Kicks', offers: 'Shoes & bags', frequency: 'Random weekly' },
-    { name: 'Label', emoji: '📋', assetName: 'Label', offers: 'Fashion items', frequency: 'Random weekly' },
-    { name: 'Saharah', emoji: '🏜️', assetName: 'Saharah', offers: 'Rugs & flooring', frequency: 'Random weekly' },
-    { name: 'Leif', emoji: '🌿', assetName: 'Leif', offers: 'Shrubs & flowers', frequency: 'Random weekly' },
-    { name: 'Redd', emoji: '🎨', assetName: 'Redd', offers: 'Artwork (some fake)', frequency: 'Random weekly' },
-    { name: 'Flick', emoji: '🦗', assetName: null, offers: 'Bug models', frequency: 'Random weekly' },
-    { name: 'C.J.', emoji: '🐟', assetName: null, offers: 'Fish models', frequency: 'Random weekly' },
-    { name: 'Gulliver', emoji: '⚓', assetName: 'Gulliver', offers: 'Souvenirs', frequency: 'Random weekly' },
-    { name: 'Gullivarrr', emoji: '🏴‍☠️', assetName: null, offers: 'Pirate items', frequency: 'Random weekly' },
-    { name: 'Wisp', emoji: '👻', assetName: null, offers: 'Furniture & clothing', frequency: 'Random nights (8 PM - 5 AM)' },
-    { name: 'Celeste', emoji: '🔭', assetName: 'Celeste', offers: 'DIY recipes (star, zodiac, wand)', frequency: 'Random meteor shower nights' },
-    { name: 'K.K. Slider', emoji: '🎸', assetName: 'K.K.', offers: 'Music', frequency: 'Saturdays' },
-  ];
 
   const styles = {
     container: {

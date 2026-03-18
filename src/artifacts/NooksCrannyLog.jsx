@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import AlertModal from '../AlertModal';
 
+const STORAGE_KEY = 'acnh-nooks-cranny-log';
+
 const NooksCrannyLog = () => {
-  const STORAGE_KEY = 'acnh-nooks-cranny-log';
   const [entries, setEntries] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);

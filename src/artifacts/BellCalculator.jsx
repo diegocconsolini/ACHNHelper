@@ -2,6 +2,26 @@
 
 import React, { useState, useEffect } from 'react';
 
+const loanData = {
+  tent: { name: 'Tent → House', cost: 98000 },
+  exp1: { name: '1st Expansion', cost: 198000 },
+  exp2: { name: '2nd Expansion', cost: 348000 },
+  exp3: { name: '3rd Expansion', cost: 548000 },
+  exp4: { name: '4th Expansion', cost: 758000 },
+  exp5: { name: '5th Expansion', cost: 1248000 },
+  exp6: { name: '6th Expansion', cost: 2498000 },
+  storage: { name: 'Storage Upgrade', cost: 500000 },
+};
+
+const incomeCategories = {
+  moneyTrees: { label: 'Money Trees', default: 50000 },
+  moneyRock: { label: 'Money Rock', default: 16100 },
+  fossils: { label: 'Fossils', default: 30000 },
+  shells: { label: 'Shells', default: 20000 },
+  hotItem: { label: 'Hot Item Selling', default: 40000 },
+  fruitSales: { label: 'Fruit Selling', default: 25000 },
+};
+
 export default function BellCalculator() {
   const [activeTab, setActiveTab] = useState('selling');
   const [items, setItems] = useState([]);
@@ -11,26 +31,6 @@ export default function BellCalculator() {
   const [loans, setLoans] = useState({});
   const [targetDays, setTargetDays] = useState('30');
   const [dailyIncome, setDailyIncome] = useState({});
-
-  const loanData = {
-    tent: { name: 'Tent → House', cost: 98000 },
-    exp1: { name: '1st Expansion', cost: 198000 },
-    exp2: { name: '2nd Expansion', cost: 348000 },
-    exp3: { name: '3rd Expansion', cost: 548000 },
-    exp4: { name: '4th Expansion', cost: 758000 },
-    exp5: { name: '5th Expansion', cost: 1248000 },
-    exp6: { name: '6th Expansion', cost: 2498000 },
-    storage: { name: 'Storage Upgrade', cost: 500000 },
-  };
-
-  const incomeCategories = {
-    moneyTrees: { label: 'Money Trees', default: 50000 },
-    moneyRock: { label: 'Money Rock', default: 16100 },
-    fossils: { label: 'Fossils', default: 30000 },
-    shells: { label: 'Shells', default: 20000 },
-    hotItem: { label: 'Hot Item Selling', default: 40000 },
-    fruitSales: { label: 'Fruit Selling', default: 25000 },
-  };
 
   useEffect(() => {
     loadData();

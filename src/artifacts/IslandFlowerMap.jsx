@@ -131,6 +131,21 @@ const KanbanColumn = ({ status, projects: columnProjects, getStatusColor, getPri
   </div>
 );
 
+const FLOWER_SPECIES = [
+  'Rose', 'Tulip', 'Pansy', 'Cosmos', 'Lily', 'Hyacinth', 'Windflower', 'Mum'
+];
+
+const HYBRID_COLORS = {
+  Rose: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Purple', 'Blue', 'Black', 'Gold'],
+  Tulip: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Purple'],
+  Pansy: ['Red', 'White', 'Yellow', 'Orange', 'Blue', 'Purple'],
+  Cosmos: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Black'],
+  Lily: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Black'],
+  Hyacinth: ['Red', 'White', 'Blue', 'Purple', 'Pink'],
+  Windflower: ['Red', 'White', 'Orange', 'Pink', 'Blue', 'Purple'],
+  Mum: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Purple', 'Green']
+};
+
 const IslandFlowerMap = () => {
   const [projects, setProjects] = useState([]);
   const [wateringLog, setWateringLog] = useState([]);
@@ -142,21 +157,6 @@ const IslandFlowerMap = () => {
     notes: '',
     priority: 'Medium'
   });
-
-  const FLOWER_SPECIES = [
-    'Rose', 'Tulip', 'Pansy', 'Cosmos', 'Lily', 'Hyacinth', 'Windflower', 'Mum'
-  ];
-
-  const HYBRID_COLORS = {
-    Rose: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Purple', 'Blue', 'Black', 'Gold'],
-    Tulip: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Purple'],
-    Pansy: ['Red', 'White', 'Yellow', 'Orange', 'Blue', 'Purple'],
-    Cosmos: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Black'],
-    Lily: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Black'],
-    Hyacinth: ['Red', 'White', 'Blue', 'Purple', 'Pink'],
-    Windflower: ['Red', 'White', 'Orange', 'Pink', 'Blue', 'Purple'],
-    Mum: ['Red', 'White', 'Yellow', 'Orange', 'Pink', 'Purple', 'Green']
-  };
 
   useEffect(() => {
     const loadData = async () => {

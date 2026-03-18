@@ -4,6 +4,23 @@ import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 import { VILLAGERS, BIRTHDAY_CALENDAR } from './villagerData';
 
+const personalities = {
+  normal: { style: 'Simple/Cute', emoji: '😊', color: '#f9b4d6' },
+  peppy: { style: 'Cute/Colorful', emoji: '🌟', color: '#ff88cc' },
+  lazy: { style: 'Simple/Outdoorsy', emoji: '😴', color: '#98d2a6' },
+  jock: { style: 'Active/Cool', emoji: '💪', color: '#ff8844' },
+  cranky: { style: 'Cool/Elegant', emoji: '😤', color: '#996633' },
+  snooty: { style: 'Elegant/Gorgeous', emoji: '💅', color: '#ffdd99' },
+  smug: { style: 'Elegant/Cool', emoji: '🎩', color: '#88ddff' },
+  uchi: { style: 'Active/Cool', emoji: '🤙', color: '#ff99dd' }
+};
+
+const universalGifts = [
+  { name: 'Iron Wall Lamp', bells: 2500, reason: 'No style conflict, moderately valued' },
+  { name: 'Fruit (any crafted)', bells: 'Varies', reason: 'All villagers love fruit items' },
+  { name: 'Non-native fruit', bells: '100-200', reason: 'Simple, always appreciated' }
+];
+
 const VillagerGiftGuide = () => {
   const [activeTab, setActiveTab] = useState('guide');
   const [selectedPersonality, setSelectedPersonality] = useState('normal');
@@ -14,23 +31,6 @@ const VillagerGiftGuide = () => {
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [giftLog, setGiftLog] = useState([]);
   const [dreamieWishlist, setDreamieWishlist] = useState('');
-
-  const personalities = {
-    normal: { style: 'Simple/Cute', emoji: '😊', color: '#f9b4d6' },
-    peppy: { style: 'Cute/Colorful', emoji: '🌟', color: '#ff88cc' },
-    lazy: { style: 'Simple/Outdoorsy', emoji: '😴', color: '#98d2a6' },
-    jock: { style: 'Active/Cool', emoji: '💪', color: '#ff8844' },
-    cranky: { style: 'Cool/Elegant', emoji: '😤', color: '#996633' },
-    snooty: { style: 'Elegant/Gorgeous', emoji: '💅', color: '#ffdd99' },
-    smug: { style: 'Elegant/Cool', emoji: '🎩', color: '#88ddff' },
-    uchi: { style: 'Active/Cool', emoji: '🤙', color: '#ff99dd' }
-  };
-
-  const universalGifts = [
-    { name: 'Iron Wall Lamp', bells: 2500, reason: 'No style conflict, moderately valued' },
-    { name: 'Fruit (any crafted)', bells: 'Varies', reason: 'All villagers love fruit items' },
-    { name: 'Non-native fruit', bells: '100-200', reason: 'Simple, always appreciated' }
-  ];
 
   // Load data on mount
   useEffect(() => {

@@ -3,184 +3,184 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 
+const FISH = [
+  'Bitterling', 'Pale Chub', 'Crucian Carp', 'Dace', 'Carp', 'Koi', 'Goldfish', 'Pop-eyed Goldfish', 'Ranchu Goldfish', 'Killifish',
+  'Crawfish', 'Soft-shelled Turtle', 'Snapping Turtle', 'Tadpole', 'Frog', 'Freshwater Goby', 'Loach', 'Catfish', 'Giant Snakehead', 'Bluegill',
+  'Yellow Perch', 'Black Bass', 'Tilapia', 'Pike', 'Pond Smelt', 'Sweetfish', 'Cherry Salmon', 'Char', 'Golden Trout', 'Stringfish',
+  'Salmon', 'King Salmon', 'Mitten Crab', 'Guppy', 'Nibble Fish', 'Angelfish', 'Betta', 'Neon Tetra', 'Rainbowfish', 'Piranha',
+  'Arowana', 'Dorado', 'Gar', 'Arapaima', 'Saddled Bichir', 'Sturgeon', 'Sea Butterfly', 'Sea Horse', 'Clown Fish', 'Surgeonfish',
+  'Butterfly Fish', 'Napoleonfish', 'Zebra Turkeyfish', 'Blowfish', 'Puffer Fish', 'Anchovy', 'Horse Mackerel', 'Barred Knifejaw', 'Sea Bass', 'Red Snapper',
+  'Dab', 'Olive Flounder', 'Squid', 'Moray Eel', 'Ribbon Eel', 'Tuna', 'Blue Marlin', 'Giant Trevally', 'Mahi-Mahi', 'Ocean Sunfish',
+  'Ray', 'Saw Shark', 'Hammerhead Shark', 'Great White Shark', 'Whale Shark', 'Suckerfish', 'Football Fish', 'Oarfish', 'Barreleye', 'Coelacanth'
+];
+
+const BUGS = [
+  'Common Butterfly', 'Yellow Butterfly', 'Tiger Butterfly', 'Peacock Butterfly', 'Common Bluebottle', 'Paper Kite Butterfly', 'Great Purple Emperor', 'Monarch Butterfly', 'Emperor Butterfly', 'Agrias Butterfly',
+  'Rajah Brooke\'s Birdwing', 'Queen Alexandra\'s Birdwing', 'Moth', 'Atlas Moth', 'Madagascan Sunset Moth', 'Long Locust', 'Migratory Locust', 'Rice Grasshopper', 'Grasshopper', 'Cricket',
+  'Bell Cricket', 'Mantis', 'Orchid Mantis', 'Honeybee', 'Wasp', 'Brown Cicada', 'Robust Cicada', 'Giant Cicada', 'Walker Cicada', 'Evening Cicada',
+  'Cicada Shell', 'Red Dragonfly', 'Darner Dragonfly', 'Banded Dragonfly', 'Damselfly', 'Firefly', 'Mole Cricket', 'Pondskater', 'Diving Beetle', 'Giant Water Bug',
+  'Stinkbug', 'Man-faced Stink Bug', 'Ladybug', 'Tiger Beetle', 'Jewel Beetle', 'Violin Beetle', 'Citrus Long-horned Beetle', 'Rosalia Batesi Beetle', 'Blue Weevil Beetle', 'Dung Beetle',
+  'Earth-boring Dung Beetle', 'Scarab Beetle', 'Drone Beetle', 'Goliath Beetle', 'Saw Stag', 'Miyama Stag', 'Giant Stag', 'Rainbow Stag', 'Cyclommatus Stag', 'Golden Stag',
+  'Giraffe Stag', 'Horned Dynastid', 'Horned Atlas', 'Horned Elephant', 'Horned Hercules', 'Walking Leaf', 'Walking Stick', 'Bagworm', 'Ant', 'Hermit Crab',
+  'Wharf Roach', 'Fly', 'Mosquito', 'Flea', 'Snail', 'Pill Bug', 'Centipede', 'Spider', 'Tarantula', 'Scorpion'
+];
+
+const SEA_CREATURES = [
+  'Seaweed', 'Sea Grapes', 'Sea Cucumber', 'Sea Pig', 'Sea Star', 'Sea Urchin', 'Slate Pencil Urchin', 'Sea Anemone', 'Moon Jellyfish', 'Sea Slug',
+  'Pearl Oyster', 'Mussel', 'Oyster', 'Scallop', 'Turban Shell', 'Abalone', 'Gigas Giant Clam', 'Chambered Nautilus', 'Octopus', 'Umbrella Octopus',
+  'Vampire Squid', 'Firefly Squid', 'Gazami Crab', 'Dungeness Crab', 'Snow Crab', 'Red King Crab', 'Acorn Barnacle', 'Spider Crab', 'Tiger Prawn', 'Sweet Shrimp',
+  'Mantis Shrimp', 'Spiny Lobster', 'Lobster', 'Giant Isopod', 'Horseshoe Crab', 'Sea Pineapple', 'Spotted Garden Eel', 'Flatworm', 'Venus\' Flower Basket', 'Whelk'
+];
+
+const FOSSILS = [
+  // Ankylosaurus (3 parts)
+  { id: 1, name: 'Ankylo Skull', species: 'Ankylosaurus', part: 'Skull', sellPrice: 3500 },
+  { id: 2, name: 'Ankylo Torso', species: 'Ankylosaurus', part: 'Torso', sellPrice: 3000 },
+  { id: 3, name: 'Ankylo Tail', species: 'Ankylosaurus', part: 'Tail', sellPrice: 2500 },
+  // Archelon (2 parts)
+  { id: 4, name: 'Archelon Skull', species: 'Archelon', part: 'Skull', sellPrice: 4000 },
+  { id: 5, name: 'Archelon Tail', species: 'Archelon', part: 'Tail', sellPrice: 3500 },
+  // Brachiosaurus (4 parts)
+  { id: 6, name: 'Brachio Skull', species: 'Brachiosaurus', part: 'Skull', sellPrice: 6000 },
+  { id: 7, name: 'Brachio Chest', species: 'Brachiosaurus', part: 'Chest', sellPrice: 5500 },
+  { id: 8, name: 'Brachio Pelvis', species: 'Brachiosaurus', part: 'Pelvis', sellPrice: 5000 },
+  { id: 9, name: 'Brachio Tail', species: 'Brachiosaurus', part: 'Tail', sellPrice: 5500 },
+  // Deinonychus (2 parts)
+  { id: 10, name: 'Deinony Torso', species: 'Deinonychus', part: 'Torso', sellPrice: 3000 },
+  { id: 11, name: 'Deinony Tail', species: 'Deinonychus', part: 'Tail', sellPrice: 2500 },
+  // Dimetrodon (2 parts)
+  { id: 12, name: 'Dimetrodon Skull', species: 'Dimetrodon', part: 'Skull', sellPrice: 5500 },
+  { id: 13, name: 'Dimetrodon Torso', species: 'Dimetrodon', part: 'Torso', sellPrice: 5000 },
+  // Diplodocus (6 parts)
+  { id: 14, name: 'Diplo Skull', species: 'Diplodocus', part: 'Skull', sellPrice: 5000 },
+  { id: 15, name: 'Diplo Neck', species: 'Diplodocus', part: 'Neck', sellPrice: 4500 },
+  { id: 16, name: 'Diplo Chest', species: 'Diplodocus', part: 'Chest', sellPrice: 4000 },
+  { id: 17, name: 'Diplo Pelvis', species: 'Diplodocus', part: 'Pelvis', sellPrice: 4500 },
+  { id: 18, name: 'Diplo Tail', species: 'Diplodocus', part: 'Tail', sellPrice: 5000 },
+  { id: 19, name: 'Diplo Tail Tip', species: 'Diplodocus', part: 'Tail Tip', sellPrice: 4000 },
+  // Iguanodon (3 parts)
+  { id: 20, name: 'Iguanodon Skull', species: 'Iguanodon', part: 'Skull', sellPrice: 4000 },
+  { id: 21, name: 'Iguanodon Torso', species: 'Iguanodon', part: 'Torso', sellPrice: 3500 },
+  { id: 22, name: 'Iguanodon Tail', species: 'Iguanodon', part: 'Tail', sellPrice: 3000 },
+  // Mammoth (2 parts)
+  { id: 23, name: 'Mammoth Skull', species: 'Mammoth', part: 'Skull', sellPrice: 3000 },
+  { id: 24, name: 'Mammoth Torso', species: 'Mammoth', part: 'Torso', sellPrice: 2500 },
+  // Megaceros (3 parts)
+  { id: 25, name: 'Megacero Skull', species: 'Megaceros', part: 'Skull', sellPrice: 4500 },
+  { id: 26, name: 'Megacero Torso', species: 'Megaceros', part: 'Torso', sellPrice: 3500 },
+  { id: 27, name: 'Megacero Tail', species: 'Megaceros', part: 'Tail', sellPrice: 3000 },
+  // Megaloceros (2 parts)
+  { id: 28, name: 'Left Megalo Side', species: 'Megaloceros', part: 'Left Side', sellPrice: 4000 },
+  { id: 29, name: 'Right Megalo Side', species: 'Megaloceros', part: 'Right Side', sellPrice: 5500 },
+  // Ophthalmosaurus (2 parts)
+  { id: 30, name: 'Ophthalmo Skull', species: 'Ophthalmosaurus', part: 'Skull', sellPrice: 2500 },
+  { id: 31, name: 'Ophthalmo Torso', species: 'Ophthalmosaurus', part: 'Torso', sellPrice: 2000 },
+  // Pachycephalosaurus (2 parts)
+  { id: 32, name: 'Pachy Skull', species: 'Pachycephalosaurus', part: 'Skull', sellPrice: 4000 },
+  { id: 33, name: 'Pachy Tail', species: 'Pachycephalosaurus', part: 'Tail', sellPrice: 3500 },
+  // Parasaurolophus (3 parts)
+  { id: 34, name: 'Parasaur Skull', species: 'Parasaurolophus', part: 'Skull', sellPrice: 3500 },
+  { id: 35, name: 'Parasaur Torso', species: 'Parasaurolophus', part: 'Torso', sellPrice: 3000 },
+  { id: 36, name: 'Parasaur Tail', species: 'Parasaurolophus', part: 'Tail', sellPrice: 2500 },
+  // Plesiosaur (3 parts) — "Plesio Body" renamed to "Plesio Torso" in v1.3.0
+  { id: 37, name: 'Plesio Skull', species: 'Plesiosaur', part: 'Skull', sellPrice: 4000 },
+  { id: 38, name: 'Plesio Torso', species: 'Plesiosaur', part: 'Torso', sellPrice: 4500 },
+  { id: 39, name: 'Plesio Tail', species: 'Plesiosaur', part: 'Tail', sellPrice: 4500 },
+  // Pteranodon (3 parts)
+  { id: 40, name: 'Ptera Body', species: 'Pteranodon', part: 'Body', sellPrice: 4000 },
+  { id: 41, name: 'Left Ptera Wing', species: 'Pteranodon', part: 'Left Wing', sellPrice: 4500 },
+  { id: 42, name: 'Right Ptera Wing', species: 'Pteranodon', part: 'Right Wing', sellPrice: 4500 },
+  // Quetzalcoatlus (3 parts)
+  { id: 43, name: 'Quetzal Torso', species: 'Quetzalcoatlus', part: 'Torso', sellPrice: 4500 },
+  { id: 44, name: 'Left Quetzal Wing', species: 'Quetzalcoatlus', part: 'Left Wing', sellPrice: 5000 },
+  { id: 45, name: 'Right Quetzal Wing', species: 'Quetzalcoatlus', part: 'Right Wing', sellPrice: 5000 },
+  // Saber-tooth Tiger (2 parts)
+  { id: 46, name: 'Sabertooth Skull', species: 'Saber-tooth Tiger', part: 'Skull', sellPrice: 2500 },
+  { id: 47, name: 'Sabertooth Tail', species: 'Saber-tooth Tiger', part: 'Tail', sellPrice: 2000 },
+  // Spinosaurus (3 parts)
+  { id: 48, name: 'Spino Skull', species: 'Spinosaurus', part: 'Skull', sellPrice: 4000 },
+  { id: 49, name: 'Spino Torso', species: 'Spinosaurus', part: 'Torso', sellPrice: 3000 },
+  { id: 50, name: 'Spino Tail', species: 'Spinosaurus', part: 'Tail', sellPrice: 2500 },
+  // Stegosaurus (3 parts)
+  { id: 51, name: 'Stego Skull', species: 'Stegosaurus', part: 'Skull', sellPrice: 5000 },
+  { id: 52, name: 'Stego Torso', species: 'Stegosaurus', part: 'Torso', sellPrice: 4500 },
+  { id: 53, name: 'Stego Tail', species: 'Stegosaurus', part: 'Tail', sellPrice: 4000 },
+  // Tyrannosaurus Rex (3 parts)
+  { id: 54, name: 'T. rex Skull', species: 'Tyrannosaurus Rex', part: 'Skull', sellPrice: 6000 },
+  { id: 55, name: 'T. rex Torso', species: 'Tyrannosaurus Rex', part: 'Torso', sellPrice: 5500 },
+  { id: 56, name: 'T. rex Tail', species: 'Tyrannosaurus Rex', part: 'Tail', sellPrice: 5000 },
+  // Triceratops (3 parts)
+  { id: 57, name: 'Tricera Skull', species: 'Triceratops', part: 'Skull', sellPrice: 5500 },
+  { id: 58, name: 'Tricera Torso', species: 'Triceratops', part: 'Torso', sellPrice: 5000 },
+  { id: 59, name: 'Tricera Tail', species: 'Triceratops', part: 'Tail', sellPrice: 4500 },
+  // Standalone fossils (14 pieces)
+  { id: 60, name: 'Acanthostega', species: 'Acanthostega', part: 'Whole', sellPrice: 2000 },
+  { id: 61, name: 'Amber', species: 'Amber', part: 'Whole', sellPrice: 1200 },
+  { id: 62, name: 'Ammonite', species: 'Ammonite', part: 'Whole', sellPrice: 1100 },
+  { id: 63, name: 'Anomalocaris', species: 'Anomalocaris', part: 'Whole', sellPrice: 2000 },
+  { id: 64, name: 'Archaeopteryx', species: 'Archaeopteryx', part: 'Whole', sellPrice: 1300 },
+  { id: 65, name: 'Australopith', species: 'Australopith', part: 'Whole', sellPrice: 1100 },
+  { id: 66, name: 'Coprolite', species: 'Coprolite', part: 'Whole', sellPrice: 1100 },
+  { id: 67, name: 'Dinosaur Track', species: 'Dinosaur Track', part: 'Whole', sellPrice: 1000 },
+  { id: 68, name: 'Dunkleosteus', species: 'Dunkleosteus', part: 'Whole', sellPrice: 3500 },
+  { id: 69, name: 'Eusthenopteron', species: 'Eusthenopteron', part: 'Whole', sellPrice: 2000 },
+  { id: 70, name: 'Juramaia', species: 'Juramaia', part: 'Whole', sellPrice: 1500 },
+  { id: 71, name: 'Myllokunmingia', species: 'Myllokunmingia', part: 'Whole', sellPrice: 1500 },
+  { id: 72, name: 'Shark-tooth Pattern', species: 'Shark-tooth Pattern', part: 'Whole', sellPrice: 1000 },
+  { id: 73, name: 'Trilobite', species: 'Trilobite', part: 'Whole', sellPrice: 1300 }
+];
+
+const ART = [
+  // Paintings — Always Real (14)
+  { id: 1, name: 'Calm Painting', type: 'Painting', alwaysReal: true },
+  { id: 2, name: 'Common Painting', type: 'Painting', alwaysReal: true },
+  { id: 3, name: 'Dynamic Painting', type: 'Painting', alwaysReal: true },
+  { id: 4, name: 'Flowery Painting', type: 'Painting', alwaysReal: true },
+  { id: 5, name: 'Glowing Painting', type: 'Painting', alwaysReal: true },
+  { id: 6, name: 'Moody Painting', type: 'Painting', alwaysReal: true },
+  { id: 7, name: 'Mysterious Painting', type: 'Painting', alwaysReal: true },
+  { id: 8, name: 'Nice Painting', type: 'Painting', alwaysReal: true },
+  { id: 9, name: 'Perfect Painting', type: 'Painting', alwaysReal: true },
+  { id: 10, name: 'Proper Painting', type: 'Painting', alwaysReal: true },
+  { id: 11, name: 'Sinking Painting', type: 'Painting', alwaysReal: true },
+  { id: 12, name: 'Twinkling Painting', type: 'Painting', alwaysReal: true },
+  { id: 13, name: 'Warm Painting', type: 'Painting', alwaysReal: true },
+  { id: 14, name: 'Worthy Painting', type: 'Painting', alwaysReal: true },
+  // Paintings — With Fakes (16)
+  { id: 15, name: 'Academic Painting', type: 'Painting', alwaysReal: false },
+  { id: 16, name: 'Amazing Painting', type: 'Painting', alwaysReal: false },
+  { id: 17, name: 'Basic Painting', type: 'Painting', alwaysReal: false },
+  { id: 18, name: 'Detailed Painting', type: 'Painting', alwaysReal: false },
+  { id: 19, name: 'Famous Painting', type: 'Painting', alwaysReal: false },
+  { id: 20, name: 'Graceful Painting', type: 'Painting', alwaysReal: false },
+  { id: 21, name: 'Jolly Painting', type: 'Painting', alwaysReal: false },
+  { id: 22, name: 'Moving Painting', type: 'Painting', alwaysReal: false },
+  { id: 23, name: 'Quaint Painting', type: 'Painting', alwaysReal: false },
+  { id: 24, name: 'Scary Painting', type: 'Painting', alwaysReal: false },
+  { id: 25, name: 'Scenic Painting', type: 'Painting', alwaysReal: false },
+  { id: 26, name: 'Serene Painting', type: 'Painting', alwaysReal: false },
+  { id: 27, name: 'Solemn Painting', type: 'Painting', alwaysReal: false },
+  { id: 28, name: 'Wild Painting Left Half', type: 'Painting', alwaysReal: false },
+  { id: 29, name: 'Wild Painting Right Half', type: 'Painting', alwaysReal: false },
+  { id: 30, name: 'Wistful Painting', type: 'Painting', alwaysReal: false },
+  // Statues — Always Real (2)
+  { id: 31, name: 'Familiar Statue', type: 'Statue', alwaysReal: true },
+  { id: 32, name: 'Great Statue', type: 'Statue', alwaysReal: true },
+  // Statues — With Fakes (11)
+  { id: 33, name: 'Ancient Statue', type: 'Statue', alwaysReal: false },
+  { id: 34, name: 'Beautiful Statue', type: 'Statue', alwaysReal: false },
+  { id: 35, name: 'Gallant Statue', type: 'Statue', alwaysReal: false },
+  { id: 36, name: 'Informative Statue', type: 'Statue', alwaysReal: false },
+  { id: 37, name: 'Motherly Statue', type: 'Statue', alwaysReal: false },
+  { id: 38, name: 'Mystic Statue', type: 'Statue', alwaysReal: false },
+  { id: 39, name: 'Robust Statue', type: 'Statue', alwaysReal: false },
+  { id: 40, name: 'Rock-head Statue', type: 'Statue', alwaysReal: false },
+  { id: 41, name: 'Tremendous Statue', type: 'Statue', alwaysReal: false },
+  { id: 42, name: 'Valiant Statue', type: 'Statue', alwaysReal: false },
+  { id: 43, name: 'Warrior Statue', type: 'Statue', alwaysReal: false }
+];
+
 const MuseumTracker = () => {
-  const FISH = [
-    'Bitterling', 'Pale Chub', 'Crucian Carp', 'Dace', 'Carp', 'Koi', 'Goldfish', 'Pop-eyed Goldfish', 'Ranchu Goldfish', 'Killifish',
-    'Crawfish', 'Soft-shelled Turtle', 'Snapping Turtle', 'Tadpole', 'Frog', 'Freshwater Goby', 'Loach', 'Catfish', 'Giant Snakehead', 'Bluegill',
-    'Yellow Perch', 'Black Bass', 'Tilapia', 'Pike', 'Pond Smelt', 'Sweetfish', 'Cherry Salmon', 'Char', 'Golden Trout', 'Stringfish',
-    'Salmon', 'King Salmon', 'Mitten Crab', 'Guppy', 'Nibble Fish', 'Angelfish', 'Betta', 'Neon Tetra', 'Rainbowfish', 'Piranha',
-    'Arowana', 'Dorado', 'Gar', 'Arapaima', 'Saddled Bichir', 'Sturgeon', 'Sea Butterfly', 'Sea Horse', 'Clown Fish', 'Surgeonfish',
-    'Butterfly Fish', 'Napoleonfish', 'Zebra Turkeyfish', 'Blowfish', 'Puffer Fish', 'Anchovy', 'Horse Mackerel', 'Barred Knifejaw', 'Sea Bass', 'Red Snapper',
-    'Dab', 'Olive Flounder', 'Squid', 'Moray Eel', 'Ribbon Eel', 'Tuna', 'Blue Marlin', 'Giant Trevally', 'Mahi-Mahi', 'Ocean Sunfish',
-    'Ray', 'Saw Shark', 'Hammerhead Shark', 'Great White Shark', 'Whale Shark', 'Suckerfish', 'Football Fish', 'Oarfish', 'Barreleye', 'Coelacanth'
-  ];
-
-  const BUGS = [
-    'Common Butterfly', 'Yellow Butterfly', 'Tiger Butterfly', 'Peacock Butterfly', 'Common Bluebottle', 'Paper Kite Butterfly', 'Great Purple Emperor', 'Monarch Butterfly', 'Emperor Butterfly', 'Agrias Butterfly',
-    'Rajah Brooke\'s Birdwing', 'Queen Alexandra\'s Birdwing', 'Moth', 'Atlas Moth', 'Madagascan Sunset Moth', 'Long Locust', 'Migratory Locust', 'Rice Grasshopper', 'Grasshopper', 'Cricket',
-    'Bell Cricket', 'Mantis', 'Orchid Mantis', 'Honeybee', 'Wasp', 'Brown Cicada', 'Robust Cicada', 'Giant Cicada', 'Walker Cicada', 'Evening Cicada',
-    'Cicada Shell', 'Red Dragonfly', 'Darner Dragonfly', 'Banded Dragonfly', 'Damselfly', 'Firefly', 'Mole Cricket', 'Pondskater', 'Diving Beetle', 'Giant Water Bug',
-    'Stinkbug', 'Man-faced Stink Bug', 'Ladybug', 'Tiger Beetle', 'Jewel Beetle', 'Violin Beetle', 'Citrus Long-horned Beetle', 'Rosalia Batesi Beetle', 'Blue Weevil Beetle', 'Dung Beetle',
-    'Earth-boring Dung Beetle', 'Scarab Beetle', 'Drone Beetle', 'Goliath Beetle', 'Saw Stag', 'Miyama Stag', 'Giant Stag', 'Rainbow Stag', 'Cyclommatus Stag', 'Golden Stag',
-    'Giraffe Stag', 'Horned Dynastid', 'Horned Atlas', 'Horned Elephant', 'Horned Hercules', 'Walking Leaf', 'Walking Stick', 'Bagworm', 'Ant', 'Hermit Crab',
-    'Wharf Roach', 'Fly', 'Mosquito', 'Flea', 'Snail', 'Pill Bug', 'Centipede', 'Spider', 'Tarantula', 'Scorpion'
-  ];
-
-  const SEA_CREATURES = [
-    'Seaweed', 'Sea Grapes', 'Sea Cucumber', 'Sea Pig', 'Sea Star', 'Sea Urchin', 'Slate Pencil Urchin', 'Sea Anemone', 'Moon Jellyfish', 'Sea Slug',
-    'Pearl Oyster', 'Mussel', 'Oyster', 'Scallop', 'Turban Shell', 'Abalone', 'Gigas Giant Clam', 'Chambered Nautilus', 'Octopus', 'Umbrella Octopus',
-    'Vampire Squid', 'Firefly Squid', 'Gazami Crab', 'Dungeness Crab', 'Snow Crab', 'Red King Crab', 'Acorn Barnacle', 'Spider Crab', 'Tiger Prawn', 'Sweet Shrimp',
-    'Mantis Shrimp', 'Spiny Lobster', 'Lobster', 'Giant Isopod', 'Horseshoe Crab', 'Sea Pineapple', 'Spotted Garden Eel', 'Flatworm', 'Venus\' Flower Basket', 'Whelk'
-  ];
-
-  const FOSSILS = [
-    // Ankylosaurus (3 parts)
-    { id: 1, name: 'Ankylo Skull', species: 'Ankylosaurus', part: 'Skull', sellPrice: 3500 },
-    { id: 2, name: 'Ankylo Torso', species: 'Ankylosaurus', part: 'Torso', sellPrice: 3000 },
-    { id: 3, name: 'Ankylo Tail', species: 'Ankylosaurus', part: 'Tail', sellPrice: 2500 },
-    // Archelon (2 parts)
-    { id: 4, name: 'Archelon Skull', species: 'Archelon', part: 'Skull', sellPrice: 4000 },
-    { id: 5, name: 'Archelon Tail', species: 'Archelon', part: 'Tail', sellPrice: 3500 },
-    // Brachiosaurus (4 parts)
-    { id: 6, name: 'Brachio Skull', species: 'Brachiosaurus', part: 'Skull', sellPrice: 6000 },
-    { id: 7, name: 'Brachio Chest', species: 'Brachiosaurus', part: 'Chest', sellPrice: 5500 },
-    { id: 8, name: 'Brachio Pelvis', species: 'Brachiosaurus', part: 'Pelvis', sellPrice: 5000 },
-    { id: 9, name: 'Brachio Tail', species: 'Brachiosaurus', part: 'Tail', sellPrice: 5500 },
-    // Deinonychus (2 parts)
-    { id: 10, name: 'Deinony Torso', species: 'Deinonychus', part: 'Torso', sellPrice: 3000 },
-    { id: 11, name: 'Deinony Tail', species: 'Deinonychus', part: 'Tail', sellPrice: 2500 },
-    // Dimetrodon (2 parts)
-    { id: 12, name: 'Dimetrodon Skull', species: 'Dimetrodon', part: 'Skull', sellPrice: 5500 },
-    { id: 13, name: 'Dimetrodon Torso', species: 'Dimetrodon', part: 'Torso', sellPrice: 5000 },
-    // Diplodocus (6 parts)
-    { id: 14, name: 'Diplo Skull', species: 'Diplodocus', part: 'Skull', sellPrice: 5000 },
-    { id: 15, name: 'Diplo Neck', species: 'Diplodocus', part: 'Neck', sellPrice: 4500 },
-    { id: 16, name: 'Diplo Chest', species: 'Diplodocus', part: 'Chest', sellPrice: 4000 },
-    { id: 17, name: 'Diplo Pelvis', species: 'Diplodocus', part: 'Pelvis', sellPrice: 4500 },
-    { id: 18, name: 'Diplo Tail', species: 'Diplodocus', part: 'Tail', sellPrice: 5000 },
-    { id: 19, name: 'Diplo Tail Tip', species: 'Diplodocus', part: 'Tail Tip', sellPrice: 4000 },
-    // Iguanodon (3 parts)
-    { id: 20, name: 'Iguanodon Skull', species: 'Iguanodon', part: 'Skull', sellPrice: 4000 },
-    { id: 21, name: 'Iguanodon Torso', species: 'Iguanodon', part: 'Torso', sellPrice: 3500 },
-    { id: 22, name: 'Iguanodon Tail', species: 'Iguanodon', part: 'Tail', sellPrice: 3000 },
-    // Mammoth (2 parts)
-    { id: 23, name: 'Mammoth Skull', species: 'Mammoth', part: 'Skull', sellPrice: 3000 },
-    { id: 24, name: 'Mammoth Torso', species: 'Mammoth', part: 'Torso', sellPrice: 2500 },
-    // Megaceros (3 parts)
-    { id: 25, name: 'Megacero Skull', species: 'Megaceros', part: 'Skull', sellPrice: 4500 },
-    { id: 26, name: 'Megacero Torso', species: 'Megaceros', part: 'Torso', sellPrice: 3500 },
-    { id: 27, name: 'Megacero Tail', species: 'Megaceros', part: 'Tail', sellPrice: 3000 },
-    // Megaloceros (2 parts)
-    { id: 28, name: 'Left Megalo Side', species: 'Megaloceros', part: 'Left Side', sellPrice: 4000 },
-    { id: 29, name: 'Right Megalo Side', species: 'Megaloceros', part: 'Right Side', sellPrice: 5500 },
-    // Ophthalmosaurus (2 parts)
-    { id: 30, name: 'Ophthalmo Skull', species: 'Ophthalmosaurus', part: 'Skull', sellPrice: 2500 },
-    { id: 31, name: 'Ophthalmo Torso', species: 'Ophthalmosaurus', part: 'Torso', sellPrice: 2000 },
-    // Pachycephalosaurus (2 parts)
-    { id: 32, name: 'Pachy Skull', species: 'Pachycephalosaurus', part: 'Skull', sellPrice: 4000 },
-    { id: 33, name: 'Pachy Tail', species: 'Pachycephalosaurus', part: 'Tail', sellPrice: 3500 },
-    // Parasaurolophus (3 parts)
-    { id: 34, name: 'Parasaur Skull', species: 'Parasaurolophus', part: 'Skull', sellPrice: 3500 },
-    { id: 35, name: 'Parasaur Torso', species: 'Parasaurolophus', part: 'Torso', sellPrice: 3000 },
-    { id: 36, name: 'Parasaur Tail', species: 'Parasaurolophus', part: 'Tail', sellPrice: 2500 },
-    // Plesiosaur (3 parts) — "Plesio Body" renamed to "Plesio Torso" in v1.3.0
-    { id: 37, name: 'Plesio Skull', species: 'Plesiosaur', part: 'Skull', sellPrice: 4000 },
-    { id: 38, name: 'Plesio Torso', species: 'Plesiosaur', part: 'Torso', sellPrice: 4500 },
-    { id: 39, name: 'Plesio Tail', species: 'Plesiosaur', part: 'Tail', sellPrice: 4500 },
-    // Pteranodon (3 parts)
-    { id: 40, name: 'Ptera Body', species: 'Pteranodon', part: 'Body', sellPrice: 4000 },
-    { id: 41, name: 'Left Ptera Wing', species: 'Pteranodon', part: 'Left Wing', sellPrice: 4500 },
-    { id: 42, name: 'Right Ptera Wing', species: 'Pteranodon', part: 'Right Wing', sellPrice: 4500 },
-    // Quetzalcoatlus (3 parts)
-    { id: 43, name: 'Quetzal Torso', species: 'Quetzalcoatlus', part: 'Torso', sellPrice: 4500 },
-    { id: 44, name: 'Left Quetzal Wing', species: 'Quetzalcoatlus', part: 'Left Wing', sellPrice: 5000 },
-    { id: 45, name: 'Right Quetzal Wing', species: 'Quetzalcoatlus', part: 'Right Wing', sellPrice: 5000 },
-    // Saber-tooth Tiger (2 parts)
-    { id: 46, name: 'Sabertooth Skull', species: 'Saber-tooth Tiger', part: 'Skull', sellPrice: 2500 },
-    { id: 47, name: 'Sabertooth Tail', species: 'Saber-tooth Tiger', part: 'Tail', sellPrice: 2000 },
-    // Spinosaurus (3 parts)
-    { id: 48, name: 'Spino Skull', species: 'Spinosaurus', part: 'Skull', sellPrice: 4000 },
-    { id: 49, name: 'Spino Torso', species: 'Spinosaurus', part: 'Torso', sellPrice: 3000 },
-    { id: 50, name: 'Spino Tail', species: 'Spinosaurus', part: 'Tail', sellPrice: 2500 },
-    // Stegosaurus (3 parts)
-    { id: 51, name: 'Stego Skull', species: 'Stegosaurus', part: 'Skull', sellPrice: 5000 },
-    { id: 52, name: 'Stego Torso', species: 'Stegosaurus', part: 'Torso', sellPrice: 4500 },
-    { id: 53, name: 'Stego Tail', species: 'Stegosaurus', part: 'Tail', sellPrice: 4000 },
-    // Tyrannosaurus Rex (3 parts)
-    { id: 54, name: 'T. rex Skull', species: 'Tyrannosaurus Rex', part: 'Skull', sellPrice: 6000 },
-    { id: 55, name: 'T. rex Torso', species: 'Tyrannosaurus Rex', part: 'Torso', sellPrice: 5500 },
-    { id: 56, name: 'T. rex Tail', species: 'Tyrannosaurus Rex', part: 'Tail', sellPrice: 5000 },
-    // Triceratops (3 parts)
-    { id: 57, name: 'Tricera Skull', species: 'Triceratops', part: 'Skull', sellPrice: 5500 },
-    { id: 58, name: 'Tricera Torso', species: 'Triceratops', part: 'Torso', sellPrice: 5000 },
-    { id: 59, name: 'Tricera Tail', species: 'Triceratops', part: 'Tail', sellPrice: 4500 },
-    // Standalone fossils (14 pieces)
-    { id: 60, name: 'Acanthostega', species: 'Acanthostega', part: 'Whole', sellPrice: 2000 },
-    { id: 61, name: 'Amber', species: 'Amber', part: 'Whole', sellPrice: 1200 },
-    { id: 62, name: 'Ammonite', species: 'Ammonite', part: 'Whole', sellPrice: 1100 },
-    { id: 63, name: 'Anomalocaris', species: 'Anomalocaris', part: 'Whole', sellPrice: 2000 },
-    { id: 64, name: 'Archaeopteryx', species: 'Archaeopteryx', part: 'Whole', sellPrice: 1300 },
-    { id: 65, name: 'Australopith', species: 'Australopith', part: 'Whole', sellPrice: 1100 },
-    { id: 66, name: 'Coprolite', species: 'Coprolite', part: 'Whole', sellPrice: 1100 },
-    { id: 67, name: 'Dinosaur Track', species: 'Dinosaur Track', part: 'Whole', sellPrice: 1000 },
-    { id: 68, name: 'Dunkleosteus', species: 'Dunkleosteus', part: 'Whole', sellPrice: 3500 },
-    { id: 69, name: 'Eusthenopteron', species: 'Eusthenopteron', part: 'Whole', sellPrice: 2000 },
-    { id: 70, name: 'Juramaia', species: 'Juramaia', part: 'Whole', sellPrice: 1500 },
-    { id: 71, name: 'Myllokunmingia', species: 'Myllokunmingia', part: 'Whole', sellPrice: 1500 },
-    { id: 72, name: 'Shark-tooth Pattern', species: 'Shark-tooth Pattern', part: 'Whole', sellPrice: 1000 },
-    { id: 73, name: 'Trilobite', species: 'Trilobite', part: 'Whole', sellPrice: 1300 }
-  ];
-
-  const ART = [
-    // Paintings — Always Real (14)
-    { id: 1, name: 'Calm Painting', type: 'Painting', alwaysReal: true },
-    { id: 2, name: 'Common Painting', type: 'Painting', alwaysReal: true },
-    { id: 3, name: 'Dynamic Painting', type: 'Painting', alwaysReal: true },
-    { id: 4, name: 'Flowery Painting', type: 'Painting', alwaysReal: true },
-    { id: 5, name: 'Glowing Painting', type: 'Painting', alwaysReal: true },
-    { id: 6, name: 'Moody Painting', type: 'Painting', alwaysReal: true },
-    { id: 7, name: 'Mysterious Painting', type: 'Painting', alwaysReal: true },
-    { id: 8, name: 'Nice Painting', type: 'Painting', alwaysReal: true },
-    { id: 9, name: 'Perfect Painting', type: 'Painting', alwaysReal: true },
-    { id: 10, name: 'Proper Painting', type: 'Painting', alwaysReal: true },
-    { id: 11, name: 'Sinking Painting', type: 'Painting', alwaysReal: true },
-    { id: 12, name: 'Twinkling Painting', type: 'Painting', alwaysReal: true },
-    { id: 13, name: 'Warm Painting', type: 'Painting', alwaysReal: true },
-    { id: 14, name: 'Worthy Painting', type: 'Painting', alwaysReal: true },
-    // Paintings — With Fakes (16)
-    { id: 15, name: 'Academic Painting', type: 'Painting', alwaysReal: false },
-    { id: 16, name: 'Amazing Painting', type: 'Painting', alwaysReal: false },
-    { id: 17, name: 'Basic Painting', type: 'Painting', alwaysReal: false },
-    { id: 18, name: 'Detailed Painting', type: 'Painting', alwaysReal: false },
-    { id: 19, name: 'Famous Painting', type: 'Painting', alwaysReal: false },
-    { id: 20, name: 'Graceful Painting', type: 'Painting', alwaysReal: false },
-    { id: 21, name: 'Jolly Painting', type: 'Painting', alwaysReal: false },
-    { id: 22, name: 'Moving Painting', type: 'Painting', alwaysReal: false },
-    { id: 23, name: 'Quaint Painting', type: 'Painting', alwaysReal: false },
-    { id: 24, name: 'Scary Painting', type: 'Painting', alwaysReal: false },
-    { id: 25, name: 'Scenic Painting', type: 'Painting', alwaysReal: false },
-    { id: 26, name: 'Serene Painting', type: 'Painting', alwaysReal: false },
-    { id: 27, name: 'Solemn Painting', type: 'Painting', alwaysReal: false },
-    { id: 28, name: 'Wild Painting Left Half', type: 'Painting', alwaysReal: false },
-    { id: 29, name: 'Wild Painting Right Half', type: 'Painting', alwaysReal: false },
-    { id: 30, name: 'Wistful Painting', type: 'Painting', alwaysReal: false },
-    // Statues — Always Real (2)
-    { id: 31, name: 'Familiar Statue', type: 'Statue', alwaysReal: true },
-    { id: 32, name: 'Great Statue', type: 'Statue', alwaysReal: true },
-    // Statues — With Fakes (11)
-    { id: 33, name: 'Ancient Statue', type: 'Statue', alwaysReal: false },
-    { id: 34, name: 'Beautiful Statue', type: 'Statue', alwaysReal: false },
-    { id: 35, name: 'Gallant Statue', type: 'Statue', alwaysReal: false },
-    { id: 36, name: 'Informative Statue', type: 'Statue', alwaysReal: false },
-    { id: 37, name: 'Motherly Statue', type: 'Statue', alwaysReal: false },
-    { id: 38, name: 'Mystic Statue', type: 'Statue', alwaysReal: false },
-    { id: 39, name: 'Robust Statue', type: 'Statue', alwaysReal: false },
-    { id: 40, name: 'Rock-head Statue', type: 'Statue', alwaysReal: false },
-    { id: 41, name: 'Tremendous Statue', type: 'Statue', alwaysReal: false },
-    { id: 42, name: 'Valiant Statue', type: 'Statue', alwaysReal: false },
-    { id: 43, name: 'Warrior Statue', type: 'Statue', alwaysReal: false }
-  ];
-
   const [donated, setDonated] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('fish');

@@ -3,6 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 
+const defaultTasks = [
+  { id: 1, name: 'Hit rocks (6 rocks)', emoji: '🪨' },
+  { id: 2, name: 'Shake trees (furniture + bells + wasps)', emoji: '🌳' },
+  { id: 3, name: 'Find money spot & plant bell tree', emoji: '💰' },
+  { id: 4, name: 'Dig up 4 fossils', emoji: '🦴' },
+  { id: 5, name: 'Check Nook\'s Cranny items', emoji: '📦' },
+  { id: 6, name: 'Check Able Sisters', emoji: '👕' },
+  { id: 7, name: 'Talk to all villagers', emoji: '💬' },
+  { id: 8, name: 'Check mail', emoji: '🎁' },
+  { id: 9, name: 'Harvest fruit (if ready)', emoji: '🍑' },
+  { id: 10, name: 'Check beach for shells/bottles', emoji: '🐚' },
+  { id: 11, name: 'Pop balloons', emoji: '🎈' },
+  { id: 12, name: 'Pull weeds', emoji: '🌿' },
+  { id: 13, name: 'Check Dodo Airlines for visitors', emoji: '✈️' },
+  { id: 14, name: 'Sell items at Nook\'s', emoji: '🏪' },
+];
+
 export default function DailyRoutine() {
   const [tasks, setTasks] = useState([]);
   const [customTaskInput, setCustomTaskInput] = useState('');
@@ -10,23 +27,6 @@ export default function DailyRoutine() {
   const [streak, setStreak] = useState(0);
   const [weeklyData, setWeeklyData] = useState({});
   const [lastCompletedDate, setLastCompletedDate] = useState(null);
-
-  const defaultTasks = [
-    { id: 1, name: 'Hit rocks (6 rocks)', emoji: '🪨' },
-    { id: 2, name: 'Shake trees (furniture + bells + wasps)', emoji: '🌳' },
-    { id: 3, name: 'Find money spot & plant bell tree', emoji: '💰' },
-    { id: 4, name: 'Dig up 4 fossils', emoji: '🦴' },
-    { id: 5, name: 'Check Nook\'s Cranny items', emoji: '📦' },
-    { id: 6, name: 'Check Able Sisters', emoji: '👕' },
-    { id: 7, name: 'Talk to all villagers', emoji: '💬' },
-    { id: 8, name: 'Check mail', emoji: '🎁' },
-    { id: 9, name: 'Harvest fruit (if ready)', emoji: '🍑' },
-    { id: 10, name: 'Check beach for shells/bottles', emoji: '🐚' },
-    { id: 11, name: 'Pop balloons', emoji: '🎈' },
-    { id: 12, name: 'Pull weeds', emoji: '🌿' },
-    { id: 13, name: 'Check Dodo Airlines for visitors', emoji: '✈️' },
-    { id: 14, name: 'Sell items at Nook\'s', emoji: '🏪' },
-  ];
 
   const today = new Date().toISOString().split('T')[0];
 

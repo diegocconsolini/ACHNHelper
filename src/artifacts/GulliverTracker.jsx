@@ -3,6 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 
+const GULLIVER_REWARDS = [
+  'Pagoda', 'Pyramid', 'Sphinx', 'Stonehenge', 'Statue of Liberty',
+  'Tower of Pisa', 'Moai Statue', 'South Pole', 'Dala Horse', 'Hula Doll',
+  'Lucky Cat', 'Nutcracker', 'Katana', 'Tubeteika', 'Silk Hat', 'Sombrero',
+  'Tam-o\'-Shanter', 'Turban', 'Veil', 'Pigtail', 'Geisha Wig', 'Samurai Wig',
+  'Kaffiyeh', 'Milkmaid Hat', 'Elder Mask', 'Alpinist Hat',
+  'Ancient Administrator Hat', 'Candy-Skull Mask', 'Coin Headpiece'
+];
+
+const GULLIVARRR_REWARDS = [
+  'Pirate-Treasure Chest', 'Pirate Barrel', 'Pirate-Ship Cannon', 'Pirate-Ship Helm',
+  'Sideways Pirate Barrel', 'Pirate Wall', 'Pirate Flooring', 'Pirate Rug',
+  'Pirate-Treasure Crown', 'Pirate-Treasure Robe', 'Pirate Outfit', 'Pirate Dress',
+  'Pirate Pants', 'Pirate Boots', 'Pirate Bandanna', 'Pirate Eye Patch',
+  'Pirate Beard', 'Pirate\'s Hat', 'Sea Captain\'s Coat'
+];
+
 const GulliverTracker = () => {
   const [activeMode, setActiveMode] = useState('gulliver');
   const [visits, setVisits] = useState([]);
@@ -12,23 +29,6 @@ const GulliverTracker = () => {
   const [loading, setLoading] = useState(true);
   const [newReward, setNewReward] = useState('');
   const [newDate, setNewDate] = useState('');
-
-  const GULLIVER_REWARDS = [
-    'Pagoda', 'Pyramid', 'Sphinx', 'Stonehenge', 'Statue of Liberty',
-    'Tower of Pisa', 'Moai Statue', 'South Pole', 'Dala Horse', 'Hula Doll',
-    'Lucky Cat', 'Nutcracker', 'Katana', 'Tubeteika', 'Silk Hat', 'Sombrero',
-    'Tam-o\'-Shanter', 'Turban', 'Veil', 'Pigtail', 'Geisha Wig', 'Samurai Wig',
-    'Kaffiyeh', 'Milkmaid Hat', 'Elder Mask', 'Alpinist Hat',
-    'Ancient Administrator Hat', 'Candy-Skull Mask', 'Coin Headpiece'
-  ];
-
-  const GULLIVARRR_REWARDS = [
-    'Pirate-Treasure Chest', 'Pirate Barrel', 'Pirate-Ship Cannon', 'Pirate-Ship Helm',
-    'Sideways Pirate Barrel', 'Pirate Wall', 'Pirate Flooring', 'Pirate Rug',
-    'Pirate-Treasure Crown', 'Pirate-Treasure Robe', 'Pirate Outfit', 'Pirate Dress',
-    'Pirate Pants', 'Pirate Boots', 'Pirate Bandanna', 'Pirate Eye Patch',
-    'Pirate Beard', 'Pirate\'s Hat', 'Sea Captain\'s Coat'
-  ];
 
   useEffect(() => {
     const loadData = async () => {
