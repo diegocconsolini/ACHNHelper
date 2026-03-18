@@ -153,7 +153,7 @@ export default function SeaCreatureTracker() {
   });
 
   const caughtCount = Object.values(caughtStatus).filter(Boolean).length;
-  const progressPercent = (caughtCount / creatures.length) * 100;
+  const progressPercent = creatures.length > 0 ? (caughtCount / creatures.length) * 100 : 0;
 
   const monthDots = (creature, month) => {
     const months = hemisphere === 'north' ? creature.northMonths : creature.southMonths;
