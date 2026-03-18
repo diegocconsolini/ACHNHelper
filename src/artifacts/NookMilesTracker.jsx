@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 
-// Verified against Nookipedia, Game8, and multiple community sources (96 achievements total)
-// Base game: 84 achievements | Swimming update (1.3.0): 3 | Version 2.0: 9
+// Verified against Nookipedia, Game8, and multiple community sources (99 achievements total)
+// Base game: 84 achievements | Swimming update (1.3.0): 3 | Version 2.0: 9 | Version 3.0: 3
 const NOOK_MILES_DATA = [
   // --- Fishing ---
   { id: 1, name: "Angling for Perfection!", category: "Fishing", tiers: [{ target: 10, reward: 300 },{ target: 100, reward: 500 },{ target: 500, reward: 1000 },{ target: 2000, reward: 2000 },{ target: 5000, reward: 3000 }], isRepeatable: true },
@@ -115,7 +115,11 @@ const NOOK_MILES_DATA = [
   { id: 93, name: "Executive Producer", category: "Gardening", tiers: [{ target: 10, reward: 300 },{ target: 50, reward: 500 },{ target: 150, reward: 1000 },{ target: 500, reward: 2000 },{ target: 1000, reward: 3000 }], isRepeatable: true },
   { id: 94, name: "Set Sail for Adventure", category: "Island Life", tiers: [{ target: 3, reward: 300 },{ target: 10, reward: 500 },{ target: 20, reward: 1000 },{ target: 30, reward: 2000 },{ target: 50, reward: 3000 }], isRepeatable: true },
   { id: 95, name: "Come Home to the Roost!", category: "Island Life", tiers: [{ target: 5, reward: 300 },{ target: 10, reward: 500 },{ target: 20, reward: 1000 },{ target: 30, reward: 2000 },{ target: 50, reward: 3000 }], isRepeatable: true },
-  { id: 96, name: "Stretch to Refresh!", category: "Island Life", tiers: [{ target: 3, reward: 300 },{ target: 10, reward: 500 },{ target: 20, reward: 1000 },{ target: 30, reward: 2000 },{ target: 50, reward: 3000 }], isRepeatable: true }
+  { id: 96, name: "Stretch to Refresh!", category: "Island Life", tiers: [{ target: 3, reward: 300 },{ target: 10, reward: 500 },{ target: 20, reward: 1000 },{ target: 30, reward: 2000 },{ target: 50, reward: 3000 }], isRepeatable: true },
+  // --- Resort Hotel (added in version 3.0) ---
+  { id: 97, name: "DIY Goods Wanted!", category: "Resort Hotel", tiers: [{ target: 1, reward: 300 },{ target: 5, reward: 500 },{ target: 10, reward: 1000 },{ target: 25, reward: 2000 },{ target: 50, reward: 3000 }], isRepeatable: true },
+  { id: 98, name: "Decorate a Hotel Room", category: "Resort Hotel", tiers: [{ target: 1, reward: 300 },{ target: 5, reward: 800 },{ target: 20, reward: 2500 }], isRepeatable: false },
+  { id: 99, name: "Take Tourists to the Hotel", category: "Resort Hotel", tiers: [{ target: 5, reward: 800 },{ target: 10, reward: 1200 },{ target: 15, reward: 2000 }], isRepeatable: false }
 ];
 
 const CATEGORY_EMOJI = {
