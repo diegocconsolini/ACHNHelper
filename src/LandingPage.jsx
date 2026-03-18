@@ -213,7 +213,7 @@ export default function LandingPage() {
                     transform: `translate(-50%, -50%) translateX(${translateX}px) scale(${scale}) perspective(800px) rotateY(${rotateY}deg)`,
                     zIndex,
                     opacity,
-                    transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                     filter: absDist === 0 ? 'drop-shadow(0 0 20px rgba(94,200,80,0.4))' : 'none',
                   }}
                 >
@@ -489,7 +489,8 @@ const styles = {
     border: 'none',
     backgroundColor: '#5ec850',
     color: '#0a1a10',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     transition: 'transform 0.2s, box-shadow 0.2s',
   },
   ctaSecondary: {
@@ -501,7 +502,8 @@ const styles = {
     border: '1px solid rgba(94,200,80,0.3)',
     backgroundColor: 'transparent',
     color: '#c8e6c0',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     transition: 'transform 0.2s, border-color 0.2s',
   },
 
@@ -539,7 +541,8 @@ const styles = {
     border: '1px solid rgba(94,200,80,0.1)',
     borderRadius: '12px',
     padding: '24px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     transition: 'border-color 0.3s, transform 0.3s',
   },
   featureCardHeader: {

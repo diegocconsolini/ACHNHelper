@@ -466,8 +466,9 @@ const styles = {
     fontSize: 14,
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    cursor: 'pointer',    outline: 'none',
+
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
   radioBtnActive: {
     background: 'rgba(94,200,80,0.12)',
@@ -491,8 +492,9 @@ const styles = {
     fontSize: 12,
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    cursor: 'pointer',    outline: 'none',
+
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     textTransform: 'capitalize',
   },
   optionBtnActive: {
@@ -510,7 +512,8 @@ const styles = {
   starBtn: {
     background: 'none',
     border: 'none',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     padding: 2,
     lineHeight: 1,
   },
@@ -540,8 +543,9 @@ const styles = {
     fontSize: 14,
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    cursor: 'pointer',    outline: 'none',
+
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
   dataHint: {
     fontSize: 13,

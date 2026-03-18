@@ -189,7 +189,8 @@ class ErrorBoundary extends React.Component {
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 14,
               fontWeight: 700,
-              cursor: 'pointer',
+              cursor: 'pointer',              outline: 'none',
+
             }}
           >
             Reload Tool
@@ -433,11 +434,12 @@ const styles = {
     width: '100%',
     padding: '10px 20px',
     border: 'none',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     color: '#c8e6c0',
     fontFamily: "'DM Sans', sans-serif",
     fontSize: 14,
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     whiteSpace: 'nowrap',
   },
   menuLabel: {
@@ -468,7 +470,8 @@ const styles = {
     width: 28,
     height: 28,
     borderRadius: 6,
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontSize: 12,
     display: 'flex',
     alignItems: 'center',
@@ -566,7 +569,8 @@ const styles = {
     border: 'none',
     color: '#5a7a50',
     fontSize: 11,
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     padding: 0,
     fontFamily: "'DM Mono', monospace",
     textAlign: 'left',
@@ -584,8 +588,9 @@ const styles = {
     fontFamily: "'DM Sans', sans-serif",
     fontSize: 13,
     fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
+    cursor: 'pointer',    outline: 'none',
+
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     whiteSpace: 'nowrap',
   },
 };

@@ -131,11 +131,12 @@ const FlowerCalculator = () => {
       border: 'none',
       backgroundColor: 'transparent',
       color: '#5ec850',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       borderBottom: '2px solid transparent',
       fontSize: '14px',
       fontWeight: '500',
-      transition: 'all 0.3s ease'
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
     tabActive: {
       color: '#5ec850',
@@ -153,10 +154,11 @@ const FlowerCalculator = () => {
       border: '2px solid rgba(94, 200, 80, 0.3)',
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       color: '#5ec850',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       borderRadius: '6px',
       fontSize: '14px',
-      transition: 'all 0.3s ease',
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       display: 'flex',
       alignItems: 'center',
       gap: '6px'
@@ -172,7 +174,7 @@ const FlowerCalculator = () => {
       borderRadius: '8px',
       padding: '20px',
       marginBottom: '20px',
-      transition: 'all 0.3s ease'
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
     cardHover: {
       borderColor: '#5ec850',
@@ -189,8 +191,9 @@ const FlowerCalculator = () => {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       backgroundColor: 'rgba(12, 28, 14, 0.8)',
       textAlign: 'center',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease'
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
     colorBoxActive: {
       borderColor: '#d4b030',
@@ -233,8 +236,9 @@ const FlowerCalculator = () => {
       borderRadius: '6px',
       border: '1px solid rgba(94, 200, 80, 0.2)',
       backgroundColor: 'rgba(12, 28, 14, 0.8)',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease'
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
     stepActive: {
       backgroundColor: 'rgba(94, 200, 80, 0.15)',

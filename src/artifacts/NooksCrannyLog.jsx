@@ -167,7 +167,8 @@ const NooksCrannyLog = () => {
     backgroundColor: isActive ? '#5ec850' : 'transparent',
     color: isActive ? '#0a1a10' : '#5ec850',
     border: 'none',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontWeight: 'bold',
     fontSize: '14px',
     borderRadius: '4px 4px 0 0'
@@ -200,7 +201,8 @@ const NooksCrannyLog = () => {
     padding: '12px 24px',
     border: 'none',
     borderRadius: '4px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontWeight: 'bold',
     fontSize: '14px',
     marginRight: '10px',
@@ -409,7 +411,8 @@ const NooksCrannyLog = () => {
                             padding: '6px 12px',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: 'pointer',
+                            cursor: 'pointer',                            outline: 'none',
+
                             fontSize: '12px'
                           }}
                           onClick={() => handleDeleteEntry(entry.id)}

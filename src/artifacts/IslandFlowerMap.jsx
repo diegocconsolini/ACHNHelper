@@ -10,8 +10,9 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
     borderRadius: '8px',
     padding: '12px',
     marginBottom: '12px',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer',
+    transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
+    cursor: 'pointer',    outline: 'none',
+
     position: 'relative'
   }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -54,7 +55,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
           color: '#4aacf0',
           padding: '4px 8px',
           borderRadius: '4px',
-          cursor: 'pointer',
+          cursor: 'pointer',          outline: 'none',
+
           flex: 1
         }}>← Back</button>
       )}
@@ -65,7 +67,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
           color: '#5ec850',
           padding: '4px 8px',
           borderRadius: '4px',
-          cursor: 'pointer',
+          cursor: 'pointer',          outline: 'none',
+
           flex: 1
         }}>
           {project.status === 'Waiting' ? '✓ Done' : 'Next →'}
@@ -77,7 +80,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
         color: '#ff6b6b',
         padding: '4px 8px',
         borderRadius: '4px',
-        cursor: 'pointer'
+        cursor: 'pointer',        outline: 'none',
+
       }}>✕</button>
     </div>
   </div>
@@ -308,9 +312,10 @@ const IslandFlowerMap = () => {
               border: activeTab === tab ? 'none' : '1px solid rgba(94, 200, 80, 0.2)',
               padding: '8px 16px',
               borderRadius: '4px',
-              cursor: 'pointer',
+              cursor: 'pointer',              outline: 'none',
+
               fontWeight: activeTab === tab ? 'bold' : 'normal',
-              transition: 'all 0.3s ease'
+              transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
             }}
           >
             {tab === 'kanban' ? '📋 Kanban' : tab === 'watering' ? '💧 Watering' : '📊 Summary'}
@@ -414,8 +419,9 @@ const IslandFlowerMap = () => {
                   padding: '8px 16px',
                   borderRadius: '4px',
                   fontWeight: 'bold',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
+                  cursor: 'pointer',                  outline: 'none',
+
+                  transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
                 }}
               >
                 Create Project
@@ -471,8 +477,9 @@ const IslandFlowerMap = () => {
                         border: `1px solid ${isWatered ? '#5ec850' : '#7e8d8f'}`,
                         borderRadius: '6px',
                         padding: '12px',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',                        outline: 'none',
+
+                        transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px'

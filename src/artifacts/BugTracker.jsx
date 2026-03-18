@@ -452,11 +452,12 @@ const styles = {
     padding: '10px 16px',
     borderRadius: '6px',
     border: 'none',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontWeight: 500,
     fontSize: '14px',
     fontFamily: "'DM Sans', sans-serif",
-    transition: 'all 0.2s',
+    transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
   },
   hemButtonActive: {
     backgroundColor: '#5ec850',
@@ -506,11 +507,12 @@ const styles = {
     padding: '8px 12px',
     borderRadius: '6px',
     border: 'none',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontSize: '13px',
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
-    transition: 'all 0.2s',
+    transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
     whiteSpace: 'nowrap',
   },
   filterButtonActive: {
@@ -533,8 +535,9 @@ const styles = {
     border: `1px solid rgba(94, 200, 80, 0.2)`,
     borderRadius: '8px',
     padding: '14px',
-    transition: 'all 0.2s',
-    cursor: 'pointer',
+    transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
+    cursor: 'pointer',    outline: 'none',
+
   },
   bugCardAvailable: {
     borderColor: '#5ec850',
@@ -583,7 +586,7 @@ const styles = {
     width: '10px',
     height: '10px',
     borderRadius: '50%',
-    transition: 'all 0.2s',
+    transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
   },
   monthDotActive: {
     backgroundColor: '#5ec850',
@@ -615,11 +618,13 @@ const styles = {
     gap: '6px',
     fontSize: '12px',
     color: '#5a7a50',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     userSelect: 'none',
   },
   checkbox: {
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     accentColor: '#5ec850',
     width: '16px',
     height: '16px',

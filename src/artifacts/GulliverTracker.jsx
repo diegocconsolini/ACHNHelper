@@ -323,11 +323,12 @@ const styles = {
     border: 'none',
     backgroundColor: 'transparent',
     color: '#5a7a50',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontSize: '14px',
     fontWeight: 500,
     fontFamily: '"DM Sans", sans-serif',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
   },
   tabActive: {
     color: '#5ec850',
@@ -382,10 +383,11 @@ const styles = {
     color: '#0a1a10',
     border: 'none',
     borderRadius: '4px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontWeight: 700,
     fontSize: '14px',
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
   removeButton: {
     padding: '6px 12px',
@@ -393,10 +395,11 @@ const styles = {
     color: '#5ec850',
     border: '1px solid rgba(94, 200, 80, 0.5)',
     borderRadius: '4px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontWeight: 700,
     fontSize: '14px',
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
   statsContainer: {
     display: 'grid',
@@ -410,7 +413,7 @@ const styles = {
     borderRadius: '6px',
     border: '1px solid rgba(94, 200, 80, 0.2)',
     textAlign: 'center',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
   },
   statLabel: {
     fontSize: '12px',
@@ -462,7 +465,8 @@ const styles = {
     color: '#c8e6c0',
     fontFamily: '"DM Sans", sans-serif',
     fontSize: '13px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
   },
   addVisitButton: {
     padding: '10px 16px',
@@ -470,11 +474,12 @@ const styles = {
     color: '#0a1a10',
     border: 'none',
     borderRadius: '4px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontWeight: 700,
     fontSize: '13px',
     fontFamily: '"DM Sans", sans-serif',
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
   disabledButton: {
     backgroundColor: 'rgba(94, 200, 80, 0.3)',
@@ -502,11 +507,12 @@ const styles = {
     border: '1px solid rgba(94, 200, 80, 0.2)',
     borderRadius: '4px',
     color: '#c8e6c0',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     textAlign: 'left',
     fontSize: '13px',
     fontFamily: '"DM Sans", sans-serif',
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
   checklistItemChecked: {
     backgroundColor: 'rgba(94, 200, 80, 0.2)',
@@ -547,7 +553,7 @@ const styles = {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     borderRadius: '4px',
     border: '1px solid rgba(94, 200, 80, 0.15)',
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
   visitContent: {
     flex: 1,
@@ -569,9 +575,10 @@ const styles = {
     color: '#5a7a50',
     border: '1px solid rgba(94, 200, 80, 0.2)',
     borderRadius: '4px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontSize: '12px',
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
 };
 

@@ -357,7 +357,8 @@ const FiveStarChecker = () => {
                       color: data[key] > 0 ? '#0a1a10' : '#aaa',
                       border: `1px solid ${data[key] > 0 ? '#5ec850' : '#444'}`,
                       borderRadius: '4px',
-                      cursor: 'pointer',
+                      cursor: 'pointer',                      outline: 'none',
+
                       fontSize: '12px',
                       fontWeight: '700',
                     }}
@@ -375,7 +376,8 @@ const FiveStarChecker = () => {
                         color: '#d4b030',
                         border: '1px solid #d4b030',
                         borderRadius: '4px',
-                        cursor: 'pointer',
+                        cursor: 'pointer',                        outline: 'none',
+
                         fontSize: '11px',
                       }}
                     >
@@ -415,7 +417,8 @@ const FiveStarChecker = () => {
                   color: '#0a1a10',
                   border: 'none',
                   borderRadius: '4px',
-                  cursor: 'pointer',
+                  cursor: 'pointer',                  outline: 'none',
+
                   fontWeight: '700',
                 }}
               >
@@ -635,10 +638,11 @@ const FiveStarChecker = () => {
           color: '#d4b030',
           border: `1px solid #d4b030`,
           borderRadius: '4px',
-          cursor: 'pointer',
+          cursor: 'pointer',          outline: 'none',
+
           fontSize: '14px',
           fontWeight: '700',
-          transition: 'all 0.3s ease',
+          transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
         }}
         onMouseEnter={(e) => {
           e.target.style.backgroundColor = 'rgba(212,176,48,0.1)';

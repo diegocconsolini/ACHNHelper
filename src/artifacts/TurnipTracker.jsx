@@ -324,7 +324,8 @@ const TurnipTracker = () => {
             fontSize: '14px',
             fontWeight: '600',
             borderRadius: '6px',
-            cursor: 'pointer',
+            cursor: 'pointer',            outline: 'none',
+
           }}
         >
           ✓ Save Week to History
@@ -339,7 +340,8 @@ const TurnipTracker = () => {
             fontSize: '14px',
             fontWeight: '600',
             borderRadius: '6px',
-            cursor: 'pointer',
+            cursor: 'pointer',            outline: 'none',
+
           }}
         >
           📊 {showHistory ? 'Hide' : 'Show'} History

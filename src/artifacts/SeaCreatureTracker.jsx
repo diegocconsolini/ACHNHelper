@@ -247,7 +247,8 @@ export default function SeaCreatureTracker() {
       color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
-      cursor: 'pointer'
+      cursor: 'pointer',      outline: 'none',
+
     },
     hemisphereToggle: {
       display: 'flex',
@@ -261,8 +262,9 @@ export default function SeaCreatureTracker() {
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '13px',
       fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       flex: 1,
       textAlign: 'center'
     },
@@ -277,8 +279,9 @@ export default function SeaCreatureTracker() {
       border: '1px solid rgba(94,200,80,0.3)',
       borderRadius: '8px',
       padding: '16px',
-      transition: 'all 0.2s ease',
-      cursor: 'pointer',
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
       animation: 'fadeIn 0.3s ease'
     },
     cardName: {
@@ -341,7 +344,8 @@ export default function SeaCreatureTracker() {
     checkbox: {
       width: '18px',
       height: '18px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       accentColor: '#5ec850'
     },
     checkboxLabel: {

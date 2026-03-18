@@ -333,9 +333,10 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '14px',
       fontWeight: isActive ? '700' : '400',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       borderBottom: isActive ? '2px solid #5ec850' : 'none',
-      transition: 'all 0.3s ease',
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     }),
     progressBar: {
       width: '100%',
@@ -389,8 +390,9 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '12px',
       fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     }),
     moodPills: {
       display: 'flex',
@@ -406,8 +408,9 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '11px',
       fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     }),
     songGrid: {
       display: 'grid',
@@ -420,7 +423,8 @@ export default function KKCatalogue() {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '6px',
       padding: '16px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       transition: 'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       minHeight: '200px',
       display: 'flex',
@@ -472,7 +476,8 @@ export default function KKCatalogue() {
     checkbox: {
       width: '18px',
       height: '18px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       accentColor: '#5ec850',
     },
     checkboxRow: {
@@ -529,8 +534,9 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '12px',
       fontWeight: '700',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     resultBox: {
       backgroundColor: 'rgba(94, 200, 80, 0.15)',
@@ -573,8 +579,9 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '12px',
       fontWeight: '700',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     roomCard: {
       backgroundColor: 'rgba(12, 28, 14, 0.6)',
@@ -600,8 +607,9 @@ export default function KKCatalogue() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '10px',
       fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     roomSongs: {
       display: 'flex',
@@ -666,8 +674,9 @@ export default function KKCatalogue() {
       justifyContent: 'center',
       color: '#c8e6c0',
       fontSize: '18px',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     drawerAlbumContainer: {
       display: 'flex',
@@ -755,12 +764,14 @@ export default function KKCatalogue() {
       backgroundColor: 'rgba(94, 200, 80, 0.06)',
       border: '1px solid rgba(94, 200, 80, 0.15)',
       borderRadius: '8px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
     },
     drawerCheckbox: {
       width: '22px',
       height: '22px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       accentColor: '#5ec850',
     },
   };
@@ -991,7 +1002,8 @@ export default function KKCatalogue() {
                                   background: 'none',
                                   border: 'none',
                                   color: '#4aacf0',
-                                  cursor: 'pointer',
+                                  cursor: 'pointer',                                  outline: 'none',
+
                                   fontSize: '12px',
                                   padding: '0',
                                 }}

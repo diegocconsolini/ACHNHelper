@@ -192,11 +192,12 @@ const DreamAddressBook = () => {
       border: 'none',
       backgroundColor: 'transparent',
       color: '#5a7a50',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       fontSize: '13px',
       fontWeight: 500,
       borderBottom: '2px solid transparent',
-      transition: 'all 0.3s ease',
+      transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       fontFamily: '"DM Sans", sans-serif'
     },
     tabActive: {
@@ -257,9 +258,10 @@ const DreamAddressBook = () => {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '4px',
       color: '#5a7a50',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       fontSize: '16px',
-      transition: 'all 0.2s ease',
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       fontFamily: '"DM Sans", sans-serif'
     },
     tagContainer: {
@@ -273,9 +275,10 @@ const DreamAddressBook = () => {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '4px',
       color: '#5a7a50',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       fontSize: '12px',
-      transition: 'all 0.2s ease',
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       fontFamily: '"DM Sans", sans-serif'
     },
     button: {
@@ -284,10 +287,11 @@ const DreamAddressBook = () => {
       color: '#0a1a10',
       border: 'none',
       borderRadius: '4px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       fontSize: '13px',
       fontWeight: 600,
-      transition: 'all 0.2s ease',
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       fontFamily: '"DM Sans", sans-serif'
     },
     entryCard: {
@@ -296,7 +300,7 @@ const DreamAddressBook = () => {
       borderRadius: '6px',
       padding: '16px',
       marginBottom: '12px',
-      transition: 'all 0.2s ease'
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease'
     },
     entryHeader: {
       display: 'flex',
@@ -335,8 +339,9 @@ const DreamAddressBook = () => {
       border: '1px solid rgba(74, 172, 240, 0.4)',
       borderRadius: '3px',
       color: '#4aacf0',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       fontFamily: '"DM Sans", sans-serif'
     },
     filterControls: {

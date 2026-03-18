@@ -464,7 +464,7 @@ const styles = {
     backgroundColor: 'rgba(12, 28, 14, 0.95)',
     padding: '20px',
     borderRadius: '8px',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
   },
   emojiSection: {
     fontSize: '48px',
@@ -533,10 +533,11 @@ const styles = {
     width: '36px',
     height: '36px',
     borderRadius: '4px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     fontSize: '16px',
     fontWeight: '600',
-    transition: 'all 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     fontFamily: "'DM Mono', monospace",
   },
   minusButton: {},
@@ -559,13 +560,15 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     userSelect: 'none',
   },
   checkboxInput: {
     width: '20px',
     height: '20px',
-    cursor: 'pointer',
+    cursor: 'pointer',    outline: 'none',
+
     accentColor: '#5ec850',
   },
   checkboxText: {

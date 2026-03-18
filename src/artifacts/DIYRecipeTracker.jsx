@@ -137,9 +137,10 @@ const DIYRecipeTracker = () => {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '14px',
       fontWeight: 500,
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       borderBottom: '2px solid transparent',
-      transition: 'all 0.2s ease'
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease'
     },
     tabButtonActive: {
       color: '#5ec850',
@@ -214,7 +215,8 @@ const DIYRecipeTracker = () => {
       alignItems: 'center',
       justifyContent: 'space-between',
       padding: '14px 16px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       transition: 'background-color 0.2s ease'
     },
     categoryTitle: {
@@ -272,14 +274,16 @@ const DIYRecipeTracker = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.6)',
       border: '1px solid rgba(94, 200, 80, 0.12)',
       borderRadius: '4px',
-      cursor: 'pointer',
-      transition: 'all 0.15s ease',
+      cursor: 'pointer',      outline: 'none',
+
+      transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease',
       fontSize: '12px'
     },
     checkbox: {
       width: '14px',
       height: '14px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       accentColor: '#5ec850',
       flexShrink: 0
     },
@@ -389,10 +393,11 @@ const DIYRecipeTracker = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       color: '#5ec850',
       borderRadius: '4px',
-      cursor: 'pointer',
+      cursor: 'pointer',      outline: 'none',
+
       fontSize: '12px',
       fontWeight: 500,
-      transition: 'all 0.2s ease'
+      transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease'
     },
     toggleButtonActive: {
       backgroundColor: '#5ec850',
