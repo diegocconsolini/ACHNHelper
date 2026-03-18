@@ -58,7 +58,6 @@ export default function Settings() {
       padding: '16px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'border-color 0.2s',
       position: 'relative',
     }),
@@ -93,7 +92,6 @@ export default function Settings() {
       color: '#4aacf0',
       cursor: 'pointer',
       outline: 'none',
-
     },
     mini: {
       background: 'rgba(0,0,0,0.3)',

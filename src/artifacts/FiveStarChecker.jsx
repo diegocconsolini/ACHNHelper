@@ -359,7 +359,6 @@ const FiveStarChecker = () => {
                       borderRadius: '4px',
                       cursor: 'pointer',
                       outline: 'none',
-
                       fontSize: '12px',
                       fontWeight: '700',
                     }}
@@ -379,7 +378,6 @@ const FiveStarChecker = () => {
                         borderRadius: '4px',
                         cursor: 'pointer',
                         outline: 'none',
-
                         fontSize: '11px',
                       }}
                     >
@@ -421,7 +419,6 @@ const FiveStarChecker = () => {
                   borderRadius: '4px',
                   cursor: 'pointer',
                   outline: 'none',
-
                   fontWeight: '700',
                 }}
               >
@@ -643,7 +640,6 @@ const FiveStarChecker = () => {
           borderRadius: '4px',
           cursor: 'pointer',
           outline: 'none',
-
           fontSize: '14px',
           fontWeight: '700',
           transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',

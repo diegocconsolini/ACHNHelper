@@ -169,7 +169,6 @@ const NooksCrannyLog = () => {
     border: 'none',
     cursor: 'pointer',
     outline: 'none',
-
     fontWeight: 'bold',
     fontSize: '14px',
     borderRadius: '4px 4px 0 0'
@@ -204,7 +203,6 @@ const NooksCrannyLog = () => {
     borderRadius: '4px',
     cursor: 'pointer',
     outline: 'none',
-
     fontWeight: 'bold',
     fontSize: '14px',
     marginRight: '10px',
@@ -415,7 +413,6 @@ const NooksCrannyLog = () => {
                             borderRadius: '4px',
                             cursor: 'pointer',
                             outline: 'none',
-
                             fontSize: '12px'
                           }}
                           onClick={() => handleDeleteEntry(entry.id)}

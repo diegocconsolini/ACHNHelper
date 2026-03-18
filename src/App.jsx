@@ -191,7 +191,6 @@ class ErrorBoundary extends React.Component {
               fontWeight: 700,
               cursor: 'pointer',
               outline: 'none',
-
             }}
           >
             Reload Tool
@@ -437,7 +436,6 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     outline: 'none',
-
     color: '#c8e6c0',
     fontFamily: "'DM Sans', sans-serif",
     fontSize: 14,
@@ -474,7 +472,6 @@ const styles = {
     borderRadius: 6,
     cursor: 'pointer',
     outline: 'none',
-
     fontSize: 12,
     display: 'flex',
     alignItems: 'center',
@@ -574,7 +571,6 @@ const styles = {
     fontSize: 11,
     cursor: 'pointer',
     outline: 'none',
-
     padding: 0,
     fontFamily: "'DM Mono', monospace",
     textAlign: 'left',
@@ -594,7 +590,6 @@ const styles = {
     fontWeight: 500,
     cursor: 'pointer',
     outline: 'none',
-
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     whiteSpace: 'nowrap',
   },

@@ -317,7 +317,6 @@ const MuseumTracker = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
       fontWeight: '500',
@@ -342,7 +341,6 @@ const MuseumTracker = () => {
       padding: '12px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       display: 'flex',
       flexDirection: 'column',

@@ -165,7 +165,6 @@ const ArtDetector = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '14px',
       fontWeight: '500',
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
@@ -228,7 +227,6 @@ const ArtDetector = () => {
       fontSize: '14px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'border-color 0.3s ease',
     },
     artGrid: {
@@ -244,7 +242,6 @@ const ArtDetector = () => {
       padding: '16px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     },
     artCardHover: {
@@ -323,7 +320,6 @@ const ArtDetector = () => {
       height: '18px',
       cursor: 'pointer',
       outline: 'none',
-
       accentColor: '#5ec850',
     },
     checkboxLabel: {
@@ -331,7 +327,6 @@ const ArtDetector = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       userSelect: 'none',
     },
     progressContainer: {
@@ -386,7 +381,6 @@ const ArtDetector = () => {
       padding: '12px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     },
     reddCardSelected: {

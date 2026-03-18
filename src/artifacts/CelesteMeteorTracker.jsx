@@ -196,7 +196,6 @@ const CelesteMeteorTracker = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '14px',
       fontWeight: '500',
       borderBottom: '2px solid transparent',
@@ -244,7 +243,6 @@ const CelesteMeteorTracker = () => {
       borderRadius: '6px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
     zodiacCardActive: {
@@ -293,7 +291,6 @@ const CelesteMeteorTracker = () => {
       height: '18px',
       cursor: 'pointer',
       outline: 'none',
-
       accentColor: '#5ec850'
     },
     recipeGrid: {
@@ -310,7 +307,6 @@ const CelesteMeteorTracker = () => {
       textAlign: 'center',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       fontSize: '12px'
     },
@@ -370,7 +366,6 @@ const CelesteMeteorTracker = () => {
       fontWeight: '700',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '13px',
       fontFamily: '"DM Sans", sans-serif',
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'

@@ -335,7 +335,6 @@ export default function KKCatalogue() {
       fontWeight: isActive ? '700' : '400',
       cursor: 'pointer',
       outline: 'none',
-
       borderBottom: isActive ? '2px solid #5ec850' : 'none',
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     }),
@@ -393,7 +392,6 @@ export default function KKCatalogue() {
       fontWeight: '600',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     }),
     moodPills: {
@@ -412,7 +410,6 @@ export default function KKCatalogue() {
       fontWeight: '600',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     }),
     songGrid: {
@@ -428,7 +425,6 @@ export default function KKCatalogue() {
       padding: '16px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       minHeight: '200px',
       display: 'flex',
@@ -482,7 +478,6 @@ export default function KKCatalogue() {
       height: '18px',
       cursor: 'pointer',
       outline: 'none',
-
       accentColor: '#5ec850',
     },
     checkboxRow: {
@@ -541,7 +536,6 @@ export default function KKCatalogue() {
       fontWeight: '700',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     resultBox: {
@@ -587,7 +581,6 @@ export default function KKCatalogue() {
       fontWeight: '700',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     roomCard: {
@@ -616,7 +609,6 @@ export default function KKCatalogue() {
       fontWeight: '600',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     roomSongs: {
@@ -684,7 +676,6 @@ export default function KKCatalogue() {
       fontSize: '18px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     },
     drawerAlbumContainer: {
@@ -775,14 +766,12 @@ export default function KKCatalogue() {
       borderRadius: '8px',
       cursor: 'pointer',
       outline: 'none',
-
     },
     drawerCheckbox: {
       width: '22px',
       height: '22px',
       cursor: 'pointer',
       outline: 'none',
-
       accentColor: '#5ec850',
     },
   };
@@ -1015,7 +1004,6 @@ export default function KKCatalogue() {
                                   color: '#4aacf0',
                                   cursor: 'pointer',
                                   outline: 'none',
-
                                   fontSize: '12px',
                                   padding: '0',
                                 }}

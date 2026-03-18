@@ -152,7 +152,6 @@ export default function BellCalculator() {
       border: 'none',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '14px',
       fontWeight: active ? 'bold' : 'normal',
       borderBottom: active ? '3px solid #5ec850' : 'none',
@@ -182,7 +181,6 @@ export default function BellCalculator() {
       borderRadius: '6px',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '14px',
       fontWeight: 'bold',
       transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
@@ -195,7 +193,6 @@ export default function BellCalculator() {
       borderRadius: '4px',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
     },
@@ -236,7 +233,6 @@ export default function BellCalculator() {
       height: '18px',
       cursor: 'pointer',
       outline: 'none',
-
       accentColor: '#5ec850',
     },
   };

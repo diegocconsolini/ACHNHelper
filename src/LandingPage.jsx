@@ -491,7 +491,6 @@ const styles = {
     color: '#0a1a10',
     cursor: 'pointer',
     outline: 'none',
-
     transition: 'transform 0.2s, box-shadow 0.2s',
   },
   ctaSecondary: {
@@ -505,7 +504,6 @@ const styles = {
     color: '#c8e6c0',
     cursor: 'pointer',
     outline: 'none',
-
     transition: 'transform 0.2s, border-color 0.2s',
   },
 
@@ -545,7 +543,6 @@ const styles = {
     padding: '24px',
     cursor: 'pointer',
     outline: 'none',
-
     transition: 'border-color 0.3s, transform 0.3s',
   },
   featureCardHeader: {

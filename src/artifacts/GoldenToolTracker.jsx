@@ -535,7 +535,6 @@ const styles = {
     borderRadius: '4px',
     cursor: 'pointer',
     outline: 'none',
-
     fontSize: '16px',
     fontWeight: '600',
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
@@ -563,7 +562,6 @@ const styles = {
     gap: '10px',
     cursor: 'pointer',
     outline: 'none',
-
     userSelect: 'none',
   },
   checkboxInput: {
@@ -571,7 +569,6 @@ const styles = {
     height: '20px',
     cursor: 'pointer',
     outline: 'none',
-
     accentColor: '#5ec850',
   },
   checkboxText: {

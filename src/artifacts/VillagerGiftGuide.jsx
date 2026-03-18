@@ -129,7 +129,6 @@ const VillagerGiftGuide = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '14px',
       fontWeight: 500,
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
@@ -178,7 +177,6 @@ const VillagerGiftGuide = () => {
       fontSize: '14px',
       cursor: 'pointer',
       outline: 'none',
-
     },
     button: {
       padding: '10px 20px',
@@ -188,7 +186,6 @@ const VillagerGiftGuide = () => {
       borderRadius: '4px',
       cursor: 'pointer',
       outline: 'none',
-
       fontWeight: 600,
       fontSize: '14px',
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
@@ -210,7 +207,6 @@ const VillagerGiftGuide = () => {
       borderRadius: '6px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       textAlign: 'center',
       fontSize: '28px'
@@ -295,7 +291,6 @@ const VillagerGiftGuide = () => {
       borderRadius: '4px',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontWeight: 600,
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'

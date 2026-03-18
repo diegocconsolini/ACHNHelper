@@ -326,7 +326,6 @@ const TurnipTracker = () => {
             borderRadius: '6px',
             cursor: 'pointer',
             outline: 'none',
-
           }}
         >
           ✓ Save Week to History
@@ -343,7 +342,6 @@ const TurnipTracker = () => {
             borderRadius: '6px',
             cursor: 'pointer',
             outline: 'none',
-
           }}
         >
           📊 {showHistory ? 'Hide' : 'Show'} History

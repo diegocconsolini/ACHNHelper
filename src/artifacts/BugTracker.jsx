@@ -454,7 +454,6 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     outline: 'none',
-
     fontWeight: 500,
     fontSize: '14px',
     fontFamily: "'DM Sans', sans-serif",
@@ -510,7 +509,6 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     outline: 'none',
-
     fontSize: '13px',
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
@@ -540,7 +538,6 @@ const styles = {
     transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
     cursor: 'pointer',
     outline: 'none',
-
   },
   bugCardAvailable: {
     borderColor: '#5ec850',
@@ -623,13 +620,11 @@ const styles = {
     color: '#5a7a50',
     cursor: 'pointer',
     outline: 'none',
-
     userSelect: 'none',
   },
   checkbox: {
     cursor: 'pointer',
     outline: 'none',
-
     accentColor: '#5ec850',
     width: '16px',
     height: '16px',

@@ -13,7 +13,6 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
     transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     cursor: 'pointer',
     outline: 'none',
-
     position: 'relative'
   }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -58,7 +57,6 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
           borderRadius: '4px',
           cursor: 'pointer',
           outline: 'none',
-
           flex: 1
         }}>← Back</button>
       )}
@@ -71,7 +69,6 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
           borderRadius: '4px',
           cursor: 'pointer',
           outline: 'none',
-
           flex: 1
         }}>
           {project.status === 'Waiting' ? '✓ Done' : 'Next →'}
@@ -85,7 +82,6 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
         borderRadius: '4px',
         cursor: 'pointer',
         outline: 'none',
-
       }}>✕</button>
     </div>
   </div>
@@ -318,7 +314,6 @@ const IslandFlowerMap = () => {
               borderRadius: '4px',
               cursor: 'pointer',
               outline: 'none',
-
               fontWeight: activeTab === tab ? 'bold' : 'normal',
               transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
             }}
@@ -426,7 +421,6 @@ const IslandFlowerMap = () => {
                   fontWeight: 'bold',
                   cursor: 'pointer',
                   outline: 'none',
-
                   transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
                 }}
               >
@@ -485,7 +479,6 @@ const IslandFlowerMap = () => {
                         padding: '12px',
                         cursor: 'pointer',
                         outline: 'none',
-
                         transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
                         display: 'flex',
                         alignItems: 'center',

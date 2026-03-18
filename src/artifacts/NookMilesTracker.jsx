@@ -425,7 +425,6 @@ const styles = {
     fontSize: '13px',
     cursor: 'pointer',
     outline: 'none',
-
     fontFamily: '"DM Sans", sans-serif',
     transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     whiteSpace: 'nowrap'
@@ -475,7 +474,6 @@ const styles = {
     transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     cursor: 'pointer',
     outline: 'none',
-
   },
   achHeader: {
     marginBottom: '14px'
@@ -524,7 +522,6 @@ const styles = {
     fontSize: '12px',
     cursor: 'pointer',
     outline: 'none',
-
     fontFamily: '"DM Mono", monospace',
     transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
   },

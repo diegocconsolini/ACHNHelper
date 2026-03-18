@@ -194,7 +194,6 @@ const DreamAddressBook = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '13px',
       fontWeight: 500,
       borderBottom: '2px solid transparent',
@@ -261,7 +260,6 @@ const DreamAddressBook = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '16px',
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       fontFamily: '"DM Sans", sans-serif'
@@ -279,7 +277,6 @@ const DreamAddressBook = () => {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       fontFamily: '"DM Sans", sans-serif'
@@ -292,7 +289,6 @@ const DreamAddressBook = () => {
       borderRadius: '4px',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '13px',
       fontWeight: 600,
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
@@ -345,7 +341,6 @@ const DreamAddressBook = () => {
       color: '#4aacf0',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       fontFamily: '"DM Sans", sans-serif'
     },

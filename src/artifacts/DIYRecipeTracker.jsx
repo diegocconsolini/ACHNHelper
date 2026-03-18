@@ -139,7 +139,6 @@ const DIYRecipeTracker = () => {
       fontWeight: 500,
       cursor: 'pointer',
       outline: 'none',
-
       borderBottom: '2px solid transparent',
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease'
     },
@@ -218,7 +217,6 @@ const DIYRecipeTracker = () => {
       padding: '14px 16px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s ease'
     },
     categoryTitle: {
@@ -278,7 +276,6 @@ const DIYRecipeTracker = () => {
       borderRadius: '4px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease',
       fontSize: '12px'
     },
@@ -287,7 +284,6 @@ const DIYRecipeTracker = () => {
       height: '14px',
       cursor: 'pointer',
       outline: 'none',
-
       accentColor: '#5ec850',
       flexShrink: 0
     },
@@ -399,7 +395,6 @@ const DIYRecipeTracker = () => {
       borderRadius: '4px',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontWeight: 500,
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease'

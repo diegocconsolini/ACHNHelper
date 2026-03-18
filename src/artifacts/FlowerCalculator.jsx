@@ -133,7 +133,6 @@ const FlowerCalculator = () => {
       color: '#5ec850',
       cursor: 'pointer',
       outline: 'none',
-
       borderBottom: '2px solid transparent',
       fontSize: '14px',
       fontWeight: '500',
@@ -157,7 +156,6 @@ const FlowerCalculator = () => {
       color: '#5ec850',
       cursor: 'pointer',
       outline: 'none',
-
       borderRadius: '6px',
       fontSize: '14px',
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
@@ -195,7 +193,6 @@ const FlowerCalculator = () => {
       textAlign: 'center',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
     colorBoxActive: {
@@ -241,7 +238,6 @@ const FlowerCalculator = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.8)',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
     stepActive: {

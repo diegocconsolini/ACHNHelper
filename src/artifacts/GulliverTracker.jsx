@@ -325,7 +325,6 @@ const styles = {
     color: '#5a7a50',
     cursor: 'pointer',
     outline: 'none',
-
     fontSize: '14px',
     fontWeight: 500,
     fontFamily: '"DM Sans", sans-serif',
@@ -386,7 +385,6 @@ const styles = {
     borderRadius: '4px',
     cursor: 'pointer',
     outline: 'none',
-
     fontWeight: 700,
     fontSize: '14px',
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
@@ -399,7 +397,6 @@ const styles = {
     borderRadius: '4px',
     cursor: 'pointer',
     outline: 'none',
-
     fontWeight: 700,
     fontSize: '14px',
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
@@ -470,7 +467,6 @@ const styles = {
     fontSize: '13px',
     cursor: 'pointer',
     outline: 'none',
-
   },
   addVisitButton: {
     padding: '10px 16px',
@@ -480,7 +476,6 @@ const styles = {
     borderRadius: '4px',
     cursor: 'pointer',
     outline: 'none',
-
     fontWeight: 700,
     fontSize: '13px',
     fontFamily: '"DM Sans", sans-serif',
@@ -514,7 +509,6 @@ const styles = {
     color: '#c8e6c0',
     cursor: 'pointer',
     outline: 'none',
-
     textAlign: 'left',
     fontSize: '13px',
     fontFamily: '"DM Sans", sans-serif',
@@ -583,7 +577,6 @@ const styles = {
     borderRadius: '4px',
     cursor: 'pointer',
     outline: 'none',
-
     fontSize: '12px',
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },

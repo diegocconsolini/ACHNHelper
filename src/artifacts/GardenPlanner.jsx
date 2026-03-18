@@ -443,7 +443,6 @@ export default function GardenPlanner() {
       color: active ? '#5ec850' : '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontWeight: active ? '700' : '400',
       fontFamily: '"DM Sans", sans-serif',
@@ -457,7 +456,6 @@ export default function GardenPlanner() {
       border: `2px solid ${active ? '#d4b030' : 'rgba(94,200,80,0.3)'}`,
       cursor: 'pointer',
       outline: 'none',
-
       boxShadow: active ? '0 0 0 2px rgba(212,176,48,0.4)' : 'none',
       flexShrink: 0,
     }),
@@ -469,7 +467,6 @@ export default function GardenPlanner() {
       color: active ? '#4aacf0' : '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontWeight: active ? '700' : '400',
       fontFamily: '"DM Sans", sans-serif',
@@ -483,7 +480,6 @@ export default function GardenPlanner() {
       color: color === 'red' ? '#ef4444' : '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontFamily: '"DM Sans", sans-serif',
     }),
@@ -495,7 +491,6 @@ export default function GardenPlanner() {
       color: active ? '#d4b030' : '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '11px',
       fontWeight: active ? '700' : '400',
       fontFamily: '"DM Sans", sans-serif',
@@ -538,7 +533,6 @@ export default function GardenPlanner() {
       boxShadow: selected ? '0 0 0 2px #5ec850' : 'none',
       cursor: 'pointer',
       outline: 'none',
-
       opacity: pending ? 0.55 : 1,
       transition: 'background-color 0.1s, border-color 0.1s',
       position: 'relative',
@@ -587,7 +581,6 @@ export default function GardenPlanner() {
       color: active ? '#5ec850' : '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontWeight: active ? '700' : '400',
       fontFamily: '"DM Sans", sans-serif',
@@ -647,7 +640,6 @@ export default function GardenPlanner() {
       color: '#5ec850',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontFamily: '"DM Sans", sans-serif',
     },
@@ -676,7 +668,6 @@ export default function GardenPlanner() {
       border: 'none',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '12px',
       fontWeight: '600',
       fontFamily: '"DM Sans", sans-serif',
@@ -693,7 +684,6 @@ export default function GardenPlanner() {
       border: 'none',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '13px',
       fontWeight: '700',
       fontFamily: '"DM Sans", sans-serif',

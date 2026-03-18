@@ -171,7 +171,6 @@ const SeasonalEventCalendar = () => {
       color: isActive ? '#5ec850' : '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
       fontWeight: 500,
@@ -196,7 +195,6 @@ const SeasonalEventCalendar = () => {
       fontFamily: '"DM Sans", sans-serif',
       cursor: 'pointer',
       outline: 'none',
-
     },
     monthGrid: {
       display: 'grid',
@@ -210,7 +208,6 @@ const SeasonalEventCalendar = () => {
       borderRadius: '8px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       boxShadow: isCurrentMonth ? '0 0 12px rgba(94, 200, 80, 0.2)' : 'none',
     }),
@@ -238,7 +235,6 @@ const SeasonalEventCalendar = () => {
     checkbox: {
       cursor: 'pointer',
       outline: 'none',
-
       width: '16px',
       height: '16px',
       accentColor: '#5ec850',

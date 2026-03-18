@@ -248,7 +248,6 @@ export default function DailyRoutine() {
       borderRadius: '6px',
       cursor: 'pointer',
       outline: 'none',
-
       transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
       border: '1px solid rgba(94,200,80,0.3)'
     },
@@ -262,7 +261,6 @@ export default function DailyRoutine() {
       marginRight: '10px',
       cursor: 'pointer',
       outline: 'none',
-
       accentColor: '#5ec850'
     },
     taskText: {
@@ -279,7 +277,6 @@ export default function DailyRoutine() {
       color: '#5a7a50',
       cursor: 'pointer',
       outline: 'none',
-
       fontSize: '16px',
       marginLeft: '8px',
       padding: 0
@@ -307,7 +304,6 @@ export default function DailyRoutine() {
       borderRadius: '6px',
       cursor: 'pointer',
       outline: 'none',
-
       fontWeight: 'bold',
       fontSize: '13px'
     },
