@@ -441,7 +441,8 @@ export default function GardenPlanner() {
       border: `1px solid ${active ? '#5ec850' : 'rgba(94,200,80,0.2)'}`,
       borderRadius: '6px',
       color: active ? '#5ec850' : '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       fontWeight: active ? '700' : '400',
@@ -454,7 +455,8 @@ export default function GardenPlanner() {
       borderRadius: '50%',
       backgroundColor: hex,
       border: `2px solid ${active ? '#d4b030' : 'rgba(94,200,80,0.3)'}`,
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       boxShadow: active ? '0 0 0 2px rgba(212,176,48,0.4)' : 'none',
       flexShrink: 0,
@@ -465,7 +467,8 @@ export default function GardenPlanner() {
       border: `1px solid ${active ? '#4aacf0' : 'rgba(74,172,240,0.2)'}`,
       borderRadius: '6px',
       color: active ? '#4aacf0' : '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       fontWeight: active ? '700' : '400',
@@ -478,7 +481,8 @@ export default function GardenPlanner() {
       border: `1px solid ${color === 'red' ? 'rgba(220,38,38,0.4)' : 'rgba(90,122,80,0.3)'}`,
       borderRadius: '6px',
       color: color === 'red' ? '#ef4444' : '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       fontFamily: '"DM Sans", sans-serif',
@@ -489,7 +493,8 @@ export default function GardenPlanner() {
       background: active ? 'rgba(212,176,48,0.25)' : 'rgba(212,176,48,0.05)',
       border: `1px solid ${active ? '#d4b030' : 'rgba(212,176,48,0.15)'}`,
       color: active ? '#d4b030' : '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '11px',
       fontWeight: active ? '700' : '400',
@@ -531,7 +536,8 @@ export default function GardenPlanner() {
       backgroundColor: occupied ? hex : '#1a3a20',
       border: `1px solid ${selected ? '#5ec850' : occupied ? 'rgba(94,200,80,0.25)' : 'rgba(94,200,80,0.12)'}`,
       boxShadow: selected ? '0 0 0 2px #5ec850' : 'none',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       opacity: pending ? 0.55 : 1,
       transition: 'background-color 0.1s, border-color 0.1s',
@@ -579,7 +585,8 @@ export default function GardenPlanner() {
       border: 'none',
       borderBottom: `2px solid ${active ? '#5ec850' : 'transparent'}`,
       color: active ? '#5ec850' : '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       fontWeight: active ? '700' : '400',
@@ -638,7 +645,8 @@ export default function GardenPlanner() {
       border: '1px solid rgba(94,200,80,0.25)',
       borderRadius: '6px',
       color: '#5ec850',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       fontFamily: '"DM Sans", sans-serif',
@@ -666,7 +674,8 @@ export default function GardenPlanner() {
       padding: '5px 10px',
       borderRadius: '5px',
       border: 'none',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       fontWeight: '600',
@@ -682,7 +691,8 @@ export default function GardenPlanner() {
       padding: '7px 14px',
       borderRadius: '6px',
       border: 'none',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '13px',
       fontWeight: '700',

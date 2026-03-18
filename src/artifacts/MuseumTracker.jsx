@@ -315,7 +315,8 @@ const MuseumTracker = () => {
       backgroundColor: 'transparent',
       border: 'none',
       color: '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
@@ -339,7 +340,8 @@ const MuseumTracker = () => {
       border: '1px solid rgba(94,200,80,0.3)',
       borderRadius: '6px',
       padding: '12px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       display: 'flex',

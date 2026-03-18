@@ -169,7 +169,8 @@ const SeasonalEventCalendar = () => {
       border: 'none',
       borderBottom: isActive ? '2px solid #5ec850' : '2px solid transparent',
       color: isActive ? '#5ec850' : '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
@@ -193,7 +194,8 @@ const SeasonalEventCalendar = () => {
       color: '#5ec850',
       borderRadius: '6px',
       fontFamily: '"DM Sans", sans-serif',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
     },
     monthGrid: {
@@ -206,7 +208,8 @@ const SeasonalEventCalendar = () => {
       backgroundColor: 'rgba(12, 28, 14, 0.95)',
       border: `1px solid ${isCurrentMonth ? '#5ec850' : 'rgba(94, 200, 80, 0.2)'}`,
       borderRadius: '8px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       boxShadow: isCurrentMonth ? '0 0 12px rgba(94, 200, 80, 0.2)' : 'none',
@@ -233,7 +236,8 @@ const SeasonalEventCalendar = () => {
       transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     }),
     checkbox: {
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       width: '16px',
       height: '16px',

@@ -127,7 +127,8 @@ const VillagerGiftGuide = () => {
       border: 'none',
       background: 'transparent',
       color: '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '14px',
       fontWeight: 500,
@@ -175,7 +176,8 @@ const VillagerGiftGuide = () => {
       borderRadius: '4px',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
     },
     button: {
@@ -184,7 +186,8 @@ const VillagerGiftGuide = () => {
       color: '#0a1a10',
       border: 'none',
       borderRadius: '4px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontWeight: 600,
       fontSize: '14px',
@@ -205,7 +208,8 @@ const VillagerGiftGuide = () => {
       background: 'rgba(30, 50, 30, 0.6)',
       border: '2px solid rgba(94, 200, 80, 0.3)',
       borderRadius: '6px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       textAlign: 'center',
@@ -289,7 +293,8 @@ const VillagerGiftGuide = () => {
       border: '1px solid rgba(255, 100, 100, 0.4)',
       color: '#ff6464',
       borderRadius: '4px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       fontWeight: 600,
@@ -488,7 +493,7 @@ const VillagerGiftGuide = () => {
                         key={v.name}
                         onMouseDown={() => { setVillagerInput(v.name); setShowAutocomplete(false); }}
                         style={{
-                          padding: '8px 10px', cursor: 'pointer', fontSize: '13px',
+                          padding: '8px 10px', cursor: 'pointer', outline: 'none', fontSize: '13px',
                           display: 'flex', alignItems: 'center', gap: '8px',
                           borderBottom: '1px solid rgba(94, 200, 80, 0.1)'
                         }}

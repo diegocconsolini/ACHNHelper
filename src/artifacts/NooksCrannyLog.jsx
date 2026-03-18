@@ -167,7 +167,8 @@ const NooksCrannyLog = () => {
     backgroundColor: isActive ? '#5ec850' : 'transparent',
     color: isActive ? '#0a1a10' : '#5ec850',
     border: 'none',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     fontWeight: 'bold',
     fontSize: '14px',
@@ -201,7 +202,8 @@ const NooksCrannyLog = () => {
     padding: '12px 24px',
     border: 'none',
     borderRadius: '4px',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     fontWeight: 'bold',
     fontSize: '14px',
@@ -321,12 +323,12 @@ const NooksCrannyLog = () => {
                     onChange={(e) => handleLimitedItemChange(idx, 'price', e.target.value)}
                     style={{ ...inputStyle, flex: 1, marginBottom: 0 }}
                   />
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#5a7a50', cursor: 'pointer' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#5a7a50', cursor: 'pointer', outline: 'none' }}>
                     <input
                       type="checkbox"
                       checked={item.bought}
                       onChange={(e) => handleLimitedItemChange(idx, 'bought', e.target.checked)}
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: 'pointer', outline: 'none' }}
                     />
                     Bought
                   </label>
@@ -411,7 +413,8 @@ const NooksCrannyLog = () => {
                             padding: '6px 12px',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: 'pointer',                            outline: 'none',
+                            cursor: 'pointer',
+                            outline: 'none',
 
                             fontSize: '12px'
                           }}

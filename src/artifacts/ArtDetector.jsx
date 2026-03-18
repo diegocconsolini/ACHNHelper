@@ -163,7 +163,8 @@ const ArtDetector = () => {
       border: 'none',
       backgroundColor: 'transparent',
       color: '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '14px',
       fontWeight: '500',
@@ -225,7 +226,8 @@ const ArtDetector = () => {
       color: '#c8e6c0',
       fontFamily: '"DM Sans", sans-serif',
       fontSize: '14px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'border-color 0.3s ease',
     },
@@ -240,7 +242,8 @@ const ArtDetector = () => {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       borderRadius: '8px',
       padding: '16px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     },
@@ -318,14 +321,16 @@ const ArtDetector = () => {
     checkbox: {
       width: '18px',
       height: '18px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       accentColor: '#5ec850',
     },
     checkboxLabel: {
       fontSize: '13px',
       color: '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       userSelect: 'none',
     },
@@ -379,7 +384,8 @@ const ArtDetector = () => {
       border: '1px solid rgba(94, 200, 80, 0.3)',
       borderRadius: '6px',
       padding: '12px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
     },

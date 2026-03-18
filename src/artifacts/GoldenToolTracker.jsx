@@ -533,7 +533,8 @@ const styles = {
     width: '36px',
     height: '36px',
     borderRadius: '4px',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     fontSize: '16px',
     fontWeight: '600',
@@ -560,14 +561,16 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     userSelect: 'none',
   },
   checkboxInput: {
     width: '20px',
     height: '20px',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     accentColor: '#5ec850',
   },

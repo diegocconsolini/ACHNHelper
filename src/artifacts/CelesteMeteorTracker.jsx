@@ -194,7 +194,8 @@ const CelesteMeteorTracker = () => {
       border: 'none',
       backgroundColor: 'transparent',
       color: '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '14px',
       fontWeight: '500',
@@ -241,7 +242,8 @@ const CelesteMeteorTracker = () => {
       border: '1px solid rgba(94, 200, 80, 0.2)',
       padding: '15px',
       borderRadius: '6px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
     },
@@ -289,7 +291,8 @@ const CelesteMeteorTracker = () => {
     checkboxInput: {
       width: '18px',
       height: '18px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       accentColor: '#5ec850'
     },
@@ -305,7 +308,8 @@ const CelesteMeteorTracker = () => {
       padding: '12px',
       borderRadius: '6px',
       textAlign: 'center',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       fontSize: '12px'
@@ -364,7 +368,8 @@ const CelesteMeteorTracker = () => {
       borderRadius: '4px',
       color: '#0a1a10',
       fontWeight: '700',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '13px',
       fontFamily: '"DM Sans", sans-serif',

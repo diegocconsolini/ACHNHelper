@@ -11,7 +11,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
     padding: '12px',
     marginBottom: '12px',
     transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     position: 'relative'
   }}>
@@ -55,7 +56,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
           color: '#4aacf0',
           padding: '4px 8px',
           borderRadius: '4px',
-          cursor: 'pointer',          outline: 'none',
+          cursor: 'pointer',
+          outline: 'none',
 
           flex: 1
         }}>← Back</button>
@@ -67,7 +69,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
           color: '#5ec850',
           padding: '4px 8px',
           borderRadius: '4px',
-          cursor: 'pointer',          outline: 'none',
+          cursor: 'pointer',
+          outline: 'none',
 
           flex: 1
         }}>
@@ -80,7 +83,8 @@ const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed,
         color: '#ff6b6b',
         padding: '4px 8px',
         borderRadius: '4px',
-        cursor: 'pointer',        outline: 'none',
+        cursor: 'pointer',
+        outline: 'none',
 
       }}>✕</button>
     </div>
@@ -312,7 +316,8 @@ const IslandFlowerMap = () => {
               border: activeTab === tab ? 'none' : '1px solid rgba(94, 200, 80, 0.2)',
               padding: '8px 16px',
               borderRadius: '4px',
-              cursor: 'pointer',              outline: 'none',
+              cursor: 'pointer',
+              outline: 'none',
 
               fontWeight: activeTab === tab ? 'bold' : 'normal',
               transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
@@ -419,7 +424,8 @@ const IslandFlowerMap = () => {
                   padding: '8px 16px',
                   borderRadius: '4px',
                   fontWeight: 'bold',
-                  cursor: 'pointer',                  outline: 'none',
+                  cursor: 'pointer',
+                  outline: 'none',
 
                   transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease'
                 }}
@@ -477,7 +483,8 @@ const IslandFlowerMap = () => {
                         border: `1px solid ${isWatered ? '#5ec850' : '#7e8d8f'}`,
                         borderRadius: '6px',
                         padding: '12px',
-                        cursor: 'pointer',                        outline: 'none',
+                        cursor: 'pointer',
+                        outline: 'none',
 
                         transition: 'background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
                         display: 'flex',

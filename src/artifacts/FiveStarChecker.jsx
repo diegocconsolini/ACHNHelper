@@ -357,7 +357,8 @@ const FiveStarChecker = () => {
                       color: data[key] > 0 ? '#0a1a10' : '#aaa',
                       border: `1px solid ${data[key] > 0 ? '#5ec850' : '#444'}`,
                       borderRadius: '4px',
-                      cursor: 'pointer',                      outline: 'none',
+                      cursor: 'pointer',
+                      outline: 'none',
 
                       fontSize: '12px',
                       fontWeight: '700',
@@ -376,7 +377,8 @@ const FiveStarChecker = () => {
                         color: '#d4b030',
                         border: '1px solid #d4b030',
                         borderRadius: '4px',
-                        cursor: 'pointer',                        outline: 'none',
+                        cursor: 'pointer',
+                        outline: 'none',
 
                         fontSize: '11px',
                       }}
@@ -417,7 +419,8 @@ const FiveStarChecker = () => {
                   color: '#0a1a10',
                   border: 'none',
                   borderRadius: '4px',
-                  cursor: 'pointer',                  outline: 'none',
+                  cursor: 'pointer',
+                  outline: 'none',
 
                   fontWeight: '700',
                 }}
@@ -638,7 +641,8 @@ const FiveStarChecker = () => {
           color: '#d4b030',
           border: `1px solid #d4b030`,
           borderRadius: '4px',
-          cursor: 'pointer',          outline: 'none',
+          cursor: 'pointer',
+          outline: 'none',
 
           fontSize: '14px',
           fontWeight: '700',

@@ -56,7 +56,8 @@ export default function Settings() {
       border: isActive ? '2px solid #5ec850' : '2px solid rgba(94,200,80,0.1)',
       borderRadius: '12px',
       padding: '16px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'border-color 0.2s',
       position: 'relative',
@@ -90,7 +91,8 @@ export default function Settings() {
       fontFamily: "'DM Sans', sans-serif",
       fontSize: '12px',
       color: '#4aacf0',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
     },
     mini: {

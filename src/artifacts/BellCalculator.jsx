@@ -150,7 +150,8 @@ export default function BellCalculator() {
       backgroundColor: 'transparent',
       color: active ? '#5ec850' : '#5a7a50',
       border: 'none',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '14px',
       fontWeight: active ? 'bold' : 'normal',
@@ -179,7 +180,8 @@ export default function BellCalculator() {
       border: 'none',
       padding: '8px 16px',
       borderRadius: '6px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '14px',
       fontWeight: 'bold',
@@ -191,7 +193,8 @@ export default function BellCalculator() {
       border: '1px solid #5ec850',
       padding: '6px 12px',
       borderRadius: '4px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '12px',
       transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
@@ -231,7 +234,8 @@ export default function BellCalculator() {
     checkbox: {
       width: '18px',
       height: '18px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       accentColor: '#5ec850',
     },

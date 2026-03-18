@@ -489,7 +489,8 @@ const styles = {
     border: 'none',
     backgroundColor: '#5ec850',
     color: '#0a1a10',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     transition: 'transform 0.2s, box-shadow 0.2s',
   },
@@ -502,7 +503,8 @@ const styles = {
     border: '1px solid rgba(94,200,80,0.3)',
     backgroundColor: 'transparent',
     color: '#c8e6c0',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     transition: 'transform 0.2s, border-color 0.2s',
   },
@@ -541,7 +543,8 @@ const styles = {
     border: '1px solid rgba(94,200,80,0.1)',
     borderRadius: '12px',
     padding: '24px',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     transition: 'border-color 0.3s, transform 0.3s',
   },

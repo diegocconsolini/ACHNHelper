@@ -246,7 +246,8 @@ export default function DailyRoutine() {
       padding: '10px',
       backgroundColor: 'rgba(94,200,80,0.1)',
       borderRadius: '6px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
       border: '1px solid rgba(94,200,80,0.3)'
@@ -259,7 +260,8 @@ export default function DailyRoutine() {
       width: '18px',
       height: '18px',
       marginRight: '10px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       accentColor: '#5ec850'
     },
@@ -275,7 +277,8 @@ export default function DailyRoutine() {
       backgroundColor: 'transparent',
       border: 'none',
       color: '#5a7a50',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontSize: '16px',
       marginLeft: '8px',
@@ -302,7 +305,8 @@ export default function DailyRoutine() {
       border: 'none',
       color: '#000',
       borderRadius: '6px',
-      cursor: 'pointer',      outline: 'none',
+      cursor: 'pointer',
+      outline: 'none',
 
       fontWeight: 'bold',
       fontSize: '13px'

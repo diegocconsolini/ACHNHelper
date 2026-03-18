@@ -466,7 +466,8 @@ const styles = {
     fontSize: 14,
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },
@@ -492,7 +493,8 @@ const styles = {
     fontSize: 12,
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 500,
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     textTransform: 'capitalize',
@@ -512,7 +514,8 @@ const styles = {
   starBtn: {
     background: 'none',
     border: 'none',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     padding: 2,
     lineHeight: 1,
@@ -543,7 +546,8 @@ const styles = {
     fontSize: 14,
     fontFamily: "'DM Sans', sans-serif",
     fontWeight: 600,
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
   },

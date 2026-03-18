@@ -452,7 +452,8 @@ const styles = {
     padding: '10px 16px',
     borderRadius: '6px',
     border: 'none',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     fontWeight: 500,
     fontSize: '14px',
@@ -507,7 +508,8 @@ const styles = {
     padding: '8px 12px',
     borderRadius: '6px',
     border: 'none',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     fontSize: '13px',
     fontFamily: "'DM Sans', sans-serif",
@@ -536,7 +538,8 @@ const styles = {
     borderRadius: '8px',
     padding: '14px',
     transition: 'background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
   },
   bugCardAvailable: {
@@ -618,12 +621,14 @@ const styles = {
     gap: '6px',
     fontSize: '12px',
     color: '#5a7a50',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     userSelect: 'none',
   },
   checkbox: {
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     accentColor: '#5ec850',
     width: '16px',

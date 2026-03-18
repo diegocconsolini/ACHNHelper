@@ -324,7 +324,8 @@ const TurnipTracker = () => {
             fontSize: '14px',
             fontWeight: '600',
             borderRadius: '6px',
-            cursor: 'pointer',            outline: 'none',
+            cursor: 'pointer',
+            outline: 'none',
 
           }}
         >
@@ -340,7 +341,8 @@ const TurnipTracker = () => {
             fontSize: '14px',
             fontWeight: '600',
             borderRadius: '6px',
-            cursor: 'pointer',            outline: 'none',
+            cursor: 'pointer',
+            outline: 'none',
 
           }}
         >

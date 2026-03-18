@@ -189,7 +189,8 @@ class ErrorBoundary extends React.Component {
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 14,
               fontWeight: 700,
-              cursor: 'pointer',              outline: 'none',
+              cursor: 'pointer',
+              outline: 'none',
 
             }}
           >
@@ -434,7 +435,8 @@ const styles = {
     width: '100%',
     padding: '10px 20px',
     border: 'none',
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     color: '#c8e6c0',
     fontFamily: "'DM Sans', sans-serif",
@@ -470,7 +472,8 @@ const styles = {
     width: 28,
     height: 28,
     borderRadius: 6,
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     fontSize: 12,
     display: 'flex',
@@ -569,7 +572,8 @@ const styles = {
     border: 'none',
     color: '#5a7a50',
     fontSize: 11,
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     padding: 0,
     fontFamily: "'DM Mono', monospace",
@@ -588,7 +592,8 @@ const styles = {
     fontFamily: "'DM Sans', sans-serif",
     fontSize: 13,
     fontWeight: 500,
-    cursor: 'pointer',    outline: 'none',
+    cursor: 'pointer',
+    outline: 'none',
 
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     whiteSpace: 'nowrap',
