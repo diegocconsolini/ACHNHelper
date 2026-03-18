@@ -430,6 +430,7 @@ export default function KKCatalogue() {
       backgroundColor: 'rgba(94, 200, 80, 0.1)',
       borderColor: 'rgba(94, 200, 80, 0.4)',
       boxShadow: '0 4px 12px rgba(94, 200, 80, 0.15)',
+      transform: 'translateY(-2px) scale(1.02)',
     },
     songEmoji: {
       fontSize: '28px',
