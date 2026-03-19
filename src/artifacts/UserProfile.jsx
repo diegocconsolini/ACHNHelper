@@ -416,8 +416,7 @@ const styles = {
     fontFamily: "'DM Sans', sans-serif",
     color: '#c8e6c0',
     padding: '32px 40px',
-    maxWidth: 720,
-    margin: '0 auto',
+    width: '100%',
   },
   centerMsg: {
     display: 'flex',
