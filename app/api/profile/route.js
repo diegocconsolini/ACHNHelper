@@ -33,7 +33,7 @@ export async function PUT(req) {
   // Whitelist allowed fields
   const allowed = [
     'island_name', 'hemisphere', 'friend_code', 'dream_address',
-    'native_flower', 'native_fruit', 'island_rating',
+    'native_flower', 'native_fruit', 'island_rating', 'modal_theme',
   ];
   const updates = {};
   for (const key of allowed) {

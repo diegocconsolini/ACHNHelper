@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { AssetImg } from '../assetHelper';
+import { useSettings } from '../SettingsContext';
+import { MODAL_THEMES, THEME_KEYS } from '../modalThemes';
+import ConfirmModal from '../ConfirmModal';
 
 const FLOWERS = [
   'cosmos', 'hyacinths', 'lilies', 'mums',
@@ -41,6 +44,8 @@ function formatDreamAddress(value) {
 
 export default function UserProfile() {
   const { data: session, status } = useSession();
+  const { modalTheme, setModalTheme } = useSettings();
+  const [previewTheme, setPreviewTheme] = useState(null);
   const [profile, setProfile] = useState({
     island_name: '',
     hemisphere: '',
@@ -303,6 +308,58 @@ export default function UserProfile() {
         </div>
       )}
 
+      {/* Modal Theme */}
+      <div style={styles.themeSection}>
+        <h3 style={styles.themeSectionTitle}>Modal Theme</h3>
+        <p style={styles.themeSectionSub}>Choose how confirmation and alert dialogs look</p>
+        <div style={styles.themeCardsRow}>
+          {THEME_KEYS.map(key => {
+            const t = MODAL_THEMES[key];
+            const isActive = modalTheme === key;
+            return (
+              <div
+                key={key}
+                style={{
+                  ...styles.themeCard,
+                  border: isActive ? '2px solid #5ec850' : '2px solid rgba(94,200,80,0.1)',
+                }}
+                onClick={() => setModalTheme(key)}
+              >
+                {isActive && <div style={styles.themeCheckBadge}>&#10003;</div>}
+                <div style={styles.themeMini}>
+                  <div style={{
+                    ...t.container,
+                    maxWidth: '180px',
+                    padding: '10px 12px',
+                    transform: 'scale(0.85)',
+                    transformOrigin: 'center',
+                  }}>
+                    {t.accentBar && <div style={{ ...t.accentBar, width: '30px', height: '2px' }} />}
+                    <div style={{ fontSize: '16px', marginBottom: '4px' }}>{t.icon}</div>
+                    <div style={{ ...t.title, fontSize: '11px', marginBottom: '3px' }}>Clear garden?</div>
+                    <div style={{ ...t.message, fontSize: '9px', marginBottom: '8px' }}>Remove all flowers?</div>
+                    <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                      <span style={{ ...t.cancelBtn, padding: '2px 8px', fontSize: '9px', borderRadius: t.cancelBtn.borderRadius }}>Cancel</span>
+                      <span style={{ ...t.destructiveBtn, padding: '2px 8px', fontSize: '9px', borderRadius: t.destructiveBtn.borderRadius }}>Clear</span>
+                    </div>
+                    {t.hasTail && (
+                      <div style={{ ...t.tail, width: '8px', height: '8px', bottom: '-5px', marginLeft: '-4px' }} />
+                    )}
+                  </div>
+                </div>
+                <div style={styles.themeCardName}>{t.name}</div>
+                <button
+                  style={styles.themePreviewBtn}
+                  onClick={(e) => { e.stopPropagation(); setPreviewTheme(key); }}
+                >
+                  Preview
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Data Management */}
       <div style={styles.dataSection}>
         <h3 style={styles.dataSectionTitle}>Data Management</h3>
@@ -333,6 +390,17 @@ export default function UserProfile() {
           </p>
         </div>
       </div>
+
+      <ConfirmModal
+        open={previewTheme !== null}
+        themeOverride={previewTheme}
+        title="Preview Dialog"
+        message="This is a preview of the selected dialog theme. Click Cancel or Confirm to close."
+        confirmLabel="Confirm"
+        cancelLabel="Cancel"
+        onConfirm={() => setPreviewTheme(null)}
+        onCancel={() => setPreviewTheme(null)}
+      />
     </div>
   );
 }
@@ -516,6 +584,80 @@ const styles = {
     outline: 'none',
     padding: 2,
     lineHeight: 1,
+  },
+  themeSection: {
+    marginTop: 48,
+    paddingTop: 24,
+    borderTop: '1px solid rgba(94,200,80,0.1)',
+  },
+  themeSectionTitle: {
+    fontFamily: "'Playfair Display', serif",
+    fontSize: 18,
+    fontWeight: 700,
+    color: '#d4b030',
+    marginBottom: 4,
+  },
+  themeSectionSub: {
+    color: '#5a7a50',
+    fontSize: 13,
+    marginBottom: 16,
+  },
+  themeCardsRow: {
+    display: 'flex',
+    gap: 16,
+    flexWrap: 'wrap',
+  },
+  themeCard: {
+    flex: '1 1 220px',
+    maxWidth: 280,
+    background: 'rgba(12,28,14,0.95)',
+    borderRadius: 12,
+    padding: 16,
+    cursor: 'pointer',
+    outline: 'none',
+    transition: 'border-color 0.2s',
+    position: 'relative',
+  },
+  themeCheckBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    background: '#5ec850',
+    color: '#0a1a10',
+    borderRadius: '50%',
+    width: 22,
+    height: 22,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 13,
+    fontWeight: 700,
+  },
+  themeMini: {
+    background: 'rgba(0,0,0,0.3)',
+    borderRadius: 8,
+    padding: 12,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 100,
+  },
+  themeCardName: {
+    fontWeight: 600,
+    fontSize: 14,
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  themePreviewBtn: {
+    background: 'rgba(74,172,240,0.1)',
+    border: '1px solid rgba(74,172,240,0.3)',
+    borderRadius: 6,
+    padding: '4px 12px',
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: 12,
+    color: '#4aacf0',
+    cursor: 'pointer',
+    outline: 'none',
   },
   dataSection: {
     marginTop: 48,
