@@ -62,6 +62,7 @@ export const CATEGORY_MAP = {
   miscellaneous: 'miscellaneous',
   other: 'other',
   'message-cards': 'message-cards',
+  cooking: 'cooking',
 };
 
 /**

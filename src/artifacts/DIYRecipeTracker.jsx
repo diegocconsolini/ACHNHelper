@@ -1007,11 +1007,7 @@ const DIYRecipeTracker = () => {
                               onClick={(e) => e.stopPropagation()}
                               style={styles.checkbox}
                             />
-                            {data.isCooking ? (
-                              <span style={{ fontSize: '18px', marginRight: '6px' }}>{data.emoji}</span>
-                            ) : (
-                              <AssetImg category="recipes" name={recipe} size={22} />
-                            )}
+                            <AssetImg category={data.isCooking ? "cooking" : "recipes"} name={recipe} size={22} />
                             <span style={{
                               textDecoration: isLearned ? 'line-through' : 'none',
                               color: isLearned ? '#5a7a50' : '#c8e6c0',
