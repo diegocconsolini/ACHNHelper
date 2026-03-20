@@ -48,6 +48,34 @@ const SEA_CREATURE_DATA = [
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+const getRarity = (price) => {
+  if (price >= 10000) return 'Very Rare';
+  if (price >= 5000) return 'Rare';
+  if (price >= 2000) return 'Uncommon';
+  return 'Common';
+};
+
+const RARITY_BG = {
+  "Common": "rgba(143, 188, 143, 0.2)",
+  "Uncommon": "rgba(94, 200, 80, 0.2)",
+  "Rare": "rgba(74, 172, 240, 0.2)",
+  "Very Rare": "rgba(160, 100, 220, 0.2)"
+};
+
+const RARITY_BORDER = {
+  "Common": "rgba(143, 188, 143, 0.5)",
+  "Uncommon": "rgba(94, 200, 80, 0.5)",
+  "Rare": "rgba(74, 172, 240, 0.5)",
+  "Very Rare": "rgba(160, 100, 220, 0.5)"
+};
+
+const RARITY_TEXT = {
+  "Common": "#8fbc8f",
+  "Uncommon": "#5ec850",
+  "Rare": "#4aacf0",
+  "Very Rare": "#a064dc"
+};
+
 export default function SeaCreatureTracker() {
   const [creatures, setCreatures] = useState([]);
   const [hemisphere, setHemisphere] = useState('north');
@@ -55,6 +83,9 @@ export default function SeaCreatureTracker() {
   const [speedFilter, setSpeedFilter] = useState('All');
   const [availabilityFilter, setAvailabilityFilter] = useState('All');
   const [caughtStatus, setCaughtStatus] = useState({});
+  const [selectedCreature, setSelectedCreature] = useState(null);
+  const [creatureDetails, setCreatureDetails] = useState(null);
+  const [isDrawerClosing, setIsDrawerClosing] = useState(false);
   const isLoaded = useRef(false);
 
   // Load data on mount
@@ -91,6 +122,33 @@ export default function SeaCreatureTracker() {
     };
     saveData();
   }, [hemisphere, caughtStatus]);
+
+  // Drawer: fetch enriched data from Nookipedia proxy
+  useEffect(() => {
+    if (selectedCreature) {
+      setCreatureDetails(null);
+      fetch(`/api/nookipedia/nh/sea/${encodeURIComponent(selectedCreature.name)}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(setCreatureDetails)
+        .catch(() => setCreatureDetails(null));
+    }
+  }, [selectedCreature]);
+
+  // Drawer: Escape key to close
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') closeDrawer(); };
+    if (selectedCreature) window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [selectedCreature]);
+
+  const closeDrawer = () => {
+    setIsDrawerClosing(true);
+    setTimeout(() => {
+      setSelectedCreature(null);
+      setCreatureDetails(null);
+      setIsDrawerClosing(false);
+    }, 200);
+  };
 
   const getCurrentMonth = () => new Date().getMonth() + 1;
   const getCurrentHour = () => new Date().getHours();
@@ -404,6 +462,10 @@ export default function SeaCreatureTracker() {
           from { opacity: 0; transform: translateY(4px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes seaDrawerSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes seaDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        @keyframes seaFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes seaFadeOut { from { opacity: 1; } to { opacity: 0; } }
       `}</style>
       <div style={styles.container}>
         <div style={styles.header}>
@@ -497,6 +559,7 @@ export default function SeaCreatureTracker() {
                   ...(available ? { borderColor: 'rgba(94,200,80,0.8)', boxShadow: '0 0 12px rgba(94,200,80,0.2)' } : {}),
                   ...(caught ? { opacity: 0.6 } : {})
                 }}
+                onClick={() => setSelectedCreature(creature)}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow = '0 4px 16px rgba(94,200,80,0.3)';
                   e.currentTarget.style.borderColor = 'rgba(94,200,80,0.6)';
@@ -565,7 +628,7 @@ export default function SeaCreatureTracker() {
 
                 {available && <div style={styles.availableBadge}>✓ Available Now!</div>}
 
-                <div style={styles.caughtCheckbox}>
+                <div style={styles.caughtCheckbox} onClick={(e) => e.stopPropagation()}>
                   <input
                     type="checkbox"
                     id={`caught-${creature.id}`}
@@ -597,6 +660,288 @@ export default function SeaCreatureTracker() {
           </div>
         </div>
       </div>
+
+      {selectedCreature && (() => {
+        const creature = selectedCreature;
+        const isCaught = caughtStatus[creature.id];
+        const rarity = getRarity(creature.sellPrice);
+        const hoursText = creature.allDay ? 'All Day' : `${creature.startHour}:00 - ${creature.endHour}:00`;
+        const speedValue = getSpeedValue(creature.movementSpeed);
+        const speedColor = getSpeedColor(creature.movementSpeed);
+
+        return (
+          <>
+            <div
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                zIndex: 9999,
+                animation: isDrawerClosing ? 'seaFadeOut 0.2s ease-in forwards' : 'seaFadeIn 0.2s ease-out forwards',
+              }}
+              onClick={closeDrawer}
+            />
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: typeof window !== 'undefined' && window.innerWidth < 600 ? '100%' : '420px',
+              backgroundColor: '#0a1a10',
+              borderLeft: '1px solid rgba(94, 200, 80, 0.3)',
+              zIndex: 10000,
+              overflowY: 'auto',
+              padding: '24px',
+              animation: isDrawerClosing ? 'seaDrawerSlideOut 0.2s ease-in forwards' : 'seaDrawerSlideIn 0.25s ease-out forwards',
+            }}>
+              {/* Close button */}
+              <button
+                style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '16px',
+                  background: 'rgba(94, 200, 80, 0.1)',
+                  border: '1px solid rgba(94, 200, 80, 0.3)',
+                  borderRadius: '50%',
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#c8e6c0',
+                  fontSize: '18px',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  transition: 'background-color 0.2s ease, border-color 0.2s ease',
+                }}
+                onClick={closeDrawer}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.25)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'; }}
+              >
+                ✕
+              </button>
+
+              {/* Large sea creature sprite */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px', marginBottom: '20px' }}>
+                <AssetImg category="sea-creatures" name={creature.name} size={200} />
+              </div>
+
+              {/* Creature name */}
+              <div style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: '28px',
+                fontWeight: '700',
+                color: '#5ec850',
+                textAlign: 'center',
+                marginBottom: '12px',
+              }}>
+                {creature.name}
+              </div>
+
+              {/* Rarity badge */}
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <span style={{
+                  display: 'inline-block',
+                  backgroundColor: RARITY_BG[rarity],
+                  border: `1px solid ${RARITY_BORDER[rarity]}`,
+                  borderRadius: '16px',
+                  padding: '6px 16px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  color: RARITY_TEXT[rarity],
+                }}>
+                  {rarity}
+                </span>
+              </div>
+
+              {/* Info grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: '12px',
+                marginBottom: '24px',
+              }}>
+                <div style={{
+                  backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                  border: '1px solid rgba(94, 200, 80, 0.15)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Shadow</div>
+                  <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{getShadowEmoji(creature.shadowSize)} {creature.shadowSize}</div>
+                </div>
+                <div style={{
+                  backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                  border: '1px solid rgba(94, 200, 80, 0.15)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Speed</div>
+                  <div style={{ fontSize: '14px', color: speedColor, fontWeight: '500' }}>{creature.movementSpeed}</div>
+                  <div style={{ display: 'flex', gap: '2px', marginTop: '4px' }}>
+                    {Array(speedValue).fill(0).map((_, i) => (
+                      <div key={i} style={{ height: '4px', width: '8px', backgroundColor: speedColor, borderRadius: '2px' }} />
+                    ))}
+                    {Array(5 - speedValue).fill(0).map((_, i) => (
+                      <div key={i + speedValue} style={{ height: '4px', width: '8px', backgroundColor: 'rgba(94,200,80,0.3)', borderRadius: '2px' }} />
+                    ))}
+                  </div>
+                </div>
+                <div style={{
+                  backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                  border: '1px solid rgba(94, 200, 80, 0.15)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Sell Price</div>
+                  <div style={{ fontSize: '14px', color: '#d4b030', fontWeight: '600', fontFamily: "'DM Mono', monospace" }}>{creature.sellPrice.toLocaleString()}</div>
+                </div>
+              </div>
+
+              {/* Pascal trigger badge */}
+              {creature.isPascalTrigger && (
+                <div style={{
+                  textAlign: 'center',
+                  marginBottom: '24px',
+                  padding: '12px 16px',
+                  backgroundColor: 'rgba(212, 176, 48, 0.1)',
+                  border: '1px solid rgba(212, 176, 48, 0.3)',
+                  borderRadius: '8px',
+                }}>
+                  <span style={{ color: '#d4b030', fontSize: '14px', fontWeight: '600' }}>
+                    🐚 Give to Pascal for Mermaid DIY!
+                  </span>
+                </div>
+              )}
+
+              {/* Availability section */}
+              <div style={{
+                marginBottom: '24px',
+                paddingTop: '20px',
+                borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+              }}>
+                <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px' }}>Availability</div>
+
+                <div style={{ fontSize: '14px', color: '#c8e6c0', marginBottom: '16px' }}>
+                  ⏰ {hoursText}
+                </div>
+
+                {/* North months */}
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '6px' }}>🌍 Northern Hemisphere</div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                    {MONTH_NAMES.map((month, idx) => (
+                      <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          backgroundColor: creature.northMonths.includes(idx + 1) ? '#5ec850' : 'rgba(94,200,80,0.15)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          color: creature.northMonths.includes(idx + 1) ? '#0a1a10' : '#5a7a50',
+                          fontWeight: '600',
+                        }}>
+                          {month.charAt(0)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* South months */}
+                <div>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '6px' }}>🌏 Southern Hemisphere</div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                    {MONTH_NAMES.map((month, idx) => (
+                      <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          backgroundColor: creature.southMonths.includes(idx + 1) ? '#5ec850' : 'rgba(94,200,80,0.15)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          color: creature.southMonths.includes(idx + 1) ? '#0a1a10' : '#5a7a50',
+                          fontWeight: '600',
+                        }}>
+                          {month.charAt(0)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Catchphrase from API */}
+              {creatureDetails?.catchphrases?.[0] && (
+                <div style={{
+                  paddingTop: '20px',
+                  borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+                  marginBottom: '20px',
+                }}>
+                  <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Catchphrase</div>
+                  <div style={{
+                    fontStyle: 'italic',
+                    color: '#d4b030',
+                    fontSize: '14px',
+                    lineHeight: '1.6',
+                    padding: '12px',
+                    backgroundColor: 'rgba(212, 176, 48, 0.06)',
+                    border: '1px solid rgba(212, 176, 48, 0.15)',
+                    borderRadius: '8px',
+                  }}>
+                    &ldquo;{creatureDetails.catchphrases[0]}&rdquo;
+                  </div>
+                </div>
+              )}
+
+              {/* Caught checkbox */}
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                marginTop: '20px',
+                paddingTop: '20px',
+                borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+              }}>
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '14px',
+                    backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                    border: '1px solid rgba(94, 200, 80, 0.15)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    outline: 'none',
+                  }}
+                  onClick={() => toggleCaught(creature.id)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isCaught || false}
+                    onChange={() => toggleCaught(creature.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ width: '22px', height: '22px', cursor: 'pointer', outline: 'none', accentColor: '#5ec850' }}
+                  />
+                  <span style={{ fontSize: '14px', fontWeight: '600', color: isCaught ? '#5ec850' : '#c8e6c0' }}>
+                    {isCaught ? '✅ Caught' : 'Mark Caught'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      })()}
     </>
   );
 }
