@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AssetImg } from '../assetHelper';
 import { VILLAGERS, BIRTHDAY_CALENDAR } from './villagerData';
 
@@ -31,6 +31,36 @@ const VillagerGiftGuide = () => {
   const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [giftLog, setGiftLog] = useState([]);
   const [dreamieWishlist, setDreamieWishlist] = useState('');
+  const [drawerVillager, setDrawerVillager] = useState(null);
+  const [drawerData, setDrawerData] = useState(null);
+  const [drawerLoading, setDrawerLoading] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+
+  const openDrawer = useCallback(async (villagerName) => {
+    setDrawerVillager(villagerName);
+    setDrawerData(null);
+    setDrawerLoading(true);
+    setDrawerVisible(true);
+    try {
+      const res = await fetch(`/api/nookipedia/villagers?name=${encodeURIComponent(villagerName)}&nhdetails=true`);
+      if (res.ok) {
+        const data = await res.json();
+        setDrawerData(Array.isArray(data) ? data[0] : data);
+      }
+    } catch (e) {
+      console.error('Failed to fetch villager details:', e);
+    } finally {
+      setDrawerLoading(false);
+    }
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerVisible(false);
+    setTimeout(() => {
+      setDrawerVillager(null);
+      setDrawerData(null);
+    }, 300);
+  }, []);
 
   // Load data on mount
   useEffect(() => {
@@ -437,7 +467,13 @@ const VillagerGiftGuide = () => {
                 </div>
                 <div style={{ ...baseStyles.villagerList, maxHeight: '200px', overflowY: 'auto' }}>
                   {villagers.map((v, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingRight: '4px' }}>
+                    <div
+                      key={i}
+                      onClick={() => openDrawer(v.name)}
+                      style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingRight: '4px', cursor: 'pointer', borderRadius: '4px', padding: '2px 4px', transition: 'background 0.2s ease' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(94, 200, 80, 0.1)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                    >
                       <AssetImg category="villagers" name={v.name} size={20} />
                       <strong>{v.name}</strong>
                       <span style={{ marginLeft: 'auto', fontFamily: '"DM Mono", monospace', fontSize: '11px', color: '#5a7a50' }}>
@@ -539,7 +575,10 @@ const VillagerGiftGuide = () => {
           ) : (
             myVillagers.map(villager => (
               <div key={villager.id} style={baseStyles.villagerCard}>
-                <div>
+                <div
+                  onClick={() => openDrawer(villager.name)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <strong style={{ color: '#5ec850' }}>{villager.name}</strong>
                   <div style={{ fontSize: '12px', color: '#5a7a50', marginTop: '4px' }}>
                     Friendship: {'⭐'.repeat(villager.friendship)} ({villager.friendship}/6)
@@ -597,10 +636,245 @@ const VillagerGiftGuide = () => {
     );
   };
 
+  const renderDrawer = () => {
+    if (!drawerVillager) return null;
+
+    const personalityColors = {
+      'Normal': '#f9b4d6',
+      'Peppy': '#ff88cc',
+      'Lazy': '#98d2a6',
+      'Jock': '#ff8844',
+      'Cranky': '#996633',
+      'Snooty': '#ffdd99',
+      'Smug': '#88ddff',
+      'Big sister': '#ff99dd'
+    };
+
+    return (
+      <>
+        {/* Backdrop */}
+        <div
+          onClick={closeDrawer}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.6)',
+            zIndex: 999,
+            opacity: drawerVisible ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+            pointerEvents: drawerVisible ? 'auto' : 'none'
+          }}
+        />
+        {/* Drawer panel */}
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: '380px',
+            maxWidth: '90vw',
+            background: '#0c1c0e',
+            borderLeft: '2px solid rgba(94, 200, 80, 0.3)',
+            zIndex: 1000,
+            overflowY: 'auto',
+            padding: '24px',
+            fontFamily: '"DM Sans", sans-serif',
+            color: '#c8e6c0',
+            transform: drawerVisible ? 'translateX(0)' : 'translateX(100%)',
+            transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            boxShadow: drawerVisible ? '-8px 0 32px rgba(0, 0, 0, 0.5)' : 'none',
+            animation: drawerVisible ? 'villagerDrawerSlideIn 0.3s ease forwards' : 'none'
+          }}
+        >
+          {/* Close button */}
+          <button
+            onClick={closeDrawer}
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(94, 200, 80, 0.3)',
+              borderRadius: '50%',
+              width: '36px',
+              height: '36px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              outline: 'none',
+              color: '#c8e6c0',
+              fontSize: '18px',
+              fontWeight: 700,
+              transition: 'background 0.2s ease'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 100, 100, 0.3)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'; }}
+          >
+            X
+          </button>
+
+          {drawerLoading ? (
+            <div style={{ textAlign: 'center', paddingTop: '80px' }}>
+              <AssetImg category="villagers" name={drawerVillager} size={64} />
+              <div style={{ marginTop: '16px', color: '#5a7a50', fontSize: '14px', fontFamily: '"DM Mono", monospace' }}>
+                Loading details...
+              </div>
+            </div>
+          ) : drawerData ? (
+            <div style={{ paddingTop: '8px' }}>
+              {/* Portrait */}
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                {drawerData.image_url ? (
+                  <img
+                    src={drawerData.image_url}
+                    alt={drawerData.name}
+                    style={{
+                      width: '160px',
+                      height: '160px',
+                      objectFit: 'contain',
+                      borderRadius: '12px',
+                      background: 'rgba(30, 50, 30, 0.6)',
+                      border: '2px solid rgba(94, 200, 80, 0.2)',
+                      padding: '8px'
+                    }}
+                  />
+                ) : (
+                  <AssetImg category="villagers" name={drawerVillager} size={120} />
+                )}
+              </div>
+
+              {/* Name */}
+              <h2 style={{
+                fontFamily: '"Playfair Display", serif',
+                fontSize: '28px',
+                fontWeight: 700,
+                color: '#5ec850',
+                textAlign: 'center',
+                margin: '0 0 16px 0'
+              }}>
+                {drawerData.name}
+              </h2>
+
+              {/* Info pills */}
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
+                {[
+                  { label: drawerData.species, color: '#4aacf0' },
+                  { label: drawerData.personality, color: personalityColors[drawerData.personality] || '#5ec850' },
+                  { label: drawerData.gender, color: drawerData.gender === 'Male' ? '#88ddff' : '#ff88cc' }
+                ].map((pill, i) => (
+                  <span key={i} style={{
+                    padding: '5px 14px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    fontFamily: '"DM Mono", monospace',
+                    background: `${pill.color}20`,
+                    border: `1px solid ${pill.color}50`,
+                    color: pill.color
+                  }}>
+                    {pill.label}
+                  </span>
+                ))}
+              </div>
+
+              {/* Detail rows */}
+              <div style={{
+                background: 'rgba(20, 40, 25, 0.8)',
+                border: '1px solid rgba(94, 200, 80, 0.15)',
+                borderRadius: '8px',
+                padding: '16px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '14px'
+              }}>
+                {/* Birthday */}
+                {drawerData.birthday_month && (
+                  <div>
+                    <div style={{ fontSize: '11px', fontFamily: '"DM Mono", monospace', color: '#5a7a50', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Birthday</div>
+                    <div style={{ fontSize: '15px' }}>
+                      {'\uD83C\uDF82'} {drawerData.birthday_month} {drawerData.birthday_day}
+                      {drawerData.sign && (
+                        <span style={{
+                          marginLeft: '8px',
+                          padding: '2px 10px',
+                          borderRadius: '12px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          background: 'rgba(212, 176, 48, 0.15)',
+                          border: '1px solid rgba(212, 176, 48, 0.3)',
+                          color: '#d4b030',
+                          fontFamily: '"DM Mono", monospace'
+                        }}>
+                          {drawerData.sign}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Catchphrase */}
+                {drawerData.phrase && (
+                  <div>
+                    <div style={{ fontSize: '11px', fontFamily: '"DM Mono", monospace', color: '#5a7a50', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Catchphrase</div>
+                    <div style={{
+                      fontSize: '16px',
+                      fontStyle: 'italic',
+                      color: '#d4b030'
+                    }}>
+                      &ldquo;{drawerData.phrase}&rdquo;
+                    </div>
+                  </div>
+                )}
+
+                {/* Quote */}
+                {drawerData.quote && (
+                  <div>
+                    <div style={{ fontSize: '11px', fontFamily: '"DM Mono", monospace', color: '#5a7a50', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quote</div>
+                    <div style={{ fontSize: '13px', color: '#5a7a50', fontStyle: 'italic', lineHeight: '1.5' }}>
+                      {drawerData.quote}
+                    </div>
+                  </div>
+                )}
+
+                {/* Default clothing */}
+                {drawerData.clothing && (
+                  <div>
+                    <div style={{ fontSize: '11px', fontFamily: '"DM Mono", monospace', color: '#5a7a50', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Default Clothing</div>
+                    <div style={{ fontSize: '14px', color: '#4aacf0' }}>
+                      {drawerData.clothing}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div style={{ textAlign: 'center', paddingTop: '80px' }}>
+              <AssetImg category="villagers" name={drawerVillager} size={64} />
+              <h3 style={{ fontFamily: '"Playfair Display", serif', color: '#5ec850', marginTop: '16px' }}>{drawerVillager}</h3>
+              <div style={{ color: '#5a7a50', fontSize: '13px' }}>Could not load details from API.</div>
+            </div>
+          )}
+        </div>
+      </>
+    );
+  };
+
   return (
     <div style={baseStyles.container}>
-      <style>{'@import url(\'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap\');'}</style>
-      <h1 style={baseStyles.header}>🎁 Villager Gift Guide</h1>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+
+        @keyframes villagerDrawerSlideIn {
+          from { transform: translateX(100%); }
+          to { transform: translateX(0); }
+        }
+      `}</style>
+      <h1 style={baseStyles.header}>{'\uD83C\uDF81'} Villager Gift Guide</h1>
 
       <div style={baseStyles.tabs}>
         {['guide', 'calendar', 'villagers'].map(tab => (
@@ -622,6 +896,8 @@ const VillagerGiftGuide = () => {
       {activeTab === 'guide' && renderGiftGuide()}
       {activeTab === 'calendar' && renderBirthdayCalendar()}
       {activeTab === 'villagers' && renderMyVillagers()}
+
+      {renderDrawer()}
     </div>
   );
 };
