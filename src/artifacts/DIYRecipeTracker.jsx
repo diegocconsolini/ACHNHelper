@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AssetImg } from '../assetHelper';
 import { DIY_CATEGORIES, SOURCES, SEASONAL_SECTIONS, STORAGE_KEY, TOTAL_RECIPES } from './diyRecipeData';
 
@@ -11,6 +11,14 @@ const DIYRecipeTracker = () => {
   const [expandedCategories, setExpandedCategories] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState('');
   const [hemisphere, setHemisphere] = useState('northern');
+
+  // Drawer state
+  const [drawerRecipe, setDrawerRecipe] = useState(null);
+  const [drawerCategory, setDrawerCategory] = useState(null);
+  const [drawerData, setDrawerData] = useState(null);
+  const [drawerLoading, setDrawerLoading] = useState(false);
+  const [drawerError, setDrawerError] = useState(null);
+  const [drawerClosing, setDrawerClosing] = useState(false);
 
   // Load data from storage
   useEffect(() => {
@@ -90,6 +98,69 @@ const DIYRecipeTracker = () => {
     const learned = recipes.filter(r => learnedRecipes.has(r)).length;
     return { learned, total: recipes.length };
   };
+
+  // Find which category a recipe belongs to
+  const findRecipeCategory = useCallback((recipeName) => {
+    for (const [cat, data] of Object.entries(DIY_CATEGORIES)) {
+      if (data.recipes.includes(recipeName)) {
+        return { name: cat, emoji: data.emoji, isCooking: !!data.isCooking };
+      }
+    }
+    return null;
+  }, []);
+
+  // Open the detail drawer and fetch API data
+  const openDrawer = useCallback(async (recipeName) => {
+    const category = findRecipeCategory(recipeName);
+    setDrawerRecipe(recipeName);
+    setDrawerCategory(category);
+    setDrawerData(null);
+    setDrawerError(null);
+    setDrawerLoading(true);
+    setDrawerClosing(false);
+
+    try {
+      const encodedName = encodeURIComponent(recipeName);
+      const res = await fetch(`/api/nookipedia/nh/recipes/${encodedName}`);
+      if (res.ok) {
+        const data = await res.json();
+        setDrawerData(data);
+      } else if (res.status === 404) {
+        // Recipe not found in API — common for cooking recipes
+        setDrawerData(null);
+        setDrawerError('not_found');
+      } else {
+        setDrawerError('api_error');
+      }
+    } catch (err) {
+      console.error('Failed to fetch recipe details:', err);
+      setDrawerError('network_error');
+    } finally {
+      setDrawerLoading(false);
+    }
+  }, [findRecipeCategory]);
+
+  // Close drawer with animation
+  const closeDrawer = useCallback(() => {
+    setDrawerClosing(true);
+    setTimeout(() => {
+      setDrawerRecipe(null);
+      setDrawerCategory(null);
+      setDrawerData(null);
+      setDrawerError(null);
+      setDrawerLoading(false);
+      setDrawerClosing(false);
+    }, 250);
+  }, []);
+
+  // Close drawer on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && drawerRecipe) closeDrawer();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [drawerRecipe, closeDrawer]);
 
   const learnedCount = learnedRecipes.size;
   const progressPercent = TOTAL_RECIPES > 0 ? Math.round((learnedCount / TOTAL_RECIPES) * 100) : 0;
@@ -409,10 +480,367 @@ const DIYRecipeTracker = () => {
       padding: '40px 20px',
       color: '#5a7a50',
       fontSize: '14px'
+    },
+    // Drawer styles
+    drawerOverlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      zIndex: 1000,
+      animation: drawerClosing ? 'recipeDrawerOverlayFadeOut 0.25s ease forwards' : 'recipeDrawerOverlayFadeIn 0.25s ease forwards'
+    },
+    drawer: {
+      position: 'fixed',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: '420px',
+      maxWidth: '90vw',
+      backgroundColor: '#0c1c0e',
+      borderLeft: '1px solid rgba(94, 200, 80, 0.25)',
+      zIndex: 1001,
+      overflowY: 'auto',
+      padding: '28px 24px',
+      boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.5)',
+      animation: drawerClosing ? 'recipeDrawerSlideOut 0.25s ease forwards' : 'recipeDrawerSlideIn 0.3s ease forwards'
+    },
+    drawerCloseBtn: {
+      position: 'absolute',
+      top: '16px',
+      right: '16px',
+      width: '32px',
+      height: '32px',
+      border: '1px solid rgba(94, 200, 80, 0.3)',
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      color: '#c8e6c0',
+      borderRadius: '6px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '16px',
+      fontWeight: 700,
+      transition: 'background-color 0.15s ease, border-color 0.15s ease'
+    },
+    drawerImage: {
+      display: 'flex',
+      justifyContent: 'center',
+      marginBottom: '20px',
+      marginTop: '8px'
+    },
+    drawerRecipeName: {
+      fontFamily: "'Playfair Display', serif",
+      fontSize: '28px',
+      fontWeight: 700,
+      color: '#5ec850',
+      margin: '0 0 12px 0',
+      lineHeight: 1.2
+    },
+    drawerCategoryPill: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      padding: '4px 12px',
+      backgroundColor: 'rgba(94, 200, 80, 0.1)',
+      border: '1px solid rgba(94, 200, 80, 0.25)',
+      borderRadius: '16px',
+      fontSize: '13px',
+      color: '#c8e6c0',
+      marginBottom: '20px'
+    },
+    drawerSection: {
+      marginBottom: '18px'
+    },
+    drawerSectionTitle: {
+      fontSize: '11px',
+      fontWeight: 700,
+      color: '#5a7a50',
+      textTransform: 'uppercase',
+      letterSpacing: '0.8px',
+      marginBottom: '8px'
+    },
+    drawerMaterialCard: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '10px 12px',
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+      borderRadius: '6px',
+      marginBottom: '6px'
+    },
+    drawerMaterialCount: {
+      fontFamily: "'DM Mono', monospace",
+      fontSize: '14px',
+      fontWeight: 700,
+      color: '#d4b030',
+      minWidth: '28px'
+    },
+    drawerMaterialName: {
+      fontSize: '14px',
+      color: '#c8e6c0'
+    },
+    drawerSellPrice: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '12px 14px',
+      backgroundColor: 'rgba(212, 176, 48, 0.08)',
+      border: '1px solid rgba(212, 176, 48, 0.2)',
+      borderRadius: '6px',
+      fontSize: '16px',
+      fontFamily: "'DM Mono', monospace",
+      fontWeight: 700,
+      color: '#d4b030'
+    },
+    drawerAvailabilityItem: {
+      padding: '10px 12px',
+      backgroundColor: 'rgba(74, 172, 240, 0.06)',
+      border: '1px solid rgba(74, 172, 240, 0.15)',
+      borderRadius: '6px',
+      marginBottom: '6px',
+      fontSize: '13px',
+      color: '#c8e6c0',
+      lineHeight: 1.5
+    },
+    drawerAvailFrom: {
+      fontWeight: 600,
+      color: '#4aacf0'
+    },
+    drawerAvailNote: {
+      fontSize: '12px',
+      color: '#5a7a50',
+      marginTop: '4px'
+    },
+    drawerUnlockCount: {
+      padding: '12px 14px',
+      backgroundColor: 'rgba(94, 200, 80, 0.06)',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+      borderRadius: '6px',
+      fontSize: '14px',
+      color: '#c8e6c0'
+    },
+    drawerUnlockValue: {
+      fontFamily: "'DM Mono', monospace",
+      fontWeight: 700,
+      color: '#5ec850'
+    },
+    drawerCheckbox: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '12px 14px',
+      backgroundColor: 'rgba(94, 200, 80, 0.06)',
+      border: '1px solid rgba(94, 200, 80, 0.2)',
+      borderRadius: '6px',
+      cursor: 'pointer',
+      transition: 'background-color 0.15s ease'
+    },
+    drawerLoading: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '12px',
+      padding: '40px 0',
+      color: '#5a7a50',
+      fontSize: '14px'
+    },
+    drawerSpinner: {
+      width: '28px',
+      height: '28px',
+      border: '3px solid rgba(94, 200, 80, 0.15)',
+      borderTopColor: '#5ec850',
+      borderRadius: '50%',
+      animation: 'recipeDrawerSpin 0.7s linear infinite'
+    },
+    drawerError: {
+      padding: '16px',
+      backgroundColor: 'rgba(74, 172, 240, 0.06)',
+      border: '1px solid rgba(74, 172, 240, 0.15)',
+      borderRadius: '6px',
+      fontSize: '13px',
+      color: '#5a7a50',
+      textAlign: 'center',
+      lineHeight: 1.6
+    },
+    drawerDivider: {
+      height: '1px',
+      backgroundColor: 'rgba(94, 200, 80, 0.1)',
+      margin: '20px 0'
     }
   };
 
   const filteredCategories = getFilteredCategories();
+
+  // Render the detail drawer
+  const renderDrawer = () => {
+    if (!drawerRecipe) return null;
+
+    const isLearned = learnedRecipes.has(drawerRecipe);
+    const isCooking = drawerCategory?.isCooking;
+
+    return (
+      <>
+        {/* Overlay */}
+        <div style={styles.drawerOverlay} onClick={closeDrawer} />
+
+        {/* Drawer panel */}
+        <div style={styles.drawer}>
+          {/* Close button */}
+          <button
+            style={styles.drawerCloseBtn}
+            onClick={closeDrawer}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.15)';
+              e.currentTarget.style.borderColor = '#5ec850';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(12, 28, 14, 0.95)';
+              e.currentTarget.style.borderColor = 'rgba(94, 200, 80, 0.3)';
+            }}
+            aria-label="Close drawer"
+          >
+            X
+          </button>
+
+          {/* Recipe image */}
+          <div style={styles.drawerImage}>
+            {drawerData?.image_url ? (
+              <img
+                src={drawerData.image_url}
+                alt={drawerRecipe}
+                width={80}
+                height={80}
+                style={{ imageRendering: 'auto', borderRadius: '8px' }}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+            ) : isCooking ? (
+              <span style={{ fontSize: '64px' }}>{drawerCategory?.emoji || ''}</span>
+            ) : (
+              <AssetImg category="recipes" name={drawerRecipe} size={80} />
+            )}
+          </div>
+
+          {/* Recipe name */}
+          <h2 style={styles.drawerRecipeName}>{drawerRecipe}</h2>
+
+          {/* Category pill */}
+          {drawerCategory && (
+            <div style={styles.drawerCategoryPill}>
+              <span>{drawerCategory.emoji}</span>
+              <span>{drawerCategory.name}</span>
+            </div>
+          )}
+
+          {/* Loading state */}
+          {drawerLoading && (
+            <div style={styles.drawerLoading}>
+              <div style={styles.drawerSpinner} />
+              <span>Fetching recipe details...</span>
+            </div>
+          )}
+
+          {/* Error state — show local info only */}
+          {!drawerLoading && drawerError && (
+            <div style={styles.drawerError}>
+              {drawerError === 'not_found'
+                ? 'Detailed recipe info not available from the API for this item. Showing local data only.'
+                : 'Could not fetch recipe details. Showing local data only.'}
+            </div>
+          )}
+
+          {/* API data sections */}
+          {!drawerLoading && drawerData && (
+            <>
+              {/* Materials */}
+              {drawerData.materials && drawerData.materials.length > 0 && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionTitle}>Materials</div>
+                  {drawerData.materials.map((mat, idx) => (
+                    <div key={idx} style={styles.drawerMaterialCard}>
+                      <span style={styles.drawerMaterialCount}>{mat.count}x</span>
+                      <span style={styles.drawerMaterialName}>{mat.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Sell price */}
+              {drawerData.sell != null && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionTitle}>Sell Price</div>
+                  <div style={styles.drawerSellPrice}>
+                    <span style={{ fontSize: '18px' }}>Bells</span>
+                    <span>{drawerData.sell.toLocaleString()}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Availability / How to obtain */}
+              {drawerData.availability && drawerData.availability.length > 0 && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionTitle}>How to Obtain</div>
+                  {drawerData.availability.map((avail, idx) => (
+                    <div key={idx} style={styles.drawerAvailabilityItem}>
+                      <span style={styles.drawerAvailFrom}>{avail.from}</span>
+                      {avail.note && (
+                        <div style={styles.drawerAvailNote}>{avail.note}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Recipes to unlock */}
+              {drawerData.recipes_to_unlock != null && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionTitle}>Recipes to Unlock</div>
+                  <div style={styles.drawerUnlockCount}>
+                    <span style={styles.drawerUnlockValue}>{drawerData.recipes_to_unlock}</span>
+                    {' '}recipe{drawerData.recipes_to_unlock !== 1 ? 's' : ''} needed before this one becomes available
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Divider before checkbox */}
+          <div style={styles.drawerDivider} />
+
+          {/* Learned checkbox — always visible */}
+          <div style={styles.drawerSection}>
+            <div style={styles.drawerSectionTitle}>Collection Status</div>
+            <div
+              style={{
+                ...styles.drawerCheckbox,
+                backgroundColor: isLearned ? 'rgba(94, 200, 80, 0.12)' : 'rgba(94, 200, 80, 0.06)',
+                borderColor: isLearned ? 'rgba(94, 200, 80, 0.35)' : 'rgba(94, 200, 80, 0.2)'
+              }}
+              onClick={() => toggleRecipeLearned(drawerRecipe)}
+            >
+              <input
+                type="checkbox"
+                checked={isLearned}
+                onChange={() => toggleRecipeLearned(drawerRecipe)}
+                onClick={(e) => e.stopPropagation()}
+                style={{ ...styles.checkbox, width: '18px', height: '18px' }}
+              />
+              <span style={{
+                fontSize: '15px',
+                fontWeight: 600,
+                color: isLearned ? '#5ec850' : '#c8e6c0'
+              }}>
+                {isLearned ? 'Learned' : 'Not learned yet'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
 
   return (
     <div style={styles.container}>
@@ -420,6 +848,25 @@ const DIYRecipeTracker = () => {
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
         input[type="text"]:focus { outline: none; border-color: #5ec850 !important; }
+        @keyframes recipeDrawerSlideIn {
+          from { transform: translateX(100%); }
+          to { transform: translateX(0); }
+        }
+        @keyframes recipeDrawerSlideOut {
+          from { transform: translateX(0); }
+          to { transform: translateX(100%); }
+        }
+        @keyframes recipeDrawerOverlayFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes recipeDrawerOverlayFadeOut {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+        @keyframes recipeDrawerSpin {
+          to { transform: rotate(360deg); }
+        }
       `}</style>
 
       <div style={styles.header}>
@@ -551,7 +998,7 @@ const DIYRecipeTracker = () => {
                             onMouseLeave={(e) => {
                               e.currentTarget.style.backgroundColor = isLearned ? 'rgba(94,200,80,0.12)' : 'rgba(12,28,14,0.6)';
                             }}
-                            onClick={() => toggleRecipeLearned(recipe)}
+                            onClick={() => openDrawer(recipe)}
                           >
                             <input
                               type="checkbox"
@@ -581,7 +1028,7 @@ const DIYRecipeTracker = () => {
               );
             })
           ) : (
-            <div style={styles.noResults}>No recipes found matching "{searchTerm}"</div>
+            <div style={styles.noResults}>No recipes found matching &quot;{searchTerm}&quot;</div>
           )}
         </div>
       )}
@@ -676,6 +1123,9 @@ const DIYRecipeTracker = () => {
           ))}
         </div>
       )}
+
+      {/* Recipe Detail Drawer */}
+      {renderDrawer()}
     </div>
   );
 };
