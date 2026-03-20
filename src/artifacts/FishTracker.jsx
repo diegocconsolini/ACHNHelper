@@ -102,6 +102,27 @@ const RARITY_COLORS = {
   "Very Rare": "#d4b030"
 };
 
+const RARITY_BG = {
+  "Common": "rgba(143, 188, 143, 0.2)",
+  "Uncommon": "rgba(94, 200, 80, 0.2)",
+  "Rare": "rgba(74, 172, 240, 0.2)",
+  "Very Rare": "rgba(160, 100, 220, 0.2)"
+};
+
+const RARITY_BORDER = {
+  "Common": "rgba(143, 188, 143, 0.5)",
+  "Uncommon": "rgba(94, 200, 80, 0.5)",
+  "Rare": "rgba(74, 172, 240, 0.5)",
+  "Very Rare": "rgba(160, 100, 220, 0.5)"
+};
+
+const RARITY_TEXT = {
+  "Common": "#8fbc8f",
+  "Uncommon": "#5ec850",
+  "Rare": "#4aacf0",
+  "Very Rare": "#a064dc"
+};
+
 const FishTracker = () => {
   const [hemisphere, setHemisphere] = useState("north");
   const [searchText, setSearchText] = useState("");
@@ -110,6 +131,9 @@ const FishTracker = () => {
   const [caughtFish, setCaughtFish] = useState({});
   const [donatedFish, setDonatedFish] = useState({});
   const [loading, setLoading] = useState(true);
+  const [selectedFish, setSelectedFish] = useState(null);
+  const [fishDetails, setFishDetails] = useState(null);
+  const [isDrawerClosing, setIsDrawerClosing] = useState(false);
 
   const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -143,6 +167,33 @@ const FishTracker = () => {
     };
     if (!loading) saveData();
   }, [caughtFish, donatedFish, hemisphere, loading]);
+
+  // Drawer: fetch enriched data from Nookipedia proxy
+  useEffect(() => {
+    if (selectedFish) {
+      setFishDetails(null);
+      fetch(`/api/nookipedia/nh/fish/${encodeURIComponent(selectedFish.name)}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(setFishDetails)
+        .catch(() => setFishDetails(null));
+    }
+  }, [selectedFish]);
+
+  // Drawer: Escape key to close
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') closeDrawer(); };
+    if (selectedFish) window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [selectedFish]);
+
+  const closeDrawer = () => {
+    setIsDrawerClosing(true);
+    setTimeout(() => {
+      setSelectedFish(null);
+      setFishDetails(null);
+      setIsDrawerClosing(false);
+    }, 200);
+  };
 
   const getCurrentMonth = () => new Date().getMonth() + 1;
   const getCurrentHour = () => new Date().getHours();
@@ -429,6 +480,11 @@ const FishTracker = () => {
         ::-webkit-scrollbar-thumb:hover {
           background: rgba(94, 200, 80, 0.6);
         }
+
+        @keyframes fishDrawerSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes fishDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        @keyframes fishFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fishFadeOut { from { opacity: 1; } to { opacity: 0; } }
       `}</style>
 
       <div style={headerStyle}>
@@ -506,6 +562,7 @@ const FishTracker = () => {
                   ...fishCardStyle(isAvailable),
                   opacity: isCaught ? 0.75 : 1
                 }}
+                onClick={() => setSelectedFish(fish)}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "#5ec850";
                   e.currentTarget.style.transform = "translateY(-2px)";
@@ -553,20 +610,22 @@ const FishTracker = () => {
                 </div>
 
                 <div style={checkboxContainerStyle}>
-                  <label style={checkboxStyle(isCaught)}>
+                  <label style={checkboxStyle(isCaught)} onClick={(e) => e.stopPropagation()}>
                     <input
                       type="checkbox"
                       checked={isCaught || false}
                       onChange={() => toggleCaught(fish.id)}
+                      onClick={(e) => e.stopPropagation()}
                       style={{ cursor: "pointer" }}
                     />
                     Caught
                   </label>
-                  <label style={checkboxStyle(isDonated)}>
+                  <label style={checkboxStyle(isDonated)} onClick={(e) => e.stopPropagation()}>
                     <input
                       type="checkbox"
                       checked={isDonated || false}
                       onChange={() => toggleDonated(fish.id)}
+                      onClick={(e) => e.stopPropagation()}
                       style={{ cursor: "pointer" }}
                     />
                     Donated
@@ -596,6 +655,324 @@ const FishTracker = () => {
           <div style={statValueStyle}>{completionPercent}%</div>
         </div>
       </div>
+
+      {selectedFish && (() => {
+        const fish = selectedFish;
+        const isCaught = caughtFish[fish.id];
+        const isDonated = donatedFish[fish.id];
+        const availableMonths = getAvailableMonths(fish);
+        const hoursText = fish.allDay ? 'All Day' : `${fish.startHour}:00 - ${fish.endHour}:00`;
+
+        return (
+          <>
+            <div
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                zIndex: 9999,
+                animation: isDrawerClosing ? 'fishFadeOut 0.2s ease-in forwards' : 'fishFadeIn 0.2s ease-out forwards',
+              }}
+              onClick={closeDrawer}
+            />
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: typeof window !== 'undefined' && window.innerWidth < 600 ? '100%' : '420px',
+              backgroundColor: '#0a1a10',
+              borderLeft: '1px solid rgba(94, 200, 80, 0.3)',
+              zIndex: 10000,
+              overflowY: 'auto',
+              padding: '24px',
+              animation: isDrawerClosing ? 'fishDrawerSlideOut 0.2s ease-in forwards' : 'fishDrawerSlideIn 0.25s ease-out forwards',
+            }}>
+              {/* Close button */}
+              <button
+                style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '16px',
+                  background: 'rgba(94, 200, 80, 0.1)',
+                  border: '1px solid rgba(94, 200, 80, 0.3)',
+                  borderRadius: '50%',
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#c8e6c0',
+                  fontSize: '18px',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  transition: 'background-color 0.2s ease, border-color 0.2s ease',
+                }}
+                onClick={closeDrawer}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.25)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'; }}
+              >
+                ✕
+              </button>
+
+              {/* Large fish sprite */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px', marginBottom: '20px' }}>
+                <AssetImg category="fish" name={fish.name} size={200} />
+              </div>
+
+              {/* Fish name */}
+              <div style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: '28px',
+                fontWeight: '700',
+                color: '#5ec850',
+                textAlign: 'center',
+                marginBottom: '12px',
+              }}>
+                {fish.name}
+              </div>
+
+              {/* Rarity badge */}
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <span style={{
+                  display: 'inline-block',
+                  backgroundColor: RARITY_BG[fish.rarity],
+                  border: `1px solid ${RARITY_BORDER[fish.rarity]}`,
+                  borderRadius: '16px',
+                  padding: '6px 16px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  color: RARITY_TEXT[fish.rarity],
+                }}>
+                  {fish.rarity}
+                </span>
+              </div>
+
+              {/* Info grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '12px',
+                marginBottom: '24px',
+              }}>
+                <div style={{
+                  backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                  border: '1px solid rgba(94, 200, 80, 0.15)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Location</div>
+                  <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{LOCATION_EMOJI[fish.location]} {fish.location}</div>
+                </div>
+                <div style={{
+                  backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                  border: '1px solid rgba(94, 200, 80, 0.15)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Shadow</div>
+                  <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{fish.shadowSize}</div>
+                </div>
+                <div style={{
+                  backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                  border: '1px solid rgba(94, 200, 80, 0.15)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Sell (Nook)</div>
+                  <div style={{ fontSize: '14px', color: '#d4b030', fontWeight: '600', fontFamily: "'DM Mono', monospace" }}>{fish.sellPrice.toLocaleString()} Bells</div>
+                </div>
+                <div style={{
+                  backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                  border: '1px solid rgba(94, 200, 80, 0.15)',
+                  borderRadius: '8px',
+                  padding: '12px',
+                }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Sell (C.J.)</div>
+                  <div style={{ fontSize: '14px', color: '#d4b030', fontWeight: '600', fontFamily: "'DM Mono', monospace" }}>
+                    {fishDetails ? (fishDetails.sell_cj ? `${Number(fishDetails.sell_cj).toLocaleString()} Bells` : '---') : (
+                      <span style={{ color: '#5a7a50', fontStyle: 'italic', fontFamily: "'DM Sans', sans-serif", fontWeight: '400' }}>Loading...</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Availability section */}
+              <div style={{
+                marginBottom: '24px',
+                paddingTop: '20px',
+                borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+              }}>
+                <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px' }}>Availability</div>
+
+                <div style={{ fontSize: '14px', color: '#c8e6c0', marginBottom: '16px' }}>
+                  ⏰ {hoursText}
+                </div>
+
+                {/* North months */}
+                <div style={{ marginBottom: '12px' }}>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '6px' }}>🌍 Northern Hemisphere</div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                    {MONTHS.map((month, idx) => (
+                      <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          backgroundColor: fish.northMonths.includes(idx + 1) ? '#5ec850' : 'rgba(94,200,80,0.15)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          color: fish.northMonths.includes(idx + 1) ? '#0a1a10' : '#5a7a50',
+                          fontWeight: '600',
+                        }}>
+                          {month.charAt(0)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* South months */}
+                <div>
+                  <div style={{ fontSize: '11px', color: '#5a7a50', marginBottom: '6px' }}>🌏 Southern Hemisphere</div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                    {MONTHS.map((month, idx) => (
+                      <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <div style={{
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          backgroundColor: fish.southMonths.includes(idx + 1) ? '#5ec850' : 'rgba(94,200,80,0.15)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '8px',
+                          color: fish.southMonths.includes(idx + 1) ? '#0a1a10' : '#5a7a50',
+                          fontWeight: '600',
+                        }}>
+                          {month.charAt(0)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Catchphrase from API */}
+              {fishDetails?.catchphrases?.[0] && (
+                <div style={{
+                  paddingTop: '20px',
+                  borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+                  marginBottom: '20px',
+                }}>
+                  <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Catchphrase</div>
+                  <div style={{
+                    fontStyle: 'italic',
+                    color: '#d4b030',
+                    fontSize: '14px',
+                    lineHeight: '1.6',
+                    padding: '12px',
+                    backgroundColor: 'rgba(212, 176, 48, 0.06)',
+                    border: '1px solid rgba(212, 176, 48, 0.15)',
+                    borderRadius: '8px',
+                  }}>
+                    &ldquo;{fishDetails.catchphrases[0]}&rdquo;
+                  </div>
+                </div>
+              )}
+
+              {/* Tank size from API */}
+              {fishDetails && (fishDetails.tank_width || fishDetails.tank_length) && (
+                <div style={{
+                  paddingTop: '20px',
+                  borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+                  marginBottom: '20px',
+                }}>
+                  <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Tank Size</div>
+                  <div style={{
+                    fontSize: '14px',
+                    color: '#4aacf0',
+                    fontFamily: "'DM Mono', monospace",
+                    padding: '12px',
+                    backgroundColor: 'rgba(74, 172, 240, 0.06)',
+                    border: '1px solid rgba(74, 172, 240, 0.15)',
+                    borderRadius: '8px',
+                  }}>
+                    {fishDetails.tank_width} x {fishDetails.tank_length}
+                  </div>
+                </div>
+              )}
+
+              {/* Caught/Donated checkboxes */}
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                marginTop: '20px',
+                paddingTop: '20px',
+                borderTop: '1px solid rgba(94, 200, 80, 0.1)',
+              }}>
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '14px',
+                    backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                    border: '1px solid rgba(94, 200, 80, 0.15)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    outline: 'none',
+                  }}
+                  onClick={() => toggleCaught(fish.id)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isCaught || false}
+                    onChange={() => toggleCaught(fish.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ width: '22px', height: '22px', cursor: 'pointer', outline: 'none', accentColor: '#5ec850' }}
+                  />
+                  <span style={{ fontSize: '14px', fontWeight: '600', color: isCaught ? '#5ec850' : '#c8e6c0' }}>
+                    {isCaught ? '✅ Caught' : 'Mark Caught'}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '14px',
+                    backgroundColor: 'rgba(94, 200, 80, 0.06)',
+                    border: '1px solid rgba(94, 200, 80, 0.15)',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    outline: 'none',
+                  }}
+                  onClick={() => toggleDonated(fish.id)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isDonated || false}
+                    onChange={() => toggleDonated(fish.id)}
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ width: '22px', height: '22px', cursor: 'pointer', outline: 'none', accentColor: '#5ec850' }}
+                  />
+                  <span style={{ fontSize: '14px', fontWeight: '600', color: isDonated ? '#5ec850' : '#c8e6c0' }}>
+                    {isDonated ? '🏛️ Donated' : 'Mark Donated'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 };
