@@ -34141,5 +34141,298 @@
     "yellow-striped wall": [
       "wallpaper/yellow-striped wall/Image.webp"
     ]
+  },
+  "cooking": {
+    "aji fry": [
+      "cooking/aji fry/Icon Image.webp"
+    ],
+    "anchoas al ajillo": [
+      "cooking/anchoas al ajillo/Icon Image.webp"
+    ],
+    "apple jam": [
+      "cooking/apple jam/Icon Image.webp"
+    ],
+    "baked potatoes": [
+      "cooking/baked potatoes/Icon Image.webp"
+    ],
+    "bamboo-shoot soup": [
+      "cooking/bamboo-shoot soup/Icon Image.webp"
+    ],
+    "barred-knifejaw carpaccio": [
+      "cooking/barred-knifejaw carpaccio/Icon Image.webp"
+    ],
+    "bread": [
+      "cooking/bread/Icon Image.webp"
+    ],
+    "bread gratin": [
+      "cooking/bread gratin/Icon Image.webp"
+    ],
+    "brown sugar": [
+      "cooking/brown sugar/Icon Image.webp"
+    ],
+    "carpaccio di capesante": [
+      "cooking/carpaccio di capesante/Icon Image.webp"
+    ],
+    "carpaccio di marlin blu": [
+      "cooking/carpaccio di marlin blu/Icon Image.webp"
+    ],
+    "carpaccio di salmone": [
+      "cooking/carpaccio di salmone/Icon Image.webp"
+    ],
+    "carrot bagel sandwich": [
+      "cooking/carrot bagel sandwich/Icon Image.webp"
+    ],
+    "carrot potage": [
+      "cooking/carrot potage/Icon Image.webp"
+    ],
+    "carrot-tops curry": [
+      "cooking/carrot-tops curry/Icon Image.webp"
+    ],
+    "cherry jam": [
+      "cooking/cherry jam/Icon Image.webp"
+    ],
+    "clam chowder": [
+      "cooking/clam chowder/Icon Image.webp"
+    ],
+    "coconut oil": [
+      "cooking/coconut oil/Icon Image.webp"
+    ],
+    "fish-and-chips": [
+      "cooking/fish-and-chips/Icon Image.webp"
+    ],
+    "flour": [
+      "cooking/flour/Icon Image.webp"
+    ],
+    "French fries": [
+      "cooking/French fries/Icon Image.webp"
+    ],
+    "fruit pizza": [
+      "cooking/fruit pizza/Icon Image.webp"
+    ],
+    "fruit salad": [
+      "cooking/fruit salad/Icon Image.webp"
+    ],
+    "gnocchi di carote": [
+      "cooking/gnocchi di carote/Icon Image.webp"
+    ],
+    "gnocchi di patate": [
+      "cooking/gnocchi di patate/Icon Image.webp"
+    ],
+    "gnocchi di zucca": [
+      "cooking/gnocchi di zucca/Icon Image.webp"
+    ],
+    "gratin": [
+      "cooking/gratin/Icon Image.webp"
+    ],
+    "grilled sea bass with herbs": [
+      "cooking/grilled sea bass with herbs/Icon Image.webp"
+    ],
+    "jarred bamboo shoots": [
+      "cooking/jarred bamboo shoots/Icon Image.webp"
+    ],
+    "jarred mushrooms": [
+      "cooking/jarred mushrooms/Icon Image.webp"
+    ],
+    "kabu ankake": [
+      "cooking/kabu ankake/Icon Image.webp"
+    ],
+    "karei no nitsuke": [
+      "cooking/karei no nitsuke/Icon Image.webp"
+    ],
+    "minestrone soup": [
+      "cooking/minestrone soup/Icon Image.webp"
+    ],
+    "mixed-fruits bagel sandwich": [
+      "cooking/mixed-fruits bagel sandwich/Icon Image.webp"
+    ],
+    "mixed-fruits sandwich": [
+      "cooking/mixed-fruits sandwich/Icon Image.webp"
+    ],
+    "mushroom crepe": [
+      "cooking/mushroom crepe/Icon Image.webp"
+    ],
+    "mushroom curry": [
+      "cooking/mushroom curry/Icon Image.webp"
+    ],
+    "mushroom pizza": [
+      "cooking/mushroom pizza/Icon Image.webp"
+    ],
+    "mushroom potage": [
+      "cooking/mushroom potage/Icon Image.webp"
+    ],
+    "mushroom salad": [
+      "cooking/mushroom salad/Icon Image.webp"
+    ],
+    "orange marmalade": [
+      "cooking/orange marmalade/Icon Image.webp"
+    ],
+    "organic bread": [
+      "cooking/organic bread/Icon Image.webp"
+    ],
+    "peach jam": [
+      "cooking/peach jam/Icon Image.webp"
+    ],
+    "pear jam": [
+      "cooking/pear jam/Icon Image.webp"
+    ],
+    "apple jelly": [
+      "cooking/apple jelly/Icon Image.webp"
+    ],
+    "apple pie": [
+      "cooking/apple pie/Icon Image.webp"
+    ],
+    "apple smoothie": [
+      "cooking/apple smoothie/Icon Image.webp"
+    ],
+    "apple tart": [
+      "cooking/apple tart/Icon Image.webp"
+    ],
+    "brown-sugar cupcakes": [
+      "cooking/brown-sugar cupcakes/Icon Image.webp"
+    ],
+    "brown-sugar pound cake": [
+      "cooking/brown-sugar pound cake/Icon Image.webp"
+    ],
+    "carrot cake": [
+      "cooking/carrot cake/Icon Image.webp"
+    ],
+    "carrot juice": [
+      "cooking/carrot juice/Icon Image.webp"
+    ],
+    "carrot scones": [
+      "cooking/carrot scones/Icon Image.webp"
+    ],
+    "cherry jelly": [
+      "cooking/cherry jelly/Icon Image.webp"
+    ],
+    "cherry pie": [
+      "cooking/cherry pie/Icon Image.webp"
+    ],
+    "cherry smoothie": [
+      "cooking/cherry smoothie/Icon Image.webp"
+    ],
+    "cherry tart": [
+      "cooking/cherry tart/Icon Image.webp"
+    ],
+    "coconut cookies": [
+      "cooking/coconut cookies/Icon Image.webp"
+    ],
+    "coconut milk": [
+      "cooking/coconut milk/Icon Image.webp"
+    ],
+    "coconut pancakes": [
+      "cooking/coconut pancakes/Icon Image.webp"
+    ],
+    "coconut pudding": [
+      "cooking/coconut pudding/Icon Image.webp"
+    ],
+    "cookies": [
+      "cooking/cookies/Icon Image.webp"
+    ],
+    "frosted cookies": [
+      "cooking/frosted cookies/Icon Image.webp"
+    ],
+    "frosted pretzels": [
+      "cooking/frosted pretzels/Icon Image.webp"
+    ],
+    "fruit cupcakes": [
+      "cooking/fruit cupcakes/Icon Image.webp"
+    ],
+    "fruit scones": [
+      "cooking/fruit scones/Icon Image.webp"
+    ],
+    "fruit-topped pancakes": [
+      "cooking/fruit-topped pancakes/Icon Image.webp"
+    ],
+    "mixed-fruits crepe": [
+      "cooking/mixed-fruits crepe/Icon Image.webp"
+    ],
+    "mixed-fruits pie": [
+      "cooking/mixed-fruits pie/Icon Image.webp"
+    ],
+    "mixed-fruits tart": [
+      "cooking/mixed-fruits tart/Icon Image.webp"
+    ],
+    "orange jelly": [
+      "cooking/orange jelly/Icon Image.webp"
+    ],
+    "orange pie": [
+      "cooking/orange pie/Icon Image.webp"
+    ],
+    "orange pound cake": [
+      "cooking/orange pound cake/Icon Image.webp"
+    ],
+    "orange smoothie": [
+      "cooking/orange smoothie/Icon Image.webp"
+    ],
+    "orange tart": [
+      "cooking/orange tart/Icon Image.webp"
+    ],
+    "pancakes": [
+      "cooking/pancakes/Icon Image.webp"
+    ],
+    "peach jelly": [
+      "cooking/peach jelly/Icon Image.webp"
+    ],
+    "peach pie": [
+      "cooking/peach pie/Icon Image.webp"
+    ],
+    "peach smoothie": [
+      "cooking/peach smoothie/Icon Image.webp"
+    ],
+    "peach tart": [
+      "cooking/peach tart/Icon Image.webp"
+    ],
+    "pear jelly": [
+      "cooking/pear jelly/Icon Image.webp"
+    ],
+    "pear pie": [
+      "cooking/pear pie/Icon Image.webp"
+    ],
+    "pear smoothie": [
+      "cooking/pear smoothie/Icon Image.webp"
+    ],
+    "pear tart": [
+      "cooking/pear tart/Icon Image.webp"
+    ],
+    "plain cupcakes": [
+      "cooking/plain cupcakes/Icon Image.webp"
+    ],
+    "plain scones": [
+      "cooking/plain scones/Icon Image.webp"
+    ],
+    "pound cake": [
+      "cooking/pound cake/Icon Image.webp"
+    ],
+    "pretzels": [
+      "cooking/pretzels/Icon Image.webp"
+    ],
+    "pumpkin cupcakes": [
+      "cooking/pumpkin cupcakes/Icon Image.webp"
+    ],
+    "pumpkin pound cake": [
+      "cooking/pumpkin pound cake/Icon Image.webp"
+    ],
+    "pumpkin scones": [
+      "cooking/pumpkin scones/Icon Image.webp"
+    ],
+    "spooky cookies": [
+      "cooking/spooky cookies/Icon Image.webp"
+    ],
+    "sugar crepe": [
+      "cooking/sugar crepe/Icon Image.webp"
+    ],
+    "thumbprint jam cookies": [
+      "cooking/thumbprint jam cookies/Icon Image.webp"
+    ],
+    "tomato juice": [
+      "cooking/tomato juice/Icon Image.webp"
+    ],
+    "veggie cookies": [
+      "cooking/veggie cookies/Icon Image.webp"
+    ],
+    "veggie cupcakes": [
+      "cooking/veggie cupcakes/Icon Image.webp"
+    ]
   }
 }
