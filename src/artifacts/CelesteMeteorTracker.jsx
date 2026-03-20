@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
 
 const ZODIACS = [
@@ -40,6 +40,13 @@ const CelesteMeteorTracker = () => {
   const [wishes, setWishes] = useState(0);
   const [newWishes, setNewWishes] = useState('');
   const [hoveredButtonId, setHoveredButtonId] = useState(null);
+
+  // Drawer state
+  const [drawerItem, setDrawerItem] = useState(null);
+  const [drawerData, setDrawerData] = useState(null);
+  const [drawerLoading, setDrawerLoading] = useState(false);
+  const [drawerClosing, setDrawerClosing] = useState(false);
+  const drawerCache = useRef({});
 
   const getCurrentZodiac = () => {
     const today = new Date();
@@ -87,6 +94,13 @@ const CelesteMeteorTracker = () => {
     };
     loadData();
   }, []);
+
+  // Escape key closes drawer
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') closeDrawer(); };
+    if (drawerItem) window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [drawerItem]);
 
   const saveData = async (newZodiac, newRecipes, newLog, newVisits, newFrags, newWishes) => {
     try {
@@ -147,6 +161,70 @@ const CelesteMeteorTracker = () => {
     const updated = { ...fragments, [fragType]: Math.max(0, newCount) };
     setFragments(updated);
     await saveData(zodiacData, celesteRecipes, meteorLog, celesteVisits, updated, wishes);
+  };
+
+  // Determine category for a recipe name
+  const getRecipeCategory = (name) => {
+    const zodiac = ZODIACS.find(z => z.item === name);
+    if (zodiac) return 'Zodiac';
+    if (SPACE_ITEMS.includes(name)) return 'Space';
+    if (WANDS.includes(name)) return 'Wand';
+    return 'Celeste';
+  };
+
+  // Get zodiac info for a recipe
+  const getZodiacForRecipe = (name) => {
+    return ZODIACS.find(z => z.item === name) || null;
+  };
+
+  const openDrawer = useCallback(async (recipeName) => {
+    setDrawerItem(recipeName);
+    setDrawerClosing(false);
+    setDrawerData(null);
+
+    if (drawerCache.current[recipeName]) {
+      setDrawerData(drawerCache.current[recipeName]);
+      return;
+    }
+
+    setDrawerLoading(true);
+    try {
+      const encodedName = encodeURIComponent(recipeName);
+      const res = await fetch(`/api/nookipedia/nh/recipes/${encodedName}`);
+      if (res.ok) {
+        const data = await res.json();
+        drawerCache.current[recipeName] = data;
+        setDrawerData(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch recipe details:', err);
+    } finally {
+      setDrawerLoading(false);
+    }
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerClosing(true);
+    setTimeout(() => {
+      setDrawerItem(null);
+      setDrawerData(null);
+      setDrawerClosing(false);
+    }, 250);
+  }, []);
+
+  const handleRecipeClick = (e, recipeName) => {
+    e.stopPropagation();
+    openDrawer(recipeName);
+  };
+
+  const handleDrawerToggleRecipe = async (e, recipeName) => {
+    e.stopPropagation();
+    // For zodiac items, also toggle zodiac data
+    const zodiac = getZodiacForRecipe(recipeName);
+    if (zodiac) {
+      await toggleZodiac(zodiac.name);
+    }
+    await toggleRecipe(recipeName);
   };
 
   const currentZodiac = getCurrentZodiac();
@@ -444,12 +522,304 @@ const CelesteMeteorTracker = () => {
     progressLabel: {
       fontSize: '10px',
       color: '#5a7a50'
-    }
+    },
+    // Drawer styles
+    drawerBackdrop: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      zIndex: 1000,
+      cursor: 'pointer',
+    },
+    drawerPanel: {
+      position: 'fixed',
+      top: 0,
+      right: 0,
+      width: '420px',
+      maxWidth: '90vw',
+      height: '100vh',
+      backgroundColor: '#0c1c0e',
+      borderLeft: '2px solid rgba(94, 200, 80, 0.3)',
+      boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.5)',
+      zIndex: 1001,
+      overflowY: 'auto',
+      padding: '24px',
+      animation: drawerClosing ? 'celesteDrawerSlideOut 0.25s ease-in forwards' : 'celesteDrawerSlideIn 0.3s ease-out forwards',
+    },
+    drawerCloseBtn: {
+      position: 'absolute',
+      top: '16px',
+      right: '16px',
+      width: '32px',
+      height: '32px',
+      borderRadius: '50%',
+      border: '1px solid rgba(94, 200, 80, 0.3)',
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      color: '#5ec850',
+      fontSize: '16px',
+      cursor: 'pointer',
+      outline: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'background-color 0.2s ease, border-color 0.2s ease',
+    },
+    drawerImageContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: '16px',
+      marginBottom: '20px',
+      padding: '16px',
+      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+      borderRadius: '8px',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+    },
+    drawerTitle: {
+      fontFamily: '"Playfair Display", serif',
+      fontSize: '28px',
+      fontWeight: 700,
+      color: '#5ec850',
+      margin: '0 0 12px 0',
+      textAlign: 'center',
+    },
+    drawerBadge: {
+      display: 'inline-block',
+      padding: '4px 12px',
+      borderRadius: '12px',
+      fontSize: '12px',
+      fontWeight: 700,
+      fontFamily: '"DM Sans", sans-serif',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px',
+    },
+    drawerBadgeZodiac: {
+      backgroundColor: 'rgba(212, 176, 48, 0.2)',
+      color: '#d4b030',
+      border: '1px solid rgba(212, 176, 48, 0.4)',
+    },
+    drawerBadgeSpace: {
+      backgroundColor: 'rgba(74, 172, 240, 0.2)',
+      color: '#4aacf0',
+      border: '1px solid rgba(74, 172, 240, 0.4)',
+    },
+    drawerBadgeWand: {
+      backgroundColor: 'rgba(94, 200, 80, 0.2)',
+      color: '#5ec850',
+      border: '1px solid rgba(94, 200, 80, 0.4)',
+    },
+    drawerSection: {
+      marginBottom: '20px',
+    },
+    drawerSectionLabel: {
+      fontSize: '12px',
+      fontWeight: 700,
+      color: '#5a7a50',
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px',
+      marginBottom: '8px',
+    },
+    drawerMaterialRow: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '8px 12px',
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      borderRadius: '4px',
+      marginBottom: '4px',
+      fontSize: '13px',
+      color: '#c8e6c0',
+    },
+    drawerMaterialCount: {
+      fontFamily: '"DM Mono", monospace',
+      fontWeight: 700,
+      color: '#4aacf0',
+    },
+    drawerInfoBox: {
+      padding: '12px',
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      borderRadius: '6px',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+      fontSize: '13px',
+      color: '#c8e6c0',
+    },
+    drawerZodiacBox: {
+      padding: '14px',
+      backgroundColor: 'rgba(212, 176, 48, 0.1)',
+      borderRadius: '6px',
+      border: '1px solid rgba(212, 176, 48, 0.3)',
+      textAlign: 'center',
+    },
+    drawerCheckboxRow: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '12px',
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      borderRadius: '6px',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+      cursor: 'pointer',
+    },
+    drawerCheckbox: {
+      width: '20px',
+      height: '20px',
+      accentColor: '#5ec850',
+      cursor: 'pointer',
+    },
+    drawerLoading: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '40px',
+      color: '#5a7a50',
+      fontSize: '14px',
+    },
+  };
+
+  const renderDrawer = () => {
+    if (!drawerItem) return null;
+
+    const category = getRecipeCategory(drawerItem);
+    const zodiac = getZodiacForRecipe(drawerItem);
+    const isLearned = celesteRecipes[drawerItem] || false;
+
+    const badgeStyle = category === 'Zodiac'
+      ? { ...styles.drawerBadge, ...styles.drawerBadgeZodiac }
+      : category === 'Space'
+        ? { ...styles.drawerBadge, ...styles.drawerBadgeSpace }
+        : { ...styles.drawerBadge, ...styles.drawerBadgeWand };
+
+    return (
+      <>
+        <div
+          style={{
+            ...styles.drawerBackdrop,
+            animation: drawerClosing ? 'celesteFadeOut 0.25s ease-in forwards' : 'celesteFadeIn 0.25s ease-out forwards',
+          }}
+          onClick={closeDrawer}
+        />
+        <div style={styles.drawerPanel} onClick={(e) => e.stopPropagation()}>
+          <button style={styles.drawerCloseBtn} onClick={closeDrawer}>✕</button>
+
+          {/* Recipe image */}
+          <div style={styles.drawerImageContainer}>
+            {drawerData && drawerData.image_url ? (
+              <img
+                src={drawerData.image_url}
+                alt={drawerItem}
+                style={{ maxWidth: '128px', maxHeight: '128px', objectFit: 'contain' }}
+              />
+            ) : (
+              <AssetImg category="recipes" name={drawerItem} size={96} />
+            )}
+          </div>
+
+          {/* Recipe name */}
+          <div style={styles.drawerTitle}>{drawerItem}</div>
+
+          {/* Category badge */}
+          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <span style={badgeStyle}>{category}</span>
+          </div>
+
+          {drawerLoading ? (
+            <div style={styles.drawerLoading}>Loading recipe details...</div>
+          ) : drawerData ? (
+            <>
+              {/* Materials */}
+              {drawerData.materials && drawerData.materials.length > 0 && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionLabel}>Materials Required</div>
+                  {drawerData.materials.map((mat, idx) => (
+                    <div key={idx} style={styles.drawerMaterialRow}>
+                      <span>{mat.name}</span>
+                      <span style={styles.drawerMaterialCount}>x{mat.count}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Sell price */}
+              {drawerData.sell !== undefined && drawerData.sell !== null && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionLabel}>Sell Price</div>
+                  <div style={styles.drawerInfoBox}>
+                    <span style={{ fontFamily: '"DM Mono", monospace', fontWeight: 700, color: '#d4b030', fontSize: '16px' }}>
+                      {drawerData.sell.toLocaleString()} Bells
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Availability / How to obtain */}
+              {drawerData.availability && drawerData.availability.length > 0 && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionLabel}>How to Obtain</div>
+                  {drawerData.availability.map((avail, idx) => (
+                    <div key={idx} style={{ ...styles.drawerInfoBox, marginBottom: '4px' }}>
+                      {avail.from} {avail.note ? `(${avail.note})` : ''}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={styles.drawerSection}>
+              <div style={{ ...styles.drawerInfoBox, textAlign: 'center', color: '#5a7a50' }}>
+                Recipe details unavailable
+              </div>
+            </div>
+          )}
+
+          {/* Zodiac dates + emoji */}
+          {zodiac && (
+            <div style={styles.drawerSection}>
+              <div style={styles.drawerSectionLabel}>Zodiac Period</div>
+              <div style={styles.drawerZodiacBox}>
+                <div style={{ fontSize: '36px', marginBottom: '8px' }}>{zodiac.emoji}</div>
+                <div style={{ fontFamily: '"Playfair Display", serif', fontSize: '18px', fontWeight: 700, color: '#d4b030', marginBottom: '4px' }}>
+                  {zodiac.name}
+                </div>
+                <div style={{ fontSize: '13px', color: '#c8e6c0' }}>{zodiac.dates}</div>
+              </div>
+            </div>
+          )}
+
+          {/* Learned checkbox */}
+          <div style={styles.drawerSection}>
+            <div style={styles.drawerSectionLabel}>Collection Status</div>
+            <div
+              style={styles.drawerCheckboxRow}
+              onClick={(e) => handleDrawerToggleRecipe(e, drawerItem)}
+            >
+              <input
+                type="checkbox"
+                checked={isLearned}
+                readOnly
+                style={styles.drawerCheckbox}
+              />
+              <span style={{ fontSize: '14px', fontWeight: 500, color: isLearned ? '#5ec850' : '#c8e6c0' }}>
+                {isLearned ? 'Learned' : 'Not yet learned'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </>
+    );
   };
 
   return (
     <div style={styles.container}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+        @keyframes celesteDrawerSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes celesteDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        @keyframes celesteFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes celesteFadeOut { from { opacity: 1; } to { opacity: 0; } }
+      `}</style>
 
       <div style={styles.header}>
         <h1 style={styles.title}>🌙 Celeste & Meteor Tracker</h1>
@@ -511,7 +881,7 @@ const CelesteMeteorTracker = () => {
                   ...(zodiacData[zodiac.name] ? styles.zodiacCardActive : {}),
                   ...(zodiac.name === currentZodiac ? styles.zodiacCardCurrent : {})
                 }}
-                onClick={() => toggleZodiac(zodiac.name)}
+                onClick={(e) => handleRecipeClick(e, zodiac.item)}
               >
                 <div style={styles.zodiacHeader}>
                   <span style={styles.zodiacEmoji}>{zodiac.emoji}</span>
@@ -525,7 +895,8 @@ const CelesteMeteorTracker = () => {
                     type="checkbox"
                     style={styles.checkboxInput}
                     checked={zodiacData[zodiac.name] || false}
-                    readOnly
+                    onChange={(e) => { e.stopPropagation(); toggleZodiac(zodiac.name); }}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </div>
               </div>
@@ -562,7 +933,7 @@ const CelesteMeteorTracker = () => {
                     ...styles.recipeCard,
                     ...(celesteRecipes[zodiac.item] ? styles.recipeCardLearned : {})
                   }}
-                  onClick={() => toggleRecipe(zodiac.item)}
+                  onClick={(e) => handleRecipeClick(e, zodiac.item)}
                 >
                   <AssetImg category="recipes" name={zodiac.item} size={32} style={{ display: 'block', margin: '0 auto 4px' }} />
                   {zodiac.item}
@@ -581,7 +952,7 @@ const CelesteMeteorTracker = () => {
                     ...styles.recipeCard,
                     ...(celesteRecipes[item] ? styles.recipeCardLearned : {})
                   }}
-                  onClick={() => toggleRecipe(item)}
+                  onClick={(e) => handleRecipeClick(e, item)}
                 >
                   <AssetImg category="recipes" name={item} size={32} style={{ display: 'block', margin: '0 auto 4px' }} />
                   {item}
@@ -600,7 +971,7 @@ const CelesteMeteorTracker = () => {
                     ...styles.recipeCard,
                     ...(celesteRecipes[wand] ? styles.recipeCardLearned : {})
                   }}
-                  onClick={() => toggleRecipe(wand)}
+                  onClick={(e) => handleRecipeClick(e, wand)}
                 >
                   <AssetImg category="recipes" name={wand} size={32} style={{ display: 'block', margin: '0 auto 4px' }} />
                   {wand}
@@ -685,6 +1056,8 @@ const CelesteMeteorTracker = () => {
           </div>
         </div>
       )}
+
+      {renderDrawer()}
     </div>
   );
 };
