@@ -65,6 +65,11 @@ const ArtDetector = () => {
   const [drawerData, setDrawerData] = useState(null);
   const [drawerLoading, setDrawerLoading] = useState(false);
   const [drawerClosing, setDrawerClosing] = useState(false);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
   const drawerCache = useRef({});
 
   useEffect(() => {
@@ -145,6 +150,23 @@ const ArtDetector = () => {
       setDrawerData(null);
       setDrawerClosing(false);
     }, 300);
+  }, []);
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        if (zoomOpen) { setZoomOpen(false); setZoomLevel(1); setPanPosition({ x: 0, y: 0 }); return; }
+        if (drawerArt) { closeDrawer(); }
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [zoomOpen, drawerArt, closeDrawer]);
+
+  const closeZoom = useCallback(() => {
+    setZoomOpen(false);
+    setZoomLevel(1);
+    setPanPosition({ x: 0, y: 0 });
   }, []);
 
   const filteredArt = ART_DATA.filter(art => {
@@ -545,6 +567,21 @@ const ArtDetector = () => {
       border: '1px solid rgba(94, 200, 80, 0.4)',
       marginBottom: '20px',
     },
+    compareButton: {
+      width: '100%',
+      padding: '10px 16px',
+      backgroundColor: 'rgba(74, 172, 240, 0.15)',
+      border: '1px solid rgba(74, 172, 240, 0.4)',
+      borderRadius: '8px',
+      color: '#4aacf0',
+      fontSize: '14px',
+      fontWeight: '700',
+      fontFamily: '"DM Sans", sans-serif',
+      cursor: 'pointer',
+      outline: 'none',
+      marginBottom: '20px',
+      transition: 'background-color 0.2s ease',
+    },
     drawerInfoSection: {
       marginBottom: '20px',
       padding: '16px',
@@ -658,6 +695,63 @@ const ArtDetector = () => {
     },
   };
 
+  const zoomStyles = {
+    overlay: {
+      position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)',
+      zIndex: 11000, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      animation: 'artZoomFadeIn 0.2s ease',
+    },
+    modal: {
+      width: '95vw', maxWidth: '1400px', maxHeight: '95vh',
+      backgroundColor: '#0a1a10', borderRadius: '12px', padding: '20px',
+      position: 'relative', display: 'flex', flexDirection: 'column', gap: '12px',
+      overflow: 'hidden',
+    },
+    closeBtn: {
+      position: 'absolute', top: '12px', right: '12px',
+      background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff',
+      width: '36px', height: '36px', borderRadius: '50%', fontSize: '18px',
+      cursor: 'pointer', outline: 'none', zIndex: 1,
+    },
+    fakeTell: {
+      backgroundColor: 'rgba(212,176,48,0.15)', border: '1px solid rgba(212,176,48,0.3)',
+      borderRadius: '8px', padding: '12px 16px', color: '#d4b030',
+      fontSize: '14px', fontFamily: "'DM Sans', sans-serif", lineHeight: 1.5,
+    },
+    zoomControls: {
+      display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center',
+    },
+    zoomBtn: {
+      padding: '6px 14px', backgroundColor: 'rgba(94,200,80,0.15)',
+      border: '1px solid rgba(94,200,80,0.3)', borderRadius: '6px',
+      color: '#5ec850', fontSize: '14px', fontWeight: '700',
+      cursor: 'pointer', outline: 'none', fontFamily: "'DM Sans', sans-serif",
+    },
+    zoomLabel: {
+      color: '#c8e6c0', fontSize: '13px', fontFamily: "'DM Mono', monospace", minWidth: '50px', textAlign: 'center',
+    },
+    imageContainer: {
+      display: 'flex', gap: '12px', flex: 1, overflow: 'hidden', cursor: 'grab',
+    },
+    imageBox: {
+      flex: 1, border: '2px solid', borderRadius: '8px', overflow: 'hidden',
+      position: 'relative', backgroundColor: 'rgba(12,28,14,0.95)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      minHeight: '300px',
+    },
+    imageLabel: {
+      position: 'absolute', top: '8px', left: '8px',
+      padding: '4px 12px', borderRadius: '4px',
+      backgroundColor: 'rgba(0,0,0,0.7)', color: '#5ec850',
+      fontSize: '12px', fontWeight: '700', fontFamily: "'DM Mono', monospace",
+      zIndex: 1,
+    },
+    zoomImage: {
+      maxWidth: '100%', maxHeight: '60vh', objectFit: 'contain',
+      transition: 'transform 0.1s ease', userSelect: 'none',
+    },
+  };
+
   if (isLoading) {
     return (
       <div style={styles.container}>
@@ -680,6 +774,7 @@ const ArtDetector = () => {
           @keyframes artDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
           @keyframes artFadeIn { from { opacity: 0; } to { opacity: 1; } }
           @keyframes artFadeOut { from { opacity: 1; } to { opacity: 0; } }
+          @keyframes artZoomFadeIn { from { opacity: 0; } to { opacity: 1; } }
         `}
       </style>
 
@@ -970,32 +1065,42 @@ const ArtDetector = () => {
               <>
                 {/* Real vs Fake Comparison */}
                 {drawerData.has_fake && drawerData.fake_info?.image_url ? (
-                  <div style={styles.comparisonContainer}>
-                    <div style={styles.comparisonCard}>
-                      {drawerData.real_info?.image_url && (
+                  <>
+                    <div style={styles.comparisonContainer}>
+                      <div style={styles.comparisonCard}>
+                        {drawerData.real_info?.image_url && (
+                          <img
+                            src={drawerData.real_info.texture_url || drawerData.real_info.image_url}
+                            alt={`${drawerArt.name} - Real`}
+                            style={styles.comparisonImage}
+                            loading="lazy"
+                          />
+                        )}
+                        <div style={{ ...styles.comparisonLabel, ...styles.comparisonLabelReal }}>
+                          REAL
+                        </div>
+                      </div>
+                      <div style={styles.comparisonCard}>
                         <img
-                          src={drawerData.real_info.image_url}
-                          alt={`${drawerArt.name} - Real`}
+                          src={drawerData.fake_info.texture_url || drawerData.fake_info.image_url}
+                          alt={`${drawerArt.name} - Fake`}
                           style={styles.comparisonImage}
                           loading="lazy"
                         />
-                      )}
-                      <div style={{ ...styles.comparisonLabel, ...styles.comparisonLabelReal }}>
-                        REAL
+                        <div style={{ ...styles.comparisonLabel, ...styles.comparisonLabelFake }}>
+                          FAKE
+                        </div>
                       </div>
                     </div>
-                    <div style={styles.comparisonCard}>
-                      <img
-                        src={drawerData.fake_info.image_url}
-                        alt={`${drawerArt.name} - Fake`}
-                        style={styles.comparisonImage}
-                        loading="lazy"
-                      />
-                      <div style={{ ...styles.comparisonLabel, ...styles.comparisonLabelFake }}>
-                        FAKE
-                      </div>
-                    </div>
-                  </div>
+                    <button
+                      onClick={() => setZoomOpen(true)}
+                      style={styles.compareButton}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(74, 172, 240, 0.25)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(74, 172, 240, 0.15)'; }}
+                    >
+                      🔍 Compare Real vs Fake
+                    </button>
+                  </>
                 ) : (
                   <div>
                     {drawerData.real_info?.image_url && (
@@ -1118,6 +1223,62 @@ const ArtDetector = () => {
             </div>
           </div>
         </>
+      )}
+
+      {/* Zoom Modal */}
+      {zoomOpen && drawerData && (
+        <div style={zoomStyles.overlay} onClick={closeZoom}>
+          <div style={zoomStyles.modal} onClick={e => e.stopPropagation()}>
+            <button onClick={closeZoom} style={zoomStyles.closeBtn}>✕</button>
+
+            <div style={zoomStyles.fakeTell}>
+              ⚠ {drawerData.fake_info?.description || drawerArt?.fakeTell}
+            </div>
+
+            <div style={zoomStyles.zoomControls}>
+              <button onClick={() => setZoomLevel(z => Math.max(1, z - 0.5))} style={zoomStyles.zoomBtn}>−</button>
+              <span style={zoomStyles.zoomLabel}>{Math.round(zoomLevel * 100)}%</span>
+              <button onClick={() => setZoomLevel(z => Math.min(5, z + 0.5))} style={zoomStyles.zoomBtn}>+</button>
+              <button onClick={() => { setZoomLevel(1); setPanPosition({ x: 0, y: 0 }); }} style={zoomStyles.zoomBtn}>Reset</button>
+            </div>
+
+            <div style={zoomStyles.imageContainer}
+              onWheel={e => {
+                e.preventDefault();
+                setZoomLevel(z => Math.max(1, Math.min(5, z + (e.deltaY > 0 ? -0.2 : 0.2))));
+              }}
+              onMouseDown={e => { if (zoomLevel > 1) { setIsPanning(true); setPanStart({ x: e.clientX - panPosition.x, y: e.clientY - panPosition.y }); } }}
+              onMouseMove={e => { if (isPanning) setPanPosition({ x: e.clientX - panStart.x, y: e.clientY - panStart.y }); }}
+              onMouseUp={() => setIsPanning(false)}
+              onMouseLeave={() => setIsPanning(false)}
+            >
+              <div style={{ ...zoomStyles.imageBox, borderColor: 'rgba(94,200,80,0.4)' }}>
+                <div style={zoomStyles.imageLabel}>REAL</div>
+                <img
+                  src={drawerData.real_info?.texture_url || drawerData.real_info?.image_url}
+                  alt="Real"
+                  style={{
+                    ...zoomStyles.zoomImage,
+                    transform: `scale(${zoomLevel}) translate(${panPosition.x / zoomLevel}px, ${panPosition.y / zoomLevel}px)`,
+                  }}
+                  draggable={false}
+                />
+              </div>
+              <div style={{ ...zoomStyles.imageBox, borderColor: 'rgba(255,100,100,0.4)' }}>
+                <div style={{ ...zoomStyles.imageLabel, color: '#ff6464' }}>FAKE</div>
+                <img
+                  src={drawerData.fake_info?.texture_url || drawerData.fake_info?.image_url}
+                  alt="Fake"
+                  style={{
+                    ...zoomStyles.zoomImage,
+                    transform: `scale(${zoomLevel}) translate(${panPosition.x / zoomLevel}px, ${panPosition.y / zoomLevel}px)`,
+                  }}
+                  draggable={false}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
