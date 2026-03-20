@@ -546,7 +546,7 @@ export const SOURCES = [
   {
     name: 'Fishing',
     emoji: '\u{1F3A3}',
-    description: 'Catching certain fish teaches cooking recipes (2.0 update). Sea bass, olive flounder, squid, and more unlock food DIYs.',
+    description: 'Catching certain fish teaches cooking recipes (added in ver. 2.0). Sea bass, olive flounder, squid, and more unlock food DIYs.',
     tips: 'Each fish type that gives a recipe will teach it the first time you catch it after learning to cook.',
     daily: false,
     limit: 'One-time per fish type'
@@ -570,7 +570,7 @@ export const SOURCES = [
   {
     name: 'Leif / Daisy Mae / Niko',
     emoji: '\u{1F331}',
-    description: 'Version 2.0 update sources. Niko (Happy Home Paradise) teaches vine, moss, and golden DIY recipes as you progress.',
+    description: 'Ver. 2.0/3.0 sources. Niko (Happy Home Paradise) teaches vine, moss, and golden DIY recipes. Ver. 3.0 adds DIY Donation Box requests at the Resort Hotel.',
     tips: 'Niko gives recipes after completing facility builds in Happy Home Paradise. Leif occasionally offers hedge fence recipe.',
     daily: false,
     limit: 'Progress-based'
