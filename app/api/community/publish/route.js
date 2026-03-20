@@ -3,6 +3,37 @@ import { createServerClient } from '@/lib/supabase';
 import { containsProfanity } from '@/lib/moderation';
 import { THEME_TAGS, LOOKING_FOR_TAGS } from '@/lib/communityConstants';
 
+export async function GET() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const supabase = createServerClient();
+
+  const { data, error } = await supabase
+    .from('shared_profiles')
+    .select(`
+      user_id,
+      bio,
+      theme_tags,
+      looking_for,
+      show_friend_code,
+      is_published,
+      last_active,
+      updated_at
+    `)
+    .eq('user_id', session.user.id)
+    .maybeSingle();
+
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+
+  // Return null if no shared profile exists yet
+  return Response.json(data || null);
+}
+
 function validateBody(body) {
   const { bio, themeTags, lookingFor, showFriendCode, consentGiven } = body;
 
