@@ -47,6 +47,9 @@ export default function CommunityPage() {
   // Favorites (local set for instant UI updates)
   const [favorites, setFavorites] = useState(new Set());
 
+  // Mutual friends
+  const [mutualFriendIds, setMutualFriendIds] = useState(new Set());
+
   // Hover states
   const [hoveredCard, setHoveredCard] = useState(null);
   const [hoveredFav, setHoveredFav] = useState(null);
@@ -103,6 +106,22 @@ export default function CommunityPage() {
   useEffect(() => {
     setPage(1);
   }, [hemisphere, fruit, flower, selectedTags, selectedLookingFor]);
+
+  // Load mutual friend IDs for badge display
+  useEffect(() => {
+    if (!session) return;
+    (async () => {
+      try {
+        const res = await fetch('/api/community/friends');
+        if (res.ok) {
+          const data = await res.json();
+          setMutualFriendIds(new Set((data || []).map(p => p.user_id)));
+        }
+      } catch {
+        // ignore
+      }
+    })();
+  }, [session]);
 
   const toggleTag = (tag) => {
     setSelectedTags(prev =>
@@ -427,17 +446,22 @@ export default function CommunityPage() {
                     )}
                   </div>
 
-                  {/* Hemisphere badge */}
-                  {profile.hemisphere && (
-                    <span style={{
-                      ...styles.hemBadge,
-                      backgroundColor: profile.hemisphere === 'north'
-                        ? 'rgba(94,200,80,0.15)' : 'rgba(74,172,240,0.15)',
-                      color: profile.hemisphere === 'north' ? '#5ec850' : '#4aacf0',
-                    }}>
-                      {profile.hemisphere === 'north' ? '🌸 North' : '❄️ South'}
-                    </span>
-                  )}
+                  {/* Hemisphere badge + Friend badge */}
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {profile.hemisphere && (
+                      <span style={{
+                        ...styles.hemBadge,
+                        backgroundColor: profile.hemisphere === 'north'
+                          ? 'rgba(94,200,80,0.15)' : 'rgba(74,172,240,0.15)',
+                        color: profile.hemisphere === 'north' ? '#5ec850' : '#4aacf0',
+                      }}>
+                        {profile.hemisphere === 'north' ? '🌸 North' : '❄️ South'}
+                      </span>
+                    )}
+                    {mutualFriendIds.has(profile.user_id) && (
+                      <span style={styles.friendBadge}>🤝 Friend</span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Island Details */}
@@ -851,6 +875,17 @@ const styles = {
     fontWeight: 600,
     padding: '3px 10px',
     borderRadius: 10,
+    alignSelf: 'flex-start',
+  },
+  friendBadge: {
+    display: 'inline-block',
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: 11,
+    fontWeight: 600,
+    padding: '3px 10px',
+    borderRadius: 10,
+    backgroundColor: 'rgba(212,176,48,0.15)',
+    color: '#d4b030',
     alignSelf: 'flex-start',
   },
   cardDetails: {

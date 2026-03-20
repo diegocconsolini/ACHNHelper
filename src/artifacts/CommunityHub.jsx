@@ -18,6 +18,7 @@ const LOOKING_FOR_TAGS = [
 const TABS = [
   { id: 'listing', label: 'My Listing', emoji: '📋' },
   { id: 'favorites', label: 'Favorites', emoji: '⭐' },
+  { id: 'friends', label: 'Friends', emoji: '🤝' },
   { id: 'blocked', label: 'Blocked', emoji: '🚫' },
 ];
 
@@ -108,6 +109,7 @@ export default function CommunityHub() {
       <div key={fadeKey} style={styles.tabContent}>
         {activeTab === 'listing' && <MyListingTab session={session} />}
         {activeTab === 'favorites' && <FavoritesTab />}
+        {activeTab === 'friends' && <FriendsTab />}
         {activeTab === 'blocked' && <BlockedTab />}
       </div>
     </div>
@@ -822,6 +824,132 @@ function FavoritesTab() {
   );
 }
 
+/* ========== FRIENDS TAB ========== */
+
+function FriendsTab() {
+  const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [removing, setRemoving] = useState(null);
+
+  const loadFriends = useCallback(async () => {
+    try {
+      const res = await fetch('/api/community/friends');
+      if (res.ok) setFriends(await res.json());
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      await loadFriends();
+      if (!cancelled) setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, [loadFriends]);
+
+  const handleRemove = useCallback(async (userId) => {
+    setRemoving(userId);
+    try {
+      const res = await fetch(`/api/community/favorite/${userId}`, { method: 'DELETE' });
+      if (res.ok) {
+        setFriends(prev => prev.filter(f => f.user_id !== userId));
+      }
+    } catch {
+      // ignore
+    } finally {
+      setRemoving(null);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={styles.centerMsg}>
+        <span style={{ fontSize: 36 }}>🍃</span>
+        <p style={{ color: '#5a7a50', marginTop: 8 }}>Loading friends...</p>
+      </div>
+    );
+  }
+
+  if (friends.length === 0) {
+    return (
+      <div style={styles.emptyState}>
+        <span style={{ fontSize: 48 }}>🤝</span>
+        <h3 style={styles.emptyTitle}>No Mutual Friends Yet</h3>
+        <p style={styles.emptyText}>
+          When you and another player both favorite each other, you become mutual friends. Friend codes are always visible for mutual friends.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={styles.cardList}>
+      {friends.map(friend => (
+        <div key={friend.user_id} style={styles.friendCard}>
+          <div style={styles.favCardHeader}>
+            <div style={styles.favCardInfo}>
+              <span style={{ fontSize: 20 }}>🏝️</span>
+              <div>
+                <div style={styles.favIslandName}>{friend.island_name || 'Unknown Island'}</div>
+                <div style={styles.favMeta}>
+                  {friend.hemisphere && (
+                    <span>{friend.hemisphere === 'north' ? '🌸 North' : '❄️ South'}</span>
+                  )}
+                  {friend.native_fruit && (
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                      <AssetImg category="other" name={friend.native_fruit} size={14} />
+                      {friend.native_fruit}
+                    </span>
+                  )}
+                  {friend.native_flower && (
+                    <span>🌺 {friend.native_flower}</span>
+                  )}
+                  {friend.island_rating && (
+                    <span>{'⭐'.repeat(friend.island_rating)}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => handleRemove(friend.user_id)}
+              disabled={removing === friend.user_id}
+              style={styles.removeBtn}
+            >
+              {removing === friend.user_id ? '...' : 'Remove'}
+            </button>
+          </div>
+
+          {/* Mutual badge */}
+          <div style={styles.mutualBadge}>
+            <span>🤝</span>
+            <span>You both favorited each other!</span>
+          </div>
+
+          {/* Dream Address — always visible for friends */}
+          {friend.dream_address && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+              <span style={{ fontSize: 12 }}>☁️</span>
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: '#5a7a50' }}>{friend.dream_address}</span>
+            </div>
+          )}
+
+          {/* Friend Code — always visible for mutual friends */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
+            <span style={{ fontSize: 12 }}>🎮</span>
+            {friend.friend_code ? (
+              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 12, color: '#4aacf0' }}>{friend.friend_code}</span>
+            ) : (
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#5a7a50', fontStyle: 'italic' }}>No friend code shared</span>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ========== BLOCKED TAB ========== */
 
 function BlockedTab() {
@@ -1375,6 +1503,29 @@ const styles = {
     outline: 'none',
     transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
     flexShrink: 0,
+  },
+
+  /* Friends */
+  friendCard: {
+    background: 'rgba(12,28,14,0.95)',
+    border: '1px solid rgba(212,176,48,0.2)',
+    borderRadius: 10,
+    padding: 16,
+    transition: 'border-color 0.2s ease',
+  },
+  mutualBadge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 6,
+    padding: '4px 10px',
+    background: 'rgba(212,176,48,0.1)',
+    border: '1px solid rgba(212,176,48,0.2)',
+    borderRadius: 12,
+    fontSize: 11,
+    fontWeight: 600,
+    color: '#d4b030',
+    fontFamily: "'DM Sans', sans-serif",
+    marginTop: 4,
   },
 
   /* Blocked */
