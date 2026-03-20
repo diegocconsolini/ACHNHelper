@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { SettingsProvider } from './SettingsContext';
 import ConfirmModal from './ConfirmModal';
@@ -203,7 +203,16 @@ function App() {
   const [activeId, setActiveId] = useState('fish');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
+  const [syncStatus, setSyncStatus] = useState(null);
   const { data: session, status } = useSession();
+
+  // Poll sync status every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSyncStatus(window.__syncStatus);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   const activeItem = MENU.flatMap(g => g.items).find(i => i.id === activeId);
   const ActiveComponent = activeItem?.component ? COMPONENTS[activeItem.component] : null;
@@ -264,6 +273,9 @@ function App() {
                   </button>
                 </div>
               </div>
+              {syncStatus === 'synced' && <span style={{ fontSize: 10, color: '#5a7a50', paddingLeft: 42 }}>☁️ Synced</span>}
+              {syncStatus === 'syncing' && <span style={{ fontSize: 10, color: '#d4b030', paddingLeft: 42 }}>⟳ Syncing...</span>}
+              {syncStatus === 'error' && <span style={{ fontSize: 10, color: '#ff6464', paddingLeft: 42 }}>⚠ Sync error</span>}
             </div>
           ) : (
             <div>
