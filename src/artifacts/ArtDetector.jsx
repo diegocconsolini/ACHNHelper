@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
 
 const ART_DATA = [
@@ -61,6 +61,11 @@ const ArtDetector = () => {
   const [collection, setCollection] = useState({});
   const [reddSelection, setReddSelection] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [drawerArt, setDrawerArt] = useState(null);
+  const [drawerData, setDrawerData] = useState(null);
+  const [drawerLoading, setDrawerLoading] = useState(false);
+  const [drawerClosing, setDrawerClosing] = useState(false);
+  const drawerCache = useRef({});
 
   useEffect(() => {
     const loadData = async () => {
@@ -106,6 +111,41 @@ const ArtDetector = () => {
     }
     saveReddSelection(newSelection);
   };
+
+  const openDrawer = useCallback(async (art) => {
+    setDrawerArt(art);
+    setDrawerClosing(false);
+    setDrawerData(null);
+
+    if (drawerCache.current[art.id]) {
+      setDrawerData(drawerCache.current[art.id]);
+      return;
+    }
+
+    setDrawerLoading(true);
+    try {
+      const encodedName = encodeURIComponent(art.name);
+      const res = await fetch(`/api/nookipedia/nh/art/${encodedName}`);
+      if (res.ok) {
+        const data = await res.json();
+        drawerCache.current[art.id] = data;
+        setDrawerData(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch art details:', err);
+    } finally {
+      setDrawerLoading(false);
+    }
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerClosing(true);
+    setTimeout(() => {
+      setDrawerArt(null);
+      setDrawerData(null);
+      setDrawerClosing(false);
+    }, 300);
+  }, []);
 
   const filteredArt = ART_DATA.filter(art => {
     const matchesSearch = art.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -392,6 +432,221 @@ const ArtDetector = () => {
       opacity: '0.5',
       cursor: 'not-allowed',
     },
+    drawerOverlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      zIndex: 1000,
+      animation: 'artFadeIn 0.3s ease',
+    },
+    drawerOverlayClosing: {
+      animation: 'artFadeOut 0.3s ease forwards',
+    },
+    drawer: {
+      position: 'fixed',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: '520px',
+      maxWidth: '90vw',
+      backgroundColor: '#0a1a10',
+      borderLeft: '2px solid rgba(94, 200, 80, 0.3)',
+      zIndex: 1001,
+      overflowY: 'auto',
+      padding: '24px',
+      animation: 'artDrawerSlideIn 0.3s ease',
+      boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.5)',
+    },
+    drawerClosing: {
+      animation: 'artDrawerSlideOut 0.3s ease forwards',
+    },
+    drawerCloseBtn: {
+      position: 'absolute',
+      top: '16px',
+      right: '16px',
+      width: '36px',
+      height: '36px',
+      border: '1px solid rgba(94, 200, 80, 0.3)',
+      borderRadius: '50%',
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      color: '#c8e6c0',
+      fontSize: '18px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'border-color 0.2s ease, background-color 0.2s ease',
+      zIndex: 1002,
+    },
+    drawerTitle: {
+      fontSize: '28px',
+      fontFamily: '"Playfair Display", serif',
+      fontWeight: '700',
+      color: '#5ec850',
+      margin: '0 0 20px 0',
+      paddingRight: '40px',
+    },
+    comparisonContainer: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '12px',
+      marginBottom: '24px',
+    },
+    comparisonSingle: {
+      display: 'grid',
+      gridTemplateColumns: '1fr',
+      gap: '12px',
+      marginBottom: '24px',
+      maxWidth: '300px',
+    },
+    comparisonCard: {
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      border: '1px solid rgba(94, 200, 80, 0.2)',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      textAlign: 'center',
+    },
+    comparisonImage: {
+      width: '100%',
+      height: 'auto',
+      display: 'block',
+      backgroundColor: 'rgba(20, 40, 25, 0.5)',
+      minHeight: '120px',
+    },
+    comparisonLabel: {
+      padding: '8px',
+      fontSize: '12px',
+      fontWeight: '700',
+      fontFamily: '"DM Mono", monospace',
+      letterSpacing: '1px',
+    },
+    comparisonLabelReal: {
+      color: '#5ec850',
+      backgroundColor: 'rgba(94, 200, 80, 0.1)',
+    },
+    comparisonLabelFake: {
+      color: '#e05050',
+      backgroundColor: 'rgba(224, 80, 80, 0.1)',
+    },
+    genuineBadge: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      padding: '8px 16px',
+      borderRadius: '6px',
+      fontSize: '14px',
+      fontWeight: '700',
+      fontFamily: '"DM Mono", monospace',
+      backgroundColor: 'rgba(94, 200, 80, 0.15)',
+      color: '#5ec850',
+      border: '1px solid rgba(94, 200, 80, 0.4)',
+      marginBottom: '20px',
+    },
+    drawerInfoSection: {
+      marginBottom: '20px',
+      padding: '16px',
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      border: '1px solid rgba(212, 176, 48, 0.2)',
+      borderRadius: '8px',
+    },
+    drawerInfoLabel: {
+      fontSize: '11px',
+      fontWeight: '700',
+      fontFamily: '"DM Mono", monospace',
+      color: '#5a7a50',
+      margin: '0 0 4px 0',
+      letterSpacing: '0.5px',
+      textTransform: 'uppercase',
+    },
+    drawerInfoValue: {
+      fontSize: '14px',
+      color: '#d4b030',
+      margin: '0 0 12px 0',
+      lineHeight: '1.4',
+    },
+    drawerTypeBadge: {
+      display: 'inline-block',
+      padding: '4px 12px',
+      borderRadius: '4px',
+      fontSize: '12px',
+      fontWeight: '600',
+      fontFamily: '"DM Mono", monospace',
+      backgroundColor: 'rgba(74, 172, 240, 0.15)',
+      color: '#4aacf0',
+      border: '1px solid rgba(74, 172, 240, 0.3)',
+      marginBottom: '16px',
+    },
+    drawerPriceRow: {
+      display: 'flex',
+      gap: '16px',
+      marginBottom: '20px',
+    },
+    drawerPriceCard: {
+      flex: 1,
+      padding: '12px',
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      border: '1px solid rgba(94, 200, 80, 0.15)',
+      borderRadius: '6px',
+      textAlign: 'center',
+    },
+    drawerPriceLabel: {
+      fontSize: '11px',
+      fontFamily: '"DM Mono", monospace',
+      color: '#5a7a50',
+      margin: '0 0 4px 0',
+    },
+    drawerPriceValue: {
+      fontSize: '18px',
+      fontWeight: '700',
+      fontFamily: '"DM Mono", monospace',
+      color: '#d4b030',
+      margin: '0',
+    },
+    drawerWarningBox: {
+      backgroundColor: 'rgba(212, 176, 48, 0.1)',
+      border: '1px solid rgba(212, 176, 48, 0.3)',
+      borderRadius: '8px',
+      padding: '16px',
+      marginBottom: '20px',
+    },
+    drawerWarningTitle: {
+      fontSize: '14px',
+      fontWeight: '700',
+      color: '#d4b030',
+      margin: '0 0 8px 0',
+      fontFamily: '"Playfair Display", serif',
+    },
+    drawerWarningText: {
+      fontSize: '13px',
+      color: '#c8e6c0',
+      margin: '0',
+      lineHeight: '1.6',
+    },
+    drawerDescription: {
+      fontSize: '13px',
+      color: '#5a7a50',
+      lineHeight: '1.6',
+      margin: '0 0 20px 0',
+      fontStyle: 'italic',
+    },
+    drawerDonatedRow: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '16px',
+      backgroundColor: 'rgba(12, 28, 14, 0.95)',
+      border: '1px solid rgba(94, 200, 80, 0.2)',
+      borderRadius: '8px',
+    },
+    drawerLoading: {
+      textAlign: 'center',
+      padding: '40px 0',
+      color: '#5a7a50',
+      fontSize: '14px',
+    },
     emptyState: {
       textAlign: 'center',
       padding: '40px 20px',
@@ -421,6 +676,10 @@ const ArtDetector = () => {
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
           input:focus, select:focus { outline: none; border-color: #5ec850 !important; box-shadow: 0 0 8px rgba(94, 200, 80, 0.2); }
+          @keyframes artDrawerSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+          @keyframes artDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+          @keyframes artFadeIn { from { opacity: 0; } to { opacity: 1; } }
+          @keyframes artFadeOut { from { opacity: 1; } to { opacity: 0; } }
         `}
       </style>
 
@@ -507,6 +766,7 @@ const ArtDetector = () => {
                   style={{ ...styles.artCard, ...(expandedId === art.id ? styles.artCardHover : {}) }}
                   onMouseEnter={() => setExpandedId(art.id)}
                   onMouseLeave={() => setExpandedId(null)}
+                  onClick={() => openDrawer(art)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                     <AssetImg category="art" name={art.name} size={32} />
@@ -566,6 +826,7 @@ const ArtDetector = () => {
                   style={{ ...styles.artCard, ...(expandedId === art.id ? styles.artCardHover : {}) }}
                   onMouseEnter={() => setExpandedId(art.id)}
                   onMouseLeave={() => setExpandedId(null)}
+                  onClick={() => openDrawer(art)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                     <AssetImg category="art" name={art.name} size={32} />
@@ -580,10 +841,10 @@ const ArtDetector = () => {
                       type="checkbox"
                       id={`donation-${art.id}`}
                       checked={collection[art.id] || false}
-                      onChange={() => toggleDonated(art.id)}
+                      onChange={(e) => { e.stopPropagation(); toggleDonated(art.id); }}
                       style={styles.checkbox}
                     />
-                    <label htmlFor={`donation-${art.id}`} style={styles.checkboxLabel}>
+                    <label htmlFor={`donation-${art.id}`} style={styles.checkboxLabel} onClick={(e) => e.stopPropagation()}>
                       {collection[art.id] ? 'Donated ✅' : 'Not donated'}
                     </label>
                   </div>
@@ -679,6 +940,183 @@ const ArtDetector = () => {
               })}
             </div>
           )}
+        </>
+      )}
+      {drawerArt && (
+        <>
+          <div
+            style={{ ...styles.drawerOverlay, ...(drawerClosing ? styles.drawerOverlayClosing : {}) }}
+            onClick={closeDrawer}
+          />
+          <div style={{ ...styles.drawer, ...(drawerClosing ? styles.drawerClosing : {}) }}>
+            <button
+              style={styles.drawerCloseBtn}
+              onClick={closeDrawer}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#5ec850'; e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.15)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(94, 200, 80, 0.3)'; e.currentTarget.style.backgroundColor = 'rgba(12, 28, 14, 0.95)'; }}
+            >
+              ✕
+            </button>
+
+            <h2 style={styles.drawerTitle}>{drawerArt.name}</h2>
+
+            {drawerLoading && (
+              <div style={styles.drawerLoading}>
+                <p>Loading art details...</p>
+              </div>
+            )}
+
+            {!drawerLoading && drawerData && (
+              <>
+                {/* Real vs Fake Comparison */}
+                {drawerData.has_fake && drawerData.fake_info?.image_url ? (
+                  <div style={styles.comparisonContainer}>
+                    <div style={styles.comparisonCard}>
+                      {drawerData.real_info?.image_url && (
+                        <img
+                          src={drawerData.real_info.image_url}
+                          alt={`${drawerArt.name} - Real`}
+                          style={styles.comparisonImage}
+                          loading="lazy"
+                        />
+                      )}
+                      <div style={{ ...styles.comparisonLabel, ...styles.comparisonLabelReal }}>
+                        REAL
+                      </div>
+                    </div>
+                    <div style={styles.comparisonCard}>
+                      <img
+                        src={drawerData.fake_info.image_url}
+                        alt={`${drawerArt.name} - Fake`}
+                        style={styles.comparisonImage}
+                        loading="lazy"
+                      />
+                      <div style={{ ...styles.comparisonLabel, ...styles.comparisonLabelFake }}>
+                        FAKE
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    {drawerData.real_info?.image_url && (
+                      <div style={styles.comparisonSingle}>
+                        <div style={styles.comparisonCard}>
+                          <img
+                            src={drawerData.real_info.image_url}
+                            alt={`${drawerArt.name} - Real`}
+                            style={styles.comparisonImage}
+                            loading="lazy"
+                          />
+                          <div style={{ ...styles.comparisonLabel, ...styles.comparisonLabelReal }}>
+                            REAL
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <div style={styles.genuineBadge}>
+                      Always Genuine ✓
+                    </div>
+                  </div>
+                )}
+
+                {/* Artwork Info */}
+                <div style={styles.drawerInfoSection}>
+                  <p style={styles.drawerInfoLabel}>Real Name</p>
+                  <p style={styles.drawerInfoValue}>{drawerData.art_name || drawerArt.realName}</p>
+                  <p style={styles.drawerInfoLabel}>Artist</p>
+                  <p style={styles.drawerInfoValue}>{drawerData.author || drawerArt.artist}</p>
+                  {drawerData.year && (
+                    <>
+                      <p style={styles.drawerInfoLabel}>Year</p>
+                      <p style={styles.drawerInfoValue}>{drawerData.year}</p>
+                    </>
+                  )}
+                  {drawerData.art_style && (
+                    <>
+                      <p style={styles.drawerInfoLabel}>Style</p>
+                      <p style={{ ...styles.drawerInfoValue, margin: '0' }}>{drawerData.art_style}</p>
+                    </>
+                  )}
+                </div>
+
+                {/* Type Badge */}
+                <div style={{ marginBottom: '16px' }}>
+                  <span style={styles.drawerTypeBadge}>
+                    {(drawerData.art_type || drawerArt.type).toUpperCase()}
+                  </span>
+                </div>
+
+                {/* Prices */}
+                {(drawerData.buy || drawerData.sell) && (
+                  <div style={styles.drawerPriceRow}>
+                    {drawerData.buy != null && (
+                      <div style={styles.drawerPriceCard}>
+                        <p style={styles.drawerPriceLabel}>BUY (from Redd)</p>
+                        <p style={styles.drawerPriceValue}>{Number(drawerData.buy).toLocaleString()}</p>
+                      </div>
+                    )}
+                    {drawerData.sell != null && (
+                      <div style={styles.drawerPriceCard}>
+                        <p style={styles.drawerPriceLabel}>SELL</p>
+                        <p style={styles.drawerPriceValue}>{Number(drawerData.sell).toLocaleString()}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Fake Tell */}
+                {drawerData.has_fake && drawerData.fake_info?.description && (
+                  <div style={styles.drawerWarningBox}>
+                    <p style={styles.drawerWarningTitle}>⚠️ How to Spot the Fake</p>
+                    <p style={styles.drawerWarningText}>{drawerData.fake_info.description}</p>
+                  </div>
+                )}
+
+                {/* Real Description */}
+                {drawerData.real_info?.description && (
+                  <p style={styles.drawerDescription}>{drawerData.real_info.description}</p>
+                )}
+              </>
+            )}
+
+            {/* Fallback when no API data (show local data) */}
+            {!drawerLoading && !drawerData && (
+              <>
+                <div style={styles.drawerInfoSection}>
+                  <p style={styles.drawerInfoLabel}>Real Name</p>
+                  <p style={styles.drawerInfoValue}>{drawerArt.realName}</p>
+                  <p style={styles.drawerInfoLabel}>Artist</p>
+                  <p style={{ ...styles.drawerInfoValue, margin: '0' }}>{drawerArt.artist}</p>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <span style={styles.drawerTypeBadge}>{drawerArt.type.toUpperCase()}</span>
+                </div>
+                {drawerArt.alwaysReal && (
+                  <div style={styles.genuineBadge}>Always Genuine ✓</div>
+                )}
+                {drawerArt.hasFake && drawerArt.fakeTell && (
+                  <div style={styles.drawerWarningBox}>
+                    <p style={styles.drawerWarningTitle}>⚠️ How to Spot the Fake</p>
+                    <p style={styles.drawerWarningText}>{drawerArt.fakeTell}</p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Donated Checkbox */}
+            <div style={styles.drawerDonatedRow}>
+              <input
+                type="checkbox"
+                id="drawer-donated"
+                checked={collection[drawerArt.id] || false}
+                onChange={() => toggleDonated(drawerArt.id)}
+                style={styles.checkbox}
+              />
+              <label htmlFor="drawer-donated" style={{ ...styles.checkboxLabel, fontSize: '14px', color: '#c8e6c0' }}>
+                {collection[drawerArt.id] ? 'Donated to Museum ✅' : 'Mark as Donated'}
+              </label>
+            </div>
+          </div>
         </>
       )}
     </div>
