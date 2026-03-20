@@ -720,7 +720,11 @@ const FishTracker = () => {
 
               {/* Large fish sprite */}
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px', marginBottom: '20px' }}>
-                <AssetImg category="fish" name={fish.name} size={200} />
+                {fishDetails?.render_url ? (
+                  <img src={fishDetails.render_url} alt={fish.name} style={{ width: 200, height: 200, objectFit: 'contain' }} loading="lazy" />
+                ) : (
+                  <AssetImg category="fish" name={fish.name} size={200} />
+                )}
               </div>
 
               {/* Fish name */}

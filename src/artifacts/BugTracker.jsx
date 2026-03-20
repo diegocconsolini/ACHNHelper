@@ -519,7 +519,11 @@ export default function BugTracker() {
 
               {/* Large bug sprite */}
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px', marginBottom: '20px' }}>
-                <AssetImg category="bugs" name={bug.name} size={200} />
+                {bugDetails?.render_url ? (
+                  <img src={bugDetails.render_url} alt={bug.name} style={{ width: 200, height: 200, objectFit: 'contain' }} loading="lazy" />
+                ) : (
+                  <AssetImg category="bugs" name={bug.name} size={200} />
+                )}
               </div>
 
               {/* Bug name */}

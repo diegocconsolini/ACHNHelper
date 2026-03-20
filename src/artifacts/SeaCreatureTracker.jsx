@@ -726,7 +726,11 @@ export default function SeaCreatureTracker() {
 
               {/* Large sea creature sprite */}
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px', marginBottom: '20px' }}>
-                <AssetImg category="sea-creatures" name={creature.name} size={200} />
+                {creatureDetails?.render_url ? (
+                  <img src={creatureDetails.render_url} alt={creature.name} style={{ width: 200, height: 200, objectFit: 'contain' }} loading="lazy" />
+                ) : (
+                  <AssetImg category="sea-creatures" name={creature.name} size={200} />
+                )}
               </div>
 
               {/* Creature name */}

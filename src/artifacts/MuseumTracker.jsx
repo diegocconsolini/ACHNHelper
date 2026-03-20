@@ -784,7 +784,11 @@ const MuseumTracker = () => {
 
               {/* Sprite */}
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-                <AssetImg category={assetCategoryMap[selectedType]} name={itemName} size={200} />
+                {drawerData?.render_url ? (
+                  <img src={drawerData.render_url} alt={itemName} style={{ width: 200, height: 200, objectFit: 'contain' }} loading="lazy" />
+                ) : (
+                  <AssetImg category={assetCategoryMap[selectedType]} name={itemName} size={200} />
+                )}
               </div>
 
               {/* Name */}
