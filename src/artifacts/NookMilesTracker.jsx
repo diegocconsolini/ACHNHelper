@@ -159,11 +159,31 @@ const CATEGORIES = [
   "Event", "Cooking", "Customization"
 ];
 
+const CATEGORY_COLORS = {
+  "Fishing": '#4aacf0',
+  "Bug Catching": '#5ec850',
+  "Diving": '#4aacf0',
+  "Gardening": '#e8a0bf',
+  "Nature": '#5ec850',
+  "DIY": '#d4b030',
+  "Home": '#c8e6c0',
+  "Fashion": '#c8a0e8',
+  "Commerce": '#d4b030',
+  "Island Life": '#4aacf0',
+  "Communication": '#c8e6c0',
+  "Event": '#e8a0bf',
+  "Cooking": '#d4b030',
+  "Customization": '#4aacf0',
+  "Resort Hotel": '#5ec850',
+};
+
 export default function NookMilesTracker() {
   const [achievements, setAchievements] = useState({});
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+  const [isDrawerClosing, setIsDrawerClosing] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -187,6 +207,20 @@ export default function NookMilesTracker() {
       console.error('Failed to save achievements:', error);
     }
   };
+
+  const closeDrawer = () => {
+    setIsDrawerClosing(true);
+    setTimeout(() => {
+      setSelectedAchievement(null);
+      setIsDrawerClosing(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') closeDrawer(); };
+    if (selectedAchievement) window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [selectedAchievement]);
 
   const toggleTier = (achievementId, tierIndex) => {
     const newAchievements = { ...achievements };
@@ -255,6 +289,10 @@ export default function NookMilesTracker() {
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+        @keyframes milesDrawerSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes milesDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        @keyframes milesFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes milesFadeOut { from { opacity: 1; } to { opacity: 0; } }
       `}</style>
 
       <div style={styles.header}>
@@ -310,7 +348,7 @@ export default function NookMilesTracker() {
           const milesEarned = Array.from({ length: currentTier }, (_, i) => ach.tiers[i]?.reward || 0).reduce((a, b) => a + b, 0);
 
           return (
-            <div key={ach.id} style={styles.achievementCard}>
+            <div key={ach.id} style={styles.achievementCard} onClick={() => setSelectedAchievement(ach)}>
               <div style={styles.achHeader}>
                 <h3 style={styles.achName}>{ach.name}</h3>
                 <div style={styles.achBadges}>
@@ -325,7 +363,7 @@ export default function NookMilesTracker() {
                 {ach.tiers.map((tier, idx) => (
                   <button
                     key={idx}
-                    onClick={() => toggleTier(ach.id, idx + 1)}
+                    onClick={(e) => { e.stopPropagation(); toggleTier(ach.id, idx + 1); }}
                     style={{
                       ...styles.tierButton,
                       ...(currentTier > idx ? styles.tierButtonCompleted : {}),
@@ -345,6 +383,168 @@ export default function NookMilesTracker() {
           );
         })}
       </div>
+
+      {/* Detail Drawer */}
+      {selectedAchievement && (() => {
+        const ach = selectedAchievement;
+        const currentTier = achievements[ach.id] || 0;
+        const totalPossibleMiles = ach.tiers.reduce((sum, t) => sum + t.reward, 0);
+        const milesEarned = ach.tiers.slice(0, currentTier).reduce((sum, t) => sum + t.reward, 0);
+        const catColor = CATEGORY_COLORS[ach.category] || '#4aacf0';
+
+        return (
+          <>
+            <div
+              style={{
+                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)', zIndex: 9999,
+                animation: isDrawerClosing ? 'milesFadeOut 0.2s ease-in forwards' : 'milesFadeIn 0.2s ease-out forwards',
+              }}
+              onClick={closeDrawer}
+            />
+            <div style={{
+              position: 'fixed', top: 0, right: 0, bottom: 0,
+              width: typeof window !== 'undefined' && window.innerWidth < 600 ? '100%' : '420px',
+              backgroundColor: '#0a1a10', borderLeft: '1px solid rgba(94, 200, 80, 0.3)',
+              zIndex: 10000, overflowY: 'auto', padding: '24px',
+              animation: isDrawerClosing ? 'milesDrawerSlideOut 0.2s ease-in forwards' : 'milesDrawerSlideIn 0.25s ease-out forwards',
+            }}>
+              {/* Close button */}
+              <button
+                style={{
+                  position: 'absolute', top: '16px', right: '16px',
+                  background: 'rgba(94, 200, 80, 0.1)', border: '1px solid rgba(94, 200, 80, 0.3)',
+                  borderRadius: '50%', width: '36px', height: '36px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: '#c8e6c0', fontSize: '18px', cursor: 'pointer', outline: 'none',
+                  transition: 'background-color 0.2s ease, border-color 0.2s ease',
+                }}
+                onClick={closeDrawer}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.25)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'; }}
+              >
+                ✕
+              </button>
+
+              {/* Achievement name */}
+              <div style={{
+                fontFamily: "'Playfair Display', serif", fontSize: '28px', fontWeight: '700',
+                color: '#5ec850', textAlign: 'center', marginTop: '16px', marginBottom: '16px',
+              }}>
+                {ach.name}
+              </div>
+
+              {/* Category + Repeatable badges */}
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '6px 14px', borderRadius: '16px', fontSize: '13px', fontWeight: '600',
+                  backgroundColor: `${catColor}20`, border: `1px solid ${catColor}50`, color: catColor,
+                }}>
+                  <CategoryIcon cat={ach.category} size={16} /> {ach.category}
+                </span>
+                {ach.isRepeatable && (
+                  <span style={{
+                    display: 'inline-block', padding: '6px 14px', borderRadius: '16px', fontSize: '13px', fontWeight: '600',
+                    backgroundColor: 'rgba(212,176,48,0.15)', border: '1px solid rgba(212,176,48,0.3)', color: '#d4b030',
+                  }}>🔄 Repeatable</span>
+                )}
+              </div>
+
+              {/* Tier progress visualization — vertical timeline */}
+              <div style={{ marginBottom: '24px', paddingTop: '20px', borderTop: '1px solid rgba(94,200,80,0.1)' }}>
+                <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>
+                  Tier Progress ({currentTier}/{ach.tiers.length})
+                </div>
+
+                <div style={{ position: 'relative', paddingLeft: '32px' }}>
+                  {/* Vertical line */}
+                  <div style={{
+                    position: 'absolute', left: '11px', top: '12px',
+                    bottom: '12px', width: '2px',
+                    backgroundColor: 'rgba(94,200,80,0.15)',
+                  }} />
+
+                  {ach.tiers.map((tier, idx) => {
+                    const isCompleted = currentTier > idx;
+                    const isCurrent = currentTier === idx;
+                    const progressPercent = isCompleted ? 100 : 0;
+
+                    return (
+                      <div key={idx} style={{ position: 'relative', marginBottom: idx < ach.tiers.length - 1 ? '20px' : '0' }}>
+                        {/* Circle marker */}
+                        <div style={{
+                          position: 'absolute', left: '-26px', top: '8px',
+                          width: '16px', height: '16px', borderRadius: '50%',
+                          backgroundColor: isCompleted ? '#5ec850' : isCurrent ? 'rgba(94,200,80,0.4)' : 'rgba(94,200,80,0.1)',
+                          border: `2px solid ${isCompleted ? '#5ec850' : isCurrent ? '#5ec850' : 'rgba(94,200,80,0.3)'}`,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: '8px', color: isCompleted ? '#0a1a10' : '#5a7a50', fontWeight: '700',
+                          zIndex: 1,
+                        }}>
+                          {isCompleted ? '✓' : idx + 1}
+                        </div>
+
+                        {/* Tier card */}
+                        <div style={{
+                          backgroundColor: isCompleted ? 'rgba(94,200,80,0.12)' : 'rgba(12,28,14,0.95)',
+                          border: `1px solid ${isCompleted ? 'rgba(94,200,80,0.4)' : isCurrent ? 'rgba(94,200,80,0.3)' : 'rgba(94,200,80,0.1)'}`,
+                          borderRadius: '8px', padding: '14px',
+                        }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <div>
+                              <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Tier {idx + 1}</div>
+                              <div style={{ fontSize: '16px', fontWeight: '700', color: isCompleted ? '#5ec850' : '#c8e6c0', fontFamily: "'DM Mono', monospace" }}>
+                                {tier.target.toLocaleString()}
+                              </div>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                              <div style={{ fontSize: '16px', fontWeight: '700', color: '#d4b030', fontFamily: "'DM Mono', monospace" }}>
+                                {tier.reward.toLocaleString()}
+                              </div>
+                              <div style={{ fontSize: '11px', color: '#5a7a50' }}>miles</div>
+                            </div>
+                          </div>
+
+                          {/* Progress bar */}
+                          <div style={{
+                            width: '100%', height: '6px', backgroundColor: 'rgba(94,200,80,0.1)',
+                            borderRadius: '3px', overflow: 'hidden',
+                          }}>
+                            <div style={{
+                              width: `${progressPercent}%`, height: '100%',
+                              backgroundColor: '#5ec850', borderRadius: '3px',
+                              transition: 'width 0.3s ease',
+                            }} />
+                          </div>
+
+                          {isCompleted && (
+                            <div style={{ fontSize: '11px', color: '#5ec850', fontWeight: '600', marginTop: '6px', textAlign: 'right' }}>Completed</div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Total miles summary */}
+              <div style={{
+                backgroundColor: 'rgba(212,176,48,0.08)', border: '1px solid rgba(212,176,48,0.2)',
+                borderRadius: '8px', padding: '16px', textAlign: 'center',
+              }}>
+                <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Total Possible Miles</div>
+                <div style={{ fontSize: '28px', fontWeight: '700', color: '#d4b030', fontFamily: "'DM Mono', monospace", marginBottom: '4px' }}>
+                  {totalPossibleMiles.toLocaleString()}
+                </div>
+                <div style={{ fontSize: '13px', color: milesEarned > 0 ? '#5ec850' : '#5a7a50' }}>
+                  Earned: {milesEarned.toLocaleString()} miles ({totalPossibleMiles > 0 ? Math.round((milesEarned / totalPossibleMiles) * 100) : 0}%)
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 }

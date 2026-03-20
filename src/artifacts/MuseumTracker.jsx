@@ -185,6 +185,10 @@ const MuseumTracker = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('fish');
   const [loaded, setLoaded] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedType, setSelectedType] = useState(null);
+  const [drawerData, setDrawerData] = useState(null);
+  const [isDrawerClosing, setIsDrawerClosing] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -243,6 +247,42 @@ const MuseumTracker = () => {
       return name.toLowerCase().includes(term);
     });
   };
+
+  const openDrawer = (item, type) => {
+    const name = typeof item === 'string' ? item : item.name;
+    setSelectedItem(item);
+    setSelectedType(type);
+    setDrawerData(null);
+
+    const API_MAP = {
+      fish: `/api/nookipedia/nh/fish/${encodeURIComponent(name)}`,
+      bug: `/api/nookipedia/nh/bugs/${encodeURIComponent(name)}`,
+      sea: `/api/nookipedia/nh/sea/${encodeURIComponent(name)}`,
+      fossil: `/api/nookipedia/nh/fossils/individuals/${encodeURIComponent(name)}`,
+      art: `/api/nookipedia/nh/art/${encodeURIComponent(name)}`,
+    };
+
+    fetch(API_MAP[type])
+      .then(res => res.ok ? res.json() : null)
+      .then(setDrawerData)
+      .catch(() => setDrawerData(null));
+  };
+
+  const closeDrawer = () => {
+    setIsDrawerClosing(true);
+    setTimeout(() => {
+      setSelectedItem(null);
+      setSelectedType(null);
+      setDrawerData(null);
+      setIsDrawerClosing(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    const handleEsc = (e) => { if (e.key === 'Escape') closeDrawer(); };
+    if (selectedItem) window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [selectedItem]);
 
   const styles = {
     container: {
@@ -448,7 +488,7 @@ const MuseumTracker = () => {
                         ...styles.itemCard,
                         ...(isDonated ? styles.itemCardDonated : styles.itemCardUndone)
                       }}
-                      onClick={() => toggleDonation(key)}
+                      onClick={() => openDrawer(fossil, 'fossil')}
                       onMouseEnter={(e) => {
                         if (!isDonated) e.currentTarget.style.borderColor = '#5ec850';
                       }}
@@ -460,7 +500,7 @@ const MuseumTracker = () => {
                       <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                         {fossil.name}
                       </div>
-                      <div style={styles.checkbox}>
+                      <div style={styles.checkbox} onClick={(e) => { e.stopPropagation(); toggleDonation(key); }}>
                         {isDonated ? '✅' : '☐'} {fossil.part}
                       </div>
                     </div>
@@ -497,7 +537,7 @@ const MuseumTracker = () => {
                     ...styles.itemCard,
                     ...(isDonated ? styles.itemCardDonated : styles.itemCardUndone)
                   }}
-                  onClick={() => toggleDonation(key)}
+                  onClick={() => openDrawer(art, 'art')}
                   onMouseEnter={(e) => {
                     if (!isDonated) e.currentTarget.style.borderColor = '#5ec850';
                   }}
@@ -509,7 +549,7 @@ const MuseumTracker = () => {
                   <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                     {art.name} {art.alwaysReal && '⭐'}
                   </div>
-                  <div style={styles.checkbox}>
+                  <div style={styles.checkbox} onClick={(e) => { e.stopPropagation(); toggleDonation(key); }}>
                     {isDonated ? '✅' : '☐'}
                   </div>
                 </div>
@@ -535,7 +575,7 @@ const MuseumTracker = () => {
                     ...styles.itemCard,
                     ...(isDonated ? styles.itemCardDonated : styles.itemCardUndone)
                   }}
-                  onClick={() => toggleDonation(key)}
+                  onClick={() => openDrawer(art, 'art')}
                   onMouseEnter={(e) => {
                     if (!isDonated) e.currentTarget.style.borderColor = '#5ec850';
                   }}
@@ -547,7 +587,7 @@ const MuseumTracker = () => {
                   <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                     {art.name} {art.alwaysReal && '⭐'}
                   </div>
-                  <div style={styles.checkbox}>
+                  <div style={styles.checkbox} onClick={(e) => { e.stopPropagation(); toggleDonation(key); }}>
                     {isDonated ? '✅' : '☐'}
                   </div>
                 </div>
@@ -565,6 +605,7 @@ const MuseumTracker = () => {
     else if (sectionKey === 'bugs') { sectionItems = BUGS; sectionPrefix = 'bugs'; assetCategory = 'bugs'; }
     else if (sectionKey === 'sea') { sectionItems = SEA_CREATURES; sectionPrefix = 'sea'; assetCategory = 'sea-creatures'; }
 
+    const typeMap = { fish: 'fish', bugs: 'bug', sea: 'sea' };
     return (
       <div key={sectionKey} style={styles.itemGrid}>
         {filtered.map((name, idx) => {
@@ -578,7 +619,7 @@ const MuseumTracker = () => {
                 ...styles.itemCard,
                 ...(isDonated ? styles.itemCardDonated : styles.itemCardUndone)
               }}
-              onClick={() => toggleDonation(key)}
+              onClick={() => openDrawer(name, typeMap[sectionKey])}
               onMouseEnter={(e) => {
                 if (!isDonated) e.currentTarget.style.borderColor = '#5ec850';
               }}
@@ -590,8 +631,8 @@ const MuseumTracker = () => {
               <div style={{ ...styles.itemName, ...(isDonated ? {} : styles.itemNameUndone) }}>
                 {name}
               </div>
-              <div style={styles.checkbox}>
-                {isDonated ? '✅' : '☐'}
+              <div style={styles.checkbox} onClick={(e) => { e.stopPropagation(); toggleDonation(key); }}>
+                {isDonated ? '✅' : '☐'} Donated
               </div>
             </div>
           );
@@ -605,6 +646,10 @@ const MuseumTracker = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; }
+        @keyframes museumDrawerSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes museumDrawerSlideOut { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        @keyframes museumFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes museumFadeOut { from { opacity: 1; } to { opacity: 0; } }
       `}</style>
 
       <div style={styles.header}>
@@ -688,6 +733,252 @@ const MuseumTracker = () => {
           <div style={styles.statPercent}>{ART.length > 0 ? Math.round((getDonationCount('art')/43)*100) : 0}%</div>
         </div>
       </div>
+
+      {/* Detail Drawer */}
+      {selectedItem && (() => {
+        const itemName = typeof selectedItem === 'string' ? selectedItem : selectedItem.name;
+        const assetCategoryMap = { fish: 'fish', bug: 'bugs', sea: 'sea-creatures', fossil: 'fossils', art: 'art' };
+        const sectionLabel = { fish: 'Fish', bug: 'Bug', sea: 'Sea Creature', fossil: 'Fossil', art: 'Art' };
+
+        return (
+          <>
+            <div
+              style={{
+                position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.6)', zIndex: 9999,
+                animation: isDrawerClosing ? 'museumFadeOut 0.2s ease-in forwards' : 'museumFadeIn 0.2s ease-out forwards',
+              }}
+              onClick={closeDrawer}
+            />
+            <div style={{
+              position: 'fixed', top: 0, right: 0, bottom: 0,
+              width: typeof window !== 'undefined' && window.innerWidth < 600 ? '100%' : '420px',
+              backgroundColor: '#0a1a10', borderLeft: '1px solid rgba(94, 200, 80, 0.3)',
+              zIndex: 10000, overflowY: 'auto', padding: '24px',
+              animation: isDrawerClosing ? 'museumDrawerSlideOut 0.2s ease-in forwards' : 'museumDrawerSlideIn 0.25s ease-out forwards',
+            }}>
+              {/* Close button */}
+              <button
+                style={{
+                  position: 'absolute', top: '16px', right: '16px',
+                  background: 'rgba(94, 200, 80, 0.1)', border: '1px solid rgba(94, 200, 80, 0.3)',
+                  borderRadius: '50%', width: '36px', height: '36px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: '#c8e6c0', fontSize: '18px', cursor: 'pointer', outline: 'none',
+                  transition: 'background-color 0.2s ease, border-color 0.2s ease',
+                }}
+                onClick={closeDrawer}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.25)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.1)'; }}
+              >
+                ✕
+              </button>
+
+              {/* Section badge */}
+              <div style={{ textAlign: 'center', marginTop: '8px', marginBottom: '8px' }}>
+                <span style={{
+                  display: 'inline-block', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '600',
+                  backgroundColor: 'rgba(74, 172, 240, 0.15)', color: '#4aacf0', textTransform: 'uppercase', letterSpacing: '1px',
+                }}>{sectionLabel[selectedType]}</span>
+              </div>
+
+              {/* Sprite */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+                <AssetImg category={assetCategoryMap[selectedType]} name={itemName} size={200} />
+              </div>
+
+              {/* Name */}
+              <div style={{
+                fontFamily: "'Playfair Display', serif", fontSize: '28px', fontWeight: '700',
+                color: '#5ec850', textAlign: 'center', marginBottom: '16px',
+              }}>
+                {itemName}
+              </div>
+
+              {/* === Fish / Bug / Sea Creature drawer === */}
+              {(selectedType === 'fish' || selectedType === 'bug' || selectedType === 'sea') && (
+                <>
+                  {/* Loading / API data */}
+                  {!drawerData ? (
+                    <div style={{ textAlign: 'center', color: '#5a7a50', fontStyle: 'italic', padding: '20px' }}>Loading details...</div>
+                  ) : (
+                    <>
+                      {/* Rarity */}
+                      {drawerData.rarity && (
+                        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                          <span style={{
+                            display: 'inline-block', padding: '6px 16px', borderRadius: '16px', fontSize: '13px', fontWeight: '600',
+                            backgroundColor: 'rgba(94,200,80,0.15)', border: '1px solid rgba(94,200,80,0.3)', color: '#5ec850',
+                          }}>{drawerData.rarity}</span>
+                        </div>
+                      )}
+
+                      {/* Info grid */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+                        {drawerData.sell_nook != null && (
+                          <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                            <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Sell Price</div>
+                            <div style={{ fontSize: '14px', color: '#d4b030', fontWeight: '600', fontFamily: "'DM Mono', monospace" }}>{Number(drawerData.sell_nook).toLocaleString()} Bells</div>
+                          </div>
+                        )}
+                        {drawerData.location && (
+                          <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                            <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Location</div>
+                            <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{drawerData.location}</div>
+                          </div>
+                        )}
+                        {drawerData.shadow_size && (
+                          <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                            <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Shadow</div>
+                            <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{drawerData.shadow_size}</div>
+                          </div>
+                        )}
+                        {drawerData.speed && (
+                          <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                            <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Speed</div>
+                            <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{drawerData.speed}</div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Catchphrase */}
+                      {drawerData.catchphrases?.[0] && (
+                        <div style={{ marginBottom: '20px', paddingTop: '20px', borderTop: '1px solid rgba(94,200,80,0.1)' }}>
+                          <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Catchphrase</div>
+                          <div style={{
+                            fontStyle: 'italic', color: '#d4b030', fontSize: '14px', lineHeight: '1.6',
+                            padding: '12px', backgroundColor: 'rgba(212,176,48,0.06)', border: '1px solid rgba(212,176,48,0.15)', borderRadius: '8px',
+                          }}>
+                            &ldquo;{drawerData.catchphrases[0]}&rdquo;
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+
+              {/* === Fossil drawer === */}
+              {selectedType === 'fossil' && (
+                <>
+                  {/* Local data */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+                    <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                      <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Fossil Group</div>
+                      <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{selectedItem.species}</div>
+                    </div>
+                    <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                      <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Part</div>
+                      <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{selectedItem.part}</div>
+                    </div>
+                    <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                      <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Sell Price</div>
+                      <div style={{ fontSize: '14px', color: '#d4b030', fontWeight: '600', fontFamily: "'DM Mono', monospace" }}>{selectedItem.sellPrice.toLocaleString()} Bells</div>
+                    </div>
+                  </div>
+
+                  {/* API data */}
+                  {!drawerData ? (
+                    <div style={{ textAlign: 'center', color: '#5a7a50', fontStyle: 'italic', padding: '20px' }}>Loading details...</div>
+                  ) : (
+                    <>
+                      {drawerData.image_url && (
+                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', paddingTop: '20px', borderTop: '1px solid rgba(94,200,80,0.1)' }}>
+                          <img src={drawerData.image_url} alt={itemName} style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '8px' }} />
+                        </div>
+                      )}
+                      {drawerData.colors && drawerData.colors.length > 0 && (
+                        <div style={{ marginBottom: '20px' }}>
+                          <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Colors</div>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            {drawerData.colors.map((color, i) => (
+                              <span key={i} style={{
+                                padding: '4px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: '500',
+                                backgroundColor: 'rgba(74,172,240,0.12)', color: '#4aacf0', border: '1px solid rgba(74,172,240,0.25)',
+                              }}>{color}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+
+              {/* === Art drawer === */}
+              {selectedType === 'art' && (
+                <>
+                  {/* Always real badge */}
+                  {selectedItem.alwaysReal && (
+                    <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                      <span style={{
+                        display: 'inline-block', padding: '6px 16px', borderRadius: '16px', fontSize: '13px', fontWeight: '600',
+                        backgroundColor: 'rgba(94,200,80,0.2)', border: '1px solid rgba(94,200,80,0.4)', color: '#5ec850',
+                      }}>⭐ Always Real</span>
+                    </div>
+                  )}
+                  {!selectedItem.alwaysReal && (
+                    <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                      <span style={{
+                        display: 'inline-block', padding: '6px 16px', borderRadius: '16px', fontSize: '13px', fontWeight: '600',
+                        backgroundColor: 'rgba(212,176,48,0.15)', border: '1px solid rgba(212,176,48,0.3)', color: '#d4b030',
+                      }}>⚠ Has Forgery</span>
+                    </div>
+                  )}
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
+                    <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                      <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Type</div>
+                      <div style={{ fontSize: '14px', color: '#c8e6c0', fontWeight: '500' }}>{selectedItem.type}</div>
+                    </div>
+                    {drawerData?.sell_nook != null && (
+                      <div style={{ backgroundColor: 'rgba(94,200,80,0.06)', border: '1px solid rgba(94,200,80,0.15)', borderRadius: '8px', padding: '12px' }}>
+                        <div style={{ fontSize: '11px', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Sell Price</div>
+                        <div style={{ fontSize: '14px', color: '#d4b030', fontWeight: '600', fontFamily: "'DM Mono', monospace" }}>{Number(drawerData.sell_nook).toLocaleString()} Bells</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {!drawerData ? (
+                    <div style={{ textAlign: 'center', color: '#5a7a50', fontStyle: 'italic', padding: '20px' }}>Loading details...</div>
+                  ) : (
+                    <>
+                      {/* Art name / author */}
+                      {drawerData.art_name && (
+                        <div style={{ marginBottom: '20px', paddingTop: '20px', borderTop: '1px solid rgba(94,200,80,0.1)' }}>
+                          <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Real-World Artwork</div>
+                          <div style={{ fontSize: '16px', color: '#c8e6c0', fontWeight: '600', fontFamily: "'Playfair Display', serif", marginBottom: '4px' }}>{drawerData.art_name}</div>
+                          {drawerData.author && <div style={{ fontSize: '13px', color: '#5a7a50' }}>by {drawerData.author}</div>}
+                        </div>
+                      )}
+
+                      {/* Real image */}
+                      {drawerData.image_url && (
+                        <div style={{ marginBottom: '20px' }}>
+                          <div style={{ fontSize: '11px', fontWeight: '700', color: '#5a7a50', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Real Version</div>
+                          <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <img src={drawerData.image_url} alt={`${itemName} (Real)`} style={{ maxWidth: '100%', maxHeight: '240px', borderRadius: '8px', border: '1px solid rgba(94,200,80,0.2)' }} />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Fake image */}
+                      {drawerData.fake_image_url && (
+                        <div style={{ marginBottom: '20px' }}>
+                          <div style={{ fontSize: '11px', fontWeight: '700', color: '#d4b030', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Fake Version</div>
+                          <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <img src={drawerData.fake_image_url} alt={`${itemName} (Fake)`} style={{ maxWidth: '100%', maxHeight: '240px', borderRadius: '8px', border: '1px solid rgba(212,176,48,0.3)' }} />
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 };
