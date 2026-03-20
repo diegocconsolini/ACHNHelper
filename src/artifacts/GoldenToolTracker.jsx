@@ -324,6 +324,30 @@ const GoldenToolTracker = () => {
         </ToolCard>
       </div>
 
+      {/* Dream Tools (ver. 3.0) */}
+      <div style={{ ...styles.tipsSection, borderTop: '1px solid rgba(74,172,240,0.2)', marginTop: '24px', paddingTop: '24px' }}>
+        <h3 style={{ ...styles.tipsTitle, color: '#4aacf0' }}>🌙 Dream Tools (ver. 3.0)</h3>
+        <p style={{ color: '#5a7a50', fontSize: '13px', marginBottom: '12px', lineHeight: 1.5 }}>
+          Slumber Islands provide special dream tools with infinite durability. These are separate from golden tools and are only usable on dream islands.
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          {['Dream Axe', 'Dream Fishing Rod', 'Dream Net', 'Dream Shovel', 'Dream Ladder', 'Dream Vaulting Pole', 'Dream Timer'].map(tool => (
+            <span key={tool} style={{
+              padding: '6px 12px',
+              backgroundColor: 'rgba(74,172,240,0.1)',
+              border: '1px solid rgba(74,172,240,0.25)',
+              borderRadius: '6px',
+              color: '#4aacf0',
+              fontSize: '12px',
+              fontFamily: "'DM Sans', sans-serif",
+            }}>{tool}</span>
+          ))}
+        </div>
+        <p style={{ color: '#5a7a50', fontSize: '11px', marginTop: '8px', fontStyle: 'italic' }}>
+          Also available in 3.0: Megaphone, Ocarina of Time, Transceiver, Tri Rod
+        </p>
+      </div>
+
       {/* Tips Section */}
       <div style={styles.tipsSection}>
         <h3 style={styles.tipsTitle}>💡 Quick Tips</h3>
