@@ -496,6 +496,22 @@ export default function CommunityPage() {
                   </div>
                 </div>
 
+                {/* Screenshot thumbnail */}
+                {profile.screenshots?.length > 0 && (
+                  <div style={styles.screenshotRow}>
+                    <img
+                      src={profile.screenshots[0]}
+                      alt={`${profile.island_name || 'Island'} screenshot`}
+                      style={styles.cardScreenshot}
+                    />
+                    {profile.screenshots.length > 1 && (
+                      <span style={styles.photoBadge}>
+                        +{profile.screenshots.length - 1} more
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 {/* Bio */}
                 {profile.bio && (
                   <p style={styles.bio}>{profile.bio}</p>
@@ -890,6 +906,30 @@ const styles = {
     fontFamily: "'DM Sans', sans-serif",
     fontSize: 12,
     color: '#d4b030',
+  },
+  screenshotRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+  },
+  cardScreenshot: {
+    width: '100%',
+    maxWidth: 280,
+    height: 80,
+    objectFit: 'cover',
+    borderRadius: 8,
+    border: '1px solid rgba(94,200,80,0.15)',
+  },
+  photoBadge: {
+    fontFamily: "'DM Mono', monospace",
+    fontSize: 11,
+    color: '#d4b030',
+    backgroundColor: 'rgba(212,176,48,0.1)',
+    border: '1px solid rgba(212,176,48,0.2)',
+    borderRadius: 10,
+    padding: '2px 8px',
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
   },
   bio: {
     fontFamily: "'DM Sans', sans-serif",

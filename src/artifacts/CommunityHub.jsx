@@ -131,6 +131,12 @@ function MyListingTab({ session }) {
   const [consentGiven, setConsentGiven] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
 
+  // Screenshot state
+  const [screenshots, setScreenshots] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const fileInputRef = useRef(null);
+
   // Load existing listing + profile
   useEffect(() => {
     let cancelled = false;
@@ -153,6 +159,7 @@ function MyListingTab({ session }) {
             setShowFriendCode(listingData.show_friend_code || false);
             setConsentGiven(listingData.show_friend_code || false);
             setIsPublished(listingData.is_published || false);
+            setScreenshots(listingData.screenshots || []);
           }
         }
       } catch {
@@ -255,6 +262,64 @@ function MyListingTab({ session }) {
       if (prev.length >= 3) return prev;
       return [...prev, tag];
     });
+  }, []);
+
+  const handleScreenshotUpload = useCallback(async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Reset file input so same file can be re-selected
+    if (fileInputRef.current) fileInputRef.current.value = '';
+
+    // Client-side validation
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      setUploadError('Invalid file type. Use JPEG, PNG, or WebP.');
+      setTimeout(() => setUploadError(null), 4000);
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setUploadError('File too large. Maximum 2MB.');
+      setTimeout(() => setUploadError(null), 4000);
+      return;
+    }
+
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/community/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Upload failed');
+      }
+      const { url } = await res.json();
+      setScreenshots(prev => [...prev, url]);
+    } catch (err) {
+      setUploadError(err.message);
+      setTimeout(() => setUploadError(null), 4000);
+    } finally {
+      setUploading(false);
+    }
+  }, []);
+
+  const handleScreenshotDelete = useCallback(async (url) => {
+    try {
+      const res = await fetch('/api/community/upload', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      });
+      if (res.ok) {
+        setScreenshots(prev => prev.filter(s => s !== url));
+      }
+    } catch {
+      // ignore
+    }
   }, []);
 
   if (loading) {
@@ -404,6 +469,69 @@ function MyListingTab({ session }) {
         )}
       </div>
 
+      {/* Island Screenshots */}
+      <div style={styles.fieldGroup}>
+        <label style={styles.label}>
+          Island Screenshots <span style={styles.labelMuted}>({screenshots.length}/5)</span>
+        </label>
+        <p style={{ fontSize: 12, color: '#5a7a50', margin: '0 0 4px', lineHeight: 1.4 }}>
+          Share photos of your island. JPEG, PNG, or WebP, max 2MB each.
+        </p>
+
+        {screenshots.length > 0 && (
+          <div style={styles.screenshotGrid}>
+            {screenshots.map((url) => (
+              <div key={url} style={styles.screenshotThumb}>
+                <img
+                  src={url}
+                  alt="Island screenshot"
+                  style={styles.screenshotImg}
+                />
+                <button
+                  onClick={() => handleScreenshotDelete(url)}
+                  style={styles.screenshotDeleteBtn}
+                  title="Remove screenshot"
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {screenshots.length < 5 && (
+          <div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleScreenshotUpload}
+              style={{ display: 'none' }}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              style={{
+                ...styles.uploadBtn,
+                opacity: uploading ? 0.6 : 1,
+              }}
+            >
+              {uploading ? 'Uploading...' : 'Upload Screenshot'}
+            </button>
+          </div>
+        )}
+
+        {uploadError && (
+          <span style={{
+            fontSize: 12,
+            fontFamily: "'DM Mono', monospace",
+            color: '#e05050',
+          }}>
+            {uploadError}
+          </span>
+        )}
+      </div>
+
       {/* Preview Card */}
       <div style={styles.fieldGroup}>
         <label style={styles.label}>Preview</label>
@@ -414,6 +542,7 @@ function MyListingTab({ session }) {
           lookingFor={lookingFor}
           showFriendCode={showFriendCode && consentGiven}
           session={session}
+          screenshots={screenshots}
         />
       </div>
 
@@ -469,7 +598,7 @@ function MyListingTab({ session }) {
 
 /* ========== PROFILE PREVIEW CARD ========== */
 
-function ProfilePreviewCard({ profile, bio, themeTags, lookingFor, showFriendCode, session }) {
+function ProfilePreviewCard({ profile, bio, themeTags, lookingFor, showFriendCode, session, screenshots = [] }) {
   const islandName = profile?.island_name || 'My Island';
   const hemisphere = profile?.hemisphere;
   const nativeFruit = profile?.native_fruit;
@@ -499,6 +628,29 @@ function ProfilePreviewCard({ profile, bio, themeTags, lookingFor, showFriendCod
       </div>
 
       {bio && <p style={styles.previewBio}>{bio}</p>}
+
+      {screenshots.length > 0 && (
+        <div style={styles.previewScreenshots}>
+          {screenshots.slice(0, 3).map((url) => (
+            <img
+              key={url}
+              src={url}
+              alt="Island screenshot"
+              style={styles.previewScreenshotImg}
+            />
+          ))}
+          {screenshots.length > 3 && (
+            <span style={{
+              fontSize: 11,
+              color: '#5a7a50',
+              fontFamily: "'DM Mono', monospace",
+              alignSelf: 'center',
+            }}>
+              +{screenshots.length - 3} more
+            </span>
+          )}
+        </div>
+      )}
 
       <div style={styles.previewDetails}>
         {hemisphere && (
@@ -1010,6 +1162,58 @@ const styles = {
     transition: 'color 0.2s ease',
   },
 
+  /* Screenshot upload */
+  screenshotGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+    gap: 10,
+  },
+  screenshotThumb: {
+    position: 'relative',
+    borderRadius: 8,
+    overflow: 'hidden',
+    border: '1px solid rgba(94,200,80,0.15)',
+    aspectRatio: '16/9',
+  },
+  screenshotImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    display: 'block',
+  },
+  screenshotDeleteBtn: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    width: 22,
+    height: 22,
+    borderRadius: '50%',
+    background: 'rgba(224,80,80,0.85)',
+    border: 'none',
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: 700,
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    outline: 'none',
+    lineHeight: 1,
+  },
+  uploadBtn: {
+    padding: '8px 18px',
+    background: 'rgba(74,172,240,0.1)',
+    border: '1px solid rgba(74,172,240,0.3)',
+    borderRadius: 8,
+    color: '#4aacf0',
+    fontSize: 13,
+    fontFamily: "'DM Sans', sans-serif",
+    fontWeight: 600,
+    cursor: 'pointer',
+    outline: 'none',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease',
+  },
+
   /* Preview card */
   previewCard: {
     background: 'rgba(12,28,14,0.95)',
@@ -1050,6 +1254,18 @@ const styles = {
     color: '#c8e6c0',
     lineHeight: 1.5,
     margin: 0,
+  },
+  previewScreenshots: {
+    display: 'flex',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  previewScreenshotImg: {
+    width: 80,
+    height: 45,
+    objectFit: 'cover',
+    borderRadius: 6,
+    border: '1px solid rgba(94,200,80,0.15)',
   },
   previewDetails: {
     display: 'flex',
