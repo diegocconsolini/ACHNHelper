@@ -58,6 +58,9 @@ const ArtDetector = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [expandedId, setExpandedId] = useState(null);
+  const [hoveredCardId, setHoveredCardId] = useState(null);
+  const [hoveredReddId, setHoveredReddId] = useState(null);
+  const [hoveredResultId, setHoveredResultId] = useState(null);
   const [collection, setCollection] = useState({});
   const [reddSelection, setReddSelection] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -308,8 +311,9 @@ const ArtDetector = () => {
     },
     artCardHover: {
       backgroundColor: 'rgba(12, 28, 14, 0.98)',
-      borderColor: 'rgba(94, 200, 80, 0.5)',
+      border: '1px solid rgba(94, 200, 80, 0.5)',
       boxShadow: '0 4px 12px rgba(94, 200, 80, 0.1)',
+      transform: 'translateY(-2px) scale(1.02)',
     },
     artName: {
       fontSize: '16px',
@@ -447,7 +451,7 @@ const ArtDetector = () => {
     },
     reddCardSelected: {
       backgroundColor: 'rgba(94, 200, 80, 0.15)',
-      borderColor: '#5ec850',
+      border: '1px solid #5ec850',
       boxShadow: '0 0 8px rgba(94, 200, 80, 0.2)',
     },
     reddCardDisabled: {
@@ -858,9 +862,9 @@ const ArtDetector = () => {
               {filteredArt.map((art) => (
                 <div
                   key={art.id}
-                  style={{ ...styles.artCard, ...(expandedId === art.id ? styles.artCardHover : {}) }}
-                  onMouseEnter={() => setExpandedId(art.id)}
-                  onMouseLeave={() => setExpandedId(null)}
+                  style={{ ...styles.artCard, ...(hoveredCardId === art.id ? styles.artCardHover : {}) }}
+                  onMouseEnter={() => { setHoveredCardId(art.id); setExpandedId(art.id); }}
+                  onMouseLeave={() => { setHoveredCardId(null); setExpandedId(null); }}
                   onClick={() => openDrawer(art)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
@@ -918,9 +922,9 @@ const ArtDetector = () => {
               {ART_DATA.map((art) => (
                 <div
                   key={art.id}
-                  style={{ ...styles.artCard, ...(expandedId === art.id ? styles.artCardHover : {}) }}
-                  onMouseEnter={() => setExpandedId(art.id)}
-                  onMouseLeave={() => setExpandedId(null)}
+                  style={{ ...styles.artCard, ...(hoveredCardId === art.id ? styles.artCardHover : {}) }}
+                  onMouseEnter={() => { setHoveredCardId(art.id); setExpandedId(art.id); }}
+                  onMouseLeave={() => { setHoveredCardId(null); setExpandedId(null); }}
                   onClick={() => openDrawer(art)}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
@@ -1018,7 +1022,7 @@ const ArtDetector = () => {
           </div>
 
           {reddSelection.length > 0 && (
-            <div style={{ ...styles.reddModeContainer, marginTop: '24px', backgroundColor: 'rgba(74, 172, 240, 0.1)', borderColor: 'rgba(74, 172, 240, 0.4)' }}>
+            <div style={{ ...styles.reddModeContainer, marginTop: '24px', backgroundColor: 'rgba(74, 172, 240, 0.1)', border: '1px solid rgba(74, 172, 240, 0.4)' }}>
               <h3 style={{ ...styles.reddTitle, color: '#4aacf0' }}>📋 Today's Selection Summary</h3>
               {reddSelection.map((id) => {
                 const art = ART_DATA.find(a => a.id === id);
@@ -1045,10 +1049,10 @@ const ArtDetector = () => {
           />
           <div style={{ ...styles.drawer, ...(drawerClosing ? styles.drawerClosing : {}) }}>
             <button
-              style={styles.drawerCloseBtn}
+              style={{ ...styles.drawerCloseBtn, ...(hoveredReddId === 'closeBtn' ? { border: '1px solid #5ec850', backgroundColor: 'rgba(94, 200, 80, 0.15)' } : {}) }}
               onClick={closeDrawer}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#5ec850'; e.currentTarget.style.backgroundColor = 'rgba(94, 200, 80, 0.15)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(94, 200, 80, 0.3)'; e.currentTarget.style.backgroundColor = 'rgba(12, 28, 14, 0.95)'; }}
+              onMouseEnter={() => setHoveredReddId('closeBtn')}
+              onMouseLeave={() => setHoveredReddId(null)}
             >
               ✕
             </button>
@@ -1094,9 +1098,9 @@ const ArtDetector = () => {
                     </div>
                     <button
                       onClick={() => setZoomOpen(true)}
-                      style={styles.compareButton}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(74, 172, 240, 0.25)'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(74, 172, 240, 0.15)'; }}
+                      style={{ ...styles.compareButton, ...(hoveredResultId === 'compareBtn' ? { backgroundColor: 'rgba(74, 172, 240, 0.25)' } : {}) }}
+                      onMouseEnter={() => setHoveredResultId('compareBtn')}
+                      onMouseLeave={() => setHoveredResultId(null)}
                     >
                       🔍 Compare Real vs Fake
                     </button>
