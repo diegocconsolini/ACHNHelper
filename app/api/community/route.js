@@ -35,10 +35,12 @@ export async function GET(req) {
         native_flower,
         island_rating,
         dream_address,
-        friend_code
+        friend_code,
+        is_banned
       )
     `, { count: 'exact' })
-    .eq('is_published', true);
+    .eq('is_published', true)
+    .or('is_banned.is.null,is_banned.eq.false', { referencedTable: 'profiles' });
 
   // Apply filters on the joined profiles fields
   if (hemisphere) {

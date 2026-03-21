@@ -103,6 +103,17 @@ export async function POST(req) {
   const { bio, themeTags, lookingFor, showFriendCode, consentGiven } = body;
 
   const supabase = createServerClient();
+
+  // Check if user is banned
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('is_banned')
+    .eq('user_id', session.user.id)
+    .single();
+
+  if (profile?.is_banned) {
+    return Response.json({ error: 'Your account has been suspended from community features' }, { status: 403 });
+  }
   const now = new Date().toISOString();
 
   const { data, error } = await supabase

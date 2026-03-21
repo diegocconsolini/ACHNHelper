@@ -53,5 +53,19 @@ export async function POST(req) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 
+  // Auto-escalation: if 5+ pending reports against same user, auto-unpublish
+  const { count: pendingCount } = await supabase
+    .from('reports')
+    .select('id', { count: 'exact', head: true })
+    .eq('reported_user_id', reportedUserId)
+    .eq('status', 'pending');
+
+  if (pendingCount >= 5) {
+    await supabase
+      .from('shared_profiles')
+      .update({ is_published: false })
+      .eq('user_id', reportedUserId);
+  }
+
   return Response.json({ success: true, id: data.id });
 }

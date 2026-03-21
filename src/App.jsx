@@ -207,6 +207,7 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
   const [syncStatus, setSyncStatus] = useState(null);
+  const [isAdminUser, setIsAdminUser] = useState(false);
   const { data: session, status } = useSession();
 
   // Poll sync status every 2 seconds
@@ -216,6 +217,19 @@ function App() {
     }, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  // Check admin status
+  useEffect(() => {
+    if (status !== 'authenticated' || !session?.user?.email) {
+      setIsAdminUser(false);
+      return;
+    }
+    fetch('/api/admin/stats')
+      .then(res => {
+        setIsAdminUser(res.ok);
+      })
+      .catch(() => setIsAdminUser(false));
+  }, [status, session?.user?.email]);
 
   const activeItem = MENU.flatMap(g => g.items).find(i => i.id === activeId);
   const ActiveComponent = activeItem?.component ? COMPONENTS[activeItem.component] : null;
@@ -279,6 +293,30 @@ function App() {
               {syncStatus === 'synced' && <span style={{ fontSize: 10, color: '#5a7a50', paddingLeft: 42 }}>☁️ Synced</span>}
               {syncStatus === 'syncing' && <span style={{ fontSize: 10, color: '#d4b030', paddingLeft: 42 }}>⟳ Syncing...</span>}
               {syncStatus === 'error' && <span style={{ fontSize: 10, color: '#ff6464', paddingLeft: 42 }}>⚠ Sync error</span>}
+              {isAdminUser && (
+                <a
+                  href="/admin"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    marginTop: 6,
+                    marginLeft: 42,
+                    padding: '4px 10px',
+                    background: 'rgba(212,176,48,0.1)',
+                    border: '1px solid rgba(212,176,48,0.25)',
+                    borderRadius: 6,
+                    color: '#d4b030',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    fontFamily: "'DM Mono', monospace",
+                    textDecoration: 'none',
+                    width: 'fit-content',
+                  }}
+                >
+                  🛡️ Admin
+                </a>
+              )}
             </div>
           ) : (
             <div>
