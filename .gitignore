@@ -33,3 +33,6 @@ public/assets/
 
 # Supabase local config (not needed for deployment)
 supabase/.temp/
+
+# Superpowers brainstorm sessions
+.superpowers/
