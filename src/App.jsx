@@ -31,6 +31,7 @@ const DreamAddressBook = lazy(() => import('./artifacts/DreamAddressBook.jsx'));
 const LabelFashionHelper = lazy(() => import('./artifacts/LabelFashionHelper.jsx'));
 const GyroidTracker = lazy(() => import('./artifacts/GyroidTracker.jsx'));
 const CommunityHub = lazy(() => import('./artifacts/CommunityHub.jsx'));
+const MaterialCalculator = lazy(() => import('./artifacts/MaterialCalculator.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -65,6 +66,7 @@ const MENU = [
       { id: 'nooks', label: "Nook's Cranny Log", emoji: '🏪', component: 'NooksCrannyLog' },
       { id: 'fivestar', label: '5-Star Checker', emoji: '⭐', component: 'FiveStarChecker' },
       { id: 'daily', label: 'Daily Routine', emoji: '📋', component: 'DailyRoutine' },
+      { id: 'materials', label: 'Material Calculator', emoji: '🧮', component: 'MaterialCalculator' },
     ],
   },
   {
@@ -130,6 +132,7 @@ const COMPONENTS = {
   LabelFashionHelper,
   GyroidTracker,
   CommunityHub,
+  MaterialCalculator,
   UserProfile,
 };
 
