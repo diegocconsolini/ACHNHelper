@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { AssetImg } from '../assetHelper';
 import { VILLAGERS, BIRTHDAY_CALENDAR } from './villagerData';
 
@@ -36,6 +36,15 @@ const VillagerGiftGuide = () => {
   const [drawerLoading, setDrawerLoading] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
 
+  // Gift Finder state
+  const [giftFinderInput, setGiftFinderInput] = useState('');
+  const [giftFinderAutocomplete, setGiftFinderAutocomplete] = useState(false);
+  const [giftFinderVillager, setGiftFinderVillager] = useState(null);
+  const [giftFinderDetails, setGiftFinderDetails] = useState(null);
+  const [giftFinderClothing, setGiftFinderClothing] = useState([]);
+  const [giftFinderLoading, setGiftFinderLoading] = useState(false);
+  const [giftFinderError, setGiftFinderError] = useState(null);
+
   const openDrawer = useCallback(async (villagerName) => {
     setDrawerVillager(villagerName);
     setDrawerData(null);
@@ -60,6 +69,47 @@ const VillagerGiftGuide = () => {
       setDrawerVillager(null);
       setDrawerData(null);
     }, 300);
+  }, []);
+
+  // Gift Finder: fetch villager details and matching clothing
+  const searchGiftFinder = useCallback(async (villagerName) => {
+    const villager = VILLAGERS.find(v => v.name.toLowerCase() === villagerName.toLowerCase());
+    if (!villager) return;
+
+    setGiftFinderVillager(villager);
+    setGiftFinderLoading(true);
+    setGiftFinderError(null);
+    setGiftFinderClothing([]);
+    setGiftFinderDetails(null);
+
+    try {
+      const res = await fetch(`/api/nookipedia/villagers?name=${encodeURIComponent(villager.name)}&nhdetails=true`);
+      if (!res.ok) throw new Error('Failed to fetch villager details');
+      const data = await res.json();
+      const details = Array.isArray(data) ? data[0] : data;
+      setGiftFinderDetails(details);
+
+      const nh = details?.nh_details;
+      if (nh?.fav_styles?.length && nh?.fav_colors?.length) {
+        // Fetch clothing matching first style + first color combo
+        const style = nh.fav_styles[0];
+        const color = nh.fav_colors[0];
+        const clothingRes = await fetch(`/api/nookipedia/nh/clothing?style=${encodeURIComponent(style)}&color=${encodeURIComponent(color)}`);
+        if (clothingRes.ok) {
+          const clothingData = await clothingRes.json();
+          // Filter to items villagers can actually equip, sort by sell price descending
+          const equippable = clothingData
+            .filter(item => item.vill_equip)
+            .sort((a, b) => (b.sell || 0) - (a.sell || 0));
+          setGiftFinderClothing(equippable);
+        }
+      }
+    } catch (e) {
+      console.error('Gift Finder error:', e);
+      setGiftFinderError('Could not load villager data. Try again later.');
+    } finally {
+      setGiftFinderLoading(false);
+    }
   }, []);
 
   // Load data on mount
@@ -636,6 +686,341 @@ const VillagerGiftGuide = () => {
     );
   };
 
+  // Gift Finder Tab
+  const renderGiftFinder = () => {
+    const nh = giftFinderDetails?.nh_details;
+    const favStyles = nh?.fav_styles || [];
+    const favColors = nh?.fav_colors || [];
+    const isBirthdayToday = (() => {
+      if (!giftFinderVillager) return false;
+      const now = new Date();
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const v = VILLAGERS.find(v2 => v2.name === giftFinderVillager.name);
+      if (!v) return false;
+      const bday = BIRTHDAY_CALENDAR[now.getMonth() + 1]?.find(b => b.name === v.name);
+      return bday && parseInt(bday.date?.split(' ').pop()) === now.getDate();
+    })();
+
+    const personalityTips = {
+      Normal: { bestGifts: 'Simple, cute clothing and furniture', avoid: 'Flashy or gothic items' },
+      Peppy: { bestGifts: 'Cute, colorful clothing and pop-themed items', avoid: 'Dull or plain items' },
+      Lazy: { bestGifts: 'Simple, outdoorsy items and food-themed furniture', avoid: 'Formal or elegant items' },
+      Jock: { bestGifts: 'Active, sporty clothing and gym equipment', avoid: 'Formal or frilly items' },
+      Cranky: { bestGifts: 'Cool, elegant clothing and antique furniture', avoid: 'Cute or childish items' },
+      Snooty: { bestGifts: 'Elegant, gorgeous clothing and luxury furniture', avoid: 'Simple or cheap items' },
+      Smug: { bestGifts: 'Elegant, cool clothing and sophisticated furniture', avoid: 'Sporty or casual items' },
+      'Big sister': { bestGifts: 'Active, cool clothing and casual furniture', avoid: 'Overly formal items' }
+    };
+
+    return (
+      <div>
+        {/* Search bar */}
+        <div style={{ marginBottom: '20px', position: 'relative' }}>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ flex: 1, position: 'relative' }}>
+              <input
+                type="text"
+                placeholder="Type a villager name..."
+                value={giftFinderInput}
+                onChange={(e) => { setGiftFinderInput(e.target.value); setGiftFinderAutocomplete(true); }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    const match = VILLAGERS.find(v => v.name.toLowerCase() === giftFinderInput.toLowerCase());
+                    if (match) { searchGiftFinder(match.name); setGiftFinderAutocomplete(false); }
+                  }
+                }}
+                onBlur={() => setTimeout(() => setGiftFinderAutocomplete(false), 150)}
+                onFocus={() => giftFinderInput.length > 0 && setGiftFinderAutocomplete(true)}
+                style={baseStyles.input}
+              />
+              {giftFinderAutocomplete && giftFinderInput.length >= 1 && (() => {
+                const suggestions = VILLAGERS.filter(v =>
+                  v.name.toLowerCase().startsWith(giftFinderInput.toLowerCase())
+                ).slice(0, 8);
+                if (suggestions.length === 0) return null;
+                return (
+                  <div style={{
+                    position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 10,
+                    background: 'rgba(12, 28, 14, 0.98)', border: '1px solid rgba(94, 200, 80, 0.3)',
+                    borderRadius: '0 0 4px 4px', maxHeight: '200px', overflowY: 'auto'
+                  }}>
+                    {suggestions.map(v => (
+                      <div
+                        key={v.name}
+                        onMouseDown={() => {
+                          setGiftFinderInput(v.name);
+                          setGiftFinderAutocomplete(false);
+                          searchGiftFinder(v.name);
+                        }}
+                        style={{
+                          padding: '8px 10px', cursor: 'pointer', outline: 'none', fontSize: '13px',
+                          display: 'flex', alignItems: 'center', gap: '8px',
+                          borderBottom: '1px solid rgba(94, 200, 80, 0.1)'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(94, 200, 80, 0.1)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                      >
+                        <AssetImg category="villagers" name={v.name} size={20} />
+                        <span style={{ color: '#5ec850' }}>{v.name}</span>
+                        <span style={{ fontSize: '11px', color: '#5a7a50', marginLeft: 'auto' }}>
+                          {v.species} / {v.personality}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+            <button
+              onClick={() => {
+                const match = VILLAGERS.find(v => v.name.toLowerCase() === giftFinderInput.toLowerCase());
+                if (match) searchGiftFinder(match.name);
+              }}
+              style={baseStyles.button}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+
+        {/* Loading state */}
+        {giftFinderLoading && (
+          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <AssetImg category="villagers" name={giftFinderVillager?.name || ''} size={64} />
+            <div style={{ marginTop: '16px', color: '#5a7a50', fontSize: '14px', fontFamily: '"DM Mono", monospace' }}>
+              Finding perfect gifts...
+            </div>
+          </div>
+        )}
+
+        {/* Error state */}
+        {giftFinderError && (
+          <div style={{ ...baseStyles.card, borderColor: 'rgba(255, 100, 100, 0.3)', textAlign: 'center' }}>
+            <div style={{ color: '#ff6464', fontSize: '14px' }}>{giftFinderError}</div>
+          </div>
+        )}
+
+        {/* Results */}
+        {!giftFinderLoading && giftFinderVillager && giftFinderDetails && (
+          <div>
+            {/* Villager card */}
+            <div style={{ ...baseStyles.card, display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ flexShrink: 0 }}>
+                {giftFinderDetails.image_url ? (
+                  <img
+                    src={giftFinderDetails.image_url}
+                    alt={giftFinderVillager.name}
+                    style={{ width: '80px', height: '80px', objectFit: 'contain', borderRadius: '8px', background: 'rgba(30, 50, 30, 0.6)', border: '1px solid rgba(94, 200, 80, 0.2)', padding: '4px' }}
+                  />
+                ) : (
+                  <AssetImg category="villagers" name={giftFinderVillager.name} size={80} />
+                )}
+              </div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{ margin: '0 0 6px 0', fontSize: '22px', fontFamily: '"Playfair Display", serif', color: '#5ec850' }}>
+                  {giftFinderVillager.name}
+                </h3>
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '8px' }}>
+                  <span style={{ padding: '3px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 600, fontFamily: '"DM Mono", monospace', background: 'rgba(74, 172, 240, 0.15)', border: '1px solid rgba(74, 172, 240, 0.3)', color: '#4aacf0' }}>
+                    {giftFinderVillager.species}
+                  </span>
+                  <span style={{ padding: '3px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 600, fontFamily: '"DM Mono", monospace', background: 'rgba(94, 200, 80, 0.15)', border: '1px solid rgba(94, 200, 80, 0.3)', color: '#5ec850' }}>
+                    {giftFinderVillager.personality}
+                  </span>
+                  <span style={{ padding: '3px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 600, fontFamily: '"DM Mono", monospace', background: 'rgba(212, 176, 48, 0.15)', border: '1px solid rgba(212, 176, 48, 0.3)', color: '#d4b030' }}>
+                    {giftFinderVillager.birthday}
+                  </span>
+                </div>
+                {favStyles.length > 0 && (
+                  <div style={{ fontSize: '12px', color: '#c8e6c0' }}>
+                    <span style={{ color: '#5a7a50', fontFamily: '"DM Mono", monospace' }}>Styles:</span> {favStyles.join(', ')}
+                    {favColors.length > 0 && (
+                      <span style={{ marginLeft: '12px' }}>
+                        <span style={{ color: '#5a7a50', fontFamily: '"DM Mono", monospace' }}>Colors:</span> {favColors.join(', ')}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Birthday alert */}
+            {isBirthdayToday && (
+              <div style={{
+                ...baseStyles.card,
+                borderColor: 'rgba(212, 176, 48, 0.4)',
+                background: 'rgba(212, 176, 48, 0.08)',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '20px', marginBottom: '4px' }}>{'\uD83C\uDF82'}</div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#d4b030' }}>
+                  It&apos;s {giftFinderVillager.name}&apos;s birthday today!
+                </div>
+                <div style={{ fontSize: '12px', color: '#c8e6c0', marginTop: '4px' }}>
+                  Birthday gifts earn <strong style={{ color: '#5ec850' }}>2x friendship points</strong>!
+                </div>
+              </div>
+            )}
+
+            {/* Wrapping tip */}
+            <div style={{
+              ...baseStyles.card,
+              borderColor: 'rgba(74, 172, 240, 0.2)',
+              background: 'rgba(74, 172, 240, 0.05)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '12px 16px'
+            }}>
+              <span style={{ fontSize: '18px' }}>{'\uD83C\uDF81'}</span>
+              <div style={{ fontSize: '13px' }}>
+                <strong style={{ color: '#4aacf0' }}>Wrapping bonus:</strong> Always wrap gifts for <strong style={{ color: '#5ec850' }}>+1 extra friendship point</strong>!
+              </div>
+            </div>
+
+            {/* Best gifts: matching clothing */}
+            {favStyles.length > 0 && giftFinderClothing.length > 0 && (
+              <div style={{ ...baseStyles.card, marginTop: '4px' }}>
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontFamily: '"Playfair Display", serif', color: '#5ec850' }}>
+                  Best Clothing Gifts (+2 pts)
+                </h3>
+                <div style={{ fontSize: '12px', color: '#5a7a50', marginBottom: '12px', fontFamily: '"DM Mono", monospace' }}>
+                  Matches {favStyles[0]} style + {favColors[0]} color
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '8px' }}>
+                  {giftFinderClothing.slice(0, 20).map((item, i) => {
+                    const sellPrice = item.sell || 0;
+                    const valueBonus = sellPrice >= 750 ? '+1-3' : sellPrice >= 250 ? '+1' : '0';
+                    const imgUrl = item.variations?.[0]?.image_url;
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          padding: '8px 10px',
+                          background: 'rgba(30, 50, 30, 0.4)',
+                          border: '1px solid rgba(94, 200, 80, 0.1)',
+                          borderRadius: '6px',
+                          transition: 'background-color 0.3s ease, border-color 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(94, 200, 80, 0.08)'; e.currentTarget.style.borderColor = 'rgba(94, 200, 80, 0.25)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(30, 50, 30, 0.4)'; e.currentTarget.style.borderColor = 'rgba(94, 200, 80, 0.1)'; }}
+                      >
+                        {imgUrl && (
+                          <img src={imgUrl} alt={item.name} style={{ width: '32px', height: '32px', objectFit: 'contain', borderRadius: '4px' }} />
+                        )}
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: '13px', fontWeight: 500, color: '#c8e6c0', textTransform: 'capitalize', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {item.name}
+                          </div>
+                          <div style={{ fontSize: '11px', color: '#5a7a50', fontFamily: '"DM Mono", monospace' }}>
+                            {item.category} {sellPrice > 0 && `\u2022 ${sellPrice.toLocaleString()} bells`}
+                          </div>
+                        </div>
+                        {valueBonus !== '0' && (
+                          <span style={{
+                            padding: '2px 6px',
+                            borderRadius: '8px',
+                            fontSize: '10px',
+                            fontWeight: 600,
+                            fontFamily: '"DM Mono", monospace',
+                            background: 'rgba(212, 176, 48, 0.15)',
+                            border: '1px solid rgba(212, 176, 48, 0.3)',
+                            color: '#d4b030',
+                            flexShrink: 0
+                          }}>
+                            +{valueBonus} value
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                {giftFinderClothing.length > 20 && (
+                  <div style={{ fontSize: '12px', color: '#5a7a50', marginTop: '8px', fontFamily: '"DM Mono", monospace', textAlign: 'center' }}>
+                    Showing top 20 of {giftFinderClothing.length} matching items
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* General gift tips based on personality */}
+            <div style={{ ...baseStyles.card, marginTop: '4px' }}>
+              <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', fontFamily: '"Playfair Display", serif', color: '#d4b030' }}>
+                Gift Strategy for {giftFinderVillager.personality} Villagers
+              </h3>
+              {personalityTips[giftFinderVillager.personality] && (
+                <div style={{ marginBottom: '16px' }}>
+                  <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(94, 200, 80, 0.2)' }}>
+                    <strong style={{ color: '#5ec850' }}>Recommended:</strong>
+                    <div style={{ marginTop: '4px', fontSize: '13px' }}>{personalityTips[giftFinderVillager.personality].bestGifts}</div>
+                  </div>
+                  <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(255, 100, 100, 0.2)', marginTop: '8px' }}>
+                    <strong style={{ color: '#ff6464' }}>Avoid:</strong>
+                    <div style={{ marginTop: '4px', fontSize: '13px' }}>{personalityTips[giftFinderVillager.personality].avoid}</div>
+                  </div>
+                </div>
+              )}
+
+              <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontFamily: '"Playfair Display", serif', color: '#4aacf0' }}>
+                Points Reference
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(94, 200, 80, 0.2)' }}>
+                  <strong style={{ color: '#5ec850' }}>+3 pts</strong>
+                  <div style={{ fontSize: '12px', marginTop: '2px' }}>Any furniture item</div>
+                </div>
+                <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(94, 200, 80, 0.2)' }}>
+                  <strong style={{ color: '#5ec850' }}>+2 pts</strong>
+                  <div style={{ fontSize: '12px', marginTop: '2px' }}>Matching clothes, flowers, bugs, fish</div>
+                </div>
+                <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(74, 172, 240, 0.2)' }}>
+                  <strong style={{ color: '#4aacf0' }}>+1 pt</strong>
+                  <div style={{ fontSize: '12px', marginTop: '2px' }}>Any other non-trash item</div>
+                </div>
+                <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(255, 100, 100, 0.2)' }}>
+                  <strong style={{ color: '#ff6464' }}>-2 pts</strong>
+                  <div style={{ fontSize: '12px', marginTop: '2px' }}>Trash: boots, cans, tires, weeds</div>
+                </div>
+              </div>
+              <div style={{ ...baseStyles.pointsBreakdown, borderColor: 'rgba(212, 176, 48, 0.2)', marginTop: '8px' }}>
+                <strong style={{ color: '#d4b030' }}>Value bonus:</strong>
+                <span style={{ fontSize: '12px', marginLeft: '8px' }}>250-749 bells = +1 | 750+ bells = +1-3 extra points</span>
+              </div>
+            </div>
+
+            {/* No API preferences fallback */}
+            {favStyles.length === 0 && (
+              <div style={{ ...baseStyles.card, borderColor: 'rgba(212, 176, 48, 0.2)', marginTop: '4px' }}>
+                <div style={{ fontSize: '13px', color: '#d4b030', marginBottom: '8px', fontWeight: 600 }}>
+                  Style preference data not available for this villager
+                </div>
+                <div style={{ fontSize: '12px', color: '#c8e6c0' }}>
+                  Use the personality-based tips above, or give <strong style={{ color: '#5ec850' }}>furniture (+3 pts)</strong> for guaranteed high points regardless of preferences.
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Empty state */}
+        {!giftFinderLoading && !giftFinderVillager && (
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>{'\uD83C\uDF81'}</div>
+            <h3 style={{ fontFamily: '"Playfair Display", serif', color: '#5ec850', margin: '0 0 8px 0' }}>
+              Find the Perfect Gift
+            </h3>
+            <p style={{ fontSize: '14px', color: '#5a7a50', margin: 0 }}>
+              Search for a villager to see personalized gift recommendations based on their style and color preferences.
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const renderDrawer = () => {
     if (!drawerVillager) return null;
 
@@ -876,8 +1261,8 @@ const VillagerGiftGuide = () => {
       `}</style>
       <h1 style={baseStyles.header}>{'\uD83C\uDF81'} Villager Gift Guide</h1>
 
-      <div style={baseStyles.tabs}>
-        {['guide', 'calendar', 'villagers'].map(tab => (
+      <div style={{ ...baseStyles.tabs, flexWrap: 'wrap' }}>
+        {['guide', 'finder', 'calendar', 'villagers'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -887,6 +1272,7 @@ const VillagerGiftGuide = () => {
             }}
           >
             {tab === 'guide' && 'Gift Guide'}
+            {tab === 'finder' && 'Gift Finder'}
             {tab === 'calendar' && 'Birthday Calendar'}
             {tab === 'villagers' && 'My Villagers'}
           </button>
@@ -894,6 +1280,7 @@ const VillagerGiftGuide = () => {
       </div>
 
       {activeTab === 'guide' && renderGiftGuide()}
+      {activeTab === 'finder' && renderGiftFinder()}
       {activeTab === 'calendar' && renderBirthdayCalendar()}
       {activeTab === 'villagers' && renderMyVillagers()}
 
