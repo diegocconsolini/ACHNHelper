@@ -33,6 +33,7 @@ const GyroidTracker = lazy(() => import('./artifacts/GyroidTracker.jsx'));
 const CommunityHub = lazy(() => import('./artifacts/CommunityHub.jsx'));
 const MaterialCalculator = lazy(() => import('./artifacts/MaterialCalculator.jsx'));
 const PhotoPosterTracker = lazy(() => import('./artifacts/PhotoPosterTracker.jsx'));
+const HHACalculator = lazy(() => import('./artifacts/HHACalculator.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -97,6 +98,7 @@ const MENU = [
       { id: 'dreams', label: 'Dream Address Book', emoji: '☁️', component: 'DreamAddressBook' },
       { id: 'label', label: 'Label Fashion', emoji: '👗', component: 'LabelFashionHelper' },
       { id: 'community', label: 'Community Hub', emoji: '🌐', component: 'CommunityHub' },
+      { id: 'hha', label: 'HHA Calculator', emoji: '🏠', component: 'HHACalculator' },
     ],
   },
   {
@@ -136,6 +138,7 @@ const COMPONENTS = {
   CommunityHub,
   MaterialCalculator,
   PhotoPosterTracker,
+  HHACalculator,
   UserProfile,
 };
 
@@ -396,7 +399,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 27 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 28 tools
           </span>
         </div>
       </div>
