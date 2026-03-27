@@ -28,6 +28,7 @@ const SeasonalEventCalendar = lazy(() => import('./artifacts/SeasonalEventCalend
 const DIYRecipeTracker = lazy(() => import('./artifacts/DIYRecipeTracker.jsx'));
 const CelesteMeteorTracker = lazy(() => import('./artifacts/CelesteMeteorTracker.jsx'));
 const DreamAddressBook = lazy(() => import('./artifacts/DreamAddressBook.jsx'));
+const LabelFashionHelper = lazy(() => import('./artifacts/LabelFashionHelper.jsx'));
 const GyroidTracker = lazy(() => import('./artifacts/GyroidTracker.jsx'));
 const CommunityHub = lazy(() => import('./artifacts/CommunityHub.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
@@ -90,6 +91,7 @@ const MENU = [
       { id: 'diy', label: 'DIY Recipe Tracker', emoji: '🔨', component: 'DIYRecipeTracker' },
       { id: 'celeste', label: 'Celeste & Meteors', emoji: '🌠', component: 'CelesteMeteorTracker' },
       { id: 'dreams', label: 'Dream Address Book', emoji: '☁️', component: 'DreamAddressBook' },
+      { id: 'label', label: 'Label Fashion', emoji: '👗', component: 'LabelFashionHelper' },
       { id: 'community', label: 'Community Hub', emoji: '🌐', component: 'CommunityHub' },
     ],
   },
@@ -125,6 +127,7 @@ const COMPONENTS = {
   DIYRecipeTracker,
   CelesteMeteorTracker,
   DreamAddressBook,
+  LabelFashionHelper,
   GyroidTracker,
   CommunityHub,
   UserProfile,
@@ -387,7 +390,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 25 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 26 tools
           </span>
         </div>
       </div>
