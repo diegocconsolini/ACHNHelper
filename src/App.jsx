@@ -28,6 +28,7 @@ const SeasonalEventCalendar = lazy(() => import('./artifacts/SeasonalEventCalend
 const DIYRecipeTracker = lazy(() => import('./artifacts/DIYRecipeTracker.jsx'));
 const CelesteMeteorTracker = lazy(() => import('./artifacts/CelesteMeteorTracker.jsx'));
 const DreamAddressBook = lazy(() => import('./artifacts/DreamAddressBook.jsx'));
+const GyroidTracker = lazy(() => import('./artifacts/GyroidTracker.jsx'));
 const CommunityHub = lazy(() => import('./artifacts/CommunityHub.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
@@ -52,6 +53,7 @@ const MENU = [
       { id: 'museum', label: 'Museum Tracker', emoji: '🏛️', component: 'MuseumTracker' },
       { id: 'golden', label: 'Golden Tools', emoji: '✨', component: 'GoldenToolTracker' },
       { id: 'nookmiles', label: 'Nook Miles', emoji: '🎖️', component: 'NookMilesTracker' },
+      { id: 'gyroids', label: 'Gyroid Tracker', emoji: '🗿', component: 'GyroidTracker' },
     ],
   },
   {
@@ -123,6 +125,7 @@ const COMPONENTS = {
   DIYRecipeTracker,
   CelesteMeteorTracker,
   DreamAddressBook,
+  GyroidTracker,
   CommunityHub,
   UserProfile,
 };
