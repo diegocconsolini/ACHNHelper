@@ -35,6 +35,7 @@ const MaterialCalculator = lazy(() => import('./artifacts/MaterialCalculator.jsx
 const PhotoPosterTracker = lazy(() => import('./artifacts/PhotoPosterTracker.jsx'));
 const HHACalculator = lazy(() => import('./artifacts/HHACalculator.jsx'));
 const Wishlist = lazy(() => import('./artifacts/Wishlist.jsx'));
+const CatalogTracker = lazy(() => import('./artifacts/CatalogTracker.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -91,6 +92,12 @@ const MENU = [
     ],
   },
   {
+    category: '📦 Catalog',
+    items: [
+      { id: 'catalog', label: 'Catalog Tracker', emoji: '📦', component: 'CatalogTracker' },
+    ],
+  },
+  {
     category: '🏠 Island Life',
     items: [
       { id: 'villager', label: 'Villager Gift Guide', emoji: '🎁', component: 'VillagerGiftGuide' },
@@ -142,6 +149,7 @@ const COMPONENTS = {
   PhotoPosterTracker,
   HHACalculator,
   Wishlist,
+  CatalogTracker,
   UserProfile,
 };
 
@@ -402,7 +410,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 29 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 30 tools
           </span>
         </div>
       </div>
