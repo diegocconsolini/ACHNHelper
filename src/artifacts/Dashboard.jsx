@@ -278,6 +278,10 @@ export default function Dashboard() {
   const [hoveredTab, setHoveredTab] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [caughtFish, setCaughtFish] = useState({});
+  const [caughtBugs, setCaughtBugs] = useState({});
+  const [caughtSea, setCaughtSea] = useState({});
+  const [hideCaught, setHideCaught] = useState(false);
   const { data: session } = useSession();
 
   // Update clock every minute
@@ -297,6 +301,28 @@ export default function Dashboard() {
       }).catch(() => {});
     }
   }, [session]);
+
+  // Load caught status from individual trackers
+  useEffect(() => {
+    const loadCaughtData = async () => {
+      try {
+        const fishResult = await window.storage.get('acnh-fish-tracker-caught');
+        if (fishResult) setCaughtFish(JSON.parse(fishResult.value));
+      } catch {}
+      try {
+        const bugResult = await window.storage.get('acnh-bug-tracker-caught');
+        if (bugResult) setCaughtBugs(JSON.parse(bugResult.value));
+      } catch {}
+      try {
+        const seaResult = await window.storage.get('acnh-sea-creature-tracker');
+        if (seaResult) {
+          const data = JSON.parse(seaResult.value);
+          if (data.caughtStatus) setCaughtSea(data.caughtStatus);
+        }
+      } catch {}
+    };
+    loadCaughtData();
+  }, []);
 
   // Fetch today's events from Nookipedia
   useEffect(() => {
@@ -334,10 +360,33 @@ export default function Dashboard() {
   const bugsNowCount = useMemo(() => bugsThisMonth.filter(c => isAvailableAtHour(c, currentHour)).length, [bugsThisMonth, currentHour]);
   const seaNowCount = useMemo(() => seaThisMonth.filter(c => isAvailableAtHour(c, currentHour)).length, [seaThisMonth, currentHour]);
 
-  // Leaving soon: available this month but NOT next month
-  const fishLeaving = useMemo(() => fishThisMonth.filter(c => !isAvailableNextMonth(c, hemisphere, currentMonth)).sort((a, b) => b.sellPrice - a.sellPrice), [fishThisMonth, hemisphere, currentMonth]);
-  const bugsLeaving = useMemo(() => bugsThisMonth.filter(c => !isAvailableNextMonth(c, hemisphere, currentMonth)).sort((a, b) => b.sellPrice - a.sellPrice), [bugsThisMonth, hemisphere, currentMonth]);
-  const seaLeaving = useMemo(() => seaThisMonth.filter(c => !isAvailableNextMonth(c, hemisphere, currentMonth)).sort((a, b) => b.sellPrice - a.sellPrice), [seaThisMonth, hemisphere, currentMonth]);
+  // Helper to check if a critter is caught
+  const isCritterCaught = (critter, type) => {
+    if (type === 'fish') return !!caughtFish[critter.id];
+    if (type === 'bug') return !!caughtBugs[critter.id];
+    if (type === 'sea') return !!caughtSea[critter.id];
+    return false;
+  };
+
+  // Leaving soon: available this month but NOT next month (uncaught first, then by price)
+  const fishLeaving = useMemo(() => fishThisMonth.filter(c => !isAvailableNextMonth(c, hemisphere, currentMonth)).sort((a, b) => {
+    const aCaught = !!caughtFish[a.id] ? 1 : 0;
+    const bCaught = !!caughtFish[b.id] ? 1 : 0;
+    if (aCaught !== bCaught) return aCaught - bCaught;
+    return b.sellPrice - a.sellPrice;
+  }), [fishThisMonth, hemisphere, currentMonth, caughtFish]);
+  const bugsLeaving = useMemo(() => bugsThisMonth.filter(c => !isAvailableNextMonth(c, hemisphere, currentMonth)).sort((a, b) => {
+    const aCaught = !!caughtBugs[a.id] ? 1 : 0;
+    const bCaught = !!caughtBugs[b.id] ? 1 : 0;
+    if (aCaught !== bCaught) return aCaught - bCaught;
+    return b.sellPrice - a.sellPrice;
+  }), [bugsThisMonth, hemisphere, currentMonth, caughtBugs]);
+  const seaLeaving = useMemo(() => seaThisMonth.filter(c => !isAvailableNextMonth(c, hemisphere, currentMonth)).sort((a, b) => {
+    const aCaught = !!caughtSea[a.id] ? 1 : 0;
+    const bCaught = !!caughtSea[b.id] ? 1 : 0;
+    if (aCaught !== bCaught) return aCaught - bCaught;
+    return b.sellPrice - a.sellPrice;
+  }), [seaThisMonth, hemisphere, currentMonth, caughtSea]);
 
   // Coming next month: available next month but NOT this month
   const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
@@ -376,11 +425,23 @@ export default function Dashboard() {
   const totalLeaving = fishLeaving.length + bugsLeaving.length + seaLeaving.length;
   const totalComing = fishComing.length + bugsComing.length + seaComing.length;
 
+  // Caught/uncaught counts for leaving critters
+  const uncaughtFishLeaving = useMemo(() => fishLeaving.filter(c => !caughtFish[c.id]), [fishLeaving, caughtFish]);
+  const uncaughtBugsLeaving = useMemo(() => bugsLeaving.filter(c => !caughtBugs[c.id]), [bugsLeaving, caughtBugs]);
+  const uncaughtSeaLeaving = useMemo(() => seaLeaving.filter(c => !caughtSea[c.id]), [seaLeaving, caughtSea]);
+  const totalUncaughtLeaving = uncaughtFishLeaving.length + uncaughtBugsLeaving.length + uncaughtSeaLeaving.length;
+
+  // Filtered leaving lists (when hideCaught is on)
+  const displayFishLeaving = hideCaught ? uncaughtFishLeaving : fishLeaving;
+  const displayBugsLeaving = hideCaught ? uncaughtBugsLeaving : bugsLeaving;
+  const displaySeaLeaving = hideCaught ? uncaughtSeaLeaving : seaLeaving;
+
   const renderCritterCard = (critter, type, badge) => {
     const isNow = isAvailableAtHour(critter, currentHour);
     const cardKey = `${type}-${critter.id}`;
     const isHovered = hoveredCard === cardKey;
     const category = type === 'fish' ? 'fish' : type === 'bug' ? 'bugs' : 'sea-creatures';
+    const caught = isCritterCaught(critter, type);
 
     return (
       <div
@@ -389,9 +450,9 @@ export default function Dashboard() {
         onMouseLeave={() => setHoveredCard(null)}
         style={{
           ...styles.critterCard,
-          borderColor: isHovered ? 'rgba(94,200,80,0.3)' : 'rgba(94,200,80,0.1)',
-          background: isHovered ? 'rgba(94,200,80,0.08)' : 'rgba(12,28,14,0.95)',
-          opacity: badge ? 1 : (isNow ? 1 : 0.6),
+          borderColor: isHovered ? 'rgba(94,200,80,0.3)' : (badge === 'leaving' && !caught ? 'rgba(255,100,100,0.2)' : 'rgba(94,200,80,0.1)'),
+          background: isHovered ? 'rgba(94,200,80,0.08)' : (caught && badge === 'leaving' ? 'rgba(94,200,80,0.03)' : 'rgba(12,28,14,0.95)'),
+          opacity: badge ? (caught && badge === 'leaving' ? 0.55 : 1) : (isNow ? 1 : 0.6),
         }}
       >
         <div style={styles.critterLeft}>
@@ -399,14 +460,14 @@ export default function Dashboard() {
             <div style={styles.greenDot} title="Available right now" />
           )}
           {badge === 'leaving' && (
-            <span style={styles.leavingBadge}>Leaving!</span>
+            <span style={caught ? styles.caughtBadge : styles.leavingBadge}>{caught ? '✓ Caught' : 'Leaving!'}</span>
           )}
           {badge === 'coming' && (
             <span style={styles.comingBadge}>NEW</span>
           )}
           <AssetImg category={category} name={critter.name} size={32} />
           <div style={styles.critterInfo}>
-            <span style={styles.critterName}>{critter.name}</span>
+            <span style={{ ...styles.critterName, ...(caught && badge === 'leaving' ? { textDecoration: 'line-through', color: '#5a7a50' } : {}) }}>{critter.name}</span>
             <span style={styles.critterLocation}>{critter.location || 'Diving'}</span>
           </div>
         </div>
@@ -592,17 +653,41 @@ export default function Dashboard() {
           <div>
             <p style={styles.tabDescription}>
               These critters are available now but will NOT be available next month. You have <strong style={{ color: '#ff6464' }}>{daysLeft} days</strong> left to catch them!
+              {totalLeaving > 0 && totalUncaughtLeaving < totalLeaving && (
+                <span> — <strong style={{ color: '#d4b030' }}>{totalUncaughtLeaving}</strong> still needed, <strong style={{ color: '#5ec850' }}>{totalLeaving - totalUncaughtLeaving}</strong> already caught.</span>
+              )}
             </p>
+            {totalLeaving > 0 && (
+              <div style={styles.filterRow}>
+                <button
+                  onClick={() => setHideCaught(!hideCaught)}
+                  style={{
+                    ...styles.filterButton,
+                    background: hideCaught ? 'rgba(94,200,80,0.2)' : 'transparent',
+                    color: hideCaught ? '#5ec850' : '#5a7a50',
+                    border: hideCaught ? '1px solid rgba(94,200,80,0.3)' : '1px solid rgba(94,200,80,0.15)',
+                  }}
+                >
+                  {hideCaught ? '✓ ' : ''}Hide caught
+                </button>
+              </div>
+            )}
             {totalLeaving === 0 ? (
               <div style={styles.emptyState}>
                 <span style={{ fontSize: 48 }}>🎉</span>
                 <p style={{ color: '#5a7a50', marginTop: 12 }}>No critters are leaving after this month!</p>
               </div>
+            ) : hideCaught && totalUncaughtLeaving === 0 ? (
+              <div style={styles.emptyState}>
+                <span style={{ fontSize: 48 }}>🎉</span>
+                <p style={{ color: '#5ec850', marginTop: 12, fontWeight: 700 }}>You have caught all leaving critters!</p>
+                <p style={{ color: '#5a7a50', marginTop: 4, fontSize: 13 }}>All {totalLeaving} critters leaving this month are in your collection.</p>
+              </div>
             ) : (
               <>
-                {renderSection('Fish Leaving', '🐟', fishLeaving, 'fish', 'leaving')}
-                {renderSection('Bugs Leaving', '🦋', bugsLeaving, 'bug', 'leaving')}
-                {renderSection('Sea Creatures Leaving', '🐙', seaLeaving, 'sea', 'leaving')}
+                {renderSection('Fish Leaving', '🐟', displayFishLeaving, 'fish', 'leaving')}
+                {renderSection('Bugs Leaving', '🦋', displayBugsLeaving, 'bug', 'leaving')}
+                {renderSection('Sea Creatures Leaving', '🐙', displaySeaLeaving, 'sea', 'leaving')}
               </>
             )}
           </div>
@@ -921,6 +1006,31 @@ const styles = {
     borderRadius: 4,
     fontFamily: "'DM Mono', monospace",
     flexShrink: 0,
+  },
+  caughtBadge: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: '#5a7a50',
+    background: 'rgba(94,200,80,0.08)',
+    padding: '2px 6px',
+    borderRadius: 4,
+    fontFamily: "'DM Mono', monospace",
+    flexShrink: 0,
+  },
+  filterRow: {
+    display: 'flex',
+    gap: 8,
+    marginBottom: 16,
+  },
+  filterButton: {
+    padding: '6px 14px',
+    borderRadius: 6,
+    cursor: 'pointer',
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: 13,
+    fontWeight: 600,
+    outline: 'none',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease',
   },
   emptyState: {
     display: 'flex',
