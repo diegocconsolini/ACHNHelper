@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { SettingsProvider } from './SettingsContext';
 import ConfirmModal from './ConfirmModal';
 
+const Dashboard = lazy(() => import('./artifacts/Dashboard.jsx'));
 const FishTracker = lazy(() => import('./artifacts/FishTracker.jsx'));
 const BugTracker = lazy(() => import('./artifacts/BugTracker.jsx'));
 const SeaCreatureTracker = lazy(() => import('./artifacts/SeaCreatureTracker.jsx'));
@@ -31,6 +32,12 @@ const CommunityHub = lazy(() => import('./artifacts/CommunityHub.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
+  {
+    category: '📊 Dashboard',
+    items: [
+      { id: 'dashboard', label: 'Available Now', emoji: '🕐', component: 'Dashboard' },
+    ],
+  },
   {
     category: '🐟 Critterpedia',
     items: [
@@ -93,6 +100,7 @@ const MENU = [
 ];
 
 const COMPONENTS = {
+  Dashboard,
   FishTracker,
   BugTracker,
   SeaCreatureTracker,
@@ -203,7 +211,7 @@ class ErrorBoundary extends React.Component {
 }
 
 function App() {
-  const [activeId, setActiveId] = useState('fish');
+  const [activeId, setActiveId] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
   const [syncStatus, setSyncStatus] = useState(null);
@@ -376,7 +384,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 24 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 25 tools
           </span>
         </div>
       </div>
