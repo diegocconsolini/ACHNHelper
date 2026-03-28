@@ -31,8 +31,18 @@ export async function DELETE() {
   const supabase = createServerClient();
 
   // Delete all user data
-  await supabase.from('artifact_data').delete().eq('user_id', session.user.id);
-  await supabase.from('profiles').delete().eq('user_id', session.user.id);
+  const uid = session.user.id;
+
+  // Child/junction tables first
+  await supabase.from('reports').delete().eq('reporter_user_id', uid);
+  await supabase.from('reports').delete().eq('reported_user_id', uid);
+  await supabase.from('blocked_users').delete().eq('user_id', uid);
+  await supabase.from('blocked_users').delete().eq('blocked_user_id', uid);
+  await supabase.from('favorites').delete().eq('user_id', uid);
+  await supabase.from('favorites').delete().eq('favorited_user_id', uid);
+  await supabase.from('shared_profiles').delete().eq('user_id', uid);
+  await supabase.from('artifact_data').delete().eq('user_id', uid);
+  await supabase.from('profiles').delete().eq('user_id', uid);
 
   return new Response(null, { status: 204 });
 }

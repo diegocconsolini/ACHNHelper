@@ -42,7 +42,9 @@ export async function GET() {
 
   // Shape response — only include published profiles
   const profiles = (data || [])
-    .filter(row => row.shared_profiles?.user_id)
+    .filter(row => row.shared_profiles?.user_id
+      && row.shared_profiles?.is_published !== false
+      && !row.shared_profiles?.profiles?.is_banned)
     .map(row => {
       const sp = row.shared_profiles;
       const profile = sp.profiles;

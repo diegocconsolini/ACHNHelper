@@ -23,6 +23,31 @@ function isPoster(name) {
   return /poster$/i.test(name);
 }
 
+const ProgressRing = ({ value, total, size = 80, color = '#5ec850', label }) => {
+  const radius = (size - 8) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const pct = total > 0 ? value / total : 0;
+  const offset = circumference * (1 - pct);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(94,200,80,0.1)" strokeWidth={4} />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={4}
+          strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset 0.6s ease' }} />
+        <text x={size / 2} y={size / 2} textAnchor="middle" dominantBaseline="central"
+          fill="#c8e6c0" fontSize={size > 60 ? 14 : 11} fontFamily="'DM Mono', monospace" fontWeight={500}
+          style={{ transform: 'rotate(90deg)', transformOrigin: 'center' }}>
+          {Math.round(pct * 100)}%
+        </text>
+      </svg>
+      <span style={{ fontSize: 11, color: '#5a7a50', fontFamily: "'DM Mono', monospace" }}>
+        {value}/{total} {label}
+      </span>
+    </div>
+  );
+};
+
 const PhotoPosterTracker = () => {
   const [items, setItems] = useState([]);
   const [collected, setCollected] = useState([]);
@@ -140,32 +165,6 @@ const PhotoPosterTracker = () => {
   const collectedPhotos = collected.filter(n => isPhoto(n)).length;
   const collectedPosters = collected.filter(n => isPoster(n)).length;
   const totalCollected = collected.length;
-
-  // Progress ring
-  const ProgressRing = ({ value, total, size = 80, color = '#5ec850', label }) => {
-    const radius = (size - 8) / 2;
-    const circumference = 2 * Math.PI * radius;
-    const pct = total > 0 ? value / total : 0;
-    const offset = circumference * (1 - pct);
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-        <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-          <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(94,200,80,0.1)" strokeWidth={4} />
-          <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={4}
-            strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round"
-            style={{ transition: 'stroke-dashoffset 0.6s ease' }} />
-          <text x={size / 2} y={size / 2} textAnchor="middle" dominantBaseline="central"
-            fill="#c8e6c0" fontSize={size > 60 ? 14 : 11} fontFamily="'DM Mono', monospace" fontWeight={500}
-            style={{ transform: 'rotate(90deg)', transformOrigin: 'center' }}>
-            {Math.round(pct * 100)}%
-          </text>
-        </svg>
-        <span style={{ fontSize: 11, color: '#5a7a50', fontFamily: "'DM Mono', monospace" }}>
-          {value}/{total} {label}
-        </span>
-      </div>
-    );
-  };
 
   if (loading) {
     return (

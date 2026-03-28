@@ -6,6 +6,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: '/api/auth/signin',
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 7 * 24 * 60 * 60, // 7 days
+  },
   callbacks: {
     async session({ session, token }) {
       if (token?.sub) {

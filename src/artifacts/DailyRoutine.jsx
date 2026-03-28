@@ -44,14 +44,15 @@ export default function DailyRoutine() {
             // Save completion status for yesterday
             if (storedDate && data.tasks) {
               const completed = data.tasks.filter(t => t.completed).length;
-              setWeeklyData(prev => ({
-                ...prev,
+              setWeeklyData({
+                ...(data.weeklyData || {}),
                 [storedDate]: completed === data.tasks.length ? 'full' : completed > 0 ? 'partial' : 'missed'
-              }));
+              });
             }
             // Reset tasks for new day
             setTasks(defaultTasks.map(t => ({ ...t, completed: false, custom: false })));
             setNotes('');
+            setStreak(data.streak || 0);
             setLastCompletedDate(storedDate);
           } else {
             // Same day, load existing state
@@ -71,6 +72,12 @@ export default function DailyRoutine() {
     };
     loadData();
   }, []);
+
+  const getYesterdayDate = () => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.toISOString().split('T')[0];
+  };
 
   // Save data to storage
   useEffect(() => {
@@ -111,7 +118,7 @@ export default function DailyRoutine() {
     if (tasks.length > 0) {
       saveData();
     }
-  }, [tasks, notes, today]);
+  }, [tasks, notes, today, streak, lastCompletedDate, weeklyData]);
 
   const toggleTask = (id) => {
     setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
@@ -137,12 +144,6 @@ export default function DailyRoutine() {
 
   const completedCount = tasks.filter(t => t.completed).length;
   const progressPercent = tasks.length > 0 ? (completedCount / tasks.length) * 100 : 0;
-
-  const getYesterdayDate = () => {
-    const d = new Date();
-    d.setDate(d.getDate() - 1);
-    return d.toISOString().split('T')[0];
-  };
 
   const getWeekDates = () => {
     const dates = [];

@@ -41,8 +41,10 @@ const GoldenToolTracker = () => {
   };
 
   const updateTool = (toolKey, field, value) => {
-    const newData = { ...toolsData };
-    newData[toolKey][field] = value;
+    const newData = {
+      ...toolsData,
+      [toolKey]: { ...toolsData[toolKey], [field]: value },
+    };
     saveData(newData);
   };
 

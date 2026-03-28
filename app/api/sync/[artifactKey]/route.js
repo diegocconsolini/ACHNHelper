@@ -49,6 +49,11 @@ export async function PUT(req, { params }) {
     return Response.json({ error: 'Invalid artifact key' }, { status: 400 });
   }
 
+  const contentLength = parseInt(req.headers.get('content-length') || '0', 10);
+  if (contentLength > 512 * 1024) {
+    return Response.json({ error: 'Payload too large' }, { status: 413 });
+  }
+
   const body = await req.json();
   if (!body.data) {
     return Response.json({ error: 'Missing data field' }, { status: 400 });
@@ -61,7 +66,7 @@ export async function PUT(req, { params }) {
       user_id: session.user.id,
       artifact_key: artifactKey,
       data: body.data,
-      updated_at: body.updatedAt || new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }, { onConflict: 'user_id,artifact_key' })
     .select()
     .single();

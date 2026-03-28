@@ -190,14 +190,16 @@ export default function MaterialCalculator() {
       setExpandedNodes({ [name]: true });
 
       // Update recent searches
-      const updated = [name, ...recentSearches.filter(s => s.toLowerCase() !== name.toLowerCase())].slice(0, 10);
-      setRecentSearches(updated);
-      saveRecentSearches(updated);
+      setRecentSearches(prev => {
+        const updated = [name, ...prev.filter(s => s.toLowerCase() !== name.toLowerCase())].slice(0, 10);
+        saveRecentSearches(updated);
+        return updated;
+      });
     } catch (e) {
       setError('Failed to fetch recipe data. Please try again.');
     }
     setLoading(false);
-  }, [query, quantity, buildTree, flattenTree, recentSearches, saveRecentSearches]);
+  }, [query, quantity, buildTree, flattenTree, saveRecentSearches]);
 
   const toggleNode = (name) => {
     setExpandedNodes(prev => ({ ...prev, [name]: !prev[name] }));

@@ -283,6 +283,7 @@ function predictPeak(patterns, prices, buyPrice) {
 
 // SVG Price Graph component
 const PriceGraph = ({ prices, buyPrice }) => {
+  const [hoveredPoint, setHoveredPoint] = useState(null);
   const buy = parseFloat(buyPrice) || 0;
   const svgWidth = 640;
   const svgHeight = 280;
@@ -385,8 +386,6 @@ const PriceGraph = ({ prices, buyPrice }) => {
   for (let v = startTick; v <= maxPrice; v += step) {
     if (v >= minPrice) yTicks.push(v);
   }
-
-  const [hoveredPoint, setHoveredPoint] = useState(null);
 
   return (
     <div style={{ marginBottom: 30 }}>

@@ -80,8 +80,9 @@ export async function GET(req) {
       ...(blockedMe || []).map(b => b.user_id),
     ];
 
-    if (blockedUserIds.length > 0) {
-      query = query.not('user_id', 'in', `(${blockedUserIds.join(',')})`);
+    const safeIds = blockedUserIds.filter(id => /^[0-9a-f-]{36}$/i.test(id));
+    if (safeIds.length > 0) {
+      query = query.not('user_id', 'in', `(${safeIds.join(',')})`);
     }
   }
 

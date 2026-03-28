@@ -8,6 +8,7 @@ import { DIY_CATEGORIES, SOURCES, SEASONAL_SECTIONS, STORAGE_KEY, TOTAL_RECIPES 
 const DIYRecipeTracker = () => {
   const [activeTab, setActiveTab] = useState('category');
   const [learnedRecipes, setLearnedRecipes] = useState(new Set());
+  const [loaded, setLoaded] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState(new Set());
   const [searchTerm, setSearchTerm] = useState('');
   const [hemisphere, setHemisphere] = useState('northern');
@@ -36,12 +37,14 @@ const DIYRecipeTracker = () => {
       } catch (err) {
         console.error('Failed to load DIY tracker data:', err);
       }
+      setLoaded(true);
     };
     loadData();
   }, []);
 
   // Persist whenever learnedRecipes changes
   useEffect(() => {
+    if (!loaded) return;
     (async () => {
       try {
         await window.storage.set(
@@ -52,7 +55,7 @@ const DIYRecipeTracker = () => {
         console.error('Error saving recipes:', e);
       }
     })();
-  }, [learnedRecipes]);
+  }, [learnedRecipes, loaded]);
 
   const toggleRecipeLearned = (recipe) => {
     setLearnedRecipes(prev => {

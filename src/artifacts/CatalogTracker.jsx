@@ -74,8 +74,8 @@ const CatalogTracker = () => {
   }, []);
 
   // Fetch items for subcategory
-  const fetchSubcategory = useCallback(async (tab, subcat) => {
-    const cacheKey = `${tab}:${subcat}`;
+  const fetchSubcategory = useCallback(async (tab, subcat, color = '') => {
+    const cacheKey = `${tab}:${subcat}:${color}`;
     if (cacheRef.current[cacheKey]) {
       setItems(cacheRef.current[cacheKey]);
       setItemCount(cacheRef.current[cacheKey].length);
@@ -90,7 +90,8 @@ const CatalogTracker = () => {
 
     try {
       const endpoint = TABS.find(t => t.id === tab).endpoint;
-      const url = `/api/nookipedia/nh/${endpoint}?category=${encodeURIComponent(subcat)}&excludedetails=true`;
+      let url = `/api/nookipedia/nh/${endpoint}?category=${encodeURIComponent(subcat)}&excludedetails=true`;
+      if (color) url += `&color=${encodeURIComponent(color)}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`API error: ${res.status}`);
       const data = await res.json();
@@ -104,8 +105,10 @@ const CatalogTracker = () => {
       setItems(names);
       setItemCount(names.length);
 
-      // Store total for progress tracking
-      setSubcatTotals(prev => ({ ...prev, [cacheKey]: names.length }));
+      // Store total for progress tracking (only for unfiltered results)
+      if (!color) {
+        setSubcatTotals(prev => ({ ...prev, [`${tab}:${subcat}`]: names.length }));
+      }
     } catch (e) {
       setError(e.message || 'Failed to load items');
       setItems([]);
@@ -114,21 +117,21 @@ const CatalogTracker = () => {
     }
   }, []);
 
-  // Fetch when tab or subcategory changes
+  // Fetch when tab, subcategory, or color filter changes
   useEffect(() => {
     setDisplayCount(PAGE_SIZE);
-    setSearchTerm('');
-    setColorFilter('');
     setFadeIn(false);
-    fetchSubcategory(activeTab, activeSubcat);
+    fetchSubcategory(activeTab, activeSubcat, colorFilter);
     requestAnimationFrame(() => setFadeIn(true));
-  }, [activeTab, activeSubcat, fetchSubcategory]);
+  }, [activeTab, activeSubcat, colorFilter, fetchSubcategory]);
 
   // Handle tab change
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     setActiveSubcat(SUBCATEGORIES[tabId][0]);
     setDetailItem(null);
+    setColorFilter('');
+    setSearchTerm('');
   };
 
   // Filter items
@@ -256,7 +259,7 @@ const CatalogTracker = () => {
             return (
               <button
                 key={subcat}
-                onClick={() => { setActiveSubcat(subcat); setDetailItem(null); }}
+                onClick={() => { setActiveSubcat(subcat); setDetailItem(null); setColorFilter(''); setSearchTerm(''); }}
                 onMouseEnter={() => setHoveredSubcat(subcat)}
                 onMouseLeave={() => setHoveredSubcat(null)}
                 style={{

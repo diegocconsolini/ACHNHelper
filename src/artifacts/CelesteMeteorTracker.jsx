@@ -146,8 +146,9 @@ const CelesteMeteorTracker = () => {
     const updated = [...meteorLog, entry];
     setMeteorLog(updated);
     setNewWishes('');
-    await saveData(zodiacData, celesteRecipes, updated, celesteVisits, fragments, wishes + count);
-    setWishes(wishes + count);
+    const newWishes = wishes + count;
+    setWishes(newWishes);
+    await saveData(zodiacData, celesteRecipes, updated, celesteVisits, fragments, newWishes);
   };
 
   const addCelesteVisit = async () => {

@@ -410,7 +410,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 30 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 32 tools
           </span>
         </div>
       </div>

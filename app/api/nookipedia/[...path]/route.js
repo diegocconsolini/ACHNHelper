@@ -5,6 +5,12 @@
 const API_BASE = 'https://api.nookipedia.com';
 const API_KEY = process.env.NOOKIPEDIA_API_KEY;
 
+const ALLOWED_PREFIXES = [
+  '/nh/fish', '/nh/bugs', '/nh/sea', '/nh/art', '/nh/recipes',
+  '/nh/furniture', '/nh/clothing', '/nh/interior', '/nh/gyroids',
+  '/nh/photos', '/nh/events', '/villagers',
+];
+
 // Simple in-memory cache (per serverless instance)
 const cache = new Map();
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
@@ -16,6 +22,11 @@ export async function GET(req, { params }) {
 
   const { path } = await params;
   const apiPath = '/' + path.join('/');
+
+  const isAllowed = ALLOWED_PREFIXES.some(p => apiPath === p || apiPath.startsWith(p + '/') || apiPath.startsWith(p + '?'));
+  if (!isAllowed) {
+    return Response.json({ error: 'Path not allowed' }, { status: 403 });
+  }
 
   // Pass through query params
   const url = new URL(req.url);

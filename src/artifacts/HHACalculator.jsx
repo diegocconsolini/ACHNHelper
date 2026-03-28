@@ -220,7 +220,7 @@ export default function HHACalculator() {
 
   // Fetch item details from API
   const fetchItemDetails = async (name) => {
-    if (itemCache[name]) return itemCache[name];
+    if (itemCache[name]) return { details: itemCache[name], updatedCache: itemCache };
 
     try {
       const res = await fetch(`/api/nookipedia/nh/furniture/${encodeURIComponent(name)}`);
@@ -237,26 +237,27 @@ export default function HHACalculator() {
           imageUrl: data.image_url || null,
           colors: data.variations?.[0]?.colors || [],
         };
-        const newCache = { ...itemCache, [name]: details };
-        setItemCache(newCache);
-        return details;
+        const updatedCache = { ...itemCache, [name]: details };
+        setItemCache(updatedCache);
+        return { details, updatedCache };
       }
     } catch (e) {
       console.error('Failed to fetch item:', e);
     }
-    return { name, hhaBase: 0, hhaCategory: 'Unknown', sell: 0, category: 'Unknown', colors: [] };
+    const fallbackDetails = { name, hhaBase: 0, hhaCategory: 'Unknown', sell: 0, category: 'Unknown', colors: [] };
+    return { details: fallbackDetails, updatedCache: itemCache };
   };
 
   // Add item
   const addItem = async (name) => {
     setIsSearching(true);
-    const details = await fetchItemDetails(name);
+    const { details, updatedCache } = await fetchItemDetails(name);
     const newItems = [...items, { ...details, id: Date.now() + Math.random() }];
     setItems(newItems);
     setSearchQuery('');
     setSearchResults([]);
     setIsSearching(false);
-    saveData(newItems, expansionLevel, bonuses, essentials, { ...itemCache, [name]: details });
+    saveData(newItems, expansionLevel, bonuses, essentials, updatedCache);
   };
 
   // Remove item

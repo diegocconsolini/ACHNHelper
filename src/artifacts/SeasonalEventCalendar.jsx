@@ -77,6 +77,7 @@ const SeasonalEventCalendar = () => {
   const [expandedMonth, setExpandedMonth] = useState(null);
   const [completedEvents, setCompletedEvents] = useState({});
   const [npcVisitLog, setNpcVisitLog] = useState({});
+  const [npcLogDate, setNpcLogDate] = useState(new Date().toISOString().split('T')[0]);
   const currentDate = new Date();
 
   // Load persisted data
@@ -453,7 +454,8 @@ const SeasonalEventCalendar = () => {
               <input
                 type="date"
                 style={{ ...styles.selectInput, marginLeft: '8px', width: '150px' }}
-                defaultValue={currentDate.toISOString().split('T')[0]}
+                value={npcLogDate}
+                onChange={(e) => setNpcLogDate(e.target.value)}
               />
             </label>
           </div>

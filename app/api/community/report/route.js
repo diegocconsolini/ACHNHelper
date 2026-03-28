@@ -37,6 +37,19 @@ export async function POST(req) {
 
   const supabase = createServerClient();
 
+  // Check for duplicate report from same reporter
+  const { data: existing } = await supabase
+    .from('reports')
+    .select('id')
+    .eq('reporter_user_id', session.user.id)
+    .eq('reported_user_id', reportedUserId)
+    .eq('status', 'pending')
+    .maybeSingle();
+
+  if (existing) {
+    return Response.json({ error: 'You have already reported this user' }, { status: 409 });
+  }
+
   const { data, error } = await supabase
     .from('reports')
     .insert({

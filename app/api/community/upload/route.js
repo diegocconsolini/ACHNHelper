@@ -59,8 +59,28 @@ export async function POST(req) {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
+
+  // Validate file magic bytes
+  const MAGIC_BYTES = {
+    'image/jpeg': (b) => b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF,
+    'image/png':  (b) =>
+      b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47 &&
+      b[4] === 0x0D && b[5] === 0x0A && b[6] === 0x1A && b[7] === 0x0A,
+    'image/webp': (b) =>
+      b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
+      b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50,
+  };
+
+  const magicCheck = MAGIC_BYTES[file.type];
+  if (!magicCheck || buffer.length < 12 || !magicCheck(buffer)) {
+    return Response.json(
+      { error: 'File content does not match declared type' },
+      { status: 400 }
+    );
+  }
+
   const ext = file.type.split('/')[1] === 'jpeg' ? 'jpg' : file.type.split('/')[1];
-  const fileName = `${session.user.id}/${Date.now()}.${ext}`;
+  const fileName = `${session.user.id}/${crypto.randomUUID()}.${ext}`;
 
   // Upload to Supabase Storage
   const { error: uploadError } = await supabase.storage

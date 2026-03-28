@@ -136,7 +136,8 @@ const CATEGORY_EMOJI = {
   "Communication": "💬",
   "Event": "🎉",
   "Cooking": "🍳",
-  "Customization": "🎨"
+  "Customization": "🎨",
+  "Resort Hotel": "🏨"
 };
 
 const CATEGORY_ASSET = {
@@ -156,7 +157,7 @@ function CategoryIcon({ cat, size = 20 }) {
 const CATEGORIES = [
   "All", "Fishing", "Bug Catching", "Diving", "Gardening", "Nature", "DIY",
   "Home", "Fashion", "Commerce", "Island Life", "Communication",
-  "Event", "Cooking", "Customization"
+  "Event", "Cooking", "Customization", "Resort Hotel"
 ];
 
 const CATEGORY_COLORS = {
