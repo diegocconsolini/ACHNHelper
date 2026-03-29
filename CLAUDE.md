@@ -31,6 +31,7 @@ acnh-portal/
 │   ├── storage-polyfill.js     ← Maps window.storage → localStorage (SSR-guarded)
 │   ├── assetHelper.jsx         ← Shared <AssetImg> component and useAssets() hook
 │   ├── SettingsContext.jsx     ← Modal theme settings provider (per-user via database)
+│   ├── SyncManager.jsx         ← Cloud sync manager (auto-sync logged-in user data)
 │   ├── ConfirmModal.jsx        ← ACNH-themed confirm dialog (3 themes)
 │   ├── AlertModal.jsx          ← ACNH-themed alert dialog
 │   ├── modalThemes.js          ← 3 modal theme definitions
