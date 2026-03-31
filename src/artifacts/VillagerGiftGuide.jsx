@@ -124,7 +124,7 @@ const VillagerGiftGuide = () => {
           setDreamieWishlist(data.dreamies || '');
         }
       } catch (e) {
-        console.log('First time setup');
+        console.log('First time setup', e.message);
       }
     };
     loadData();
