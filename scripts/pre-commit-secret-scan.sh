@@ -37,7 +37,7 @@ declare -a PATTERNS=(
   'sb_secret_[A-Za-z0-9]{20,}|Supabase secret key'
   'sk-ant-[A-Za-z0-9_-]{30,}|Anthropic API key'
   'sk-proj-[A-Za-z0-9_-]{30,}|OpenAI project key'
-  '-----BEGIN (RSA |EC |DSA |OPENSSH |PGP )?PRIVATE KEY-----|PEM private key'
+  '-----BEGIN [A-Z ]*PRIVATE KEY-----|PEM private key'
 )
 
 # 1. Blocked-path check on staged file list.
