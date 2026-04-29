@@ -43,7 +43,7 @@ declare -a PATTERNS=(
 # 1. Blocked-path check on staged file list.
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
 if [ -n "$staged" ]; then
-  bad_paths=$(printf '%s\n' "$staged" | grep -E "$BLOCKED_PATHS_REGEX" || true)
+  bad_paths=$(printf '%s\n' "$staged" | grep -E -- "$BLOCKED_PATHS_REGEX" || true)
   if [ -n "$bad_paths" ]; then
     echo "ERROR: refusing to commit forbidden path(s):" >&2
     printf '  %s\n' $bad_paths >&2
@@ -62,7 +62,7 @@ found=0
 for entry in "${PATTERNS[@]}"; do
   pattern="${entry%%|*}"
   label="${entry##*|}"
-  matches=$(printf '%s\n' "$diff_added" | grep -E "$pattern" || true)
+  matches=$(printf '%s\n' "$diff_added" | grep -E -- "$pattern" || true)
   if [ -n "$matches" ]; then
     if [ "$found" = "0" ]; then
       echo "ERROR: staged diff contains likely secret(s):" >&2
