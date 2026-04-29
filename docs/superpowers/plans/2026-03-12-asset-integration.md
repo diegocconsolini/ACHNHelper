@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
 - [ ] **Step 2: Run the optimize script**
 
-Run: `cd /Users/diegocavalariconsolini/ClaudeCode/ACNH/acnh-portal && python3 scripts/optimize-assets.py`
+Run from the repo root: `python3 scripts/optimize-assets.py`
 Expected: Converts ~21k PNGs to optimized WebP in `public/assets-web/`, significantly smaller than 885MB originals.
 
 - [ ] **Step 3: Add assets-web to .gitignore**

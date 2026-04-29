@@ -36,3 +36,7 @@ supabase/.temp/
 
 # Superpowers brainstorm sessions
 .superpowers/
+
+# Personal tooling configs
+.claude/
+.serena/
