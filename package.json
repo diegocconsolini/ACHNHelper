@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "node -e \"const fs=require('fs'),p=require('path');const hooks=p.join('.git','hooks');if(!fs.existsSync(hooks))process.exit(0);const dst=p.join(hooks,'pre-commit');try{fs.unlinkSync(dst)}catch{}fs.symlinkSync(p.join('..','..','scripts','pre-commit-secret-scan.sh'),dst);console.log('pre-commit hook installed')\""
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",
