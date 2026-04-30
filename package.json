@@ -26,6 +26,6 @@
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^16.5.0",
-    "vercel": "^50.32.2"
+    "typescript": "6.0.3"
   }
 }
