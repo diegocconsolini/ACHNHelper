@@ -32658,6 +32658,26 @@
       "villagers/Zucker/House Image.webp",
       "villagers/Zucker/Icon Image.webp",
       "villagers/Zucker/Photo Image.webp"
+    ],
+    "Mineru": [
+      "villagers/Mineru/House Image.webp",
+      "villagers/Mineru/Icon Image.webp",
+      "villagers/Mineru/Photo Image.webp"
+    ],
+    "Tulin": [
+      "villagers/Tulin/House Image.webp",
+      "villagers/Tulin/Icon Image.webp",
+      "villagers/Tulin/Photo Image.webp"
+    ],
+    "Cece": [
+      "villagers/Cece/House Image.webp",
+      "villagers/Cece/Icon Image.webp",
+      "villagers/Cece/Photo Image.webp"
+    ],
+    "Viché": [
+      "villagers/Viché/House Image.webp",
+      "villagers/Viché/Icon Image.webp",
+      "villagers/Viché/Photo Image.webp"
     ]
   },
   "wall-mounted": {
