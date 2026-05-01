@@ -22,6 +22,7 @@ const monthlyEvents = {
     { name: 'Bunny Day (Easter)', emoji: '🐰', dateRange: 'Easter Sunday', type: 'festival' },
     { name: 'Fishing Tourney', emoji: '🎣', dateRange: '2nd Saturday', type: 'tournament' },
     { name: 'Nature Day', emoji: '🌍', dateRange: 'Apr 15-22', type: 'celebration' },
+    { name: '25th Anniversary', emoji: '🍃', dateRange: 'Apr 13 (3.0.2)', type: 'anniversary', notes: 'Leaf statue gift from Nintendo + Animal Crossing card usable at airport. Statue purchasable from Nook Shopping (25,414 Bells) since 3.0.3.' },
   ],
   may: [
     { name: 'May Day Event', emoji: '🌸', dateRange: 'Apr 29 - May 7', type: 'festival' },
