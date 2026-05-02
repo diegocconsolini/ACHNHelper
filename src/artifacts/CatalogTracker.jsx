@@ -22,11 +22,59 @@ const API_COLORS = [
 const PAGE_SIZE = 50;
 const STORAGE_KEY = 'acnh-catalog-tracker';
 
+// 3.0 series additions to the Nookipedia furniture catalog (item_series field).
+// "Zen Modern" was renamed to "Artful" in game v3.0.2 — see RENAME_MAP below.
+const FURNITURE_SERIES_3_0 = [
+  'Artful', 'Kids', 'LEGO®', 'Marble', 'Splatoon', 'The Legend of Zelda', 'Tubular',
+];
+// Other long-standing series worth filtering by (curated subset).
+const FURNITURE_SERIES_OTHER = [
+  'Antique', 'Bamboo', 'Cardboard', 'Cute', 'Diner', 'Frozen', 'Golden',
+  'Imperial', 'Iron', 'Ironwood', 'Log', 'Mario', 'Mermaid', 'Moroccan',
+  'Pirate', 'Rattan', 'Shell', 'Spooky', 'Wooden',
+];
+const FURNITURE_SERIES = [...FURNITURE_SERIES_3_0, ...FURNITURE_SERIES_OTHER].sort();
+
+// One-time storage migration: items saved under "Zen Modern" need to be remapped
+// to "Artful" since the upstream rename in 3.0.2. Idempotent.
+const SERIES_RENAME_MAP = { 'Zen Modern': 'Artful' };
+const STORAGE_MIGRATION_VERSION = 2;
+
+function migrateCatalogStorage(stored) {
+  if (!stored || typeof stored !== 'object') return { data: stored, changed: false };
+  if (stored.__migration === STORAGE_MIGRATION_VERSION) return { data: stored, changed: false };
+  let changed = false;
+  const remap = (arr) => {
+    if (!Array.isArray(arr)) return arr;
+    return arr.map(name => {
+      if (typeof name !== 'string') return name;
+      // Older versions may have stored series-tagged compound keys. Plain item
+      // names are not affected. We only remap any literal "Zen Modern" tag/name.
+      for (const [from, to] of Object.entries(SERIES_RENAME_MAP)) {
+        if (name === from || name.includes(`[${from}]`)) {
+          changed = true;
+          return name === from ? to : name.replaceAll(`[${from}]`, `[${to}]`);
+        }
+      }
+      return name;
+    });
+  };
+  const next = {
+    furniture: remap(stored.furniture || []),
+    clothing: remap(stored.clothing || []),
+    interior: remap(stored.interior || []),
+    __migration: STORAGE_MIGRATION_VERSION,
+  };
+  return { data: next, changed: changed || !stored.__migration };
+}
+
 const CatalogTracker = () => {
   const [activeTab, setActiveTab] = useState('furniture');
   const [activeSubcat, setActiveSubcat] = useState('Housewares');
   const [searchTerm, setSearchTerm] = useState('');
   const [colorFilter, setColorFilter] = useState('');
+  const [seriesFilter, setSeriesFilter] = useState('');
+  const [seriesIndex, setSeriesIndex] = useState(null); // { 'Artful': Set('artful bed', ...) }
   const [items, setItems] = useState([]);
   const [itemCount, setItemCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -46,14 +94,18 @@ const CatalogTracker = () => {
   const [message, setMessage] = useState('');
   const cacheRef = useRef({});
 
-  // Load cataloged data from storage
+  // Load cataloged data from storage (with one-time Zen Modern → Artful migration)
   useEffect(() => {
     (async () => {
       try {
         const result = await window.storage.get(STORAGE_KEY);
         if (result) {
-          const data = JSON.parse(result.value);
+          const raw = JSON.parse(result.value);
+          const { data, changed } = migrateCatalogStorage(raw);
           setCataloged(data);
+          if (changed) {
+            try { await window.storage.set(STORAGE_KEY, JSON.stringify(data)); } catch (e) { /* ignore */ }
+          }
         }
       } catch (e) {
         // Keep defaults
@@ -117,6 +169,35 @@ const CatalogTracker = () => {
     }
   }, []);
 
+  // Lazily build a name → series index from the full furniture list so the
+  // series filter doesn't require N detail fetches. Only triggered on demand.
+  const buildSeriesIndex = useCallback(async () => {
+    if (seriesIndex) return seriesIndex;
+    try {
+      const res = await fetch('/api/nookipedia/nh/furniture');
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      const all = await res.json();
+      const byName = new Map();
+      for (const item of all) {
+        if (item && item.name && item.item_series) {
+          byName.set(item.name.toLowerCase(), item.item_series);
+        }
+      }
+      setSeriesIndex(byName);
+      return byName;
+    } catch (e) {
+      // Series filter unavailable — leave seriesIndex null so UI can show error.
+      return null;
+    }
+  }, [seriesIndex]);
+
+  // Build the index when the user picks a series for the first time.
+  useEffect(() => {
+    if (seriesFilter && !seriesIndex && activeTab === 'furniture') {
+      buildSeriesIndex();
+    }
+  }, [seriesFilter, seriesIndex, activeTab, buildSeriesIndex]);
+
   // Fetch when tab, subcategory, or color filter changes
   useEffect(() => {
     setDisplayCount(PAGE_SIZE);
@@ -132,11 +213,16 @@ const CatalogTracker = () => {
     setDetailItem(null);
     setColorFilter('');
     setSearchTerm('');
+    setSeriesFilter('');
   };
 
-  // Filter items
+  // Filter items (search + series; series only meaningful on the furniture tab)
   const filteredItems = items.filter(name => {
     if (searchTerm && !name.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    if (seriesFilter && activeTab === 'furniture') {
+      if (!seriesIndex) return false; // index still loading; show nothing rather than wrong list
+      if (seriesIndex.get(name.toLowerCase()) !== seriesFilter) return false;
+    }
     return true;
   });
 
@@ -317,7 +403,39 @@ const CatalogTracker = () => {
               ))}
             </select>
           </div>
+
+          {activeTab === 'furniture' && (
+            <div style={styles.colorFilterWrap}>
+              <select
+                value={seriesFilter}
+                onChange={e => { setSeriesFilter(e.target.value); setDisplayCount(PAGE_SIZE); }}
+                style={{
+                  ...styles.colorSelect,
+                  borderColor: seriesFilter ? '#d4b030' : 'rgba(94,200,80,0.1)',
+                  color: seriesFilter ? '#d4b030' : '#c8e6c0',
+                }}
+                title="Filter by furniture series (3.0 series marked with ✦)"
+              >
+                <option value="">All Series</option>
+                {FURNITURE_SERIES.map(s => (
+                  <option key={s} value={s}>
+                    {FURNITURE_SERIES_3_0.includes(s) ? '✦ ' : ''}{s}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
+
+        {seriesFilter && activeTab === 'furniture' && !seriesIndex && (
+          <div style={{
+            margin: '8px 0', padding: '10px 14px', borderRadius: 6,
+            background: 'rgba(212,176,48,0.08)', border: '1px solid rgba(212,176,48,0.25)',
+            color: '#d4b030', fontFamily: "'DM Sans', sans-serif", fontSize: 13,
+          }}>
+            Loading series index — fetching the full furniture catalog once…
+          </div>
+        )}
 
         {/* Content area */}
         <div style={styles.contentArea}>
