@@ -36,6 +36,7 @@ const PhotoPosterTracker = lazy(() => import('./artifacts/PhotoPosterTracker.jsx
 const HHACalculator = lazy(() => import('./artifacts/HHACalculator.jsx'));
 const Wishlist = lazy(() => import('./artifacts/Wishlist.jsx'));
 const CatalogTracker = lazy(() => import('./artifacts/CatalogTracker.jsx'));
+const HotelTracker = lazy(() => import('./artifacts/HotelTracker.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -108,6 +109,7 @@ const MENU = [
       { id: 'label', label: 'Label Fashion', emoji: '👗', component: 'LabelFashionHelper' },
       { id: 'community', label: 'Community Hub', emoji: '🌐', component: 'CommunityHub' },
       { id: 'hha', label: 'HHA Calculator', emoji: '🏠', component: 'HHACalculator' },
+      { id: 'hotel', label: 'Hotel Tracker', emoji: '🏨', component: 'HotelTracker' },
     ],
   },
   {
@@ -150,6 +152,7 @@ const COMPONENTS = {
   HHACalculator,
   Wishlist,
   CatalogTracker,
+  HotelTracker,
   UserProfile,
 };
 
@@ -410,7 +413,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 32 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 33 tools
           </span>
         </div>
       </div>
