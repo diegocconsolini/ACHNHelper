@@ -9,7 +9,8 @@ const SYNC_KEYS = [
   'nooks-cranny-log', 'museum-tracker', 'golden-tool-tracker', 'nook-miles-tracker',
   'five-star-checker', 'daily-routine', 'villager-gift-guide', 'gulliver-tracker',
   'art-detector', 'kk-catalogue', 'seasonal-event-calendar', 'acnh-diy-tracker',
-  'celeste-meteor-tracker', 'dream-address-book', 'acnh-modal-theme'
+  'celeste-meteor-tracker', 'dream-address-book', 'acnh-modal-theme',
+  'hotel-tracker'
 ];
 const DEBOUNCE_MS = 5000;
 
