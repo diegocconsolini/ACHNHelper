@@ -61,19 +61,19 @@ export const DIY_CATEGORIES = {
     recipes: [
       'spooky arch', 'spooky candy set', 'spooky carriage', 'spooky chair',
       'spooky fence', 'spooky garland', 'spooky lantern', 'spooky lantern set',
-      'spooky scarecrow', 'spooky standing lamp', 'spooky table',
-      'spooky table setting', 'spooky tower', 'spooky wand'
+      'spooky scarecrow', 'spooky standing lamp', 'spooky table', 'spooky table setting',
+      'spooky tower', 'spooky treats basket', 'spooky tree', 'spooky trick lamp',
+      'spooky wand'
     ]
   },
 
-  // ── 5. Cherry Blossom (14) ──
+  // ── 5. Cherry Blossom (15) ──
   'Cherry Blossom': {
     emoji: '\u{1F338}',
     recipes: [
-      'blossom-viewing lantern', 'cherry-blossom bonsai', 'cherry-blossom branches',
-      'cherry-blossom clock', 'cherry-blossom flooring', 'cherry-blossom pochette',
-      'cherry-blossom pond stone', 'cherry-blossom umbrella', 'cherry-blossom wand',
-      'cherry-blossom-petal pile', 'cherry-blossom-trees wall',
+      'blossom-viewing lantern', 'cherry-blossom bonsai', 'cherry-blossom branches', 'cherry-blossom clock',
+      'cherry-blossom flooring', 'cherry-blossom pochette', 'cherry-blossom pond stone', 'cherry-blossom rug',
+      'cherry-blossom umbrella', 'cherry-blossom wand', 'cherry-blossom-petal pile', 'cherry-blossom-trees wall',
       'outdoor picnic set', 'sakura-wood flooring', 'sakura-wood wall'
     ]
   },
@@ -99,30 +99,30 @@ export const DIY_CATEGORIES = {
     ]
   },
 
-  // ── 8. Frozen & Snowflake (23) ──
+  // ── 8. Frozen & Snowflake (26) ──
   'Frozen & Snowflake': {
     emoji: '\u2744\uFE0F',
     recipes: [
       'falling-snow wall', 'frozen arch', 'frozen bed', 'frozen chair',
-      'frozen counter', 'frozen partition', 'frozen pillar', 'frozen sculpture',
-      'frozen table', 'frozen tree', 'frozen-treat set',
-      'ice flooring', 'ice wall', 'ice wand',
-      'iceberg flooring', 'iceberg wall',
-      'ski-slope flooring', 'ski-slope wall',
-      'snowflake pochette', 'snowflake wall', 'snowflake wreath',
+      'frozen counter', 'frozen fence', 'frozen floor tiles', 'frozen mini snowperson',
+      'frozen partition', 'frozen pillar', 'frozen sculpture', 'frozen table',
+      'frozen tree', 'frozen-treat set', 'ice flooring', 'ice wall',
+      'ice wand', 'iceberg flooring', 'iceberg wall', 'ski-slope flooring',
+      'ski-slope wall', 'snowflake pochette', 'snowflake wall', 'snowflake wreath',
       'snowperson head', 'three-tiered snowperson'
     ]
   },
 
-  // ── 9. Festive & Illuminated (16) ──
+  // ── 9. Festive & Illuminated (21) ──
   'Festive & Illuminated': {
     emoji: '\u{1F384}',
     recipes: [
-      'big festive tree', 'festive rug', 'festive top set',
-      'festive tree', 'festive wrapping paper', 'gift pile', 'holiday candle',
-      'illuminated present', 'illuminated reindeer', 'illuminated snowflakes',
-      'illuminated tree', 'Jingle wall', 'ornament mobile', 'ornament wreath',
-      'sleigh', 'tabletop festive tree'
+      'big festive tree', 'festive rug', 'festive top set', 'festive tree',
+      'festive wrapping paper', 'giant ornament', 'gift pile', 'holiday candle',
+      'illuminated present', 'illuminated reindeer', 'illuminated snowflakes', 'illuminated tree',
+      'Jingle wall', 'ornament crown', 'ornament garland', 'ornament mobile',
+      'ornament table lamp', 'ornament tree', 'ornament wreath', 'sleigh',
+      'tabletop festive tree'
     ]
   },
 
@@ -136,17 +136,18 @@ export const DIY_CATEGORIES = {
     ]
   },
 
-  // ── 11. Bamboo (24) ──
+  // ── 11. Bamboo (30) ──
   'Bamboo': {
     emoji: '\u{1F38B}',
     recipes: [
       'bamboo basket', 'bamboo bench', 'bamboo candleholder', 'bamboo doll',
       'bamboo drum', 'bamboo floor lamp', 'bamboo flooring', 'bamboo hat',
-      'bamboo lattice fence', 'bamboo lunch box', 'bamboo noodle slide',
-      'bamboo partition', 'bamboo shelf', 'bamboo speaker', 'bamboo sphere',
-      'bamboo stool', 'bamboo stopblock', 'bamboo wall', 'bamboo wall decoration',
-      'bamboo wand', 'bamboo-grove wall', 'bamboo-shoot lamp',
-      'dark bamboo rug', 'light bamboo rug'
+      'bamboo lattice fence', 'bamboo lunch box', 'bamboo noodle slide', 'bamboo partition',
+      'bamboo shelf', 'bamboo speaker', 'bamboo sphere', 'bamboo stool',
+      'bamboo stopblock', 'bamboo wall', 'bamboo wall decoration', 'bamboo wand',
+      'bamboo-grove wall', 'bamboo-shoot lamp', 'bamboo-slats fence', 'dark bamboo bath mat',
+      'dark bamboo rug', 'green bamboo fence', 'green bamboo mat', 'light bamboo bath mat',
+      'light bamboo rug', 'yellow bamboo mat'
     ]
   },
 
@@ -154,9 +155,9 @@ export const DIY_CATEGORIES = {
   'Shell': {
     emoji: '\u{1F41A}',
     recipes: [
-      'shell arch', 'shell bed', 'shell fountain', 'shell lamp', 'shell partition',
-      'shell rug', 'shell speaker', 'shell stool', 'shell table',
-      'shell wand', 'shell wreath'
+      'shell arch', 'shell bed', 'shell fountain', 'shell lamp',
+      'shell music box', 'shell partition', 'shell rug', 'shell speaker',
+      'shell stool', 'shell table', 'shell wand', 'shell wreath'
     ]
   },
 
@@ -236,10 +237,14 @@ export const DIY_CATEGORIES = {
     emoji: '\u2728',
     recipes: [
       'gold armor', 'gold bars', 'gold helmet', 'gold rose crown',
-      'gold rose wreath', 'gold-armor shoes', 'gold-screen wall',
-      'golden arowana model', 'golden candlestick', 'golden casket',
-      'golden dishes', 'golden dung beetle', 'golden flooring', 'golden gears',
-      'golden seat', 'golden toilet', 'golden wall', 'golden wand'
+      'gold rose wreath', 'gold-armor shoes', 'gold-nugget mining car', 'gold-screen wall',
+      'golden altar', 'golden arowana model', 'golden bathtub', 'golden candlestick',
+      'golden casket', 'golden decorative plate', 'golden dharma', 'golden dishes',
+      'golden dung beetle', 'golden flooring', 'golden garden bunny', 'golden gear apparatus',
+      'golden gear tower', 'golden gears', 'golden ladder set-up kit', 'golden meter and pipes',
+      'golden piggy bank', 'golden plate armor', 'golden samurai suit', 'golden seat',
+      'golden toilet', 'golden urn', 'golden vase', 'golden wall',
+      'golden wand', 'golden wristwatch', 'mini golden dharma'
     ]
   },
 
@@ -263,9 +268,9 @@ export const DIY_CATEGORIES = {
       'Libra scale', 'lunar lander', 'lunar rover', 'lunar surface',
       'moon', 'nova light', 'Pisces lamp', 'rocket',
       'Sagittarius arrow', 'satellite', 'sci-fi flooring', 'sci-fi wall',
-      'Scorpio lamp', 'space shuttle', 'star clock', 'star head', 'star pochette',
-      'starry garland', 'starry wall', 'starry-sky wall',
-      'Taurus bathtub', 'Virgo harp'
+      'Scorpio lamp', 'space shuttle', 'star clock', 'star head',
+      'star pochette', 'starry garland', 'starry wall', 'starry-skies rug',
+      'starry-sky wall', 'Taurus bathtub', 'Virgo harp', 'yellow star rug'
     ]
   },
 
@@ -305,10 +310,11 @@ export const DIY_CATEGORIES = {
   'Fences': {
     emoji: '\u{1F33F}',
     recipes: [
-      'barbed-wire fence', 'brick fence', 'corral fence', 'country fence',
-      'imperial fence', 'lattice fence', 'rope fence', 'simple wooden fence',
-      'spiky fence', 'stone fence', 'straw fence', 'vertical-board fence',
-      'wedding fence', 'zen fence'
+      'barbed-wire fence', 'block fence', 'brick fence', 'corral fence',
+      'corrugated iron fence', 'country fence', 'imperial fence', 'large lattice fence',
+      'lattice fence', 'log fence', 'log-wall fence', 'park fence',
+      'rope fence', 'simple wooden fence', 'spiky fence', 'stone fence',
+      'straw fence', 'vertical-board fence', 'wedding fence', 'zen fence'
     ]
   },
 
@@ -330,13 +336,12 @@ export const DIY_CATEGORIES = {
   'Walls, Floors & Rugs': {
     emoji: '\u{1F3E0}',
     recipes: [
-      'basement flooring', 'brown herringbone wall', 'cabin wall',
-      'chocolate herringbone wall', 'classic-library wall',
-      'dark wooden-mosaic wall', 'garbage-heap flooring', 'garbage-heap wall',
-      'honeycomb flooring', 'honeycomb wall', 'jungle flooring', 'jungle wall',
-      'manga-library wall', 'modern wood wall', 'money flooring',
-      'rustic-stone wall', 'sandy-beach flooring', 'stacked-wood wall',
-      'steel flooring', 'steel-frame wall', 'stone wall',
+      'acorn rug', 'basement flooring', 'brown herringbone wall', 'cabin wall',
+      'chocolate herringbone wall', 'classic-library wall', 'dark wooden-mosaic wall', 'garbage-heap flooring',
+      'garbage-heap wall', 'honeycomb flooring', 'honeycomb wall', 'jungle flooring',
+      'jungle wall', 'manga-library wall', 'maple-leaf rug', 'modern wood wall',
+      'money flooring', 'rustic-stone wall', 'sandy-beach flooring', 'stacked-wood wall',
+      'steel flooring', 'steel-frame wall', 'stone wall', 'tree-stump rug',
       'wild-wood wall', 'wooden-knot wall', 'wooden-mosaic wall', 'woodland wall'
     ]
   },
