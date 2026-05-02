@@ -782,6 +782,27 @@ const DIYRecipeTracker = () => {
                 </div>
               )}
 
+              {/* Buy price (Bells / Nook Miles / Hotel Tickets / Poki) */}
+              {Array.isArray(drawerData.buy) && drawerData.buy.length > 0 && (
+                <div style={styles.drawerSection}>
+                  <div style={styles.drawerSectionTitle}>Buy Price</div>
+                  {drawerData.buy.map((b, idx) => {
+                    const cur = b.currency || 'Bells';
+                    const tone = cur === 'Hotel Tickets'
+                      ? { color: '#4aacf0', borderColor: 'rgba(74,172,240,0.4)' }
+                      : cur === 'Nook Miles'
+                        ? { color: '#d4b030', borderColor: 'rgba(212,176,48,0.4)' }
+                        : { color: '#5ec850', borderColor: 'rgba(94,200,80,0.3)' };
+                    return (
+                      <div key={idx} style={{ ...styles.drawerSellPrice, border: `1px solid ${tone.borderColor}`, marginBottom: '6px' }}>
+                        <span style={{ fontSize: '14px', color: tone.color, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>{cur}</span>
+                        <span style={{ color: tone.color }}>{Number(b.price).toLocaleString()}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
               {/* Availability / How to obtain */}
               {drawerData.availability && drawerData.availability.length > 0 && (
                 <div style={styles.drawerSection}>
