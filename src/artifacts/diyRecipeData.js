@@ -346,7 +346,7 @@ export const DIY_CATEGORIES = {
     ]
   },
 
-  // ── 26. Miscellaneous & Other (161) ──
+  // ── 26. Miscellaneous & Other (199) — incl. 38 3.0 additions ──
   'Miscellaneous & Other': {
     emoji: '\u{1F4E6}',
     recipes: [
@@ -395,11 +395,87 @@ export const DIY_CATEGORIES = {
       'tree standee', 'trophy case', 'tulip surprise box',
       'ukulele', 'unglazed dish set',
       'water pump', 'wave breaker', 'western-style stone',
-      'wild log bench', 'windflower fan', 'wooden-plank sign', 'zen-style stone'
+      'wild log bench', 'windflower fan', 'wooden-plank sign', 'zen-style stone',
+      // ── 3.0 additions ──
+      'box-shaped seat', 'carp on a cutting board', 'cave', 'decayed tree',
+      'dharma', 'donation box', 'festival-lantern set', 'forbidden altar', 'foxtail',
+      'full-body glowing-moss suit', 'gear apparatus', 'gear tower',
+      'glow-in-the-dark stickers', 'imperial pot', 'iron ladder set-up kit',
+      'medium wooden partition', 'nice branch', 'open wooden shelves',
+      'pile of cardboard boxes', 'pile of cash', 'plate armor', 'project table',
+      'senmaizuke barrel', 'skateboard wall rack', 'small wooden partition',
+      'stacked bottle crates', 'stacked fish containers', 'stacked senmaizuke barrels',
+      'stacked shopping baskets', 'stonework kitchen', 'suspicious cauldron',
+      'tension-pole rack', 'veggie basket', 'wooden box', 'wooden field sign',
+      'wooden ladder set-up kit', 'wooden music box', 'wooden storage shed'
     ]
   },
 
-  // ── 27. Cooking - Savory (86) — verified against Nookipedia ──
+  // ── 27. Glowing Moss (3.0) (18) — message bottles, cave-themed ──
+  'Glowing Moss': {
+    emoji: '\u{1F31F}',
+    recipes: [
+      'glowing-moss balloon', 'glowing-moss boulder', 'glowing-moss cave wall',
+      'glowing-moss dress', 'glowing-moss flooring', 'glowing-moss forest wall',
+      'glowing-moss headband', 'glowing-moss hood', 'glowing-moss jar',
+      'glowing-moss pointed cap', 'glowing-moss pond', 'glowing-moss rug',
+      'glowing-moss ruins wall', 'glowing-moss statue', 'glowing-moss stool',
+      'glowing-moss wreath', 'glowing-moss-jar shelves', 'hanging glowing moss',
+      'round glowing-moss rug'
+    ]
+  },
+
+  // ── 28. Vine (3.0) (10) — jungle/cave-themed message bottle items ──
+  'Vine': {
+    emoji: '\u{1F33F}',
+    recipes: [
+      'giant vine', 'round vine rug', 'vine bench', 'vine crown',
+      'vine garland', 'vine hanging chair', 'vine ladder set-up kit',
+      'vine lamp', 'vine outfit', 'woven-vine pochette', 'woven-vines hat'
+    ]
+  },
+
+  // ── 29. Ruined (3.0) (4) — message bottle archaeological items ──
+  'Ruined': {
+    emoji: '\u{1F3DB}️',
+    recipes: [
+      'ruined arch', 'ruined broken pillar', 'ruined decorated pillar', 'ruined seat'
+    ]
+  },
+
+  // ── 30. Rope Net (3.0) (2) — message bottle ──
+  'Rope Net': {
+    emoji: '\u{1F578}️',
+    recipes: [
+      'rope-net flooring', 'rope-net wall'
+    ]
+  },
+
+  // ── 31. Niko Pillars (3.0) (7) — Resort Hotel pillars from Niko ──
+  'Niko Pillars': {
+    emoji: '\u{1F3DB}️',
+    recipes: [
+      'brick pillar', 'concrete pillar', 'golden pillar', 'marble pillar',
+      'simple pillar', 'steel pillar', 'wooden pillar', 'partition wall'
+    ]
+  },
+
+  // ── 32. Niko Island Counters (3.0) (14) — Resort Hotel facility counters ──
+  'Niko Island Counters': {
+    emoji: '\u{1F3E8}',
+    recipes: [
+      'low brick island counter', 'low concrete island counter',
+      'low golden island counter', 'low marble island counter',
+      'low simple island counter', 'low steel island counter',
+      'low wooden island counter',
+      'tall brick island counter', 'tall concrete island counter',
+      'tall golden island counter', 'tall marble island counter',
+      'tall simple island counter', 'tall steel island counter',
+      'tall wooden island counter'
+    ]
+  },
+
+  // ── 33. Cooking - Savory (86) — verified against Nookipedia ──
   'Cooking - Savory': {
     emoji: '\u{1F372}',
     isCooking: true,
@@ -437,7 +513,7 @@ export const DIY_CATEGORIES = {
     ]
   },
 
-  // ── 28. Cooking - Sweet (55) — verified against Nookipedia; spooky cookies here, NOT in Spooky ──
+  // ── 34. Cooking - Sweet (55) — verified against Nookipedia; spooky cookies here, NOT in Spooky ──
   'Cooking - Sweet': {
     emoji: '\u{1F370}',
     isCooking: true,
