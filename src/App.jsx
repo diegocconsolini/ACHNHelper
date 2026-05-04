@@ -37,6 +37,7 @@ const HHACalculator = lazy(() => import('./artifacts/HHACalculator.jsx'));
 const Wishlist = lazy(() => import('./artifacts/Wishlist.jsx'));
 const CatalogTracker = lazy(() => import('./artifacts/CatalogTracker.jsx'));
 const HotelTracker = lazy(() => import('./artifacts/HotelTracker.jsx'));
+const FossilTracker = lazy(() => import('./artifacts/FossilTracker.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -58,6 +59,7 @@ const MENU = [
     category: '🏛️ Museum & Progress',
     items: [
       { id: 'museum', label: 'Museum Tracker', emoji: '🏛️', component: 'MuseumTracker' },
+      { id: 'fossils', label: 'Fossil Tracker', emoji: '🦴', component: 'FossilTracker' },
       { id: 'golden', label: 'Golden Tools', emoji: '✨', component: 'GoldenToolTracker' },
       { id: 'nookmiles', label: 'Nook Miles', emoji: '🎖️', component: 'NookMilesTracker' },
       { id: 'gyroids', label: 'Gyroid Tracker', emoji: '🗿', component: 'GyroidTracker' },
@@ -153,6 +155,7 @@ const COMPONENTS = {
   Wishlist,
   CatalogTracker,
   HotelTracker,
+  FossilTracker,
   UserProfile,
 };
 
@@ -413,7 +416,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 33 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 34 tools
           </span>
         </div>
       </div>

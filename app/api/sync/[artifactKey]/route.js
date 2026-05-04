@@ -8,7 +8,7 @@ const VALID_KEYS = [
   'five-star-checker', 'daily-routine', 'villager-gift-guide', 'gulliver-tracker',
   'art-detector', 'kk-catalogue', 'seasonal-event-calendar', 'acnh-diy-tracker',
   'celeste-meteor-tracker', 'dream-address-book', 'acnh-modal-theme',
-  'hotel-tracker',
+  'hotel-tracker', 'fossil-tracker',
 ];
 
 export async function GET(req, { params }) {
