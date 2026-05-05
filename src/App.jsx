@@ -286,10 +286,11 @@ function App() {
   const [unreadCount, setUnreadCount] = useState(0);
   const { data: session, status } = useSession();
 
-  // Poll sync status every 2 seconds
+  // Poll sync status every 2 seconds — but only re-render when it actually changes
   useEffect(() => {
     const interval = setInterval(() => {
-      setSyncStatus(window.__syncStatus);
+      const next = window.__syncStatus;
+      setSyncStatus((prev) => prev === next ? prev : next);
     }, 2000);
     return () => clearInterval(interval);
   }, []);
