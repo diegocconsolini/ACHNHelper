@@ -1,4 +1,5 @@
 import SessionWrapper from '../src/SessionWrapper';
+import PWARegister from '../src/PWARegister';
 import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
         <SessionWrapper>
           {children}
         </SessionWrapper>
+        <PWARegister />
         <Analytics />
       </body>
     </html>
