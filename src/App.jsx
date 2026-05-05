@@ -40,6 +40,7 @@ const HotelTracker = lazy(() => import('./artifacts/HotelTracker.jsx'));
 const FossilTracker = lazy(() => import('./artifacts/FossilTracker.jsx'));
 const IslandTuneCreator = lazy(() => import('./artifacts/IslandTuneCreator.jsx'));
 const VillagerCompatibility = lazy(() => import('./artifacts/VillagerCompatibility.jsx'));
+const IslandCard = lazy(() => import('./artifacts/IslandCard.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -116,6 +117,7 @@ const MENU = [
       { id: 'hha', label: 'HHA Calculator', emoji: '🏠', component: 'HHACalculator' },
       { id: 'hotel', label: 'Hotel Tracker', emoji: '🏨', component: 'HotelTracker' },
       { id: 'tune', label: 'Island Tune Creator', emoji: '🎼', component: 'IslandTuneCreator' },
+      { id: 'card', label: 'Island Card', emoji: '🪪', component: 'IslandCard' },
     ],
   },
   {
@@ -162,6 +164,7 @@ const COMPONENTS = {
   FossilTracker,
   IslandTuneCreator,
   VillagerCompatibility,
+  IslandCard,
   UserProfile,
 };
 
@@ -422,7 +425,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 36 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 37 tools
           </span>
         </div>
       </div>
