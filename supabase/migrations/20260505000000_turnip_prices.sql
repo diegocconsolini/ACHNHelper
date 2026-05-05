@@ -19,7 +19,10 @@ CREATE TABLE IF NOT EXISTS turnip_prices (
   week_start DATE NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   -- Most recent entry per (user, kind, slot) wins on conflict
-  UNIQUE(user_id, kind, slot, week_start)
+  UNIQUE(user_id, kind, slot, week_start),
+  -- FK lets the API route join with profiles!inner for island_name etc.
+  CONSTRAINT turnip_prices_user_id_fkey FOREIGN KEY (user_id)
+    REFERENCES profiles(user_id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS turnip_prices_week_idx ON turnip_prices(week_start, created_at DESC);

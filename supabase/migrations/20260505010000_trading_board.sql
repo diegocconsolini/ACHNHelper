@@ -14,7 +14,10 @@ CREATE TABLE IF NOT EXISTS trade_listings (
   -- 'open' | 'pending' | 'completed' | 'cancelled'
   status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'pending', 'completed', 'cancelled')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  -- FK lets the API route join with profiles!inner for island_name etc.
+  CONSTRAINT trade_listings_user_id_fkey FOREIGN KEY (user_id)
+    REFERENCES profiles(user_id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS trade_listings_status_idx ON trade_listings(status, created_at DESC);
