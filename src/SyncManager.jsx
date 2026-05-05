@@ -10,7 +10,8 @@ const SYNC_KEYS = [
   'five-star-checker', 'daily-routine', 'villager-gift-guide', 'gulliver-tracker',
   'art-detector', 'kk-catalogue', 'seasonal-event-calendar', 'acnh-diy-tracker',
   'celeste-meteor-tracker', 'dream-address-book', 'acnh-modal-theme',
-  'hotel-tracker', 'fossil-tracker', 'island-tune-creator'
+  'hotel-tracker', 'fossil-tracker', 'island-tune-creator',
+  'villager-compatibility'
 ];
 const DEBOUNCE_MS = 5000;
 

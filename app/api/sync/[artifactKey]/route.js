@@ -9,6 +9,7 @@ const VALID_KEYS = [
   'art-detector', 'kk-catalogue', 'seasonal-event-calendar', 'acnh-diy-tracker',
   'celeste-meteor-tracker', 'dream-address-book', 'acnh-modal-theme',
   'hotel-tracker', 'fossil-tracker', 'island-tune-creator',
+  'villager-compatibility',
 ];
 
 export async function GET(req, { params }) {

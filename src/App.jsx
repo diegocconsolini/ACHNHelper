@@ -39,6 +39,7 @@ const CatalogTracker = lazy(() => import('./artifacts/CatalogTracker.jsx'));
 const HotelTracker = lazy(() => import('./artifacts/HotelTracker.jsx'));
 const FossilTracker = lazy(() => import('./artifacts/FossilTracker.jsx'));
 const IslandTuneCreator = lazy(() => import('./artifacts/IslandTuneCreator.jsx'));
+const VillagerCompatibility = lazy(() => import('./artifacts/VillagerCompatibility.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -105,6 +106,7 @@ const MENU = [
     category: '🏠 Island Life',
     items: [
       { id: 'villager', label: 'Villager Gift Guide', emoji: '🎁', component: 'VillagerGiftGuide' },
+      { id: 'compat', label: 'Villager Compatibility', emoji: '🎭', component: 'VillagerCompatibility' },
       { id: 'events', label: 'Event Calendar', emoji: '📅', component: 'SeasonalEventCalendar' },
       { id: 'diy', label: 'DIY Recipe Tracker', emoji: '🔨', component: 'DIYRecipeTracker' },
       { id: 'celeste', label: 'Celeste & Meteors', emoji: '🌠', component: 'CelesteMeteorTracker' },
@@ -159,6 +161,7 @@ const COMPONENTS = {
   HotelTracker,
   FossilTracker,
   IslandTuneCreator,
+  VillagerCompatibility,
   UserProfile,
 };
 
@@ -419,7 +422,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 35 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 36 tools
           </span>
         </div>
       </div>
