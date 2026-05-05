@@ -4,6 +4,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { SettingsProvider } from './SettingsContext';
 import ConfirmModal from './ConfirmModal';
+import ErrorReporter from './ErrorReporter';
 
 const Dashboard = lazy(() => import('./artifacts/Dashboard.jsx'));
 const FishTracker = lazy(() => import('./artifacts/FishTracker.jsx'));
@@ -188,6 +189,21 @@ class ErrorBoundary extends React.Component {
     return { hasError: true, error };
   }
 
+  componentDidCatch(error, info) {
+    try {
+      fetch('/api/errors', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: error?.message || 'React render error',
+          stack: error?.stack || info?.componentStack || '',
+          url: typeof window !== 'undefined' ? window.location.href : '',
+        }),
+        keepalive: true,
+      }).catch(() => { /* ignore */ });
+    } catch { /* ignore */ }
+  }
+
   reset() {
     this.setState({ hasError: false, error: null });
   }
@@ -341,6 +357,7 @@ function App() {
 
   return (
     <SettingsProvider>
+    <ErrorReporter />
     <div style={styles.root}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
