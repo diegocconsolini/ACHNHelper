@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
     "prepare": "node -e \"const fs=require('fs'),p=require('path');const hooks=p.join('.git','hooks');if(!fs.existsSync(hooks))process.exit(0);const dst=p.join(hooks,'pre-commit');try{fs.unlinkSync(dst)}catch{}fs.symlinkSync(p.join('..','..','scripts','pre-commit-secret-scan.sh'),dst);console.log('pre-commit hook installed')\""
   },
   "dependencies": {
@@ -24,9 +27,11 @@
     "@types/node": "25.5.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@vitest/ui": "^4.1.5",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^16.5.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^4.1.5"
   }
 }
