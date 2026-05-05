@@ -43,6 +43,7 @@ const VillagerCompatibility = lazy(() => import('./artifacts/VillagerCompatibili
 const IslandCard = lazy(() => import('./artifacts/IslandCard.jsx'));
 const StalkMarket = lazy(() => import('./artifacts/StalkMarket.jsx'));
 const Notifications = lazy(() => import('./artifacts/Notifications.jsx'));
+const TradingBoard = lazy(() => import('./artifacts/TradingBoard.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -117,6 +118,7 @@ const MENU = [
       { id: 'dreams', label: 'Dream Address Book', emoji: '☁️', component: 'DreamAddressBook' },
       { id: 'label', label: 'Label Fashion', emoji: '👗', component: 'LabelFashionHelper' },
       { id: 'community', label: 'Community Hub', emoji: '🌐', component: 'CommunityHub' },
+      { id: 'trades', label: 'Trading Board', emoji: '🤝', component: 'TradingBoard' },
       { id: 'hha', label: 'HHA Calculator', emoji: '🏠', component: 'HHACalculator' },
       { id: 'hotel', label: 'Hotel Tracker', emoji: '🏨', component: 'HotelTracker' },
       { id: 'tune', label: 'Island Tune Creator', emoji: '🎼', component: 'IslandTuneCreator' },
@@ -171,6 +173,7 @@ const COMPONENTS = {
   IslandCard,
   StalkMarket,
   Notifications,
+  TradingBoard,
   UserProfile,
 };
 
@@ -477,7 +480,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 39 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 40 tools
           </span>
         </div>
       </div>
