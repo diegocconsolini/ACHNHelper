@@ -42,6 +42,7 @@ const IslandTuneCreator = lazy(() => import('./artifacts/IslandTuneCreator.jsx')
 const VillagerCompatibility = lazy(() => import('./artifacts/VillagerCompatibility.jsx'));
 const IslandCard = lazy(() => import('./artifacts/IslandCard.jsx'));
 const StalkMarket = lazy(() => import('./artifacts/StalkMarket.jsx'));
+const Notifications = lazy(() => import('./artifacts/Notifications.jsx'));
 const UserProfile = lazy(() => import('./artifacts/UserProfile.jsx'));
 
 const MENU = [
@@ -120,6 +121,7 @@ const MENU = [
       { id: 'hotel', label: 'Hotel Tracker', emoji: '🏨', component: 'HotelTracker' },
       { id: 'tune', label: 'Island Tune Creator', emoji: '🎼', component: 'IslandTuneCreator' },
       { id: 'card', label: 'Island Card', emoji: '🪪', component: 'IslandCard' },
+      { id: 'notifications', label: 'Notifications', emoji: '🔔', component: 'Notifications' },
     ],
   },
   {
@@ -168,6 +170,7 @@ const COMPONENTS = {
   VillagerCompatibility,
   IslandCard,
   StalkMarket,
+  Notifications,
   UserProfile,
 };
 
@@ -260,6 +263,7 @@ function App() {
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
   const [syncStatus, setSyncStatus] = useState(null);
   const [isAdminUser, setIsAdminUser] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { data: session, status } = useSession();
 
   // Poll sync status every 2 seconds
@@ -282,6 +286,39 @@ function App() {
       })
       .catch(() => setIsAdminUser(false));
   }, [status, session?.user?.email]);
+
+  // Poll notifications unread count every 60s when authed; refresh on read events
+  useEffect(() => {
+    if (status !== 'authenticated' || !session?.user?.id) {
+      setUnreadCount(0);
+      return;
+    }
+    let cancelled = false;
+    const tick = async () => {
+      try {
+        const res = await fetch('/api/notifications');
+        if (!res.ok) return;
+        const d = await res.json();
+        let lastRead = 0;
+        try {
+          const r = await window.storage.get('notifications-last-read');
+          if (r) lastRead = parseInt(r.value, 10) || 0;
+        } catch { /* ignore */ }
+        if (!cancelled) {
+          setUnreadCount((d.notifications || []).filter(n => new Date(n.created_at).getTime() > lastRead).length);
+        }
+      } catch { /* ignore */ }
+    };
+    tick();
+    const interval = setInterval(tick, 60000);
+    const onRead = () => { setUnreadCount(0); };
+    window.addEventListener('notifications:read', onRead);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+      window.removeEventListener('notifications:read', onRead);
+    };
+  }, [status, session?.user?.id]);
 
   const activeItem = MENU.flatMap(g => g.items).find(i => i.id === activeId);
   const ActiveComponent = activeItem?.component ? COMPONENTS[activeItem.component] : null;
@@ -420,6 +457,18 @@ function App() {
                   <span style={{ fontSize: 18 }}>{item.emoji}</span>
                   <span style={styles.menuLabel}>{item.label}</span>
                   {!item.component && <span style={styles.comingSoon}>soon</span>}
+                  {item.id === 'notifications' && unreadCount > 0 && (
+                    <span style={{
+                      marginLeft: 'auto',
+                      background: '#5ec850',
+                      color: '#0a1a10',
+                      borderRadius: 10,
+                      padding: '1px 7px',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      fontFamily: "'DM Mono', monospace",
+                    }}>{unreadCount}</span>
+                  )}
                 </button>
               ))}
             </div>
@@ -428,7 +477,7 @@ function App() {
 
         <div style={styles.sidebarFooter}>
           <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 38 tools
+            v{process.env.NEXT_PUBLIC_APP_VERSION} — 39 tools
           </span>
         </div>
       </div>
