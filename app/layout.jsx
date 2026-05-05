@@ -1,4 +1,5 @@
 import SessionWrapper from '../src/SessionWrapper';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'ACNH Helper Suite',
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
         <SessionWrapper>
           {children}
         </SessionWrapper>
+        <Analytics />
       </body>
     </html>
   );
