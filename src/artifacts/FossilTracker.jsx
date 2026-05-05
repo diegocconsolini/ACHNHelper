@@ -564,7 +564,7 @@ const styles = {
   body: { display: 'flex', flexDirection: 'column', gap: 14 },
   skeletonGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))',
     gap: 12,
   },
   skeletonCard: {

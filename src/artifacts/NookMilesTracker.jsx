@@ -665,7 +665,7 @@ const styles = {
   },
   achievementsGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))',
     gap: '16px'
   },
   achievementCard: {

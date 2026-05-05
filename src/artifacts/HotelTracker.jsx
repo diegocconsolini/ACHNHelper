@@ -977,7 +977,7 @@ const styles = {
   formLabel: { display: 'flex', flexDirection: 'column', gap: 4, color: '#c8e6c0', fontSize: 13 },
   formButtons: { display: 'flex', gap: 8, justifyContent: 'flex-end' },
 
-  islandList: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 12 },
+  islandList: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 12 },
   islandCard: {
     background: 'rgba(12,28,14,0.95)', border: '1px solid rgba(94,200,80,0.1)',
     borderRadius: 8, padding: 14, display: 'flex', flexDirection: 'column', gap: 10,

@@ -263,6 +263,7 @@ class ErrorBoundary extends React.Component {
 function App() {
   const [activeId, setActiveId] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState(false);
   const [syncStatus, setSyncStatus] = useState(null);
   const [isAdminUser, setIsAdminUser] = useState(false);
@@ -275,6 +276,18 @@ function App() {
       setSyncStatus(window.__syncStatus);
     }, 2000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Track viewport size; collapse sidebar by default on small screens
+  useEffect(() => {
+    const update = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (mobile) setSidebarOpen(false);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
 
   // Check admin status
@@ -337,10 +350,55 @@ function App() {
         ::-webkit-scrollbar-track { background: #0a1a10; }
         ::-webkit-scrollbar-thumb { background: #1a3a20; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #2a4a30; }
+
+        /* Backdrop is hidden by default; only mobile media-query shows it */
+        .acnh-sidebar-backdrop { display: none; }
+
+        /* Mobile responsiveness — sidebar becomes overlay, drawers go full-width */
+        @media (max-width: 768px) {
+          .acnh-sidebar {
+            position: fixed !important;
+            top: 0; bottom: 0; left: 0;
+            z-index: 200;
+            box-shadow: 4px 0 16px rgba(0,0,0,0.4);
+          }
+          .acnh-sidebar-backdrop {
+            display: block !important;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 150;
+          }
+          .acnh-toggle-btn {
+            top: 12px !important;
+            left: 12px !important;
+            bottom: auto !important;
+            width: 36px !important;
+            height: 36px !important;
+            font-size: 14px !important;
+          }
+          .acnh-main {
+            padding-top: 56px !important;
+          }
+        }
+        /* Touch targets — guarantee 44px min on small viewports */
+        @media (max-width: 480px) {
+          button, select, input[type='text'], input[type='number'] {
+            min-height: 36px;
+          }
+        }
       `}</style>
 
+      {/* Mobile backdrop — only visible on small screens via the @media rule above */}
+      {sidebarOpen && (
+        <div
+          className="acnh-sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div style={{
+      <div className="acnh-sidebar" style={{
         ...styles.sidebar,
         width: sidebarOpen ? 260 : 0,
         padding: sidebarOpen ? '20px 0' : 0,
@@ -449,7 +507,10 @@ function App() {
               {group.items.map(item => (
                 <button
                   key={item.id}
-                  onClick={() => setActiveId(item.id)}
+                  onClick={() => {
+                    setActiveId(item.id);
+                    if (isMobile) setSidebarOpen(false);
+                  }}
                   style={{
                     ...styles.menuItem,
                     background: activeId === item.id ? 'rgba(94,200,80,0.15)' : 'transparent',
@@ -487,15 +548,16 @@ function App() {
 
       {/* Toggle button */}
       <button
+        className="acnh-toggle-btn"
         onClick={() => setSidebarOpen(!sidebarOpen)}
         style={styles.toggleBtn}
         title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
       >
-        {sidebarOpen ? '◀' : '▶'}
+        {sidebarOpen ? '◀' : '☰'}
       </button>
 
       {/* Main Content */}
-      <div style={styles.main}>
+      <div className="acnh-main" style={styles.main}>
         {ActiveComponent ? (
           <ErrorBoundary key={activeId}>
             <Suspense fallback={
