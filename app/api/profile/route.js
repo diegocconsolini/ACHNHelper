@@ -1,5 +1,6 @@
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase';
+import { rateLimit } from '@/lib/rateLimit';
 
 export async function GET() {
   const session = await auth();
@@ -27,6 +28,10 @@ export async function PUT(req) {
   if (!session?.user?.id) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  // 30 profile updates/min/user
+  const limited = rateLimit(req, { name: 'profile-put', identity: session.user.id, limit: 30, windowSec: 60 });
+  if (limited instanceof Response) return limited;
 
   const body = await req.json();
 

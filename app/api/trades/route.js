@@ -1,5 +1,6 @@
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase';
+import { rateLimit } from '@/lib/rateLimit';
 
 const VALID_CATEGORIES = ['item', 'villager', 'diy', 'material'];
 const VALID_INTENTS = ['offering', 'looking_for'];
@@ -72,6 +73,10 @@ export async function GET(req) {
 export async function POST(req) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+
+  // 10 listings/min/user — anti-spam on top of the 5-open-listings cap
+  const limited = rateLimit(req, { name: 'trades-post', identity: session.user.id, limit: 10, windowSec: 60 });
+  if (limited instanceof Response) return limited;
 
   const body = await req.json().catch(() => ({}));
   const category = body.category;

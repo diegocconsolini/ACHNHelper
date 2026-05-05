@@ -1,5 +1,6 @@
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase';
+import { rateLimit } from '@/lib/rateLimit';
 
 const VALID_KEYS = [
   'fish-tracker', 'bug-tracker', 'sea-creature-tracker', 'flower-calculator',
@@ -45,6 +46,10 @@ export async function PUT(req, { params }) {
   if (!session?.user?.id) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  // 120 PUTs/min per user — generous for the 5-second debounce
+  const limited = rateLimit(req, { name: 'sync-put', identity: session.user.id, limit: 120, windowSec: 60 });
+  if (limited instanceof Response) return limited;
 
   const { artifactKey } = await params;
   if (!VALID_KEYS.includes(artifactKey)) {

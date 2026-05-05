@@ -1,5 +1,6 @@
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase';
+import { rateLimit } from '@/lib/rateLimit';
 
 // Compute Sunday-of-this-week as YYYY-MM-DD (UTC)
 function currentWeekStart(now = new Date()) {
@@ -66,6 +67,9 @@ export async function POST(req) {
   if (!session?.user?.id) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  // 20 posts/min/user — well above realistic human pace, blocks scripted spam
+  const limited = rateLimit(req, { name: 'turnip-post', identity: session.user.id, limit: 20, windowSec: 60 });
+  if (limited instanceof Response) return limited;
 
   const body = await req.json().catch(() => ({}));
   const price = parseInt(body.price, 10);

@@ -1,12 +1,17 @@
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase';
 import { REPORT_REASONS } from '@/lib/communityConstants';
+import { rateLimit } from '@/lib/rateLimit';
 
 export async function POST(req) {
   const session = await auth();
   if (!session?.user?.id) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  // 5 reports per hour per user — limits abuse-of-reporting attacks
+  const limited = rateLimit(req, { name: 'community-report', identity: session.user.id, limit: 5, windowSec: 3600 });
+  if (limited instanceof Response) return limited;
 
   const body = await req.json();
   const { reportedUserId, reason, details } = body;

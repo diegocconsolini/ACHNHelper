@@ -2,6 +2,8 @@
 // Usage: fetch('/api/nookipedia/nh/fish/Coelacanth')
 // Proxies to: https://api.nookipedia.com/nh/fish/Coelacanth
 
+import { rateLimit, withRateLimitHeaders } from '@/lib/rateLimit';
+
 const API_BASE = 'https://api.nookipedia.com';
 const API_KEY = process.env.NOOKIPEDIA_API_KEY;
 
@@ -20,6 +22,11 @@ export async function GET(req, { params }) {
     return Response.json({ error: 'Nookipedia API key not configured' }, { status: 500 });
   }
 
+  // Rate limit: 60 requests/min per IP. Cached responses still count, but
+  // upstream calls are bounded by the existing 1-hour cache + this limit.
+  const limited = rateLimit(req, { name: 'nookipedia', limit: 60, windowSec: 60 });
+  if (limited instanceof Response) return limited;
+
   const { path } = await params;
   const apiPath = '/' + path.join('/');
 
@@ -36,9 +43,8 @@ export async function GET(req, { params }) {
   // Check cache
   const cached = cache.get(fullUrl);
   if (cached && Date.now() - cached.time < CACHE_TTL) {
-    return Response.json(cached.data, {
-      headers: { 'X-Cache': 'HIT' },
-    });
+    const r = Response.json(cached.data, { headers: { 'X-Cache': 'HIT' } });
+    return withRateLimitHeaders(r, limited);
   }
 
   try {
@@ -68,9 +74,8 @@ export async function GET(req, { params }) {
       for (let i = 0; i < 100; i++) cache.delete(oldest[i][0]);
     }
 
-    return Response.json(data, {
-      headers: { 'X-Cache': 'MISS' },
-    });
+    const r = Response.json(data, { headers: { 'X-Cache': 'MISS' } });
+    return withRateLimitHeaders(r, limited);
   } catch (err) {
     return Response.json(
       { error: 'Failed to fetch from Nookipedia', details: err.message },

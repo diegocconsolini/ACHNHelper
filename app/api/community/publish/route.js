@@ -2,6 +2,7 @@ import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase';
 import { containsProfanity } from '@/lib/moderation';
 import { THEME_TAGS, LOOKING_FOR_TAGS } from '@/lib/communityConstants';
+import { rateLimit } from '@/lib/rateLimit';
 
 export async function GET() {
   const session = await auth();
@@ -93,6 +94,10 @@ export async function POST(req) {
   if (!session?.user?.id) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  // 6 publishes/min/user — way above human pace, prevents scripted abuse
+  const limited = rateLimit(req, { name: 'community-publish', identity: session.user.id, limit: 6, windowSec: 60 });
+  if (limited instanceof Response) return limited;
 
   const body = await req.json();
   const validationError = validateBody(body);

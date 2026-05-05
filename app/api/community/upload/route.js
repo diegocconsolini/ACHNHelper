@@ -1,5 +1,6 @@
 import { auth } from '@/auth';
 import { createServerClient } from '@/lib/supabase';
+import { rateLimit } from '@/lib/rateLimit';
 
 const BUCKET_NAME = 'island-screenshots';
 const MAX_SCREENSHOTS = 5;
@@ -11,6 +12,10 @@ export async function POST(req) {
   if (!session?.user?.id) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  // 10 uploads per hour per user — uploads are the most-abusable surface
+  const limited = rateLimit(req, { name: 'community-upload', identity: session.user.id, limit: 10, windowSec: 3600 });
+  if (limited instanceof Response) return limited;
 
   const supabase = createServerClient();
 
