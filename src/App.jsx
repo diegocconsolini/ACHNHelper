@@ -405,18 +405,47 @@ function App() {
             min-height: 36px;
           }
         }
+
+        /* Accessibility: visible focus rings on keyboard nav (kept off for mouse) */
+        button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible {
+          outline: 2px solid #5ec850 !important;
+          outline-offset: 2px;
+          border-radius: 4px;
+        }
+
+        /* Skip link — hidden until focused */
+        .acnh-skip-link {
+          position: absolute;
+          left: -9999px;
+          top: 8px;
+          z-index: 9999;
+          background: #5ec850;
+          color: #0a1a10;
+          padding: 8px 14px;
+          border-radius: 6px;
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 700;
+          text-decoration: none;
+        }
+        .acnh-skip-link:focus {
+          left: 8px;
+        }
       `}</style>
+
+      {/* Skip link — first focusable target for keyboard users */}
+      <a href="#acnh-main-content" className="acnh-skip-link">Skip to main content</a>
 
       {/* Mobile backdrop — only visible on small screens via the @media rule above */}
       {sidebarOpen && (
         <div
           className="acnh-sidebar-backdrop"
           onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
         />
       )}
 
       {/* Sidebar */}
-      <div className="acnh-sidebar" style={{
+      <nav aria-label="Tools" className="acnh-sidebar" style={{
         ...styles.sidebar,
         width: sidebarOpen ? 260 : 0,
         padding: sidebarOpen ? '20px 0' : 0,
@@ -529,6 +558,7 @@ function App() {
                     setActiveId(item.id);
                     if (isMobile) setSidebarOpen(false);
                   }}
+                  aria-current={activeId === item.id ? 'page' : undefined}
                   style={{
                     ...styles.menuItem,
                     background: activeId === item.id ? 'rgba(94,200,80,0.15)' : 'transparent',
@@ -562,7 +592,7 @@ function App() {
             v{process.env.NEXT_PUBLIC_APP_VERSION} — 40 tools
           </span>
         </div>
-      </div>
+      </nav>
 
       {/* Toggle button */}
       <button
@@ -570,12 +600,14 @@ function App() {
         onClick={() => setSidebarOpen(!sidebarOpen)}
         style={styles.toggleBtn}
         title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+        aria-label={sidebarOpen ? 'Collapse navigation sidebar' : 'Expand navigation sidebar'}
+        aria-expanded={sidebarOpen}
       >
         {sidebarOpen ? '◀' : '☰'}
       </button>
 
       {/* Main Content */}
-      <div className="acnh-main" style={styles.main}>
+      <main id="acnh-main-content" className="acnh-main" style={styles.main}>
         {ActiveComponent ? (
           <ErrorBoundary key={activeId}>
             <Suspense fallback={
@@ -589,12 +621,12 @@ function App() {
           </ErrorBoundary>
         ) : (
           <div style={styles.placeholder}>
-            <span style={{ fontSize: 64 }}>{activeItem?.emoji || '🏝️'}</span>
+            <span style={{ fontSize: 64 }} aria-hidden="true">{activeItem?.emoji || '🏝️'}</span>
             <h2 style={styles.placeholderTitle}>{activeItem?.label || 'Welcome'}</h2>
             <p style={styles.placeholderText}>This tool is coming soon!</p>
           </div>
         )}
-      </div>
+      </main>
       <ConfirmModal
         open={showSignOutConfirm}
         title="Sign Out"
