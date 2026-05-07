@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80" viewBox="0 0 200 80">
+  <defs>
+    <filter id="wood">
+      <feTurbulence type="turbulence" baseFrequency="0.04 0.5" numOctaves="3" seed="5"/>
+      <feColorMatrix values="0 0 0 0 0.66  0 0 0 0 0.47  0 0 0 0 0.31  0 0 0 0.35 0"/>
+    </filter>
+  </defs>
+  <rect width="200" height="80" fill="#a87850"/>
+  <rect width="200" height="80" filter="url(#wood)"/>
+</svg>
