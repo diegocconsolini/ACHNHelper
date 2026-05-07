@@ -10,14 +10,6 @@ import Dialog from '@/src/design/components/Dialog.jsx';
 export default function DesignShowcase() {
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  if (process.env.NODE_ENV === 'production') {
-    return (
-      <div style={{ padding: 40, fontFamily: 'system-ui' }}>
-        <p>This page is only available in development.</p>
-      </div>
-    );
-  }
-
   return (
     <div
       style={{
