@@ -1,0 +1,51 @@
+{
+  "imageWidth": 1376,
+  "imageHeight": 864,
+  "buildings": [
+    {
+      "id": "resident-services",
+      "label": "Resident Services",
+      "xPct": 41,
+      "yPct": 38,
+      "wPct": 24,
+      "hPct": 50,
+      "route": "/app"
+    },
+    {
+      "id": "nooks-cranny",
+      "label": "Nook's Cranny",
+      "xPct": 67,
+      "yPct": 47,
+      "wPct": 18,
+      "hPct": 22,
+      "route": "/app"
+    },
+    {
+      "id": "able-sisters",
+      "label": "Able Sisters",
+      "xPct": 88,
+      "yPct": 47,
+      "wPct": 16,
+      "hPct": 20,
+      "route": "/app"
+    },
+    {
+      "id": "garden",
+      "label": "Garden",
+      "xPct": 24,
+      "yPct": 70,
+      "wPct": 22,
+      "hPct": 28,
+      "route": "/app"
+    },
+    {
+      "id": "campsite",
+      "label": "Campsite",
+      "xPct": 60,
+      "yPct": 80,
+      "wPct": 22,
+      "hPct": 18,
+      "route": "/app"
+    }
+  ]
+}

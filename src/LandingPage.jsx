@@ -3,25 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { AssetImg } from './assetHelper';
-
-// --- Coverflow sprite data ---
-const COVERFLOW_ITEMS = [
-  { category: 'villagers', name: 'Raymond' },
-  { category: 'fish', name: 'Coelacanth' },
-  { category: 'npcs', name: 'Isabelle' },
-  { category: 'bugs', name: 'Atlas Moth' },
-  { category: 'villagers', name: 'Marshal' },
-  { category: 'npcs', name: 'K.K. Slider' },
-  { category: 'fish', name: 'Oarfish' },
-  { category: 'villagers', name: 'Ankha' },
-  { category: 'npcs', name: 'Celeste' },
-  { category: 'fish', name: 'Whale Shark' },
-  { category: 'villagers', name: 'Bob' },
-  { category: 'bugs', name: "Queen Alexandra's Birdwing" },
-  { category: 'npcs', name: 'Tom Nook' },
-  { category: 'villagers', name: 'Judy' },
-  { category: 'fish', name: 'Golden Trout' },
-];
+import HeroIsland from './island/HeroIsland.jsx';
 
 // --- Category cards ---
 const CATEGORIES = [
@@ -122,17 +104,8 @@ const SHOWCASE_SPRITES = [
 
 export default function LandingPage() {
   const { data: session, status } = useSession();
-  const [coverflowIndex, setCoverflowIndex] = useState(0);
   const [visibleSections, setVisibleSections] = useState({});
   const sectionRefs = useRef({});
-
-  // Auto-rotate coverflow
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCoverflowIndex(prev => (prev + 1) % COVERFLOW_ITEMS.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
 
   // Intersection observer for fade-in
   useEffect(() => {
@@ -171,7 +144,7 @@ export default function LandingPage() {
   return (
     <div style={styles.root}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; }
         @keyframes float {
@@ -180,80 +153,39 @@ export default function LandingPage() {
         }
       `}</style>
 
-      {/* ===== SECTION 1: HERO ===== */}
-      <section style={styles.hero}>
-        <h1 style={styles.heroTitle}>ACNH Helper Suite</h1>
-        <p style={styles.heroSubtitle}>Your complete island companion</p>
-
-        {/* 3D Coverflow */}
-        <div style={styles.coverflowContainer}>
-          <div style={styles.coverflowTrack}>
-            {COVERFLOW_ITEMS.map((item, i) => {
-              const offset = ((i - coverflowIndex + COVERFLOW_ITEMS.length) % COVERFLOW_ITEMS.length);
-              // Normalize to range [-7, 7]
-              const dist = offset > 7 ? offset - COVERFLOW_ITEMS.length : offset;
-              const absDist = Math.abs(dist);
-              const isVisible = absDist <= 4;
-
-              if (!isVisible) return null;
-
-              const translateX = dist * 90;
-              const scale = absDist === 0 ? 1 : Math.max(0.4, 1 - absDist * 0.18);
-              const rotateY = dist * -25;
-              const zIndex = 10 - absDist;
-              const opacity = absDist === 0 ? 1 : Math.max(0.3, 1 - absDist * 0.25);
-
-              return (
-                <div
-                  key={`${item.category}-${item.name}`}
-                  style={{
-                    position: 'absolute',
-                    left: '50%',
-                    top: '50%',
-                    transform: `translate(-50%, -50%) translateX(${translateX}px) scale(${scale}) perspective(800px) rotateY(${rotateY}deg)`,
-                    zIndex,
-                    opacity,
-                    transition: 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                    filter: absDist === 0 ? 'drop-shadow(0 0 20px rgba(94,200,80,0.4))' : 'none',
-                  }}
-                >
-                  <AssetImg
-                    category={item.category}
-                    name={item.name}
-                    size={absDist === 0 ? 80 : 56}
-                    imageType={item.imageType}
-                  />
-                </div>
-              );
-            })}
+      {/* ===== SECTION 1: ISLAND HERO ===== */}
+      <section style={styles.heroNew}>
+        <div style={styles.heroHeader}>
+          <h1 style={styles.heroTitleNew}>ACNH Helper Suite</h1>
+          <p style={styles.heroSubtitleNew}>Your complete island companion</p>
+        </div>
+        <div style={styles.heroIslandWrap}>
+          <HeroIsland />
+        </div>
+        <div style={styles.heroBottom}>
+          <div style={styles.statsBar}>
+            <span style={styles.stat}>40 tools</span>
+            <span style={styles.statDot}>&bull;</span>
+            <span style={styles.stat}>781 recipes</span>
+            <span style={styles.statDot}>&bull;</span>
+            <span style={styles.stat}>21,626 sprites</span>
           </div>
-        </div>
-
-        {/* Stats bar */}
-        <div style={styles.statsBar}>
-          <span style={styles.stat}>24 tools</span>
-          <span style={styles.statDot}>&bull;</span>
-          <span style={styles.stat}>781 recipes</span>
-          <span style={styles.statDot}>&bull;</span>
-          <span style={styles.stat}>21,626 sprites</span>
-        </div>
-
-        {/* CTA buttons */}
-        <div style={styles.ctaRow}>
-          {status === 'authenticated' ? (
-            <button onClick={handleGoToTools} style={styles.ctaPrimary}>
-              Go to my tools &rarr;
-            </button>
-          ) : (
-            <>
-              <button onClick={handleSignIn} style={styles.ctaPrimary}>
-                Sign in with Google
+          <div style={styles.ctaRow}>
+            {status === 'authenticated' ? (
+              <button onClick={handleGoToTools} style={styles.ctaPrimary}>
+                Go to my tools &rarr;
               </button>
-              <button onClick={handleGuest} style={styles.ctaSecondary}>
-                Try as Guest
-              </button>
-            </>
-          )}
+            ) : (
+              <>
+                <button onClick={handleSignIn} style={styles.ctaPrimary}>
+                  Sign in with Google
+                </button>
+                <button onClick={handleGuest} style={styles.ctaSecondary}>
+                  Try as Guest
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </section>
 
@@ -410,47 +342,36 @@ const styles = {
     overflowX: 'hidden',
   },
 
-  // --- Hero ---
-  hero: {
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '60px 24px 40px',
+  // --- Hero (island) ---
+  heroNew: {
+    background: '#0a1a10',
+  },
+  heroHeader: {
     textAlign: 'center',
-    position: 'relative',
-    background: 'radial-gradient(ellipse at 50% 30%, rgba(94,200,80,0.06) 0%, transparent 70%)',
+    padding: '40px 24px 20px',
   },
-  heroTitle: {
-    fontFamily: "'Playfair Display', serif",
-    fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-    fontWeight: 900,
-    color: '#5ec850',
-    margin: '0 0 12px',
-    letterSpacing: '-0.02em',
+  heroTitleNew: {
+    fontFamily: "'Patrick Hand', 'Playfair Display', serif",
+    fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+    fontWeight: 700,
+    color: '#fef6e4',
+    margin: '0 0 8px',
+    letterSpacing: '-0.01em',
   },
-  heroSubtitle: {
-    fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
+  heroSubtitleNew: {
+    fontSize: 'clamp(1rem, 2vw, 1.2rem)',
     color: '#c8e6c0',
-    margin: '0 0 48px',
+    margin: 0,
     fontWeight: 400,
     opacity: 0.85,
   },
-
-  // --- Coverflow ---
-  coverflowContainer: {
-    width: '100%',
-    maxWidth: '700px',
-    height: '120px',
-    position: 'relative',
-    marginBottom: '40px',
-    perspective: '1000px',
+  heroIslandWrap: {
+    padding: '0 24px',
   },
-  coverflowTrack: {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
+  heroBottom: {
+    background: '#0a1a10',
+    padding: '32px 24px 56px',
+    textAlign: 'center',
   },
 
   // --- Stats ---
