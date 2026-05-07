@@ -1,207 +1,235 @@
 # Island Redesign — Design Spec
 
-**Date:** 2026-05-07
-**Status:** Draft for user review
-**Author:** Claude (brainstorm session)
+**Date:** 2026-05-07 (rewritten)
+**Status:** Active
+**Author:** Claude (brainstorm + post-Phase-2 retrospective)
+
+## What changed in this rewrite
+
+The first version of this spec scoped the work as "redress chrome + tokens, keep tool interiors as data tables." After Phase 1 + 2 v2 shipped, the user looked at the live result and pointed out the obvious: a watercolor hero on top of an unchanged dashboard is **not** "the entire application as a real Animal Crossing island experience." That was the original brief. The first spec scoped it down for cost reasons and sold the cut as a plan. This version is honest about what the brief actually requires.
 
 ## Background
 
-The current acnh-portal visual design feels "dated and AI-like" per user feedback. It uses a generic dark-mode SaaS aesthetic (`#0a1a10` slate background, hairline borders, mono-font numerals, emoji-list sidebar) that's indistinguishable from any 2022-era developer tool. The user pointed at posthog.com as a reference: a site that pairs dense functional content with a strong illustrated metaphor (hedgehog village + desktop OS) and recognizable hand-crafted personality.
+User asked: "I would like the entire application to be an real Animal Crossing Island experience." They referenced posthog.com — a site where:
 
-The goal: make acnh-portal feel like a real Animal Crossing island experience, while preserving the dense, functional dashboards that actual island players want.
+- Hand-drawn illustration is **everywhere**, not just a hero
+- A recurring character (Max the hedgehog) appears across pages, doing different things
+- Two metaphors (desktop OS + village) layer continuously across the product
+- Personality is dense: easter eggs, jokes, irreverent labels, hand-drawn chrome
+- Every page reinforces the metaphor, not just the front door
 
-## Goals
+What we shipped through Phase 2 v2: one watercolor illustration on the landing hero, plus a token system. Real lift, but maybe 5% of the actual ask.
 
-1. Replace the generic dark-mode landing page with a top-down island scene that signals "this is an Animal Crossing site" within 2 seconds.
-2. Establish a coherent design system rooted in ACNH's actual in-game UI vocabulary (paper textures, signposts, speech-bubble dialogs, NookPhone-style buttons).
-3. Redress the portal shell — sidebar, headers, modals, dialogs, buttons, drawers — to use that design system.
-4. Update shared building blocks across all 40 tools so the visual language is consistent everywhere, without reimagining individual tool data interiors.
+## Goals (revised)
+
+1. **Persistent illustrated identity.** A recurring character (Isabelle as Resident Services receptionist, primary host) appears on the sidebar, in empty states, in transitions, in the 404 page. Hand-drawn signage, plaques, and chrome appear across the entire portal — not just the landing.
+2. **Every tool framed as in-world.** Tools are not "dashboards with island colors" — they are activities you do on the island, with a host NPC and an island setting. Examples: Bell Calculator is "Tom Nook's ledger." Museum Tracker is "Blathers' notebook." Garden Planner is the actual Garden plot. The data itself stays accurate and dense; only the framing changes.
+3. **Continuous metaphor across phases.** Sidebar is a hand-drawn island map / signpost board, not a flat list. Header is a wooden plaque with the active tool's NPC. Modals are NookPhone alerts. Loading states are characters waiting. Empty states are characters with a thought bubble.
+4. **Easter eggs density matching PostHog's tone.** A hidden K.K. Slider on the 404. Tom Nook murmuring about loans in a tooltip. Bunny Day decorations in April. The trash can labeled "Trash."
 
 ## Non-goals
 
-- Do **not** turn each tool into a literal in-game artifact (no "Fish Tracker as tackle box," no "Bell Calculator as Tom Nook's ledger"). Form-over-function risk too high; out of scope.
-- Do **not** wrap the entire app inside a NookPhone frame. Density loss too severe; out of scope.
-- Do **not** introduce NPC hosts (Isabelle as sidebar, Tom Nook for shop tools). Cute but heavy maintenance and adds metaphor layers we already cut.
-- Do **not** change tool data structures, table layouts, or any functional behavior. Visual language only.
+- Do not change tool data structures, table accuracy, table columns, or any functional behavior.
+- Do not gate UX behind login (guest mode preserved).
+- Do not commission $3k of human illustration. We use Midjourney heavily — accept ~80% PostHog quality, not 100%.
+- Do not remove existing dense data UI in service of cuteness. The information density that real players want stays.
 
-## Design decisions (validated with user)
+## The single most important decision
 
-### Metaphor structure: two layers
+**Isabelle is the recurring host.** She is canonical for "Resident Services" (the welcome NPC in actual ACNH), her sprite already exists in the asset library, and she's been on the project's avatar/sidebar for a while. Phase 3 introduces her as a persistent presence. Phases 4-6 give individual tools secondary hosts (Tom Nook for economy tools, Blathers for museum tools, K.K. Slider for music, Celeste for celestial events, etc.).
 
-- **Layer 1 — Landing page = island scene.** Top-down isometric island. Buildings (Resident Services, Museum, Nook's Cranny, Able Sisters, Garden, Beach, Campsite) are clickable. Each routes to the relevant section of the portal. Signposts, paths, water, sky.
-- **Layer 2 — Portal interior = redressed shell.** Existing sidebar + tool layout structure, redressed in ACNH game-UI design language. No metaphor layered on top — it's a tool, but every pixel reads ACNH.
-
-### Art sourcing: equal mix per component
-
-- **Hand-built SVG** for: island scene (hills, paths, water, buildings), signposts, decorative UI shapes (speech bubbles, dialog boxes, buttons), backgrounds.
-- **Existing Nintendo sprites** (the 21,626 in `public/assets-web/`) for: critters in the scene, items in cards, decorative accents.
-- **AI-generated** for: texture fills (sand, grass, water surface), atmospheric backgrounds (sky gradients with painted clouds), specific scene elements that SVG can't reach but where a single texture file is enough.
-
-The choice is per-component, not per-phase.
-
-### Transition: phase-by-phase to main, no flags
-
-Each phase ships straight to main when ready. No feature flags, no theme toggle, no `redesign/island` branch. Matches the rest of the project's tempo (auto-commit hook, frequent direct commits). Acceptable that intermediate states look half-redressed.
-
-### Tool redress depth: chrome + shared components
-
-- All shared components (buttons, modals, dialogs, drawers, section headers, hover states, loading states, empty states) get redesigned.
-- Tool data interiors (tables, grids, drawers) keep their structure but inherit new fonts/colors/spacing/borders from the design system.
-- No tool gets a bespoke metaphor.
+Each tool gets one host. Each host appears with a hand-drawn portrait + speech bubble welcoming the user, plus reappears in empty/error/loading states for that tool.
 
 ## Architecture
 
-### New files
+### Recurring character system
 
 ```
-src/
-├── design/
-│   ├── tokens.js              # Design tokens: colors, type, spacing, shadows, radii
-│   ├── components/
-│   │   ├── Button.jsx         # Island-styled button (replaces inline button styles)
-│   │   ├── Dialog.jsx         # Speech-bubble dialog (replaces ConfirmModal/AlertModal)
-│   │   ├── Card.jsx           # Paper-textured card
-│   │   ├── Signpost.jsx       # Section header as wooden signpost
-│   │   ├── Drawer.jsx         # Side drawer with paper texture
-│   │   ├── Pill.jsx           # Pill-shaped status / tag
-│   │   ├── ProgressRing.jsx   # Wooden-rim progress ring
-│   │   └── PaperPanel.jsx     # Generic paper-textured panel
-│   └── textures/
-│       ├── paper-light.svg
-│       ├── paper-dark.svg
-│       ├── grass.svg
-│       └── ...
-├── island/
-│   ├── IslandScene.jsx        # Main landing-page island (SVG)
-│   ├── Building.jsx           # Clickable building component
-│   ├── BuildingTooltip.jsx    # Hover label / preview
-│   └── data.js                # Building → route mapping
-└── LandingPage.jsx            # REWRITTEN to use IslandScene
+src/characters/
+├── index.js                 # Character registry: id, name, role, portrait, voice
+├── Greeting.jsx             # <Greeting character="isabelle" mood="welcome" />
+├── EmptyState.jsx           # <EmptyState character="blathers" message="No fish caught yet" />
+├── LoadingState.jsx         # Animated character waiting (sprite + idle anim)
+└── portraits/               # Generated character portrait PNGs/WebPs
+    ├── isabelle-welcome.webp
+    ├── isabelle-thinking.webp
+    ├── tom-nook-counting.webp
+    ├── blathers-reading.webp
+    ├── kk-slider-strumming.webp
+    ├── celeste-stargazing.webp
+    └── ... (one per tool host)
 ```
 
-### Files modified
+### Hand-drawn chrome
 
-- `src/App.jsx` — sidebar gets new chrome (signposts as section headers, paper-panel sidebar background), but routing/lazy loading unchanged.
-- `src/ConfirmModal.jsx`, `src/AlertModal.jsx` — replaced by `design/components/Dialog.jsx`.
-- All 40 artifact files in `src/artifacts/` — touched to swap inline styles for design-system tokens. No structural changes.
-- `src/SettingsContext.jsx` — modal theme system (current 3-theme picker) extends to support the new theme.
-
-### Design tokens (preview)
-
-```js
-// src/design/tokens.js
-export const tokens = {
-  color: {
-    // Sky / water
-    skyDay:    '#86c5da',
-    skySunset: '#f4a261',
-    water:     '#5b9bd5',
-    // Land
-    grass:     '#7fb069',
-    grassDark: '#5a8050',
-    sand:      '#f1d9a0',
-    path:      '#c9a875',
-    // Wood / paper / sign
-    wood:      '#a87850',
-    woodDark:  '#704830',
-    paper:     '#fef6e4',
-    paperDark: '#f0e6c8',
-    ink:       '#3a2a1a',
-    // Accents (carry forward from current)
-    accentLeaf:    '#5ec850',
-    accentBell:    '#d4b030',
-    accentSky:     '#4aacf0',
-    accentBerry:   '#e85a5a',
-  },
-  font: {
-    display:   "'Fink Heavy', 'Playfair Display', serif", // ACNH's logo font, falls back gracefully
-    body:      "'Humming', 'DM Sans', sans-serif",        // ACNH's UI font
-    handwriting: "'Patrick Hand', cursive",               // Letter / signpost text
-    mono:      "'DM Mono', monospace",
-  },
-  radius: { sm: 6, md: 12, lg: 24, pill: 999 },
-  shadow: {
-    paper: '0 2px 8px rgba(58, 42, 26, 0.12), 0 1px 2px rgba(58, 42, 26, 0.08)',
-    sign:  '4px 6px 12px rgba(58, 42, 26, 0.25)',
-  },
-};
+```
+public/island/chrome/
+├── signpost-blank.png       # Wooden signpost — used as section header background
+├── plaque-wide.png          # Wooden plaque — used as page header background
+├── leaf-bullet.png          # Hand-drawn leaf — sidebar nav bullet
+├── speech-bubble-paper.png  # Speech bubble — used by Greeting/EmptyState
+├── nookphone-frame.png      # Phone-style frame — used for modals
+└── ... (10-12 chrome assets total)
 ```
 
-> **Font note:** ACNH's actual fonts (Fink Heavy, Humming Std) are Nintendo property. We fall back to free Google Font equivalents (Playfair Display for display, DM Sans for body, Patrick Hand for handwriting). Fink/Humming are listed as primary for users who happen to have them; the fallbacks are what most users will see.
+All generated as a coherent batch in Midjourney to ensure visual consistency. Hand-drawn line work, watercolor fills, transparent backgrounds where possible.
 
-## Phasing
+### Tool framing pattern
 
-Each phase is independently shippable. Phases proceed in order — Phase 1 ships before Phase 2 starts.
+Every redressed tool follows this structure:
 
-### Phase 1 — Design system foundation (3-5 days)
-- `src/design/tokens.js` — all design tokens in one file
-- 3-4 base components: `Button`, `Dialog`, `Card`, `PaperPanel`
-- Texture SVGs (paper, grass, wood)
-- Storybook-style demo page at `/design` (gated, dev-only) so we can review components in isolation
-- **Ships when:** demo page renders, all components have hover/focus/disabled states, tokens documented
+```jsx
+<ToolFrame host="tom-nook" location="nooks-cranny">
+  <HostGreeting mood="welcome">
+    "Yes yes! Looking to check today's turnip prices?"
+  </HostGreeting>
 
-### Phase 2 — Landing page island (5-7 days)
-- `src/island/IslandScene.jsx` — top-down SVG island
-- 7-8 clickable buildings mapped to portal sections
-- Time-of-day variation (light/sunset/night based on user's local time, matches ACNH game behavior)
-- Existing coverflow → replaced
-- Existing landing CTAs (Sign in, Try as Guest) → repositioned as wooden signs
-- **Ships when:** posted to main, replaces current landing fully
+  {/* Existing dense data UI — unchanged */}
+  <YourExistingDataTable />
 
-### Phase 3 — Portal shell (4-6 days)
-- `src/App.jsx` sidebar redress: paper background, signpost section headers, leaf-bullet items
-- Top header: paper texture, signpost-style version label
-- All `ConfirmModal` / `AlertModal` calls migrate to `Dialog`
-- Drawer styling for tool detail views
-- **Ships when:** the entire portal shell uses design-system components, no remaining inline `style={{...}}` for chrome elements
+  <HostFloatingTip>
+    "Sundays are for buying. Daisy Mae visits at dawn."
+  </HostFloatingTip>
+</ToolFrame>
+```
 
-### Phase 4 — Tool wave 1: Critterpedia + Museum (3-4 days)
-Tools: FishTracker, BugTracker, SeaCreatureTracker, MuseumTracker, GoldenToolTracker, NookMilesTracker, GyroidTracker, FossilTracker, PhotoPosterTracker
-- Each tool's inline styles swapped for design-system tokens
-- Section headers → `<Signpost>`
-- Inline buttons → `<Button>`
-- Detail drawers → `<Drawer>` with paper texture
+`ToolFrame` provides:
+- Header plaque with location name + host portrait
+- Background that ties to the island (a corner of Nook's Cranny visible, e.g.)
+- Empty / loading / error states with the host character
+- Footer with a wooden tool-tray containing tool actions
 
-### Phase 5 — Tool wave 2: Economy + Gardening + Special (3-4 days)
-Tools: TurnipTracker, BellCalculator, NooksCrannyLog, MaterialCalculator, FlowerCalculator, GardenPlanner, IslandFlowerMap, GulliverTracker, ArtDetector, KKCatalogue, FiveStarChecker
+### Sidebar redesign
 
-### Phase 6 — Tool wave 3: Island Life + Profile + Community (3-4 days)
-Tools: Dashboard, DailyRoutine, VillagerGiftGuide, SeasonalEventCalendar, DIYRecipeTracker, CelesteMeteorTracker, DreamAddressBook, LabelFashionHelper, HHACalculator, CatalogTracker, CommunityHub, UserProfile, plus the new 3.0 tools (HotelTracker, IslandTuneCreator, VillagerCompatibility)
+Replace the flat list of emoji + label with a **hand-drawn island map**. The 6 sidebar sections become drawn locations on the map:
 
-### Phase 7 — Polish + cleanup (2-3 days)
-- Animation polish: leaf-falling background, time-of-day gradient transitions
-- Empty/loading/error states across all tools
-- Accessibility audit (focus rings, ARIA, contrast)
-- Delete unused old chrome code
-- Update screenshots in README
+- 🐟 Critterpedia → small dock with fishing rod
+- 🏛️ Museum & Progress → museum building (re-uses Blathers' museum)
+- 💰 Economy & Planning → Nook's Cranny + bell pile
+- 🌸 Gardening → garden plot
+- 🎨 Special & Art → Able Sisters or beach
+- 🏠 Island Life → Resident Services tent + villager
 
-**Total estimate:** 23-33 working days (~5-7 weeks calendar time at typical pace).
+Hovering a location lights it up; clicking expands sub-tools as wooden signs underneath. Active tool gets a glowing pin.
+
+This map is drawn once in Midjourney, then enriched with hover hotspots like the landing.
+
+### Pervasive personality
+
+- **404 page** → "K.K. Slider is composing a song. The page you're looking for hasn't been written yet."
+- **Loading** → "Resetti is checking your save data."
+- **Modal confirms** → "Tom Nook needs a moment of your time."
+- **Empty wishlist** → "Timmy and Tommy haven't suggested anything yet."
+- **Sign out modal** → "Heading back to the airport? See you again soon!"
+- **Trash icon** → labeled "Recycle Bin" with a leaf-pile drawing
+
+## Phasing (rewritten)
+
+Total estimate: **8-12 weeks calendar time**. Earlier estimate of 5-7 weeks was for the watered-down spec.
+
+### Phase 3 — Persistent character system + sidebar map (8-10 days)
+
+The keystone phase. Everything downstream depends on having a working character system + island-map sidebar.
+
+- Generate **6 character portraits** (Isabelle in 2 moods + 4 secondary NPCs) via Midjourney
+- Build `src/characters/` registry + `Greeting`, `EmptyState`, `LoadingState` components
+- Generate **island-map sidebar art** via Midjourney (top-down map showing the 6 locations)
+- Build `src/island/SidebarMap.jsx` — replaces the current `<nav>` in `App.jsx`
+- Migrate `ConfirmModal` → speech-bubble dialog (with character portrait)
+- Migrate `AlertModal` → speech-bubble dialog
+- Replace global header with wooden plaque + active-host portrait
+- 404 page redesign with K.K. Slider
+
+**Done when:** logged-in user lands on a portal with a hand-drawn island map sidebar, an active host greeting them, and themed modals throughout. The visual identity is consistent from landing → portal.
+
+### Phase 4 — Tool wave 1: high-personality tools (10-14 days)
+
+Not retokenizing 9 tools. Reframing 5 high-impact tools as in-world activities:
+
+- **Dashboard** ("Available Now") → Isabelle reading from the morning announcement board. Critter cards become posted notices.
+- **Bell Calculator** → Tom Nook's ledger. Numbers in handwriting font, on parchment.
+- **Turnip Tracker** → Daisy Mae's cart on Sundays, Nook's price board the rest of the week. Graph as wooden trend chart.
+- **Museum Tracker** → Blathers' notebook. Each section opens like a journal page.
+- **Wishlist** → Tommy & Timmy's order pad.
+
+Each tool gets:
+- 1 hosted-greeting (host portrait + speech bubble at top)
+- Themed background tied to the location
+- Empty/loading/error states with the host
+- 1-2 easter-egg tooltips with character voice
+
+### Phase 5 — Tool wave 2: data-heavy tools (8-12 days)
+
+- Fish Tracker → C.J. dockside
+- Bug Tracker → Flick at the campsite
+- Sea Creature Tracker → diving area at the beach
+- Flower Calculator → Leif at the garden shop
+- Garden Planner → island garden plot
+- DIY Recipe Tracker → Cyrus' workbench
+- Daily Routine → Isabelle's morning checklist
+
+Same per-tool pattern as Phase 4.
+
+### Phase 6 — Tool wave 3: long tail + community (8-10 days)
+
+- KK Catalogue → K.K. Slider on the plaza
+- Seasonal Events → Celeste under stars
+- Villager Gift Guide → mailbox + villagers' photo wall
+- Dream Address Book → Luna's bed
+- Community Hub → bulletin board outside Resident Services
+- Remaining tools (Nook Miles, 5-Star Checker, etc.) get the simplest framing — host + speech bubble + theme background, no full reframe
+
+### Phase 7 — Personality density + polish (6-8 days)
+
+- Easter eggs across the app (the Tom Nook loan tooltip, the K.K. Slider 404, hidden Mr. Resetti, bunny day variations, etc.)
+- Animations: Isabelle's idle wave, leaves drifting on backgrounds, time-of-day sky tinting on illustrations
+- Sound: optional ACNH-style "click" on hover for major buttons (toggleable)
+- Comprehensive a11y audit across the new chrome
+- Performance pass — total illustration weight under 2 MB across all generated assets
+
+## Asset budget
+
+Midjourney generations needed across the project (estimate):
+
+- Phase 3: 8-12 generations (6 character portraits + sidebar map + 4 chrome assets, with iteration)
+- Phase 4: 10 generations (5 tools × 2 illustrations each)
+- Phase 5: 14 generations (7 tools × 2 illustrations each)
+- Phase 6: 8 generations (long tail + community)
+- Phase 7: 6 generations (easter eggs + 404 + sign-in)
+
+**Total: 45-50 Midjourney generations**, ~$30-50 in subscription costs over the project (already covered by your existing Standard plan).
 
 ## Risk register
 
 | Risk | Likelihood | Mitigation |
-|------|------------|------------|
-| SVG island scene looks amateur compared to PostHog reference | High | Phase 1 design system review checkpoint; OK to extend Phase 2 by a week if needed |
-| Half-redressed site looks worse than current during transition | Medium | Phase ordering: ship landing first (best wow), then shell (most visible), then tools by section. Each phase removes more "old" |
-| 40 tools × inline-style swap is tedious and error-prone | Medium | Codemod / search-replace where safe; Phase 4-6 are time-boxed; tests catch regressions |
-| Theme system (3 modal themes) conflicts with new design system | Low | Phase 3 explicitly migrates ConfirmModal/AlertModal — modal theme system either extends or is deprecated; decide in Phase 1 |
-| User loses trust in pace if Phase 1 takes longer than 5 days | Low | Day-3 checkpoint with screenshots; reset expectations if the design system isn't clicking |
+|------|-----------|------------|
+| Character portraits drift in style across generations | High | First generation locks the style with explicit prompt elements (`watercolor, hand-drawn line work, ACNH-style, soft pastel palette, transparent background`). Subsequent generations re-use the prompt template. Inconsistent ones get re-generated. |
+| Sidebar map can't accommodate 30+ tools | Medium | Map shows 6 location-categories, not individual tools. Click a location → wooden signs slide out for the tools in that category. |
+| Pervasive illustration hurts performance | Medium | Total asset budget capped at 2 MB. WebP at q82 default. Lazy-load illustrations not in viewport. |
+| Each tool's host is overkill for tiny tools | Low | Long-tail tools (Nook Miles, 5-Star Checker) get shared "Isabelle" host treatment, not bespoke characters. |
+| Estimate slippage | High | The 8-12 week range is honest but generous. If a phase blows past estimate, we either narrow scope (tools without bespoke art) or extend timeline. We do not ship broken. |
 
-## Open questions for user review
+## What "done" actually means
 
-1. **Fonts.** Spec lists Fink Heavy + Humming as primary with Patrick Hand / Playfair / DM Sans as fallbacks. Want to pick alternative free fonts upfront (e.g., Schoolbell, Nunito) or accept the listed fallbacks?
-2. **Building set on landing.** Spec lists 7-8 buildings (Resident Services, Museum, Nook's Cranny, Able Sisters, Garden, Beach, Campsite). Should the building list match the existing 6 sidebar sections instead, or use the in-game canonical building set?
-3. **Modal theme system.** Currently users can pick 3 modal themes (per-user preference). Does this stay (theme variants of new Dialog) or get deprecated (single new look replaces it)?
-4. **Phase 1 demo page.** Spec proposes a dev-only `/design` page for reviewing components. Acceptable, or skip it?
+Done = a first-time visitor goes through the whole flow:
 
-## Success criteria
+1. Lands on the watercolor island → wow
+2. Clicks "Try as Guest" → portal loads with hand-drawn sidebar map and Isabelle greeting them
+3. Clicks Bell Calculator → Tom Nook's ledger opens, parchment background, calculator in handwriting, "Yes yes" tooltip
+4. Refreshes → 404 from a typo'd URL → K.K. Slider on a stage
+5. Signs out → "Tom Nook waves goodbye"
 
-- A first-time visitor seeing the landing page should know it's an Animal Crossing site without reading any text.
-- The portal interior, after redress, should feel coherent with the landing page — same colors, same fonts, same component vocabulary.
-- A returning user should not lose any functionality. All 40 tools keep working identically.
-- npm audit, npm test, npm run build all pass after every phase.
-- Each phase ships to main independently; no merge-day disasters.
+…and at no point in that journey does the user see the old dark-mode SaaS chrome. Coherent illustrated metaphor, end to end.
+
+## What we keep from the original spec
+
+- Phase 1 design tokens — still valid, used as a fallback/baseline
+- Phase 2 v2 hero illustration — already shipped, still good
+- Phase-by-phase ship-to-main pattern, no flags
+- The four "open questions" answered (Patrick Hand fonts, etc.) — carry forward
 
 ## Implementation plan
 
-This spec is the input to writing-plans. After user approval, the next step is to invoke writing-plans to produce a detailed implementation plan covering Phase 1 in full and the structure of Phases 2-7. Issues will be opened on GitHub once writing-plans produces the work breakdown.
+This spec is the input to writing-plans. After acknowledgment, the next step is to invoke writing-plans for Phase 3 (the keystone phase) only — not Phase 4-7. Phase 4-7 plans get written when their predecessor lands, since each phase's character work informs the next's.
+
+Issues will be reopened/rewritten on GitHub once Phase 3 plan exists.
