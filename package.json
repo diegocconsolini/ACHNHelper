@@ -1,7 +1,7 @@
 {
   "name": "acnh-portal",
   "private": true,
-  "version": "5.1.0",
+  "version": "5.0.2",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
