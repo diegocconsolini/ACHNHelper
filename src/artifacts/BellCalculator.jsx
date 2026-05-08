@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
+import HostFloatingTip from '../characters/HostFloatingTip.jsx';
 
 const loanData = {
   tent: { name: 'Tent → House', cost: 98000 },
@@ -238,13 +240,23 @@ export default function BellCalculator() {
   };
 
   return (
+    <ToolFrame
+      host="tom-nook"
+      background="/island/tool-backgrounds/bell-ledger.webp"
+      greeting="Yes, yes! Let's tally up your bells. Loans, expenses, savings — I'll keep the books honest."
+    >
     <div style={styles.container}>
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}
       </style>
 
       <div style={styles.header}>
-        💰 Bell Calculator
+        💰 Bell Calculator{' '}
+        <HostFloatingTip
+          character="tom-nook"
+          trigger="Why pay loans?"
+          message="Hm-hm! Each loan you settle, I'll expand your home. Don't rush, though — there's no interest. I am very generous."
+        />
       </div>
 
       <div style={styles.tabContainer}>
@@ -449,5 +461,6 @@ export default function BellCalculator() {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 }
