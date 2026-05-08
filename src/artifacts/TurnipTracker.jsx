@@ -560,6 +560,12 @@ const PriceGraph = ({ prices, buyPrice }) => {
 };
 
 const TurnipTracker = () => {
+  const isSunday = new Date().getDay() === 0;
+  const host = isSunday ? 'daisy-mae' : 'tom-nook';
+  const greeting = isSunday
+    ? "Hey there, sugar! Bunch of fresh stalks for sale today. Buy 'em up before I leave at noon!"
+    : "Yes, yes — Sundays are for buying, weekdays are for selling. The price board says today's offer.";
+
   const [buyPrice, setBuyPrice] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [prices, setPrices] = useState({
@@ -683,6 +689,11 @@ const TurnipTracker = () => {
   };
 
   return (
+    <ToolFrame
+      host={host}
+      background="/island/tool-backgrounds/turnip-cart-and-stall.webp"
+      greeting={greeting}
+    >
     <div style={{
       width: '100%',
       background: '#0a1a10',
@@ -694,6 +705,14 @@ const TurnipTracker = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
       `}</style>
+
+      <div style={{ marginBottom: 16 }}>
+        <HostFloatingTip
+          character="tom-nook"
+          trigger="When should I sell?"
+          message="Yes, yes — patterns repeat! Watch the morning and afternoon prices for four days. Spikes peak high. Don't sell in a rush."
+        />
+      </div>
 
       <h1 style={{
         fontSize: 32, marginBottom: 6,
@@ -1086,6 +1105,7 @@ const TurnipTracker = () => {
         onClose={() => setShowAlert(false)}
       />
     </div>
+    </ToolFrame>
   );
 };
 
