@@ -6,9 +6,9 @@ import { characters, getCharacter, getPortrait } from '../../src/characters/inde
 const PUBLIC = path.join(process.cwd(), 'public');
 
 describe('character registry', () => {
-  it('has the 7 Phase 3+4 hosts', () => {
+  it('has the 11 Phase 3+4+5 hosts', () => {
     expect(Object.keys(characters).sort()).toEqual(
-      ['blathers', 'celeste', 'daisy-mae', 'isabelle', 'kk-slider', 'tom-nook', 'tommy-timmy']
+      ['blathers', 'celeste', 'cj', 'cyrus', 'daisy-mae', 'flick', 'isabelle', 'kk-slider', 'leif', 'tom-nook', 'tommy-timmy']
     );
   });
 

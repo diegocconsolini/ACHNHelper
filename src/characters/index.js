@@ -58,6 +58,38 @@ export const characters = {
     portraits: { counter: '/island/characters/tommy-timmy-counter.webp' },
     defaultMood: 'counter',
   },
+  cj: {
+    id: 'cj',
+    name: 'C.J.',
+    role: 'Travelling fisherman',
+    voice: 'pumped-up, calls every fish "MAJESTIC"',
+    portraits: { fisherman: '/island/characters/cj-fisherman.webp' },
+    defaultMood: 'fisherman',
+  },
+  flick: {
+    id: 'flick',
+    name: 'Flick',
+    role: 'Travelling bug-hunter and sculptor',
+    voice: 'theatrical, considers every bug an art piece',
+    portraits: { camp: '/island/characters/flick-camp.webp' },
+    defaultMood: 'camp',
+  },
+  leif: {
+    id: 'leif',
+    name: 'Leif',
+    role: 'Sloth gardener',
+    voice: 'mellow, slow, fond of puns',
+    portraits: { garden: '/island/characters/leif-garden.webp' },
+    defaultMood: 'garden',
+  },
+  cyrus: {
+    id: 'cyrus',
+    name: 'Cyrus',
+    role: 'Workbench customizer',
+    voice: 'gruff but warm, tradesman pride',
+    portraits: { workbench: '/island/characters/cyrus-workbench.webp' },
+    defaultMood: 'workbench',
+  },
 };
 
 export function getCharacter(id) {
