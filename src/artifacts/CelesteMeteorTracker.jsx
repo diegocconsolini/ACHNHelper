@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const ZODIACS = [
   { name: 'Capricorn', emoji: '♑', dates: 'Dec 22 - Jan 19', item: 'Capricorn Ornament', materials: '2 Capricorn Frags, 3 Star Frags, 2 Gold Nuggets, 12 Stone' },
@@ -813,6 +814,11 @@ const CelesteMeteorTracker = () => {
   };
 
   return (
+    <ToolFrame
+      host="celeste"
+      background="/island/tool-backgrounds/dashboard-bulletin.webp"
+      greeting="Did you wish on a star tonight? I have so many recipes for you when you do!"
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -1060,6 +1066,7 @@ const CelesteMeteorTracker = () => {
 
       {renderDrawer()}
     </div>
+    </ToolFrame>
   );
 };
 

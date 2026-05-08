@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const TABS = [
   { id: 'furniture', label: 'Furniture', emoji: '🪑', endpoint: 'furniture' },
@@ -582,6 +583,11 @@ const DetailPanel = ({ data, tab, isCataloged, onToggle }) => {
   const firstImage = variations.length > 0 ? (variations[0].image_url || variations[0].storage_image) : (item.image_url || null);
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Tracking your catalog progress! Keep collecting until you've got every last item."
+    >
     <div style={styles.detailContent}>
       {/* Main image */}
       {firstImage && (
@@ -685,6 +691,7 @@ const DetailPanel = ({ data, tab, isCataloged, onToggle }) => {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

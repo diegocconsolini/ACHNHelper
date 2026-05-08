@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // ─── Themes ───────────────────────────────────────────────────────────────────
 
@@ -370,6 +371,11 @@ export default function IslandCard() {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Your official island business card! Show it off to friends from other islands."
+    >
     <div style={styles.root}>
       <style>{fontImport}</style>
 
@@ -439,6 +445,7 @@ export default function IslandCard() {
         The card pulls collection progress from your tracked tools (Museum, Fish, Bugs, Sea, Fossils, Art, DIY, K.K. Songs) and resident names from Villager Compatibility. Tools you haven't used yet are silently skipped.
       </p>
     </div>
+    </ToolFrame>
   );
 }
 

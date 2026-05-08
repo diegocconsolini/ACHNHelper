@@ -6,6 +6,7 @@ import { AssetImg } from '../assetHelper';
 import { useSettings } from '../SettingsContext';
 import { MODAL_THEMES, THEME_KEYS } from '../modalThemes';
 import ConfirmModal from '../ConfirmModal';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const FLOWERS = [
   'cosmos', 'hyacinths', 'lilies', 'mums',
@@ -143,6 +144,11 @@ export default function UserProfile() {
   }
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Your profile and settings. Make the suite feel like yours!"
+    >
     <div style={styles.container}>
       <style>{fontImport}</style>
 
@@ -402,6 +408,7 @@ export default function UserProfile() {
         onCancel={() => setPreviewTheme(null)}
       />
     </div>
+    </ToolFrame>
   );
 }
 

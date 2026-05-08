@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const CATEGORIES = [
   { id: 'item', label: 'Item', emoji: '📦' },
@@ -140,6 +141,11 @@ export default function TradingBoard() {
   const myCount = useMemo(() => trades.filter(t => t.is_mine).length, [trades]);
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/dashboard-bulletin.webp"
+      greeting="Looking to trade? Post your offers here for the community to see!"
+    >
     <div style={styles.root}>
       <style>{fontImport}</style>
 
@@ -322,6 +328,7 @@ export default function TradingBoard() {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 }
 

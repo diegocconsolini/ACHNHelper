@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const ART_DATA = [
   // PAINTINGS - Always Real (14)
@@ -770,6 +771,11 @@ const ArtDetector = () => {
   }
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Redd's got new art at the boat. Real or fake? Let's check them all carefully!"
+    >
     <div style={styles.container}>
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -1285,6 +1291,7 @@ const ArtDetector = () => {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

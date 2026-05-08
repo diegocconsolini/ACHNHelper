@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const GoldenToolTracker = () => {
   const [toolsData, setToolsData] = useState({
@@ -390,6 +391,11 @@ const ToolCard = ({ toolAssetName, name, requirement, isUnlocked, progressPercen
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Working toward the legendary golden tools? Check off each requirement here!"
+    >
     <div style={cardStyle}>
       <div style={styles.emojiSection}><AssetImg category="tools" name={toolAssetName} size={40} /></div>
       <h3 style={{
@@ -421,6 +427,7 @@ const ToolCard = ({ toolAssetName, name, requirement, isUnlocked, progressPercen
         <div style={styles.unlockedBadge}>🏆 Unlocked!</div>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

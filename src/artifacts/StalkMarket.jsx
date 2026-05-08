@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const SLOTS = [
   { id: 0, kind: 'buy', label: 'Sun (Daisy Mae)' },
@@ -283,10 +284,16 @@ export default function StalkMarket() {
 
 function SummaryCard({ label, value, color }) {
   return (
+    <ToolFrame
+      host="tom-nook"
+      background="/island/tool-backgrounds/turnip-cart-and-stall.webp"
+      greeting="Live community turnip prices! Find a buyer paying top bell."
+    >
     <div style={styles.summaryCard}>
       <div style={{ color, fontSize: 22, fontWeight: 700, fontFamily: "'DM Mono', monospace" }}>{value}</div>
       <div style={styles.summaryLabel}>{label}</div>
     </div>
+    </ToolFrame>
   );
 }
 

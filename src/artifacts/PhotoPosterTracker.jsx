@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const STORAGE_KEY = 'acnh-photo-poster-tracker';
 
@@ -193,6 +194,11 @@ const PhotoPosterTracker = () => {
   const drawerVillager = drawerItem ? extractVillagerName(drawerItem) : '';
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Track villager photos and posters! 966 total — collect them all!"
+    >
     <div style={{ ...styles.container, opacity: fadeIn ? 1 : 0, transition: 'opacity 0.5s ease' }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
 
@@ -478,6 +484,7 @@ const PhotoPosterTracker = () => {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import ConfirmModal from '../ConfirmModal';
 import AlertModal from '../AlertModal';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const THEME_TAGS = ['Cottagecore', 'Japanese', 'Urban', 'Fairytale', 'Spooky', 'Natural', 'Modern', 'Tropical', 'Medieval', 'Space', 'Farm', 'Cluttercore', 'Minimalist', 'Custom'];
 
@@ -645,6 +646,11 @@ const AddEntryForm = ({ onSubmit, styles }) => {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Visit other islands in your dreams! Just give me an address and I'll send you there."
+    >
     <div style={styles.form}>
       <div style={styles.formGroup}>
         <label style={styles.label}>Island Name</label>
@@ -732,6 +738,7 @@ const AddEntryForm = ({ onSubmit, styles }) => {
         onClose={() => setAlertMsg(null)}
       />
     </div>
+    </ToolFrame>
   );
 };
 

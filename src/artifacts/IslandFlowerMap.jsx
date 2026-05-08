@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const KanbanCard = ({ project, getStatusColor, getPriorityColor, getDaysElapsed, moveProject, deleteProject }) => (
   <div style={{
@@ -266,6 +267,11 @@ const IslandFlowerMap = () => {
   const statuses = ['Planned', 'In Progress', 'Waiting', 'Complete'];
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/garden-plot.webp"
+      greeting="Plan flower breeding ops across your island. Track every Kanban column!"
+    >
     <div style={{
       background: '#0a1a10',
       color: '#c8e6c0',
@@ -603,6 +609,7 @@ const IslandFlowerMap = () => {
         }
       `}</style>
     </div>
+    </ToolFrame>
   );
 };
 

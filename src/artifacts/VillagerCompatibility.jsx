@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { VILLAGERS } from './villagerData.js';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // ─── Static reference data ────────────────────────────────────────────────────
 // 8 personalities in ACNH. Trait summaries paraphrase consistently documented
@@ -522,6 +523,11 @@ function PersonalitiesView({ counts }) {
 
 function MatrixView() {
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Curious which villagers get along? Let's find out who'd make great neighbors."
+    >
     <div style={styles.body}>
       <div style={styles.card}>
         <h2 style={styles.cardTitle}>Compatibility Matrix</h2>
@@ -563,6 +569,7 @@ function MatrixView() {
         </div>
       </div>
     </div>
+    </ToolFrame>
   );
 }
 

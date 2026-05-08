@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const GULLIVER_REWARDS = [
   'Pagoda', 'Pyramid', 'Sphinx', 'Stonehenge', 'Statue of Liberty',
@@ -337,6 +338,11 @@ const GulliverTracker = () => {
   }
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/sea-beach.webp"
+      greeting="Gulliver washed up on the beach again? Let's get him home and earn that reward!"
+    >
     <>
       <style>
         {`
@@ -496,6 +502,7 @@ const GulliverTracker = () => {
 
       {renderDrawer()}
     </>
+    </ToolFrame>
   );
 };
 

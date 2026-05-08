@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import AlertModal from '../AlertModal';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const STORAGE_KEY = 'acnh-nooks-cranny-log';
 
@@ -240,6 +241,11 @@ const NooksCrannyLog = () => {
   const hotItemStats = getHotItemStats();
 
   return (
+    <ToolFrame
+      host="tom-nook"
+      background="/island/tool-backgrounds/bell-ledger.webp"
+      greeting="Yes yes! Today's stock at the shop. Don't miss the daily specials!"
+    >
     <div style={containerStyle}>
       <style>
         {`
@@ -510,6 +516,7 @@ const NooksCrannyLog = () => {
         onClose={() => setShowAlert(false)}
       />
     </div>
+    </ToolFrame>
   );
 };
 

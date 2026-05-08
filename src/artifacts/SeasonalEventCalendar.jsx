@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // ACNH Event Data
 const monthlyEvents = {
@@ -330,6 +331,11 @@ const SeasonalEventCalendar = () => {
   };
 
   return (
+    <ToolFrame
+      host="celeste"
+      background="/island/tool-backgrounds/dashboard-bulletin.webp"
+      greeting="The constellations are out tonight! Let me show you what's happening on the island this season."
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -485,6 +491,7 @@ const SeasonalEventCalendar = () => {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

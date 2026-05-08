@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { AssetImg } from '../assetHelper';
 import { VILLAGERS, BIRTHDAY_CALENDAR } from './villagerData';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const personalities = {
   normal: { style: 'Simple/Cute', emoji: '😊', color: '#f9b4d6' },
@@ -1250,6 +1251,11 @@ const VillagerGiftGuide = () => {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/pelly-mailroom.webp"
+      greeting="A gift for a villager? How lovely! Pick something they'll really love."
+    >
     <div style={baseStyles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -1286,6 +1292,7 @@ const VillagerGiftGuide = () => {
 
       {renderDrawer()}
     </div>
+    </ToolFrame>
   );
 };
 

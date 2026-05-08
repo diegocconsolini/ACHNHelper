@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 // Town tunes in ACNH are 16 steps. Each step is one of:
@@ -397,6 +398,11 @@ export default function IslandTuneCreator() {
   }
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Compose a tune for the island PA system! Up to 16 notes — make it catchy!"
+    >
     <div style={styles.root}>
       <style>{fontImport}</style>
 
@@ -651,6 +657,7 @@ export default function IslandTuneCreator() {
         </section>
       </div>
     </div>
+    </ToolFrame>
   );
 }
 

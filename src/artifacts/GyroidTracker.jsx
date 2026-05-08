@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const STORAGE_KEY = 'acnh-gyroid-tracker';
 
@@ -485,6 +486,11 @@ const GyroidTracker = () => {
   });
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Track your gyroids by sound family — make them all sing together!"
+    >
     <div style={styles.container}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
 @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 0.8; } }`}</style>
@@ -701,6 +707,7 @@ const GyroidTracker = () => {
         </>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

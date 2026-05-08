@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // Verified against Nookipedia, Game8, and multiple community sources (99 achievements total)
 // Base game: 84 achievements | Swimming update (1.3.0): 3 | Version 2.0: 9 | Version 3.0: 3
@@ -288,6 +289,11 @@ export default function NookMilesTracker() {
   }
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/bell-ledger.webp"
+      greeting="Cash in those Nook Miles for rewards! Here's every achievement at a glance."
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -548,6 +554,7 @@ export default function NookMilesTracker() {
         );
       })()}
     </div>
+    </ToolFrame>
   );
 }
 

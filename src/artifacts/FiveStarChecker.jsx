@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const FiveStarChecker = () => {
   const STORAGE_KEY = 'acnh-five-star-checker';
@@ -166,6 +167,11 @@ const FiveStarChecker = () => {
   const starDisplay = '⭐'.repeat(stars) + '☆'.repeat(5 - stars);
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Aiming for a 5-star island? Here's exactly what you need to do!"
+    >
     <div style={{
       width: '100%',
       margin: '0 auto',
@@ -664,6 +670,7 @@ const FiveStarChecker = () => {
         }
       `}</style>
     </div>
+    </ToolFrame>
   );
 };
 

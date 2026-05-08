@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // HHA rank thresholds by house expansion level (verified from Nookipedia wiki)
 const RANK_THRESHOLDS = [
@@ -349,6 +350,11 @@ export default function HHACalculator() {
   ];
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Estimate your Happy Home Academy score! Better feng shui = bigger paycheck."
+    >
     <div style={styles.container}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
 
@@ -814,6 +820,7 @@ export default function HHACalculator() {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 }
 

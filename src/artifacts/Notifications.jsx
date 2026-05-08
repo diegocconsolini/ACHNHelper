@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const READ_TIMESTAMP_KEY = 'notifications-last-read';
 
@@ -69,6 +70,11 @@ export default function Notifications() {
   const unread = notifications.filter(n => new Date(n.created_at).getTime() > lastRead);
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/dashboard-bulletin.webp"
+      greeting="Recent activity from your island and the community. Stay in the loop!"
+    >
     <div style={styles.root}>
       <style>{fontImport}</style>
 
@@ -141,6 +147,7 @@ export default function Notifications() {
         These notifications are derived from your CommunityHub favorites in real time — there's no separate notification table, so you can't lose history beyond the 50 most recent.
       </p>
     </div>
+    </ToolFrame>
   );
 }
 

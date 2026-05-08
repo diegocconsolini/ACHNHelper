@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DIY_CATEGORIES } from './diyRecipeData';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // Build flat list of all recipe names for autocomplete
 const ALL_RECIPE_NAMES = Object.values(DIY_CATEGORIES).flatMap(cat => cat.recipes);
@@ -291,6 +292,11 @@ export default function MaterialCalculator() {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/diy-workbench.webp"
+      greeting="Plan a big DIY project? I'll break down every material you need."
+    >
     <div style={styles.container}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -502,6 +508,7 @@ export default function MaterialCalculator() {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 }
 

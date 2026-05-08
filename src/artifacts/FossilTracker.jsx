@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import AssetImg from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // ─── Static reference data — 21 skeleton sets + 14 standalones ───────────────
 // Verified against Nookipedia /nh/fossils/all + /nh/fossils/individuals.
@@ -498,10 +499,16 @@ function SummaryRing({ label, value, total, color }) {
 
 function DrawerStat({ label, value, color }) {
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/museum-journal.webp"
+      greeting="Found a fossil? Let's identify it and see if it's one Blathers needs!"
+    >
     <div style={styles.statBox}>
       <div style={styles.statBoxLabel}>{label}</div>
       <div style={{ ...styles.statBoxValue, color }}>{value}</div>
     </div>
+    </ToolFrame>
   );
 }
 

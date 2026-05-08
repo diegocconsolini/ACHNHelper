@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const THEMES = [
   'Comfy', 'Everyday', 'Fairy tale', 'Formal', 'Goth',
@@ -132,6 +133,11 @@ const LabelFashionHelper = () => {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Label's got a new theme today. Build outfits to win her approval!"
+    >
     <div style={styles.root}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
 
@@ -461,6 +467,7 @@ const LabelFashionHelper = () => {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

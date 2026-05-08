@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import ConfirmModal from '../ConfirmModal';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // ─── Static reference data (3.0 hotel system) ────────────────────────────────
 
@@ -328,6 +329,11 @@ export default function HotelTracker() {
   }
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/island-misc.webp"
+      greeting="Track your guests at Paradise Planning! Make every cabin feel like home."
+    >
     <div style={styles.root}>
       <style>{fontImport}</style>
 
@@ -830,6 +836,7 @@ export default function HotelTracker() {
         onCancel={() => setDeleteTarget(null)}
       />
     </div>
+    </ToolFrame>
   );
 }
 

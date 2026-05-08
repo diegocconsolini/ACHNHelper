@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const THEME_TAGS = [
   'cottagecore', 'urban', 'japanese', 'natural', 'spooky',
@@ -1010,6 +1011,11 @@ function BlockedTab() {
   }
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/dashboard-bulletin.webp"
+      greeting="Let's connect with other islanders! Share your friend code, dream address, or just say hi!"
+    >
     <div style={styles.cardList}>
       {blocked.map(b => (
         <div key={b.user_id} style={styles.blockedCard}>
@@ -1033,6 +1039,7 @@ function BlockedTab() {
         </div>
       ))}
     </div>
+    </ToolFrame>
   );
 }
 

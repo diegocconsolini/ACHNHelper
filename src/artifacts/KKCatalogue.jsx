@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const SONGS = [
   { id: 1, name: "Agent K.K.", genre: "Rock", mood: ["Energetic", "Bold"], isHidden: false },
@@ -777,6 +778,11 @@ export default function KKCatalogue() {
   };
 
   return (
+    <ToolFrame
+      host="kk-slider"
+      background="/island/tool-backgrounds/dashboard-bulletin.webp"
+      greeting="Heyyyy. Got a request? I'll play it tonight on the plaza. Here's everything I've ever recorded."
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -1130,5 +1136,6 @@ export default function KKCatalogue() {
         );
       })()}
     </div>
+    </ToolFrame>
   );
 }
