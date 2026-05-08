@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { tokens } from '../design/tokens.js';
 
-export default function MapLocation({ location, items, activeId, onSelect }) {
+export default function MapLocation({ location, items, activeId, onSelect, badge = 0 }) {
   const [open, setOpen] = useState(false);
   const hasActive = items.some((i) => i.id === activeId);
 
@@ -59,6 +59,27 @@ export default function MapLocation({ location, items, activeId, onSelect }) {
         >
           {location.label}
         </span>
+        {badge > 0 && (
+          <span
+            aria-label={`${badge} unread notifications`}
+            style={{
+              position: 'absolute',
+              top: 4,
+              right: 6,
+              background: tokens.color.accentLeaf,
+              color: tokens.color.paper,
+              borderRadius: tokens.radius.pill,
+              padding: '1px 7px',
+              fontSize: 11,
+              fontWeight: 700,
+              fontFamily: tokens.font.mono,
+              pointerEvents: 'none',
+              boxShadow: tokens.shadow.paper,
+            }}
+          >
+            {badge}
+          </span>
+        )}
       </button>
 
       {open && (

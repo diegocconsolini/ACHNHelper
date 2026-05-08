@@ -5,6 +5,10 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { SettingsProvider } from './SettingsContext';
 import ConfirmModal from './ConfirmModal';
 import ErrorReporter from './ErrorReporter';
+import SidebarMap from './island/SidebarMap.jsx';
+import { locationForToolId } from './island/sidebarLocations.js';
+import { getCharacter, getPortrait } from './characters/index.js';
+import { tokens } from './design/tokens.js';
 
 const Dashboard = lazy(() => import('./artifacts/Dashboard.jsx'));
 const FishTracker = lazy(() => import('./artifacts/FishTracker.jsx'));
@@ -445,154 +449,132 @@ function App() {
       )}
 
       {/* Sidebar */}
-      <nav aria-label="Tools" className="acnh-sidebar" style={{
-        ...styles.sidebar,
-        width: sidebarOpen ? 260 : 0,
-        padding: sidebarOpen ? '20px 0' : 0,
-        overflow: 'hidden',
-      }}>
-        <div style={styles.logoArea}>
-          <span style={{ fontSize: 28 }}>🏝️</span>
-          <span style={styles.logoText}>ACNH Helper Suite</span>
-        </div>
-
-        {/* Auth Section */}
-        <div style={styles.authSection}>
-          {status === 'loading' ? (
-            <div style={styles.authLoading}>...</div>
-          ) : session ? (
-            <div style={styles.authLoggedIn}>
-              <div style={styles.authUserRow}>
-                {session.user?.image ? (
-                  <img
-                    src={session.user.image}
-                    alt=""
-                    style={styles.authAvatar}
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <div style={styles.authAvatarFallback}>
-                    {(session.user?.name || '?')[0].toUpperCase()}
-                  </div>
-                )}
-                <div style={styles.authUserInfo}>
-                  <span style={styles.authUserName}>
-                    {session.user?.name || 'Player'}
-                  </span>
-                  <button
-                    onClick={() => setShowSignOutConfirm(true)}
-                    style={styles.authSignOutLink}
-                  >
-                    Sign out
-                  </button>
-                </div>
+      {sidebarOpen && (
+        <SidebarMap
+          menu={MENU}
+          activeId={activeId}
+          onSelect={(id) => {
+            setActiveId(id);
+            if (isMobile) setSidebarOpen(false);
+          }}
+          unreadCount={unreadCount}
+          header={
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 22 }}>🏝️</span>
+                <span style={{ fontFamily: tokens.font.display, fontSize: 18, color: tokens.color.ink }}>
+                  ACNH Helper Suite
+                </span>
               </div>
-              {syncStatus === 'synced' && <span style={{ fontSize: 10, color: '#5a7a50', paddingLeft: 42 }}>☁️ Synced</span>}
-              {syncStatus === 'syncing' && <span style={{ fontSize: 10, color: '#d4b030', paddingLeft: 42 }}>⟳ Syncing...</span>}
-              {syncStatus === 'error' && <span style={{ fontSize: 10, color: '#ff6464', paddingLeft: 42 }}>⚠ Sync error</span>}
-              {isAdminUser && (
-                <a
-                  href="/admin"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    marginTop: 6,
-                    marginLeft: 42,
-                    padding: '4px 10px',
-                    background: 'rgba(212,176,48,0.1)',
-                    border: '1px solid rgba(212,176,48,0.25)',
-                    borderRadius: 6,
-                    color: '#d4b030',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    fontFamily: "'DM Mono', monospace",
-                    textDecoration: 'none',
-                    width: 'fit-content',
-                  }}
-                >
-                  🛡️ Admin
-                </a>
+              {status === 'loading' ? (
+                <div style={{ fontSize: 12, color: tokens.color.inkSoft, fontFamily: tokens.font.body }}>...</div>
+              ) : session ? (
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    {session.user?.image ? (
+                      <img
+                        src={session.user.image}
+                        alt=""
+                        style={{ width: 32, height: 32, borderRadius: '50%', border: `2px solid ${tokens.color.wood}` }}
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div style={{
+                        width: 32, height: 32, borderRadius: '50%',
+                        background: tokens.color.accentLeaf, color: tokens.color.paper,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontFamily: tokens.font.display, fontSize: 14, fontWeight: 700,
+                      }}>
+                        {(session.user?.name || '?')[0].toUpperCase()}
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+                      <span style={{
+                        fontFamily: tokens.font.body, fontSize: 13, fontWeight: 700,
+                        color: tokens.color.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                      }}>
+                        {session.user?.name || 'Player'}
+                      </span>
+                      <button
+                        onClick={() => setShowSignOutConfirm(true)}
+                        style={{
+                          background: 'none', border: 'none', padding: 0,
+                          color: tokens.color.inkSoft, fontFamily: tokens.font.handwriting,
+                          fontSize: 12, cursor: 'pointer', textAlign: 'left', outline: 'none',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                  {syncStatus === 'synced' && <div style={{ fontSize: 10, color: tokens.color.inkSoft, marginTop: 4 }}>☁️ Synced</div>}
+                  {syncStatus === 'syncing' && <div style={{ fontSize: 10, color: tokens.color.accentBell, marginTop: 4 }}>⟳ Syncing...</div>}
+                  {syncStatus === 'error' && <div style={{ fontSize: 10, color: tokens.color.accentBerry, marginTop: 4 }}>⚠ Sync error</div>}
+                  {isAdminUser && (
+                    <a
+                      href="/admin"
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 4,
+                        marginTop: 6,
+                        padding: '3px 8px',
+                        background: 'rgba(212,176,48,0.15)',
+                        border: `1px solid ${tokens.color.accentBell}`,
+                        borderRadius: tokens.radius.sm,
+                        color: tokens.color.woodDark,
+                        fontSize: 11, fontWeight: 700, fontFamily: tokens.font.mono,
+                        textDecoration: 'none',
+                      }}
+                    >
+                      🛡️ Admin
+                    </a>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <button
+                    onClick={() => signIn('google', { callbackUrl: '/app' })}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 8,
+                      width: '100%',
+                      padding: '8px 12px',
+                      background: tokens.color.paper,
+                      color: tokens.color.ink,
+                      border: `2px solid ${tokens.color.wood}`,
+                      borderRadius: tokens.radius.pill,
+                      fontFamily: tokens.font.body, fontSize: 13, fontWeight: 700,
+                      cursor: 'pointer', outline: 'none',
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>Sign in</span>
+                  </button>
+                  <a
+                    href="/"
+                    style={{
+                      display: 'block', textAlign: 'center', marginTop: 6,
+                      color: tokens.color.inkSoft, fontSize: 11,
+                      fontFamily: tokens.font.handwriting, textDecoration: 'none',
+                    }}
+                  >
+                    ← Back to home
+                  </a>
+                </div>
               )}
             </div>
-          ) : (
-            <div>
-              <button
-                onClick={() => signIn('google', { callbackUrl: '/app' })}
-                style={styles.authSignInBtn}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
-                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
-                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                <span>Sign in with Google</span>
-              </button>
-              <a
-                href="/"
-                style={{
-                  display: 'block',
-                  textAlign: 'center',
-                  marginTop: '8px',
-                  color: '#5a7a50',
-                  fontSize: '12px',
-                  textDecoration: 'none',
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-              >
-                ← Back to home
-              </a>
-            </div>
-          )}
-        </div>
-
-        <div style={styles.menuScroll}>
-          {MENU.map(group => (
-            <div key={group.category} style={styles.menuGroup}>
-              <div style={styles.categoryLabel}>{group.category}</div>
-              {group.items.map(item => (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    setActiveId(item.id);
-                    if (isMobile) setSidebarOpen(false);
-                  }}
-                  aria-current={activeId === item.id ? 'page' : undefined}
-                  style={{
-                    ...styles.menuItem,
-                    background: activeId === item.id ? 'rgba(94,200,80,0.15)' : 'transparent',
-                    borderLeft: activeId === item.id ? '3px solid #5ec850' : '3px solid transparent',
-                    opacity: item.component ? 1 : 0.45,
-                  }}
-                >
-                  <span style={{ fontSize: 18 }}>{item.emoji}</span>
-                  <span style={styles.menuLabel}>{item.label}</span>
-                  {!item.component && <span style={styles.comingSoon}>soon</span>}
-                  {item.id === 'notifications' && unreadCount > 0 && (
-                    <span style={{
-                      marginLeft: 'auto',
-                      background: '#5ec850',
-                      color: '#0a1a10',
-                      borderRadius: 10,
-                      padding: '1px 7px',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      fontFamily: "'DM Mono', monospace",
-                    }}>{unreadCount}</span>
-                  )}
-                </button>
-              ))}
-            </div>
-          ))}
-        </div>
-
-        <div style={styles.sidebarFooter}>
-          <span style={{ fontSize: 11, color: '#3a5a40', fontFamily: "'DM Mono', monospace" }}>
-            v{process.env.NEXT_PUBLIC_APP_VERSION} — 40 tools
-          </span>
-        </div>
-      </nav>
+          }
+          footer={
+            <span style={{ fontSize: 11, color: tokens.color.inkSoft, fontFamily: tokens.font.mono }}>
+              v{process.env.NEXT_PUBLIC_APP_VERSION} — 40 tools
+            </span>
+          }
+        />
+      )}
 
       {/* Toggle button */}
       <button
@@ -608,6 +590,58 @@ function App() {
 
       {/* Main Content */}
       <main id="acnh-main-content" className="acnh-main" style={styles.main}>
+        {activeItem && (() => {
+          const loc = locationForToolId(MENU, activeItem.id);
+          const hostId = loc?.host || 'isabelle';
+          const host = getCharacter(hostId);
+          const portrait = getPortrait(hostId);
+          return (
+            <div
+              role="banner"
+              style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                gap: tokens.space[3],
+                padding: '10px 20px',
+                margin: '0 0 12px',
+                minHeight: 64,
+                background: 'url(/island/chrome/plaque-wide.webp) center/100% 100% no-repeat',
+                color: tokens.color.ink,
+              }}
+            >
+              <img
+                src={portrait}
+                alt={`${host.name}, ${host.role}`}
+                style={{ width: 56, height: 'auto', flexShrink: 0 }}
+              />
+              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <span
+                  style={{
+                    fontFamily: tokens.font.display,
+                    fontSize: 'clamp(18px, 2vw, 22px)',
+                    fontWeight: 700,
+                    color: tokens.color.ink,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {activeItem.label}
+                </span>
+                <span
+                  style={{
+                    fontFamily: tokens.font.handwriting,
+                    fontSize: 13,
+                    color: tokens.color.inkSoft,
+                  }}
+                >
+                  with {host.name} — {host.role}
+                </span>
+              </div>
+            </div>
+          );
+        })()}
         {ActiveComponent ? (
           <ErrorBoundary key={activeId}>
             <Suspense fallback={
