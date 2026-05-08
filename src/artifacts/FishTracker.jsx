@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const FISH_DATA = [
   { id: 1, name: "Bitterling", location: "River", shadowSize: "Tiny", sellPrice: 900, northMonths: [1,2,3,11,12], southMonths: [5,6,7,8,9], startHour: 0, endHour: 24, allDay: true, rarity: "Common" },
@@ -455,6 +456,11 @@ const FishTracker = () => {
   };
 
   return (
+    <ToolFrame
+      host="cj"
+      background="/island/tool-backgrounds/fish-dock.webp"
+      greeting="Heyyy! Caught any MAJESTIC specimens lately? I pay top bell for the rare ones, just so you know!"
+    >
     <div style={containerStyle}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -978,6 +984,7 @@ const FishTracker = () => {
         );
       })()}
     </div>
+    </ToolFrame>
   );
 };
 

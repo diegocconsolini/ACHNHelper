@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const defaultTasks = [
   { id: 1, name: 'Hit rocks (6 rocks)', emoji: '🪨' },
@@ -386,6 +387,11 @@ export default function DailyRoutine() {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/daily-clipboard.webp"
+      greeting="Good morning, mayor! Here's your daily checklist — let's get the island in shape!"
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -489,5 +495,6 @@ export default function DailyRoutine() {
         />
       </div>
     </div>
+    </ToolFrame>
   );
 }

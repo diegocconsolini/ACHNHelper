@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const SEA_CREATURE_DATA = [
   { id: 1, name: "Seaweed", shadowSize: "Small", movementSpeed: "Stationary", sellPrice: 600, northMonths: [1,2,3,4,5,6,7,8,9,10,11,12], southMonths: [1,2,3,4,5,6,7,8,9,10,11,12], startHour: 0, endHour: 24, allDay: true, isPascalTrigger: false, emoji: "🌱" },
@@ -455,6 +456,11 @@ export default function SeaCreatureTracker() {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/sea-beach.webp"
+      greeting="Don't forget your wetsuit! The diving spots are best at low tide. I'll log everything you find!"
+    >
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -947,5 +953,6 @@ export default function SeaCreatureTracker() {
         );
       })()}
     </>
+    </ToolFrame>
   );
 }

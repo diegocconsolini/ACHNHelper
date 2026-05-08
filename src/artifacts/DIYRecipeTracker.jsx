@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AssetImg } from '../assetHelper';
 import { DIY_CATEGORIES, SOURCES, SEASONAL_SECTIONS, STORAGE_KEY, TOTAL_RECIPES } from './diyRecipeData';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // Verified ACNH DIY Recipe Tracker — all names sourced from manifest + Nookipedia
 const DIYRecipeTracker = () => {
@@ -867,6 +868,11 @@ const DIYRecipeTracker = () => {
   };
 
   return (
+    <ToolFrame
+      host="cyrus"
+      background="/island/tool-backgrounds/diy-workbench.webp"
+      greeting="If you've got the recipe and the materials, I can make it custom. Come back tomorrow when it's ready."
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -1147,6 +1153,7 @@ const DIYRecipeTracker = () => {
       {/* Recipe Detail Drawer */}
       {renderDrawer()}
     </div>
+    </ToolFrame>
   );
 };
 

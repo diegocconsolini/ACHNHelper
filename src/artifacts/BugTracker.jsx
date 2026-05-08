@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
+import HostFloatingTip from '../characters/HostFloatingTip.jsx';
 
 const BUG_DATA = [
   { id: 1, name: "Common Butterfly", location: "Flowers", sellPrice: 160, northMonths: [3,4,5,6,7,8,9], southMonths: [9,10,11,12,1,2,3], startHour: 4, endHour: 19, allDay: false, specialCondition: null, farmingTip: "Found near flowers during daytime" },
@@ -255,6 +257,18 @@ export default function BugTracker() {
   const locations = ["All", "Flowers", "Trees", "Flying", "Ground", "Grass", "Water", "Lights", "Underground", "Logs", "Trash", "Webs", "Villagers"];
 
   return (
+    <ToolFrame
+      host="flick"
+      background="/island/tool-backgrounds/bug-meadow.webp"
+      greeting="Mwah! A new bug, you say? I shall sculpt a model for you. Bring me the rare ones!"
+      footer={
+        <HostFloatingTip
+          character="flick"
+          trigger="Why bring 3 of the same bug?"
+          message="I commission models, dahling. Three identical specimens, one bespoke sculpture. A masterpiece in triplicate."
+        />
+      }
+    >
     <div style={{ ...styles.container }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -787,6 +801,7 @@ export default function BugTracker() {
         );
       })()}
     </div>
+    </ToolFrame>
   );
 }
 

@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
 import { SPECIES, BREEDING_PATHS, BLUE_ROSE_PATH, GOLD_ROSE_INFO } from './gardenData';
+import ToolFrame from '../island/ToolFrame.jsx';
+import HostFloatingTip from '../characters/HostFloatingTip.jsx';
 
 // Adapt gardenData format to component format:
 // gardenData: SPECIES[lowercase].colors[].color, probability float 0-1
@@ -331,6 +333,18 @@ const FlowerCalculator = () => {
   };
 
   return (
+    <ToolFrame
+      host="leif"
+      background="/island/tool-backgrounds/flower-shop.webp"
+      greeting="Greetings… I have… seeds for sale. Take your time. I've got plenty."
+      footer={
+        <HostFloatingTip
+          character="leif"
+          trigger="Why do my flowers look the same?"
+          message="Slow growers… need slower expectations. Genetics, not luck — but luck never hurt either."
+        />
+      }
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -652,6 +666,7 @@ const FlowerCalculator = () => {
         </div>
       )}
     </div>
+    </ToolFrame>
   );
 };
 

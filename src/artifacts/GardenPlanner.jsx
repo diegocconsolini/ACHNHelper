@@ -6,6 +6,7 @@
 import React, { useReducer, useEffect, useCallback, useRef, useState } from 'react';
 import { AssetImg } from '../assetHelper';
 import { SPECIES, BREEDING_PATHS, COLOR_HEX } from './gardenData.js';
+import ToolFrame from '../island/ToolFrame.jsx';
 import { getSeedGenotype, findBreedingPairs, canClone, getOffspring } from './gardenGenetics.js';
 import { simulateDay, updateBadLuckCounters, createEmptyGrid } from './gardenSimulation.js';
 import ConfirmModal from '../ConfirmModal';
@@ -1171,6 +1172,11 @@ export default function GardenPlanner() {
   // ─── RENDER ───────────────────────────────────────────────────────────────────
 
   return (
+    <ToolFrame
+      host="leif"
+      background="/island/tool-backgrounds/garden-plot.webp"
+      greeting="Plan it well… water it daily… you'll have rare blooms in… a few weeks. No rush."
+    >
     <div style={S.root}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -1229,5 +1235,6 @@ export default function GardenPlanner() {
         onCancel={() => setShowClearConfirm(false)}
       />
     </div>
+    </ToolFrame>
   );
 }
