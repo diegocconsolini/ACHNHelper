@@ -42,6 +42,22 @@ export const characters = {
     portraits: { stargazing: '/island/characters/celeste-stargazing.webp' },
     defaultMood: 'stargazing',
   },
+  'daisy-mae': {
+    id: 'daisy-mae',
+    name: 'Daisy Mae',
+    role: 'Sunday turnip merchant',
+    voice: 'cheerful southern drawl, calls turnips "stalks"',
+    portraits: { cart: '/island/characters/daisy-mae-cart.webp' },
+    defaultMood: 'cart',
+  },
+  'tommy-timmy': {
+    id: 'tommy-timmy',
+    name: 'Timmy & Tommy',
+    role: "Nook's Cranny clerks",
+    voice: 'enthusiastic, finish each other’s sentences',
+    portraits: { counter: '/island/characters/tommy-timmy-counter.webp' },
+    defaultMood: 'counter',
+  },
 };
 
 export function getCharacter(id) {
