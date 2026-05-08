@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import AlertModal from '../AlertModal';
+import ToolFrame from '../island/ToolFrame.jsx';
+import HostFloatingTip from '../characters/HostFloatingTip.jsx';
 
 const STORAGE_KEY = 'acnh-turnip-tracker';
 const DAYS = [
