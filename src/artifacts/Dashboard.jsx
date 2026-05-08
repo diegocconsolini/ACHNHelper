@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { AssetImg } from '../assetHelper';
 import { VILLAGERS } from './villagerData';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 // ─── Verified critter data (imported inline from existing trackers) ───────────
 
@@ -496,6 +497,11 @@ export default function Dashboard() {
   };
 
   return (
+    <ToolFrame
+      host="isabelle"
+      background="/island/tool-backgrounds/dashboard-bulletin.webp"
+      greeting="Good morning, mayor! Here's everything happening on the island today. Don't forget to water the flowers!"
+    >
     <div style={styles.container}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
 
@@ -714,6 +720,7 @@ export default function Dashboard() {
         )}
       </div>
     </div>
+    </ToolFrame>
   );
 }
 
