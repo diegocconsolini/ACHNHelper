@@ -59,17 +59,42 @@ These compose behind the data tables as a soft watercolor wash. Each goes to `pu
 
 **Acceptance per background:** muted, low-contrast, no element competes with the foreground data table. If a scene comes back too saturated or detailed, re-roll once with `soft watercolor wash, low contrast` added. If second roll also fails, drop the background and ship with a flat token-paper color — graceful degradation.
 
-## Step A3 — Drop assets
+## Step A3 — Background knockout via rembg
+
+Phase 3 established the `rembg` (U2-Net) local pipeline for clean alpha-channel
+PNGs. Use it for the 2 new character portraits — Midjourney's "transparent
+background" instructions are unreliable at v7.
+
+```bash
+PY=/Library/Developer/CommandLineTools/usr/bin/python3
+DL=/Users/diegocavalariconsolini/ClaudeCode/Downloads/ACNH
+
+"$PY" -c "
+from rembg import remove
+for src, dst in [
+  ('$DL/<daisy-mae-source>.png', '$DL/cut/daisy-mae-cart.png'),
+  ('$DL/<tommy-timmy-source>.png', '$DL/cut/tommy-timmy-counter.png'),
+]:
+  with open(src,'rb') as f: data = f.read()
+  with open(dst,'wb') as f: f.write(remove(data))
+"
+```
+
+Tool backgrounds are NOT cut — they're meant to be full scenes that compose as a
+soft wash. They go straight to WebP without a knockout pass.
+
+## Step A4 — Encode to WebP
 
 ```bash
 cd /Users/diegocavalariconsolini/ClaudeCode/ACNH/acnh-portal
 mkdir -p public/island/tool-backgrounds
 
-# Character portraits (high alpha quality):
-cwebp -q 82 -alpha_q 95 ~/Downloads/<file>.png -o public/island/characters/<file>.webp
+# Character portraits (after rembg cut — high alpha quality):
+cwebp -q 82 -alpha_q 95 "$DL/cut/daisy-mae-cart.png"     -o public/island/characters/daisy-mae-cart.webp
+cwebp -q 82 -alpha_q 95 "$DL/cut/tommy-timmy-counter.png" -o public/island/characters/tommy-timmy-counter.webp
 
 # Tool backgrounds (lower q is fine since they're decorative washes):
-cwebp -q 70 ~/Downloads/<file>.png -o public/island/tool-backgrounds/<file>.webp
+cwebp -q 70 "$DL/<bg-source>.png" -o public/island/tool-backgrounds/<file>.webp
 ```
 
 Total weight target: backgrounds ~80 KB each (5 × 80 = 400 KB), portraits ~70 KB each (2 × 70 = 140 KB). Phase 4 batch ~540 KB. Cumulative redesign weight after Phase 4: ~2 MB — at the Phase 7 ceiling, so Phase 5-7 will need lazy-loading or further compression.
