@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { SettingsProvider } from './SettingsContext';
 import ErrorReporter from './ErrorReporter';
 import SpeechDialog from './design/components/SpeechDialog.jsx';
+import ResettiTrap from './components/ResettiTrap.jsx';
 import SidebarMap from './island/SidebarMap.jsx';
 import { locationForToolId } from './island/sidebarLocations.js';
 import { getCharacter, getPortrait } from './characters/index.js';
@@ -363,6 +364,7 @@ function App() {
   return (
     <SettingsProvider>
     <ErrorReporter />
+    <ResettiTrap />
     <div style={styles.root}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');

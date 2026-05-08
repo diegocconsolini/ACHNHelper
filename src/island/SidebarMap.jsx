@@ -3,6 +3,7 @@
 import { tokens } from '../design/tokens.js';
 import MapLocation from './MapLocation.jsx';
 import { sidebarLocations, itemsForLocation } from './sidebarLocations.js';
+import SeasonalDecorations from '../components/SeasonalDecorations.jsx';
 
 export default function SidebarMap({
   menu,
@@ -72,6 +73,7 @@ export default function SidebarMap({
             badge={loc.id === 'island-life' && unreadCount > 0 ? unreadCount : 0}
           />
         ))}
+        <SeasonalDecorations />
       </div>
 
       {footer && (

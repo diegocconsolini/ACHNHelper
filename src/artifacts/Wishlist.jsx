@@ -482,13 +482,15 @@ export default function Wishlist() {
                           onClick={() => removeItem(item.type, item.name)}
                           onMouseEnter={() => setHoveredBtn(`rm-${key}`)}
                           onMouseLeave={() => setHoveredBtn(null)}
+                          aria-label="Move to Recycle Bin"
+                          title="Recycle Bin \ud83c\udf43"
                           style={{
                             ...styles.removeBtn,
                             background: hoveredBtn === `rm-${key}` ? 'rgba(255,100,100,0.15)' : 'transparent',
                             color: hoveredBtn === `rm-${key}` ? '#ff6464' : '#5a7a50',
                           }}
                         >
-                          \u2715
+                          \ud83c\udf43
                         </button>
                       </div>
                     </div>
