@@ -3,8 +3,8 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { SettingsProvider } from './SettingsContext';
-import ConfirmModal from './ConfirmModal';
 import ErrorReporter from './ErrorReporter';
+import SpeechDialog from './design/components/SpeechDialog.jsx';
 import SidebarMap from './island/SidebarMap.jsx';
 import { locationForToolId } from './island/sidebarLocations.js';
 import { getCharacter, getPortrait } from './characters/index.js';
@@ -661,12 +661,13 @@ function App() {
           </div>
         )}
       </main>
-      <ConfirmModal
+      <SpeechDialog
         open={showSignOutConfirm}
-        title="Sign Out"
-        message="Are you sure you want to sign out?"
+        onClose={() => setShowSignOutConfirm(false)}
+        character="isabelle"
+        message="Heading back to the airport? See you again soon!"
         confirmLabel="Sign Out"
-        cancelLabel="Cancel"
+        cancelLabel="Stay"
         destructive
         onConfirm={() => {
           setShowSignOutConfirm(false);
