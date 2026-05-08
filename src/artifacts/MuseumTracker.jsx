@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { AssetImg } from '../assetHelper';
+import ToolFrame from '../island/ToolFrame.jsx';
+import HostFloatingTip from '../characters/HostFloatingTip.jsx';
 
 const FISH = [
   'Bitterling', 'Pale Chub', 'Crucian Carp', 'Dace', 'Carp', 'Koi', 'Goldfish', 'Pop-eyed Goldfish', 'Ranchu Goldfish', 'Killifish',
@@ -642,6 +644,11 @@ const MuseumTracker = () => {
   };
 
   return (
+    <ToolFrame
+      host="blathers"
+      background="/island/tool-backgrounds/museum-journal.webp"
+      greeting="Hoo! A new specimen, you say? I shall accept anything for the museum's sake — even, hoo, the bugs. Especially terrifying, those."
+    >
     <div style={styles.container}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');
@@ -653,7 +660,14 @@ const MuseumTracker = () => {
       `}</style>
 
       <div style={styles.header}>
-        <div style={styles.headerTitle}>🏛️ Museum Tracker</div>
+        <div style={styles.headerTitle}>
+          🏛️ Museum Tracker{' '}
+          <HostFloatingTip
+            character="blathers"
+            trigger="Why so few bugs?"
+            message="A confession: bugs unsettle me dreadfully. But for the museum's sake, I shall accept them. From a great distance."
+          />
+        </div>
         <div style={styles.progressBar}>
           <div style={{
             ...styles.progressFill,
@@ -984,6 +998,7 @@ const MuseumTracker = () => {
         );
       })()}
     </div>
+    </ToolFrame>
   );
 };
 
