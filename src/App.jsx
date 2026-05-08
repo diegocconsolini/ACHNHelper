@@ -613,6 +613,8 @@ function App() {
               <img
                 src={portrait}
                 alt={`${host.name}, ${host.role}`}
+                loading="lazy"
+                decoding="async"
                 style={{ width: 56, height: 'auto', flexShrink: 0 }}
               />
               <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>

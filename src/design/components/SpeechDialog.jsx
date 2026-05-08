@@ -34,6 +34,8 @@ export default function SpeechDialog({
         <img
           src={portrait}
           alt={c.name}
+          loading="lazy"
+          decoding="async"
           style={{ width: 72, height: 'auto', flexShrink: 0 }}
         />
         <div

@@ -22,6 +22,8 @@ export default function Greeting({ character, mood, size = 'md', children }) {
       <img
         src={portrait}
         alt={`${c.name}, ${c.role}`}
+        loading="lazy"
+        decoding="async"
         style={{
           width: dims,
           height: 'auto',

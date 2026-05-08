@@ -43,6 +43,8 @@ export default function LoadingState({ character = 'isabelle', mood, message = '
         className="acnh-idle-bob"
         src={portrait}
         alt={`${c.name} is thinking`}
+        loading="lazy"
+        decoding="async"
         style={{
           width: 120,
           height: 'auto',

@@ -56,6 +56,8 @@ export default function HostFloatingTip({ character, mood, trigger, message }) {
           <img
             src={portrait}
             alt={c.name}
+            loading="lazy"
+            decoding="async"
             style={{ width: 40, height: 'auto', flexShrink: 0 }}
           />
           <div

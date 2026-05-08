@@ -53,6 +53,8 @@ export default function SidebarMap({
         <img
           src="/island/sidebar-map.webp"
           alt="Hand-drawn map of your island with six locations"
+          loading="eager"
+          decoding="async"
           style={{
             width: '100%',
             height: '100%',

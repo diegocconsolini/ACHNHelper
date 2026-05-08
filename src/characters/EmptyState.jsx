@@ -25,6 +25,8 @@ export default function EmptyState({ character = 'isabelle', mood, message }) {
       <img
         src={portrait}
         alt={`${c.name}, ${c.role}`}
+        loading="lazy"
+        decoding="async"
         style={{ width: 140, height: 'auto', opacity: 0.9 }}
       />
       <div
