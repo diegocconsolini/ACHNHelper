@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AssetImg } from '../assetHelper';
 import { DIY_CATEGORIES } from './diyRecipeData';
+import ToolFrame from '../island/ToolFrame.jsx';
 
 const STORAGE_KEY = 'acnh-wishlist';
 
@@ -252,6 +253,11 @@ export default function Wishlist() {
   }
 
   return (
+    <ToolFrame
+      host="tommy-timmy"
+      background="/island/tool-backgrounds/wishlist-orderpad.webp"
+      greeting="Welcome to Nook's Cranny! What can we — write down for you? — yes, what can we write down for you today?"
+    >
     <div style={styles.container}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap');`}</style>
 
@@ -494,6 +500,7 @@ export default function Wishlist() {
         )}
       </div>
     </div>
+    </ToolFrame>
   );
 }
 
