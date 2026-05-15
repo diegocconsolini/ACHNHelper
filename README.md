@@ -1,5 +1,10 @@
 # ACNH Helper Suite
 
+## Security updates
+
+### 2026-05-15 — CVE-2026-44578 (Next.js WebSocket SSRF)
+Upgraded Next.js from 16.2.4 to 16.2.6. Self-hosted Next.js could be forced to issue internal HTTP requests via a crafted WebSocket upgrade. Patched version closes the SSRF path. CVSS 8.6. The same bump also covers GHSA-26hh-7cqf-hhc6 (Middleware/Proxy bypass, incomplete-fix follow-up), patched in 16.2.6.
+
 A comprehensive web companion app for **Animal Crossing: New Horizons** players. 22 interactive tools covering every aspect of island life — from critter tracking and museum completion to flower genetics, turnip trading, and villager gifting.
 
 Built with React 19 + Vite. Dark botanical UI theme. All game data verified against community wikis.
