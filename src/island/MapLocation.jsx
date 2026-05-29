@@ -1,11 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { tokens } from '../design/tokens.js';
+
+const FLYOUT_CLOSE_DELAY_MS = 250;
 
 export default function MapLocation({ location, items, activeId, onSelect, badge = 0 }) {
   const [open, setOpen] = useState(false);
+  const closeTimer = useRef(null);
   const hasActive = items.some((i) => i.id === activeId);
+
+  const openNow = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    setOpen(true);
+  };
+  const closeSoon = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setOpen(false), FLYOUT_CLOSE_DELAY_MS);
+  };
 
   return (
     <>
@@ -13,11 +28,11 @@ export default function MapLocation({ location, items, activeId, onSelect, badge
         type="button"
         aria-label={`${location.label} — ${items.length} tools`}
         aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
+        onClick={() => (open ? closeSoon() : openNow())}
+        onMouseEnter={openNow}
+        onMouseLeave={closeSoon}
+        onFocus={openNow}
+        onBlur={closeSoon}
         style={{
           position: 'absolute',
           left: `${location.xPct - location.wPct / 2}%`,
@@ -84,8 +99,8 @@ export default function MapLocation({ location, items, activeId, onSelect, badge
 
       {open && (
         <div
-          onMouseEnter={() => setOpen(true)}
-          onMouseLeave={() => setOpen(false)}
+          onMouseEnter={openNow}
+          onMouseLeave={closeSoon}
           style={{
             position: 'absolute',
             left: `${location.xPct + location.wPct / 2 + 1}%`,

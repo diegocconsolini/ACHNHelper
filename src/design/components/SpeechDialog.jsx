@@ -51,7 +51,7 @@ export default function SpeechDialog({
       <div
         style={{
           background: 'url(/island/chrome/speech-bubble-paper.webp) center/100% 100% no-repeat',
-          padding: '24px 32px',
+          padding: 'clamp(28px, 4vw, 40px) clamp(56px, 11%, 96px)',
           minHeight: 80,
           fontFamily: tokens.font.handwriting,
           fontSize: 18,

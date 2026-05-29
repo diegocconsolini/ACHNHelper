@@ -397,9 +397,9 @@ function App() {
             top: 12px !important;
             left: 12px !important;
             bottom: auto !important;
-            width: 36px !important;
-            height: 36px !important;
-            font-size: 14px !important;
+            width: 44px !important;
+            height: 44px !important;
+            font-size: 16px !important;
           }
           .acnh-main {
             padding-top: 56px !important;
@@ -605,11 +605,11 @@ function App() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: tokens.space[3],
-                padding: '10px 20px',
+                padding: '22px 20px 18px',
                 margin: '0 0 12px',
-                minHeight: 64,
+                minHeight: 72,
                 background: 'url(/island/chrome/plaque-wide.webp) center/100% 100% no-repeat',
-                color: tokens.color.ink,
+                color: '#fef6e4',
               }}
             >
               <img
@@ -625,7 +625,8 @@ function App() {
                     fontFamily: tokens.font.display,
                     fontSize: 'clamp(18px, 2vw, 22px)',
                     fontWeight: 700,
-                    color: tokens.color.ink,
+                    color: '#fef6e4',
+                    textShadow: '0 1px 2px rgba(46, 26, 10, 0.75), 0 0 1px rgba(46, 26, 10, 0.9)',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
@@ -637,10 +638,11 @@ function App() {
                   style={{
                     fontFamily: tokens.font.handwriting,
                     fontSize: 13,
-                    color: tokens.color.inkSoft,
+                    color: '#f2e0bd',
+                    textShadow: '0 1px 2px rgba(46, 26, 10, 0.7)',
                   }}
                 >
-                  with {host.name} — {host.role}
+                  {loc?.label || `with ${host.name}`}
                 </span>
               </div>
             </div>

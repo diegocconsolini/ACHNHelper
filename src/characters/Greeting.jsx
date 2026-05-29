@@ -34,7 +34,7 @@ export default function Greeting({ character, mood, size = 'md', children }) {
         style={{
           flex: 1,
           background: 'url(/island/chrome/speech-bubble-paper.webp) center/100% 100% no-repeat',
-          padding: '32px 40px',
+          padding: 'clamp(32px, 4vw, 48px) clamp(72px, 10%, 120px)',
           minHeight: 96,
           color: tokens.color.ink,
           fontFamily: tokens.font.handwriting,
