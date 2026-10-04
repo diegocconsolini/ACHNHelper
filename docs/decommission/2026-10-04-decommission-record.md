@@ -8,8 +8,8 @@
 
 | Service | Removed | Verification |
 |---|---|---|
-| Vercel | Project `acnh-portal` (acnh-portal.vercel.app): deployments, aliases, env vars | URL returns 404 `DEPLOYMENT_NOT_FOUND` |
-| Supabase | Project `acnh-portal` (ref `cyxxfikvyawetabqmiot`, us-east-1): database, auth, storage, functions | No longer listed in the organization |
+| Vercel | Project `acnh-portal` (acnh-portal.vercel.app): deployments, aliases, env vars | URL returns `DEPLOYMENT_NOT_FOUND` |
+| Supabase | Project `acnh-portal` (ref `cyxxfikvyawetabqmiot`, us-east-1): database, auth | No longer listed in the organization |
 | GitHub | This repo archived (read-only, visibility unchanged) | `isArchived: true` |
 
 ## What was kept
@@ -20,8 +20,8 @@
 
 ## Manual follow-ups (owner)
 
-- [ ] If this app used Google/GitHub OAuth or a custom SMTP key (e.g. Resend), delete or revoke that client/key in the provider's console.
-- [ ] Revoke any third-party API keys listed in the archived env files that were created only for this project.
+- [ ] **Google Cloud Console** → APIs & Services → Credentials: delete the OAuth client used for `AUTH_GOOGLE_ID` (Auth.js Google sign-in).
+- [ ] **Nookipedia:** revoke the API key used as `NOOKIPEDIA_API_KEY`.
 
 ## How to restore
 
