@@ -1,5 +1,7 @@
 # ACNH Helper Suite
 
+> **Archived 2026-10-04.** This project is decommissioned: its Vercel deployment and Supabase project (database) were deleted. The code is kept here read-only. See [`docs/decommission/2026-10-04-decommission-record.md`](docs/decommission/2026-10-04-decommission-record.md).
+
 ## Security updates
 
 ### 2026-05-15 — CVE-2026-44578 (Next.js WebSocket SSRF)
